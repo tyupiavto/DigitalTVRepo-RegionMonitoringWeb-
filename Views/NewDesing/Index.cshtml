@@ -3,5 +3,268 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<link href="~/Content/main.css" rel="stylesheet" />
+<link href="~/Content/display.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />
+
+<div id="leftDiv">
+    <!-- Information about device -->
+    <div id="deviceInfo">
+        <ul id="menu">
+            <!-- Device name -->
+            <li>
+                @*<span id="DevName">Device</span>*@
+                <span id="DevName">Device </span>
+                <span id="AddGroup" data-toggle="modal" data-target="#myModal" style="width: 60px;margin-left: 194px; margin-top: -20px">Add Group</span>
+
+                <ul id="deviceName" class="devInfo">
+                    <li>
+                        tyupi
+                    </li>
+
+                </ul>
+            </li>
+            <!-- List of available interfaces -->
+            <li>
+                <span id="Int">Interface</span>
+                <ul id="interface" class="devInfo">
+                    @*<li class="interface">
+                        </li>*@
+                </ul>
+            </li>
+            <!-- List of available displays -->
+            <li>
+                <span id="Disp">Display</span>
+                <ul id="display" class="devInfo">
+                    @*<li class="display">
+                        </li>*@
+                </ul>
+            </li>
+            <!-- List of available audio output devices -->
+            <li>
+                <span id="Output">Output</span>
+                <ul id="output" class="devInfo">
+                    @*<li>
+                        </li>*@
+                </ul>
+            </li>
+            <!-- List of streams -->
+            <li>
+                <span id="Stream">Streams</span>
+                <ul id="streams" class="devInfo">
+                    @*<li class="stream">
+
+                        </li>*@
+
+                </ul>
+            </li>
+            @*<li>
+                    <span id="Adapter">Adapters</span>
+                    <ul id="adapters" class="devInfo">
+                        <li class="adapter">
+                            Adapter 0
+                        </li>
+                        <li class="adapter">
+                            Adapter 1
+                        </li>
+                    </ul>
+                </li>*@
+        </ul>
+
+        <!-- Buttons for saving, loading, clearing diagram and changing mode (This block is temporary) -->
+        <!--<input type="button" id="save" name="save" value="save" />
+        <input type="button" id="load" name="load" value="load" />-->
+        @*<input type="button" id="clear" name="clear" value="Clear Diagram" class="btn" />
+            <ul id="zoomButtons">
+                <li><input type="button" id="zoomin" name="zoomin" value="Zoom in" class="btn" /></li>
+                <li><input type="button" id="zoomout" name="zoomout" value="Zoom out" class="btn" /></li>
+            </ul>*@
+        <!--<button id="black">dark</button>
+        <button id="white">light</button>-->
+    </div>
+
+    <!-- Container for settings, in which we generate a form for user, so they could enter IP and PORT to get available streams. This form is generated dynamically, so the container is empty from the beginning -->
+    <div id="settingsDiv">
+
+    </div>
+
+    <!-- Container for context menu. It appears only when user right clicks on one of the tables -->
+    @*<div id="contextMenuDiv">
+            <ul class="contextmenu" id="context">
+                <li><a href="" class="hideTable">Close</a></li>
+            </ul>
+        </div>*@
+
+</div>
+<div id="mainDiv">
+
+</div>
+
+<!-- Modal -->
+<div class="container">
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" @*style="margin-left:-20%;"*@>
+            <div class="widget-container widget_search styled boxed-velvet" style="width:250px;">
+                <div class="inner gradient">
+                    <form method="get" id="searchform2" action="#">
+                        <div class="clearfix">
+                            <span class="btn btn-small" style="opacity: 1;"><input type="button" id="create_group" value="create" hidefocus="true" style="outline: none;" class="gradient"></span>
+                            <div class="input_wrap"><input class="inputField gradient" name="group_name" id="group_name" placeholder="Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    var counter;
+    $(document).ready(function () {
+        counter = 0;
+        $('.devInfo').hide();
+        $('#DevName').click(function () {
+            $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        });
+        //$("#mainDiv").sortable({
+        //    revert: true
+        //});
+
+        $('#deviceName li').draggable({
+            helper: 'clone',
+            revert: 'invalid'
+        });
+
+
+        function foo() {
+            $('.foo').each(function () {
+                //Making dropped elements draggable again
+                $(this).draggable({
+                    //containment: $(this).parent(),
+                    stack: '.foo',
+                    grid: [10, 10],
+                    drop: function (event, ui) {
+                        var pos = ui.draggable.offset(), dPos = $(this).offset();
+                    },
+                    drag: function () {
+                        //jsPlumb.addToDragSelection($('.foo'));
+                        var draggedItemId = $(this).attr('id');
+                        $('.contextmenu').hide();
+                        $(this).css({ 'z-index': '11' });
+                        $(".class" + draggedItemId).css({ 'z-index': '15' });
+                    },
+                    stop: function () {
+                        var draggedItemId = $(this).attr('id');
+                        $(this).css({ 'z-index': '0' });
+                        $(".class" + draggedItemId).css({ 'z-index': '10' });
+                        if ($(this).position().left < 0) {
+                            $(this).css({ 'left': '0' });
+                        }
+                        if ($(this).position().top < 0) {
+                            $(this).css({ 'top': '0' });
+                        }
+                    }
+                });
+            });
+        }
+            $("#mainDiv").droppable({
+                drop: function (ev, ui) {
+
+                    if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
+                        var pos = ui.draggable.offset(), dPos = $(this).offset();
+                        var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();;
+                        var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();;
+                        var Class = ui.draggable.attr("class");
+                        var title = ui.draggable.text().trim();
+                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + title + (counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add"><span class="addList">Add new link</span></td></tr></table>');
+                        $(this).append(item);
+                        counter++;
+                        foo();
+                    }
+                }
+            });
+
+            //$("#mainDiv .foo").draggable();
+
+            var mouseDown = false;
+            var prevCoords = { x: 0, y: 0 };
+
+            //$("#mainDiv").mousedown(function (e) {
+            //    mouseDown = !$(e.target).closest('.foo').length;
+            //}).mousemove(function (e) {
+            //    var currentScrollX = $('#mainDiv').scrollLeft();
+            //    var currentScrollY = $('#mainDiv').scrollTop();
+            //    if (mouseDown) {
+            //        $('#mainDiv').scrollLeft(currentScrollX + prevCoords.x - e.clientX)
+            //        $('#mainDiv').scrollTop(currentScrollY + prevCoords.y - e.clientY)
+            //    };
+            //    prevCoords.x = e.clientX;
+            //    prevCoords.y = e.clientY;
+            //}).mouseup(function () {
+            //    mouseDown = false;
+            //});
+
+            //$('.foo').on('drag', function () {
+            //    alert("sa");
+            //    if ($(this).left() == 0) {
+            //        return false;
+            //    }
+            //});
+    });
+
+</script>
+
+<style>
+    .dropdown-wrap,
+    .widget_search.styled,
+    .widget_profile {
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-box-shadow: 0 16px 20px -8px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0 16px 20px -8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 16px 20px -8px rgba(0, 0, 0, 0.3);
+        margin-bottom: 50px;
+    }
+
+    .widget_search .inner {
+        padding: 14px;
+    }
+
+    .widget_search .input_wrap {
+        margin-right: 90px;
+        position: relative;
+    }
+
+    .widget_search .btn,
+    .newsletterBox .btn {
+        float: right;
+        margin-top: 1px;
+    }
+
+    .widget_search .input_wrap input {
+        height: 33px;
+        padding-left: 30px;
+    }
+
+    .widget_search input::-webkit-input-placeholder {
+        color: #a4a4a4;
+    }
+
+    .widget_search input:-moz-placeholder {
+        color: #a4a4a4;
+    }
+
+    .widget_search .input_icon {
+        background: url(images/icons/search.png);
+        width: 16px;
+        height: 16px;
+        left: 10px;
+        top: 9px;
+        right: auto;
+    }
+</style>
 

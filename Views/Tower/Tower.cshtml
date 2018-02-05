@@ -1,0 +1,117 @@
+﻿@using AdminPanelDevice.Models
+@{
+    ViewBag.Title = "Tower";
+    List<Tower> tower = new List<Tower>();
+    List<DeviceType> devicetype = new List<DeviceType>();
+    List<Devices> devices = new List<Devices>();
+    devicetype = ViewBag.devicetype;
+    tower = ViewBag.Tower;
+    devices = ViewBag.deviceid;
+    DeviceContext db = new DeviceContext();
+    List<DeviceType> device = new List<DeviceType>();
+    device =db.devicesTypes.ToList();
+    var preset = db.Presets.ToList();
+}
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+<br />
+<form class="container" id="needs-validation" novalidate>
+    <legend style="margin-left: -17px">Device Panel</legend>
+    <div class="row">
+        <div class="col-md-2 mb-5">
+            <label for="validationCustom01">Tower</label>
+            <select class="form-control selectpicker show-tick" data-live-search="true" name="Tower" id="Tower">
+                <option selected hidden>Tower</option>
+                @foreach (var item in tower)
+                {
+                    <option>@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 mb-2">
+            <label for="validationCustom02">Device</label>
+            <select class="form-control selectpicker show-tick" data-live-search="true" name="DeviceID"  id="DeviceID">
+                <option selected hidden>Device</option>
+
+                @foreach (var item in device)
+                {
+                    <option>@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom01">IP</label>
+            <input type="text" name="IP" class="form-control" id="DevicePanelIP" placeholder="IP">
+        </div>
+        <div class="col-md-2 mb-1">
+            <label for="validationCustom01">DevSerialNumber</label>
+            <input type="text" name="DevSerialNumber" class="form-control" id="DevSerialNumber" placeholder="DevSerialNumber" >
+        </div>
+        <div class="col-md-2">
+            <label for="validationCustom01">Preset</label>
+            <select  class="form-control selectpicker show-tick" data-live-search="true" name="preset_add" id="preset_add">
+                <option selected>Preset</option>
+              @foreach (var it in preset)
+              {
+                <option>@it.PresetName</option>
+              }
+            </select>
+        </div>
+        <div class="col-md-1 mb-1">
+            <button class="btn btn-success" id="DevicePanelInsert" type="button" style="margin-top: 25px;">Add</button>
+        </div>
+        <div class="col-md-1 mb-1">
+            <button class="btn btn-info" id="GoWalk" type="button" style="margin-top: -55px; margin-left: 1150px">Walk</button>
+        </div>
+    </div>
+    <br />
+
+    <div class="col-md-2">
+        <label for="validationCustom01">Preset Delete</label>
+        <select class="form-control selectpicker show-tick" data-live-search="true" name="preset_inf" id="preset_inf">
+            <option selected>Preset</option>
+            @foreach (var it in preset)
+            {
+                <option>@it.PresetName</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-1 mb-1">
+        <button class="btn btn-danger" id="preset_delete" type="button" style="margin-top: 25px;">Delete</button>
+    </div>
+    <div class="col-md-1 mb-1">
+        <button class="btn btn-info" id="preset_edit" type="button" style="margin-top: 25px;">Edit</button>
+    </div>   
+        <br />
+
+</form>
+<br /> <br />
+
+<form  class="container" id="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-3 mb-5">
+                <label for="validationCustom01">Tower</label>
+                <select  class="form-control selectpicker show-tick" data-live-search="true" name="TowerState"  id="TowerState" onchange="getval(this);">
+                    <option selected hidden>Tower</option>
+                    @foreach (var item in ViewBag.Tower)
+                    {
+                        if (ViewBag.selectedTower == @item.NumberID)
+                        {
+                            <option selected value="@item.NumberID">@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.NumberID">@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            </div>
+    <br />
+</form>
+    <div id="search"></div>
+
+<script src="~/Content/ScriptView/TowerUpdate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.Tower>
+@{
+    ViewBag.Title = "TowerState";
+}
+
+<div class="form-group" id="tower_state" @*style="overflow:auto; margin-left:-38px; height:500px;*@">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LattiTube)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LongiTube)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Edit</th>
+            <th></th>
+            <th>Delete</th>
+        </tr>
+        <tbody id="tower_body">
+            @foreach (var item in Model)
+            {
+
+                <tr data-id="@item.ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LattiTube)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LongiTube)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IP)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td id="edit_tower"><a href=""><span class="glyphicon glyphicon-edit" id="edit_tower"></span></a></td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-danger" id="delete_tower_state" value="@item.NumberID" type="button">Delete</button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<script src="~/Content/ScriptView/TowerUpdate.js"></script>

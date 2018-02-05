@@ -1,0 +1,75 @@
+﻿@*@model IEnumerable<AdminPanelDevice.Models.WalkInformation>*@
+@model IPagedList<AdminPanelDevice.Models.WalkDevice>
+
+@using PagedList
+@using PagedList.Mvc
+@{ 
+    ViewBag.Title = "Index";
+    var Checked = ViewBag.Checked;
+    int[] number =  { 20, 30, 50, 100,2000};
+    int srt = ViewBag.ListView;
+    var kl = ViewBag.Checked;
+    var viewNumber = ViewBag.ListView;
+    var c = ViewBag.c;
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head {
+    <script type="text/javascript">
+        $(document).ready(function () {
+              var edit = @Html.Raw(Json.Encode(@ViewBag.Edit));
+            var click_checked = @Html.Raw(Json.Encode(@ViewBag.Checke));
+            var oid_time = @Html.Raw(Json.Encode(@ViewBag.Tim));
+            var all=@Html.Raw(Json.Encode(ViewBag.All));
+            var select =@Html.Raw(Json.Encode(ViewBag.Select));
+            $.each(click_checked, function (i,val) {
+                $('#check_click' +val).attr('checked', true);
+            });
+            $.each(oid_time, function (j, value) {
+                $('#Time' + value).val(value[1]);
+            });
+            if (edit == 1) {
+                $('.walk_edit').css("display", "block");
+                $('#walk_click').css("display", "none");
+            }
+            if (all == "All") {
+                $('#selected_search').val("All").change();
+            }
+            if (select == "Select") {
+                $('#selected_search').val("Select").change();
+            }
+    });
+    </script>
+    @*<script src="~/Content/ScriptView/WalkSend.js"></script>*@
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+@*<h2>Walk</h2>*@
+
+@*@if (Model.Count != 0)
+{
+    @Html.Partial("_WalkView");
+}*@
+@Html.Partial("_WalkView");
+@*else
+{
+        <table class="table" id="walkdraw">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().WalkOID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Type)
+        </th>
+        <th>
+            Checked
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Time)
+        </th>
+        <th>Set</th>
+    </tr>
+      
+</table>
+   }*@

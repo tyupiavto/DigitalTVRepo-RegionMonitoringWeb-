@@ -1,0 +1,90 @@
+﻿@model AdminPanelDevice.Models.DeviceType
+@using AdminPanelDevice.Models
+@{
+    ViewBag.Title = "Tower";
+    List<Tower> tower = new List<Tower>();
+    List<DeviceType> devicetype = new List<DeviceType>();
+    List<Devices> devices = new List<Devices>();
+    devicetype = ViewBag.devicetype;
+    tower = ViewBag.Tower;
+    devices = ViewBag.deviceid;
+    //var ID = ViewBag.ID;
+    // string Tower = ViewBag.deviceid.Name;
+}
+
+<h2>Tower</h2>
+<table class="table" id="walkdraw"></table>
+    <form class="container" id="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-3 mb-5">
+                <label for="validationCustom01">Tower</label>
+                <select name="TowerID" class="form-control" id="TowerID">
+                    <option selected hidden value="0">Tower</option>
+                    @foreach (var item in tower)
+                    {
+                        //if (ID == null)
+                        //{
+                        if (ViewBag.selectedTower == @item.NumberID)
+                        {
+                            <option selected value="@item.NumberID">@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.NumberID">@item.Name</option>
+                        }
+
+                        //  }
+                    }
+                </select>
+            </div>
+            @*<div class="col-md-3">
+                    <input type="submit" class="form-control" value="find" />
+                </div>*@
+        </div>
+        <br />
+
+        <table class="table">
+            <tr>
+                <th>
+                    Tower
+                </th>
+                <th>
+                    Model
+                </th>
+                <th>
+                    IP
+                </th>
+                <th>
+                    DevSerialNumber
+                </th>
+            </tr>
+            <tbody id="device_body">
+                @if (devices != null)
+            {
+                foreach (var item in tower)
+                {
+                        <tr data-id="@item.ID">
+                            <td>@item.Name</td>
+                            <td>@item.IP </td>
+                            <td>@item.Status</td>
+                            <td>@item.Phone </td>
+                            <td>assas</td>
+                            <td id="edit_device"></td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </form>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/ScriptView/TowerUpdate.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#TowerID').change(function () {
+                Towupdate($('#TowerID').index(), $('#TowerID').val());
+            });
+
+        });
+    </script>

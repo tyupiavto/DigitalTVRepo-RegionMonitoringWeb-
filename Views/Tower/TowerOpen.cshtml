@@ -1,0 +1,115 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.Tower>
+@*<div id="tower_state"></div>*@
+<form action="/Tower/TowerInsert" method="post" class="container" @*id="needs-validation"*@ novalidate  style="margin-left:-50px">
+   <br />
+    <legend style="margin-left: -10px">Tower Panel</legend>
+    <div class="row">
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom01">Name</label>
+            <input type="text" name="Name" class="form-control" id="TowerName" placeholder="Name">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom02">LattiTube</label>
+            <input type="text" name="LattiTube" class="form-control" id="TowerLattiTube" placeholder="LattiTube">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom01">LongiTube</label>
+            <input type="text" name="LongiTube" class="form-control" id="TowerLongiTube" placeholder="LongiTube">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom01">IP</label>
+            <input type="text" name="IP" class="form-control" id="TowerIP" placeholder="IP">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom02">Service Phone</label>
+            <input type="text" name="Phone" class="form-control" id="TowerPhone" placeholder="Service Phone">
+        </div>
+        <div class="col-md-2 mb-2">
+            <label for="validationCustom01">Status</label>
+            <select class="form-control" id="TowerStatus" name="Status">
+                <option selected hidden>Status</option>
+                <option>Enable</option>
+                <option>Disable</option>
+            </select>
+        </div>
+        <button class="btn btn-success" type="submit" id="TowerInsert" style="margin-left: 1180px; margin-top: -57px;">Add</button>
+    </div>
+
+</form>
+<br />
+    @Html.Partial("_TowerState")
+
+ @*
+<table class="table" style="margin-left:-50px">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LattiTube)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LongiTube)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>Edit</th>
+        <th></th>
+        <th>Delete</th> 
+    </tr>
+    <tbody id="tower_body">
+        @foreach (var item in Model)
+        {
+
+            <tr data-id="@item.ID">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LattiTube)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LongiTube)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td id="edit_tower"><a href=""><span class="glyphicon glyphicon-edit" id="edit_tower"></span></a></td>
+                <td></td>
+                <td>
+                    <button class="btn btn-primary" id="delete_tower_state" value="@item.NumberID" type="button">Delete</button>
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>*@
+@*@Html.Partial("_TowerState")*@
+@*<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
+    var edittower;
+    $(document).ready(function () {
+        edittower = $("#tower_body");
+        edittower.on("click", "tr", function (e) {
+            e.preventDefault();
+            if (e.target.id == "edit_tower") {
+                window.location.href = "/Tower/TowerEdit/" + $(this).data("id");
+            }
+     });
+
+    });
+</script>*@

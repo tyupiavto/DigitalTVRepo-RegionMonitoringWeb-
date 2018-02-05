@@ -1,0 +1,77 @@
+﻿@model Tower
+@using AdminPanelDevice.Models
+
+<h2>TowerEdit</h2>
+
+<form class="container" id="needs-validation" novalidate>
+    <div class="row">
+        <label class="col-sm-1 mb-2">Name</label>
+        <div class="col-md-3 mb-2">
+            <input type="text" value="@Model.Name" class="form-control" id="TowerName" placeholder="Name">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <label class="col-sm-1 mb-2">LattiTube</label>
+        <div class="col-md-3 mb-2">
+            <input type="text" value="@Model.LattiTube" class="form-control" id="TowerLattiTube" placeholder="LattiTube">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <label class="col-sm-1 mb-2">LongiTube</label>
+        <div class="col-md-3 mb-2">
+            <input type="text" value="@Model.LongiTube" class="form-control" id="TowerLongiTube" placeholder="LongiTube">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <label class="col-sm-1 mb-2">IP</label>
+        <div class="col-md-3 mb-2">
+            <input type="text" value="@Model.IP" class="form-control" id="TowerIP" placeholder="IP">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <label class="col-sm-1 mb-2">Service Phone</label>
+        <div class="col-md-3 mb-2">
+            <input type="text" value="@Model.Phone" class="form-control" id="TowerPhone" placeholder="Service Phone">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <label class="col-sm-1 mb-2">Status</label>
+        <div class="col-md-3 mb-2">
+            <select class="form-control list-unstyled" id="TowerStatus">
+                @if (Model.Status == "Enable")
+                {
+                <option selected>Enable</option>
+                <option >Disable</option>
+                }
+                else
+                {
+                <option>Enable</option>
+                <option selected>Disable</option>
+                }
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <button class="btn btn-primary" type="button" id="TowerUpdate" style="margin-left: 110px;">Update</button>
+    </div>
+
+</form>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="~/Content/ScriptView/TowerUpdate.js"></script>
+<script>
+    var ID, Name, LattiTube, LongiTube, IP, Phone, Status;
+    $(document).ready(function () {
+   
+    $('#TowerUpdate').click(function () {
+        ID =@Model.ID;
+          updateTower(ID);
+    });
+    });
+</script>

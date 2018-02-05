@@ -1,0 +1,55 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.DeviceType>
+@{
+    ViewBag.Title = "DevicePanel";
+}
+
+<div id="device_view">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manufacture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Purpose)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MibParser)
+            </th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tbody id="device_body">
+            @foreach (var item in Model)
+            {
+                <tr data-id="@item.ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Manufacture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Model)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Purpose)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MibParser)
+                    </td>
+                    <td id="edit_device"><a href=""><span class="glyphicon glyphicon-edit" id="edit_device"></span></a></td>
+                    <td>
+                        <button class="btn btn-danger" id="delete_device" value="@item.NumberID" type="button">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+<script src="~/Content/ScriptView/DevicePanel.js"></script>

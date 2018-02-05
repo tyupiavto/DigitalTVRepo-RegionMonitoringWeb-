@@ -1,0 +1,96 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.Devices>
+
+@{
+    AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
+    ViewBag.Title = "DeviceTower";
+    var preset = db.Presets.ToList();
+}
+    <table class="table">
+        <tr>
+            <th>
+                <label for="validationCustom02">Tower</label>
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                IP
+            </th>
+            <th>
+              SerialNumber
+            </th>
+            <th>
+                Preset
+            </th>
+        </tr>
+        <tbody id="tower_bodyy">
+            @*@{ string Devname = "DeviceName"; string Ipname = "DeviceIP"; string number = "DevSerialNumber";  }*@
+          
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr data-id="@item.NumberID" class="NumberID">
+                        <td>
+                            <div>
+                                <input type="text" name="Name" class="form-control" id="TowerName" value="@item.Tower.Name">
+                            </div>
+                        </td>
+
+                        <td>
+                            <select class="form-control DeviceName" data-id="@item.NumberID" id="DeviceName@(item.NumberID)" >
+                                @foreach (var ite in ViewBag.devicetype)
+                                {
+                                    if (item.DeviceTID != ite.ID)
+                                    {
+                                        <option>@ite.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>@ite.Name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="Name" class="form-control" id="DeviceIP@(item.NumberID)" value="@item.IP">
+                        </td>
+                        <td>
+                            <div style="width:65px">
+                                <input type="text" name="Name" class="form-control" id="DevSerialNumber@(item.NumberID)" value="@item.DevSerialNumber">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-2" style="margin-left:-25px;width: 130px;">
+                                <select class="form-control" id="preset_device@(item.NumberID)">
+                                    @foreach (var it in preset)
+                                    {
+                                        if (@item.PresetName == @it.PresetName)
+                                        {
+                                        <option selected>@it.PresetName</option>
+                                        }
+                                        if (@item.PresetName != @it.PresetName)
+                                        {
+                                            <option>@it.PresetName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group" id="update_tower">
+                                <button class="btn btn-primary" id="update_tower" value="@item.NumberID" type="button">Update</button>
+                                <button class="btn btn-danger" id="delete_tower" value="@item.NumberID" type="button">Delete</button>
+                                <button class="btn btn-info" id="walk_send" type="button" value="@item.NumberID">Walk</button>
+                                <button class="btn btn-success" id="diagram_send" type="button" style="margin-left: 210px;margin-top: -55px;" value="@item.NumberID">Diagram</button>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+<script src="~/Content/ScriptView/TowerUpdate.js"></script>

@@ -1,0 +1,201 @@
+﻿@*@model IEnumerable<AdminPanelDevice.Models.WalkInformation>*@
+@model IPagedList< AdminPanelDevice.Models.WalkDevice>
+
+@using PagedList
+@using PagedList.Mvc
+@using AdminPanelDevice.Helpers
+@{
+    ViewBag.Title = "Index";
+    AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
+    var IntervalNumber = db.ScanningIntervals.ToList();
+    IntervalNumber = IntervalNumber.OrderBy(o => o.Interval).ToList();
+    int[] number = { 20, 30, 50, 100, 2000 };
+
+}
+<br />
+<form class="form-group">
+    @*<div class="col-sm-1 mb-1">
+            <button class="btn btn-primary" type="button" id="WalkSend">Walk</button>
+        </div>*@
+    <div class="row" @*id="walk_click"*@>
+        <div class="col-md-1 mb-1" id="walk_click">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Save</button>
+        </div>
+        <div class="col-md-1 mb-1 walk_edit" @*id="walk_edit"*@ style="display:none">
+            <button type="button" class="btn btn-primary" id="presetEdit_save">Save</button>
+
+            <select class="selectpicker" id="selected_search" title="" style="margin-left: 460px;top: -54px;position: relative;">
+                <option value="All" selected>All</option>
+                <option value="Select">Select</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 mb-2">
+            <input type="text" class="form-control " id="SearchText" placeholder="Search" value="@ViewBag.SearchName">
+                <button class="btn btn-default" type="button" id="search_click" style="margin-left:263px; margin-top:-57px;"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+
+            <select class="selectpicker" id="ListView" style="position:relative; margin-left:40px;" title="აირჩიეთ ჩამონათვალის რაოდენობა">
+                @foreach (var item in number)
+            {
+                if (@item == @ViewBag.ListView)
+                {
+                        <option selected value="@item">@item</option>
+                    }
+                    else
+                    {
+                        <option value="@item">@item</option>
+                    }
+                }
+                }
+
+            </select>
+        </div>
+</form>    
+<br />
+<div class="form-group" style="overflow:auto; height:600px">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().WalkOID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Type)
+            </th>
+            <th>
+                Checked
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Time)
+            </th>
+            <th>Set</th>
+        </tr>
+
+        <tbody id="check_body">
+
+            @foreach (var item in Model)
+            {
+                <tr data-id="@item.ID" class="a">
+                    <td width="450px">
+                        <div id="OIDName@(item.ID)" value="@item.WalkDescription">@item.WalkDescription</div>
+                        <div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>
+                    </td>
+                    <td>
+                        <div id="Value@(item.ID)">@item.Type</div>
+                        <div id="Type@(item.ID)" style="display:none">@item.Type</div>
+                    </td>
+                    <td>
+                        <div class="checkbox checkbox-success checkbox-inline" id="checkedd" style="top:-11px;">
+
+                            <input type="checkbox" id="check_click@(item.WalkID)" class="textbox" style="width:19px; height:19px;" value="@item.ID">
+                        </div>
+                    </td>
+                    <td>
+                        <select class="selectpicker" id="Time@(item.WalkID)" style="position:relative; top:8px;">
+
+                            @foreach (var items in IntervalNumber)
+                            {
+                                if (@items.Interval == @item.Time)
+                                {
+                                    <option selected value="@items.Interval">@items.Interval</option>
+                                }
+                                else
+                                {
+                                    <option value="@items.Interval">@items.Interval</option>
+                                }
+                            }
+                        </select>
+
+                    </td>
+                    <td>
+                        <div id="oid_name@(item.WalkID)" value="@item.WalkOID" style="display:none">@item.WalkOID</div>
+                        <div id="type_name@(item.WalkID)" value="@item.value" style="display:none">@item.value</div>
+                    </td>
+                    <td>
+                        <button class="btn btn-info" type="button" id="set_click" value="OpenSet@(item.ID)" data-toggle="modal" data-target="#SETModal">Set</button>
+                    </td>
+                   
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+          <div class="col-md-12" style="margin-left:25%;">
+             @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+          </div>
+
+    <!-- Modal -->
+
+    <div class="container">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" @*style="margin-left:-20%;"*@>
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">შევინახოთ მონაცემები ? </h4>
+                    </div>
+                    <div class="modal-body">
+                        <label class="control-label col-md-4" for="Name">შეიყვანეთ სახელი:</label>
+                        <input type="text" name="WalkSaveName" class="form-control" id="WalkSaveName" placeholder="შეიყვანეთ სახელი" style="margin-left:25px;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" id="savewalk" data-dismiss="modal">შენახვა</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">დახურვა</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <!-- Modal  SET -->
+        <div class="modal fade" id="SETModal" role="dialog">
+            <div class="modal-dialog" @*style="margin-left:-20%;"*@>
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">SNMP SET </h4>
+                    </div>
+                    <div class="modal-body">
+                        <label class="control-label col-md-2" for="Name">Description</label>
+                        <span id="descriptionOID" style="margin-left:25px;" value="Description"></span>
+                    </div>
+                    <div class="modal-body">
+                        <label class="control-label col-md-2" for="Name">OID</label>
+                        <input type="text" class="form-control" id="SetOID" style="margin-left:25px;">
+                    </div>
+                    <div class="modal-body">
+                        <label class="control-label col-md-2" for="Name">Value</label>
+                        <span id="SetType" style="margin-left:25px;" value="Type"></span>
+                    </div>
+                    <div class="modal-body">
+                        <label class="control-label col-md-2" for="Name">DataType</label>
+                        <span id="SetDataType" style="margin-left:25px;">Type</span>
+                    </div>
+                    <div class="modal-body">
+                        <label class="control-label col-md-2" for="Name">Set Value</label>
+                        <input type="text" class="form-control" id="SetValue" style="margin-left:25px;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" id="SendSet" data-dismiss="modal">გაგზავნა</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">დახურვა</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+<link href="~/Content/Style/CheckedStyle.css" rel="stylesheet" />

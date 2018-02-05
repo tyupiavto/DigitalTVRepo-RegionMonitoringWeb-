@@ -1,0 +1,63 @@
+﻿@model IPagedList<AdminPanelDevice.Models.WalkDevice>
+
+@using PagedList
+@using PagedList.Mvc
+@using AdminPanelDevice.Helpers
+@{
+    ViewBag.Title = "Index";
+    AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
+    var IntervalNumber = db.ScanningIntervals.ToList();
+    IntervalNumber = IntervalNumber.OrderBy(o => o.Interval).ToList();
+    //List<int> Checked = ViewBag.Checked;
+    //var Time = ViewBag.Time;
+    //var ip = ViewBag.IP;
+}
+<div class="form-group" style="overflow:auto; height:600px">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().WalkOID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Type)
+            </th>
+            <th>
+                Checked
+            </th>
+            <th>Diagram</th>
+        </tr>
+
+        <tbody id="check_body">
+
+            @foreach (var item in Model)
+            {
+                <tr data-id="@item.ID" class="a">
+                    <td width="450px">
+                        <div id="OIDName@(item.ID)" value="@item.WalkDescription">@item.WalkDescription</div>
+                    </td>
+                    <td>
+                        <div id="Value@(item.ID)">@item.Type</div>
+                    </td>
+                    <td>
+                        <div class="checkbox checkbox-success checkbox-inline" id="checkedd" style="top:-11px;">
+
+                            <input type="checkbox" id="check_click@(item.WalkID)" class="textbox" style="width:19px; height:19px;" value="@item.ID">
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="button" id="diagram_click" value="diagram@(item.ID)" >Diagram</button>
+                    </td>
+
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+</div>
+<div class="col-md-12" style="margin-left:25%;">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+<script src="~/Content/ScriptView/TowerUpdate.js"></script>
+<link href="~/Content/Style/CheckedStyle.css" rel="stylesheet" />

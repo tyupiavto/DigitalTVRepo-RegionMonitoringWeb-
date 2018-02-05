@@ -1,0 +1,193 @@
+﻿
+@using AdminPanelDevice.Models
+@{
+    ViewBag.Title = "Index";
+    List<DeviceType> device = new List<DeviceType>();
+    List<Tower> tower = new List<Tower>();
+    List<ScanningInterval> second = new List<ScanningInterval>();
+    device = ViewBag.DeviceType;
+    tower = ViewBag.Tower;
+    second = ViewBag.Second;
+   second=second.OrderBy(s => s.Interval).ToList();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <br /> <br />
+    @* tower panel insert*@
+    @*<form @*action="/Home/TowerInsert" method="post" class="container" id="needs-validation" novalidate>*@
+        @*<legend style="margin-left: -17px">Tower Panel</legend>
+        <div class="row">
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">Name</label>
+                <input type="text" name="Name" class="form-control" id="TowerName" placeholder="Name">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom02">LattiTube</label>
+                <input type="text" name="LattiTube" class="form-control" id="TowerLattiTube" placeholder="LattiTube">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">LongiTube</label>
+                <input type="text" name="LongiTube" class="form-control" id="TowerLongiTube" placeholder="LongiTube">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">IP</label>
+                <input type="text" name="IP" class="form-control" id="TowerIP" placeholder="IP">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom02">Service Phone</label>
+                <input type="text" name="Phone" class="form-control" id="TowerPhone" placeholder="Service Phone">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">Status</label>
+                @*    <input type="text" name="Status" class="form-control" id="TowerStatus" placeholder="Status">
+
+                <select class="form-control" id="TowerStatus">
+                    <option selected hidden>Status</option>
+                    <option>Enable</option>
+                    <option>Disable</option>
+                </select>
+
+
+            </div>
+            <button class="btn btn-primary" type="submit" id="TowerInsert" style="margin-left: 1180px; margin-top: -57px;">Add</button>
+        </div>
+        <br />
+        <br />
+
+    </form>*@
+    @* device info panel insert*@
+    @*<form action="/Home/InsertDevice" method="post" class="container" enctype="multipart/form-data" id="needs-validation" novalidate>
+        <legend style="margin-left: -17px">Device Info Panel</legend>
+        <div class="row">
+
+            <div class="col-md-3 mb-5">
+                <label for="validationCustom01">Name</label>
+                <input type="text" name="Name" class="form-control" id="DeviceName" placeholder="Name">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">ManuFacture</label>
+                <input type="text" name="ManuFacture" class="form-control" id="DeviceManuFacture" placeholder="ManuFacture">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom02">Model</label>
+                <input type="text" name="Model" class="form-control" id="DeviceModel" placeholder="Model">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">Purpose</label>
+                <input type="text" name="Purpose" class="form-control" id="DevicePurpose" placeholder="Purpose">
+            </div>
+            <div class="row">
+                <input name="mib_file" type="file" id="FileUpload" , accept="file/*" style="display: none">
+                <label for="FileUpload" class="btn btn-primary" style="margin-left: 25px;margin-top: 25px;">Browser</label>
+                <button class="btn btn-primary" id="DeviceInsert" type="submit" style="margin-top: 25px; margin-left:30px;">Add</button>
+            </div>
+        </div>
+    </form>
+    <br /><br />*@
+
+    @* device panel insert*@
+    @*<form class="container" id="needs-validation" novalidate>
+        <legend style="margin-left: -17px">Device Panel</legend>
+         <div class="row">
+            <div class="col-md-2 mb-5">
+                <label for="validationCustom01">Tower</label>
+                <select class="form-control"  id="TowerID">
+                    <option selected hidden>Tower</option>
+                    @foreach (var item in tower)
+                    {
+                        <option>@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label for="validationCustom02">Device</label>
+                <select class="form-control" id="DeviceID">
+                    <option selected hidden>Device</option>
+                   
+                    @foreach (var item in device)
+                    {
+                        <option>@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">IP</label>
+                <input type="text" name="IP" class="form-control" id="DevicePanelIP" placeholder="IP">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="validationCustom01">DevSerialNumber</label>
+                <input type="text" name="DevSerialNumber" class="form-control" id="DevSerialNumber" placeholder="DevSerialNumber">
+            </div>
+             <div class="col-md-2">
+                 <label for="validationCustom01">Preset</label>
+                 <select class="form-control" id="TowerStatus">
+                     <option selected hidden>Preset</option>
+                     <option>preset1</option>
+                     <option>preset2</option>
+                 </select>
+
+
+             </div>
+            <div class="col-md-1 mb-1">
+                <button class="btn btn-primary" id="DevicePanelInsert" type="button" style="margin-top: 25px;">Add</button>
+            </div>
+             <div class="col-md-1 mb-1">
+                 <button class="btn btn-primary" id="GoWalk" type="button" style="margin-top: -55px; margin-left: 1150px">Walk</button>
+             </div>
+        </div>
+        <br />
+        <br />
+    </form>*@
+
+    <form class="container" id="needs-validation" novalidate>
+        <legend style="margin-left: -17px">Scanning Interval</legend>
+        <div class="col-md-1 mb-1">
+            <button class="btn btn-success" id="AddSecond" type="button" style="margin-top: 25px; margin-left:30px;">Add</button>
+        </div>
+        <div class="col-md-2 mb-1">
+            <label for="validationCustom01">Add Interval</label>
+            <input type="text" class="form-control" id="Interval" placeholder="Second Interval">
+        </div>
+        <div class="col-md-1 mb-1">
+            <button class="btn btn-danger" id="DeleteInterval" type="button" style="margin-top: 25px; margin-left:15px;">Delete</button>
+        </div>
+        <div class="col-md-1 mb-2">
+            <label for="validationCustom02">Search</label>
+            <select class="form-control" id="IntervalID">
+                <option selected hidden></option>
+
+               @foreach (var item in second)
+                {
+                    <option>@item.Interval</option>
+                }
+            </select>
+        </div>
+
+    </form>
+
+    <div class="col-md-1 mb-1">
+        <button type="button" class="btn btn-primary" id="get_next" style="margin-left: 600px; margin-top:-60px;">GET</button>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<style>
+    .container {
+        margin-left: 25px;
+    }
+
+    .hr {
+        display: block;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-right: auto;
+    }
+</style>

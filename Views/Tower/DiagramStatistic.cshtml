@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "DiagramStatistic";
+}
+
+<h2>DiagramStatistic</h2>
+
+<!DOCTYPE HTML>
+<html>
+<head>
+
+
+</head>
+<body>
+    <button type="button" class="btn btn-primary" id="chart_button">Go</button>
+    <div id="chartContainer" style="height: 270px; width: 100%;"></div>
+    <div id="chartCnt" style="height: 270px; width: 100%;"></div>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var charts;
+        var dataPoint = [];
+        var dataP = [];
+        var Y = [];
+        //window.onload = function () {
+        $('#chart_button').click(function () {
+
+            $.post("/Home/Chart", {},function (res) {
+                for (var i = 0; i <= res.Ycordinate.length - 1; i++) {
+                    dataPoint.push({ x: res.Ycordinate[i].X, y: res.Ycordinate[i].Y });
+                    dataP.push({ x: res.Ycord[i].X, y: res.Ycord[i].Y });
+                }
+
+                for (var k = 0; k <= res.Y.length - 1; k++) {
+                    Y.push({ x: res.Y[k].X, y: res.Y[k].Y });
+                }
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,
+                    title: {
+                        text: "ტემპერატურის სტატისტიკა"
+                    },
+                    axisY: {
+                        includeZero: true
+                    },
+                    axisX: {
+                        valueFormatString: "time"
+                    },
+                    data: [{
+                        type: "line",
+                        color: "green",
+                        lineColor: "blue",
+                        markerColor: "black",
+                        xValueFormatString: "ტემპერატურა",
+                        showInLegend: true,
+                        yValueFormatString: "$#,##0K",
+                        dataPoints: dataPoint
+                    },
+                    {
+                        type: "line",
+                        color: "red",
+                        lineColor: "red",
+                        markerColor: "black",
+                        xValueFormatString: "ტემპერატურა",
+                        showInLegend: true,
+                        yValueFormatString: "$#,##0K",
+                        dataPoints: dataP
+
+                        },
+                    {
+                        type: "line",
+                        color: "Cyan ",
+                        lineColor: "Cyan ",
+                        markerColor: "Cyan",
+                        xValueFormatString: "ტემპერატურა",
+                        showInLegend: true,
+                        yValueFormatString: "$#,##0K",
+                        dataPoints: Y
+
+                    }
+                    ]
+                //});
+                //chart.render();
+
+                });
+                chart.render();
+
+                var chart = new CanvasJS.Chart("chartCnt", {
+                    animationEnabled: true,
+                    title: {
+                        text: "MGBT ცვალებადობა"
+                    },
+                    axisY: {
+                        includeZero: true
+                    },
+                    axisX: {
+                        valueFormatString: "time"
+                    },
+                    data: [{
+                        type: "line",
+                        color: "gold",
+                        lineColor: "gold",
+                        markerColor: "black",
+                        xValueFormatString: "MGBT",
+                        showInLegend: true,
+                        yValueFormatString: "$#,##0K",
+                        dataPoints: dataPoint
+                    //},
+                    //{
+                    //    type: "line",
+                    //    color: "blue",
+                    //    lineColor: "blue",
+                    //    markerColor: "black",
+                    //    xValueFormatString: "ტემპერატურა",
+                    //    showInLegend: true,
+                    //    yValueFormatString: "$#,##0K",
+                    //    dataPoints: dataP
+
+                    }]
+                    //});
+                    //chart.render();
+
+                });
+                chart.render();
+
+
+
+            }, "json");
+        });
+    });
+
+    </script>

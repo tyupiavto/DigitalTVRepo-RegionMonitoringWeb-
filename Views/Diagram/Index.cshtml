@@ -1,0 +1,95 @@
+﻿@model IPagedList<AdminPanelDevice.Models.WalkDevice>
+
+@using PagedList
+@using PagedList.Mvc
+@using AdminPanelDevice.Helpers
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+@*@Html.Partial("_PresetDiagramSearch");*@
+
+<body>
+    <div class="row">
+        <button type="button" class="btn btn-primary" id="live_diagram">Live Diagram</button>
+        <button type="button" class="btn btn-primary" id="static_diagram">Static Diagram</button>
+        <div id="chartContainer" style="height:300px; width: 100%;"></div>
+        <div id="chartContainerstatic" style="height: 300px; width: 100%;"></div>
+    </div>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+   @* <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>*@
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var charts;
+
+        var dataP = [];
+        var Y = [];
+        $('#live_diagram').click(function () {
+
+            $.post("GetNext/Get", {}, function (response) {
+            },"json");
+
+            var dataPointLive = []; 
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                animationEnabled: true,
+                zoomEnabled: true,
+                title: {
+                    text: "Live"
+                },
+                axisY: {
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: dataPointLive
+                }]
+            });
+
+            var updateInterval = 1000;
+            var updateChart = function () {
+                chart.render();
+                $.post("/Diagram/ChartLive", {}, function (res) {
+                    for (var i = 0; i <= res.LiveDiagram.length - 1; i++) {
+                        dataPointLive.push({ x: res.LiveDiagram[i].X, y: res.LiveDiagram[i].Y });
+                    }
+                    if (dataPointLive.length - 1 == 40) {
+                        dataPointLive.shift();
+                    }
+
+                }, "json");
+            };
+            setInterval(function () { updateChart() }, updateInterval);
+        });
+
+        $('#static_diagram').click(function () {
+            var dataPoint = []; 
+               
+                $.post("/Diagram/ChartStatic", {}, function (res) {
+                    for (var i = 0; i <= res.StaticDiagram.length - 1; i++) {
+                        dataPoint.push({ x: res.StaticDiagram[i].X, y: res.StaticDiagram[i].Y });
+                    }
+                    var chart = new CanvasJS.Chart("chartContainerstatic", {
+                        theme: "light2", // "light1", "light2", "dark1", "dark2"
+                        animationEnabled: true,
+                        zoomEnabled: true,
+                        title: {
+                            text: "Static"
+                        },
+                        axisY: {
+                            includeZero: true
+                        },
+                        data: [{
+                            type: "line",
+                            dataPoints: dataPoint
+                        }]
+                    });
+                    chart.render();
+                }, "json");
+        });
+        });
+</script>

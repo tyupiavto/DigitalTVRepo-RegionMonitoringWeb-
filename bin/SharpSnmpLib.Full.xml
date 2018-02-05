@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpSnmpLib.Full</name>
+    </assembly>
+    <members>
+        <member name="T:Lextm.SharpSnmpLib.Security.AESPrivacyProvider">
+            <summary>
+            Privacy provider for AES 128.
+            </summary>
+            <remarks>
+            This is an experimental port from SNMP#NET project. As AES is not part of SNMP RFC, this class is provided as it is.
+            If you want other AES providers, you can port them from SNMP#NET in a similar manner.
+            </remarks>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.#ctor(Lextm.SharpSnmpLib.OctetString,Lextm.SharpSnmpLib.Security.IAuthenticationProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Lextm.SharpSnmpLib.Security.AESPrivacyProvider"/> class.
+            </summary>
+            <param name="phrase">The phrase.</param>
+            <param name="auth">The authentication provider.</param>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.AuthenticationProvider">
+            <summary>
+            Corresponding <see cref="T:Lextm.SharpSnmpLib.Security.IAuthenticationProvider"/>.
+            </summary>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.EngineId">
+            <summary>
+            Engine ID.
+            </summary>
+            <remarks>This is an optional field, and only used by TRAP v2 authentication.</remarks>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.Encrypt(System.Byte[],System.Byte[],System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            Encrypt scoped PDU using DES encryption protocol
+            </summary>
+            <param name="unencryptedData">Unencrypted scoped PDU byte array</param>
+            <param name="key">Encryption key. Key has to be at least 32 bytes is length</param>
+            <param name="engineBoots">Engine boots.</param>
+            <param name="engineTime">Engine time.</param>
+            <param name="privacyParameters">Privacy parameters out buffer. This field will be filled in with information
+            required to decrypt the information. Output length of this field is 8 bytes and space has to be reserved
+            in the USM header to store this information</param>
+            <returns>Encrypted byte array</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when encryption key is null or length of the encryption key is too short.</exception>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.Decrypt(System.Byte[],System.Byte[],System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            Decrypt DES encrypted scoped PDU.
+            </summary>
+            <param name="encryptedData">Source data buffer</param>
+            <param name="engineBoots">Engine boots.</param>
+            <param name="engineTime">Engine time.</param>
+            <param name="key">Decryption key. Key length has to be 32 bytes in length or longer (bytes beyond 32 bytes are ignored).</param>
+            <param name="privacyParameters">Privacy parameters extracted from USM header</param>
+            <returns>Decrypted byte array</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when encrypted data is null or length == 0</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when encryption key length is less then 32 byte or if privacy parameters
+            argument is null or length other then 8 bytes</exception>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.PrivacyParametersLength">
+            <summary>
+            Returns the length of privacyParameters USM header field. For AES, field length is 8.
+            </summary>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.MinimumKeyLength">
+            <summary>
+            Returns minimum encryption/decryption key length. For DES, returned value is 16.
+            
+            DES protocol itself requires an 8 byte key. Additional 8 bytes are used for generating the
+            encryption IV. For encryption itself, first 8 bytes of the key are used.
+            </summary>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.MaximumKeyLength">
+            <summary>
+            Return maximum encryption/decryption key length. For DES, returned value is 16
+            
+            DES protocol itself requires an 8 byte key. Additional 8 bytes are used for generating the
+            encryption IV. For encryption itself, first 8 bytes of the key are used.
+            </summary>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.Decrypt(Lextm.SharpSnmpLib.ISnmpData,Lextm.SharpSnmpLib.SecurityParameters)">
+            <summary>
+            Decrypts the specified data.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.Encrypt(Lextm.SharpSnmpLib.ISnmpData,Lextm.SharpSnmpLib.SecurityParameters)">
+            <summary>
+            Encrypts the specified scope.
+            </summary>
+            <param name="data">The scope data.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.Salt">
+            <summary>
+            Gets the salt.
+            </summary>
+            <value>The salt.</value>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.AESPrivacyProvider.ToString">
+            <summary>
+            Returns a string that represents this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Lextm.SharpSnmpLib.Security.DESPrivacyProvider">
+            <summary>
+            Privacy provider for DES.
+            </summary>
+            <remarks>Ported from SNMP#NET PrivacyDES class.</remarks>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.#ctor(Lextm.SharpSnmpLib.OctetString,Lextm.SharpSnmpLib.Security.IAuthenticationProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Lextm.SharpSnmpLib.Security.DESPrivacyProvider"/> class.
+            </summary>
+            <param name="phrase">The phrase.</param>
+            <param name="auth">The authentication provider.</param>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.AuthenticationProvider">
+            <summary>
+            Corresponding <see cref="T:Lextm.SharpSnmpLib.Security.IAuthenticationProvider"/>.
+            </summary>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.EngineId">
+            <summary>
+            Engine ID.
+            </summary>
+            <remarks>This is an optional field, and only used by TRAP v2 authentication.</remarks>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.Encrypt(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Encrypt scoped PDU using DES encryption protocol
+            </summary>
+            <param name="unencryptedData">Unencrypted scoped PDU byte array</param>
+            <param name="key">Encryption key. Key has to be at least 32 bytes is length</param>
+            <param name="privacyParameters">Privacy parameters out buffer. This field will be filled in with information
+            required to decrypt the information. Output length of this field is 8 bytes and space has to be reserved
+            in the USM header to store this information</param>
+            <returns>Encrypted byte array</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when encryption key is null or length of the encryption key is too short.</exception>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Decrypt DES encrypted scoped PDU.
+            </summary>
+            <param name="encryptedData">Source data buffer</param>
+            <param name="key">Decryption key. Key length has to be 32 bytes in length or longer (bytes beyond 32 bytes are ignored).</param>
+            <param name="privacyParameters">Privacy parameters extracted from USM header</param>
+            <returns>Decrypted byte array</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when encrypted data is null or length == 0</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when encryption key length is less then 32 byte or if privacy parameters
+            argument is null or length other then 8 bytes</exception>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.GetIV(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Byte})">
+            <summary>
+            Generate IV from the privacy key and salt value returned by GetSalt method.
+            </summary>
+            <param name="privacyKey">16 byte privacy key</param>
+            <param name="salt">Salt value returned by GetSalt method</param>
+            <returns>IV value used in the encryption process</returns>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.GetKey(System.Byte[])">
+            <summary>
+            Extract and return DES encryption key.
+            Privacy password is 16 bytes in length. Only the first 8 bytes are used as DES password. Remaining
+            8 bytes are used as pre-IV value.
+            </summary>
+            <param name="privacyPassword">16 byte privacy password</param>
+            <returns>8 byte DES encryption password</returns>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.PrivacyParametersLength">
+            <summary>
+            Returns the length of privacyParameters USM header field. For DES, field length is 8.
+            </summary>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.MinimumKeyLength">
+            <summary>
+            Returns minimum encryption/decryption key length. For DES, returned value is 16.
+            
+            DES protocol itself requires an 8 byte key. Additional 8 bytes are used for generating the
+            encryption IV. For encryption itself, first 8 bytes of the key are used.
+            </summary>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.MaximumKeyLength">
+            <summary>
+            Return maximum encryption/decryption key length. For DES, returned value is 16.
+            
+            DES protocol itself requires an 8 byte key. Additional 8 bytes are used for generating the
+            encryption IV. For encryption itself, first 8 bytes of the key are used.
+            </summary>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.Decrypt(Lextm.SharpSnmpLib.ISnmpData,Lextm.SharpSnmpLib.SecurityParameters)">
+            <summary>
+            Decrypts the specified data.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.Encrypt(Lextm.SharpSnmpLib.ISnmpData,Lextm.SharpSnmpLib.SecurityParameters)">
+            <summary>
+            Encrypts the specified scope.
+            </summary>
+            <param name="data">The scope data.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Lextm.SharpSnmpLib.Security.DESPrivacyProvider.Salt">
+            <summary>
+            Gets the salt.
+            </summary>
+            <value>The salt.</value>
+        </member>
+    </members>
+</doc>

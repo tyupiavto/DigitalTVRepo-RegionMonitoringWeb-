@@ -1,0 +1,65 @@
+﻿@model DeviceType
+@using AdminPanelDevice.Models
+@{
+    ViewBag.Title = "DeviceEdit";
+}
+    <h2>DeviceEdit</h2>
+
+
+    <form class="container" action="/Device/DeviceUpdate" method="post" class="container" enctype="multipart/form-data" id="needs-validation" novalidate>
+        <input type="text" name="ID" value="@Model.ID" class="form-control" id="DeviceID" style="display:none">
+        <div class="row">
+            <label class="col-sm-1 mb-2">Name</label>
+            <div class="col-md-5 mb-2">
+                <input type="text" name="Name" value="@Model.Name" class="form-control" id="DeviceName">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-sm-1 mb-2">Model</label>
+            <div class="col-md-5 mb-2">
+                <input type="text" name="Model" value="@Model.Model" class="form-control" id="DeviceModel">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-sm-1 mb-2">Manufacture</label>
+            <div class="col-md-5 mb-2">
+                <input type="text" name="Manufacture" value="@Model.Manufacture" class="form-control" id="DeviceManufacture">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-sm-1 mb-2">Purpose</label>
+            <div class="col-md-5 mb-2">
+                <input type="text" name="Purpose" value="@Model.Purpose" class="form-control" id="DevicePurpose">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-sm-1 mb-2">MibParser</label>
+            <div class="col-md-5 mb-2">
+                <input type="text" name="MibParser" value="@Model.MibParser" class="form-control" id="DeviceMibParser">
+                <input name="mib_file" type="file" id="FileUpload" , accept="file/*" style="display: none">
+                <label for="FileUpload" class="btn btn-primary" style="margin-left: 300px; margin-top: -55px">Browser</label>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <button class="btn btn-primary" type="submit" id="DeviceUpdate" style="margin-left: 110px;">Update</button>
+        </div>
+
+    </form>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/ScriptView/DeviceUpdate.js"></script>
+    <script>
+
+    $(document).ready(function () {
+        $('#FileUpload').change(function () {
+            $('#DeviceMibParser').val( $('#FileUpload').val());
+        });
+        $('#DeviceUpdate').click(function () {
+        update(@Model.ID);
+    });
+    });
+    </script>

@@ -138,6 +138,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\ScriptView\DeviceGroup.js" />
     <Content Include="Content\ScriptView\DevicePanel.js" />
     <Content Include="Content\ScriptView\DeviceUpdate.js" />
     <Content Include="Content\ScriptView\Get.js" />
@@ -166,16 +167,20 @@
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.ui.touch-punch.min.js" />
+    <Content Include="Scripts\jsplumb.js" />
+    <Content Include="Scripts\jsplumb.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\DeviceGroupController.cs" />
     <Compile Include="Controllers\DiagramController.cs" />
     <Compile Include="Controllers\GetNextController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\NewDesingController.cs" />
     <Compile Include="Controllers\TowerController.cs" />
     <Compile Include="Controllers\WalkController.cs" />
     <Compile Include="Global.asax.cs">
@@ -199,6 +204,7 @@
     <Compile Include="Models\DeviceContext.cs" />
     <Compile Include="Models\Devices.cs" />
     <Compile Include="Models\DeviceType.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Line.cs" />
     <Compile Include="Models\LiveValue.cs" />
     <Compile Include="Models\MibGet.cs" />
@@ -234,7 +240,7 @@
     <Content Include="Views\Tower\DiagramStatistic.cshtml" />
     <Content Include="Views\Diagram\Index.cshtml" />
     <Content Include="Views\Diagram\_PresetDiagramSearch.cshtml" />
-    <Content Include="Views\NewDesing\Index.cshtml" />
+    <Content Include="Views\DeviceGroup\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -244,6 +250,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Icons\" />
+    <Folder Include="image\" />
     <Folder Include="MibFiles\" />
     <Folder Include="Views\GetNext\" />
   </ItemGroup>

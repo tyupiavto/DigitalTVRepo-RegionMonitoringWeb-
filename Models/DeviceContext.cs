@@ -24,6 +24,7 @@ namespace AdminPanelDevice.Models
         public DbSet<Preset> Presets { get; set; }
         public DbSet<MibGet> MibGets { get; set; }
         public DbSet<LiveValue> LiveValues { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 

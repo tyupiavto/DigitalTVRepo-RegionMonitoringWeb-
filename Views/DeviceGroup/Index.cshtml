@@ -3,8 +3,8 @@
     ViewBag.Title = "Index";
 }
 
-<link href="~/Content/main.css" rel="stylesheet" />
-<link href="~/Content/display.css" rel="stylesheet" />
+<link href="~/Content/Style/main.css" rel="stylesheet" />
+<link href="~/Content/Style/display.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />
 
 <div id="leftDiv">
@@ -95,6 +95,14 @@
             </ul>
         </div>*@
 
+    @*<table class="foo elementTable " name="title" id="">
+    <tr class="tableHeader">
+        <th class="thClass">
+        <span class="header">stereo</span>
+        <span class="settings">
+        <img src="/Icons/pignon.png" style="width:17px; height:17px"alt="Settings" title="Settings" />
+            </span></th></tr><tr><td class="add"><span class="addList">Add new link</span></td></tr></table>*@
+
 </div>
 <div id="mainDiv">
 
@@ -108,7 +116,7 @@
                 <div class="inner gradient">
                     <form method="get" id="searchform2" action="#">
                         <div class="clearfix">
-                            <span class="btn btn-small" style="opacity: 1;"><input type="button" id="create_group" value="create" hidefocus="true" style="outline: none;" class="gradient"></span>
+                            <span class="btn btn-small" style="opacity: 1;"><input type="button" id="create_group" value="create" hidefocus="true" style="outline: none;" class="gradient" data-dismiss="modal"></span>
                             <div class="input_wrap"><input class="inputField gradient" name="group_name" id="group_name" placeholder="Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white"></div>
                         </div>
                     </form>

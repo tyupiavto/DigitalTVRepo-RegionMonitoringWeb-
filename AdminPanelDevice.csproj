@@ -147,9 +147,11 @@
     <Content Include="Content\ScriptView\WalkSend.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Style\CheckedStyle.css" />
+    <Content Include="Content\Style\DeviceInput.css" />
     <Content Include="Content\Style\display.css" />
     <Content Include="Content\Style\light.css" />
     <Content Include="Content\Style\main.css" />
+    <Content Include="Content\Style\style.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -241,6 +243,8 @@
     <Content Include="Views\Diagram\Index.cshtml" />
     <Content Include="Views\Diagram\_PresetDiagramSearch.cshtml" />
     <Content Include="Views\DeviceGroup\Index.cshtml" />
+    <Content Include="Views\DeviceGroup\_Group.cshtml" />
+    <Content Include="Views\DeviceGroup\_AddDevice.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

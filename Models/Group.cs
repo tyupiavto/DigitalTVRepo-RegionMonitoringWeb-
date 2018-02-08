@@ -13,5 +13,6 @@ namespace AdminPanelDevice.Models
         [Key]
         public int ID { get; set; }
         public string GroupName { get; set; }
+        public int GroupNameID { get; set; }
     }
 }

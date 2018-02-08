@@ -21,7 +21,7 @@ body {
 
 #leftDiv {
     display: inline-block;
-    width: 24%;
+    width: 20%;
     height: 100%;
     margin-left:-110px;
     border-right: 3px solid rgba(0,0,0,0.2);
@@ -370,7 +370,7 @@ textarea {
 input[type="text"],
 input[type="password"] {
     width: 100%;
-    height: 39px;
+    height: 20px;
     margin: 0;
     outline: none;
     font-size: 13px;
@@ -503,7 +503,7 @@ input[type="password"]:focus {
 .btn.btn-large.active, .btn.btn-large:active,
 .btn.btn-small.active, .btn.btn-small:active,
 .btn.btn-follow.active, .btn.btn-follow:active {
-    /*background-image: url(/image/buttons.png);*/
+    background-image: url(/image/buttons.png);
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -511,7 +511,7 @@ input[type="password"]:focus {
 
 .btn {
     display: inline-block;
-    /*background-image: url(/image/buttons.png);*/
+    background-image: url(/image/buttons.png);
     background-repeat: no-repeat;
     background-color: transparent;
     background-position: right -37px;
@@ -531,7 +531,7 @@ input[type="password"]:focus {
     .btn span,
     .btn input {
         display: block;
-        /*background-image: url(/image/buttons.png);*/
+        background-image: url(/image/buttons.png);
         background-repeat: no-repeat;
         background-position: left 0;
         background-color: transparent;
@@ -561,7 +561,7 @@ input[type="password"]:focus {
 
     .btn:hover, .btn:focus {
         background-position: right -37px;
-        /*background-image: url(/image/buttons.png);*/
+        background-image: url(/image/buttons.png);
         background-color: transparent;
         color: #fefae5;
     }

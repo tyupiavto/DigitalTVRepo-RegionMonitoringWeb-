@@ -3,8 +3,10 @@
     ViewBag.Title = "Index";
 }
 
+<link href="~/Content/Style/style.css" rel="stylesheet" />
 <link href="~/Content/Style/main.css" rel="stylesheet" />
 <link href="~/Content/Style/display.css" rel="stylesheet" />
+<link href="~/Content/Style/DeviceInput.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />
 
 <div id="leftDiv">
@@ -15,14 +17,10 @@
             <li>
                 @*<span id="DevName">Device</span>*@
                 <span id="DevName">Device </span>
-                <span id="AddGroup" data-toggle="modal" data-target="#myModal" style="width: 60px;margin-left: 194px; margin-top: -20px">Add Group</span>
-
-                <ul id="deviceName" class="devInfo">
-                    <li>
-                        tyupi
-                    </li>
-
-                </ul>
+                <span id="AddGroup" data-toggle="modal" data-target="#GroupModal" style="width: 60px;margin-left:155px; margin-top: -20px">Add Group</span>
+                
+                    <ul id="deviceName" class="devInfo"></ul>
+                
             </li>
             <!-- List of available interfaces -->
             <li>
@@ -58,6 +56,30 @@
 
                 </ul>
             </li>
+
+            <div id="add_device_partial">
+                @*<li>
+                    <div class="widget-container widget_categories widget_categories_filter boxed">
+                        <div class="inner">
+                            <ul>
+                                <li class="first gradient"><div class="input_wrap"><input class="deviceInput inputField gradient" name="device_name" id="device_name" placeholder="Device Name" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
+                                <li class="current-menu-item gradient "><div class="input_wrap"><input class=" deviceInput inputField gradient" name="manufacture_name" id="manufacture_name" placeholder="ManuFacture" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
+                                <li class="gradient"><div class="input_wrap"><input class="deviceInput inputField gradient" name="model_name" id="model_name" placeholder="Model" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
+                                <li class="gradient"><div class="input_wrap"><input class="deviceInput inputField gradient" name="purpose_name" id="purpose_name" placeholder="Purpose" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
+                                <li>
+                                    <input name="mib_file" type="file" id="FileUpload" accept="file/*" style="display: none">
+                                    <span class="btn btn-send" style="opacity: 0.8; height:25px; padding-right:0px">
+                                        <label class="btn btn-send" for="FileUpload" style="height: 25px; width: 100%; line-height:25px;">Browser</label>
+                                    </span>
+                                    <span class="btn btn-send" style="opacity: 0.8; height:25px; padding-right:0px;margin-top:3px">
+                                        <label class="btn btn-send" for="FileUpload" style="height: 25px; width: 100%; line-height:25px;">Add</label>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>*@
+            </div>
             @*<li>
                     <span id="Adapter">Adapters</span>
                     <ul id="adapters" class="devInfo">
@@ -108,9 +130,9 @@
 
 </div>
 
-<!-- Modal -->
+<!-- Modal Group -->
 <div class="container">
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="GroupModal" role="dialog">
         <div class="modal-dialog" @*style="margin-left:-20%;"*@>
             <div class="widget-container widget_search styled boxed-velvet" style="width:250px;">
                 <div class="inner gradient">
@@ -124,8 +146,8 @@
             </div>
         </div>
     </div>
-
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -134,13 +156,13 @@
     $(document).ready(function () {
         counter = 0;
         $('.devInfo').hide();
-        $('#DevName').click(function () {
-            $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        });
+        //$('#DevName').click(function () {
+        //    $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        //});
         //$("#mainDiv").sortable({
         //    revert: true
         //});
-
+        
         $('#deviceName li').draggable({
             helper: 'clone',
             revert: 'invalid'

@@ -22,9 +22,12 @@ namespace AdminPanelDevice.Models
         public string Indexes { get; set; }
         public string Description { get; set; }
         public int MibID { get; set; }
-        public int DeviceID { get; set; }
 
         [ForeignKey("DeviceID")]
         public DeviceType DeviceType { get; set; }
+
+        public int DeviceID { get; set; }
+        [NotMapped]
+        public string ParentName { get; set; }
     }
 }

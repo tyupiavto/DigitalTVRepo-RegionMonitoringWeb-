@@ -1,0 +1,341 @@
+-- HARRIS-TRANSMISSION-SMI:  Harris Broadcast Transmission System: Structure of Management Information
+--
+-- Copyright 2001-2011 Harris Corporation.  All Rights
+-- Reserved.  Reproduction of this document is authorized on
+-- condition that the foregoing copyright notice is included.
+-- This Harris SNMP Management Information Base Specification
+-- (Specification) embodies Harris' confidential and
+-- proprietary intellectual property.  Harris retains all
+-- title and ownership in the Specification, including any
+-- revisions.
+
+
+-- Revision history
+-- see MODULE IDENTITY
+
+HARRIS-TRANSMISSION-SMI DEFINITIONS ::= BEGIN
+
+-- Imports
+
+IMPORTS
+	enterprises			FROM RFC1155-SMI
+    MODULE-IDENTITY,
+    OBJECT-IDENTITY     FROM SNMPv2-SMI
+    ;
+
+
+
+--list of assigned devices begin
+--base             OBJECT IDENTIFIER ::=  { transmitters 1 }
+--sigmaA1          OBJECT IDENTIFIER ::=  { transmitters 2 }
+--sigmaD1          OBJECT IDENTIFIER ::=  { transmitters 3 }
+--diamondA1        OBJECT IDENTIFIER ::=  { transmitters 4 }
+--diamondD1        OBJECT IDENTIFIER ::=  { transmitters 5 }
+--rangerA1         OBJECT IDENTIFIER ::=  { transmitters 6 }
+--rangerD1         OBJECT IDENTIFIER ::=  { transmitters 7 }
+--platinumA2       OBJECT IDENTIFIER ::=  { transmitters 8 }
+--atlasD1          OBJECT IDENTIFIER ::=  { transmitters 9 }
+--platinumA1       OBJECT IDENTIFIER ::=  { transmitters 10 }
+--platinumD1       OBJECT IDENTIFIER ::=  { transmitters 11 }
+--zfmD1            OBJECT IDENTIFIER ::=  { transmitters 12 }
+--tx660            OBJECT IDENTIFIER ::=  { transmitters 13 }
+--zfmA1            OBJECT IDENTIFIER ::=  { transmitters 14 }
+--powercddriverD1  OBJECT IDENTIFIER ::=  { transmitters 15 }
+--powercdhpaD1     OBJECT IDENTIFIER ::=  { transmitters 16 }
+--atlasA1          OBJECT IDENTIFIER ::=  { transmitters 17 }
+--platinumD3       OBJECT IDENTIFIER ::=  { transmitters 18 }
+--3dxhpA1          OBJECT IDENTIFIER ::=  { transmitters 19 }
+--atlasD2          OBJECT IDENTIFIER ::=  { transmitters 20 }
+--platinumA3       OBJECT IDENTIFIER ::=  { transmitters 21 }
+--platinumIA3      OBJECT IDENTIFIER ::=  { transmitters 22 }
+--lband            OBJECT IDENTIFIER ::=  { transmitters 23 }
+--ulx              OBJECT IDENTIFIER ::=  { transmitters 24 }  
+--vlx              OBJECT IDENTIFIER ::=  { transmitters 25 } 
+--uax              OBJECT IDENTIFIER ::=  { transmitters 26 } 
+--vax              OBJECT IDENTIFIER ::=  { transmitters 27 }
+--zxb              OBJECT IDENTIFIER ::=  { transmitters 28 } 
+--zxa              OBJECT IDENTIFIER ::=  { transmitters 29 } 
+--hpx              OBJECT IDENTIFIER ::=  { transmitters 30 }  
+--fax              OBJECT IDENTIFIER ::=  { transmitters 31 } 
+
+--base             OBJECT IDENTIFIER ::=  { excitersA 1 }
+--cd1aA1           OBJECT IDENTIFIER ::=  { excitersA 2 }
+--cd1aD1           OBJECT IDENTIFIER ::=  { excitersA 3 }
+--apexA1           OBJECT IDENTIFIER ::=  { excitersA 4 }
+--apexD1           OBJECT IDENTIFIER ::=  { excitersA 5 }
+--vxcastA1         OBJECT IDENTIFIER ::=  { excitersA 6 }
+--vxcastD1         OBJECT IDENTIFIER ::=  { excitersA 7 }
+--hx1vA1           OBJECT IDENTIFIER ::=  { excitersA 8 }
+--hx1vD1           OBJECT IDENTIFIER ::=  { excitersA 9 }
+--flexstarfmD1     OBJECT IDENTIFIER ::=  { excitersA 10 }
+--apexD2           OBJECT IDENTIFIER ::=  { excitersA 11 }
+
+--base             OBJECT IDENTIFIER ::=  { excitersB 1 }
+--cd1aA1           OBJECT IDENTIFIER ::=  { excitersB 2 }
+--cd1aD1           OBJECT IDENTIFIER ::=  { excitersB 3 }
+--apexA1           OBJECT IDENTIFIER ::=  { excitersB 4 }
+--apexD1           OBJECT IDENTIFIER ::=  { excitersB 5 }
+--vxcastA1         OBJECT IDENTIFIER ::=  { excitersB 6 }
+--vxcastD1         OBJECT IDENTIFIER ::=  { excitersB 7 }
+--hx1vA1           OBJECT IDENTIFIER ::=  { excitersB 8 }
+--hx1vD1           OBJECT IDENTIFIER ::=  { excitersB 9 }
+--flexstarfmD1     OBJECT IDENTIFIER ::=  { excitersB 10 }
+--apexD2           OBJECT IDENTIFIER ::=  { excitersB 11 }
+
+--hcm8500          OBJECT IDENTIFIER ::=  { supervisors 1 }
+--tcm8600          OBJECT IDENTIFIER ::=  { supervisors 2 }
+
+--ARX-H50          OBJECT IDENTIFIER ::=  { receivers 1 }
+--Streamslate      OBJECT IDENTIFIER ::=  { receivers 2 }
+
+--ioD1             OBJECT IDENTIFIER ::=  { gpio 1 }
+--list of assigned devices end
+
+--base             OBJECT IDENTIFIER ::=  { exciter 1 }
+--m2x              OBJECT IDENTIFIER ::=  { exciter 2 }
+--micromax         OBJECT IDENTIFIER ::=  { exciter 3 } 
+
+--atv              OBJECT IDENTIFIER ::=  { exciter 11 } 
+--atsc             OBJECT IDENTIFIER ::=  { exciter 12 } 
+--dvb              OBJECT IDENTIFIER ::=  { exciter 13 } 
+--dab              OBJECT IDENTIFIER ::=  { exciter 14 } 
+--cttb             OBJECT IDENTIFIER ::=  { exciter 15 } 
+--flo              OBJECT IDENTIFIER ::=  { exciter 16 } 
+--isdbt            OBJECT IDENTIFIER ::=  { exciter 17 } 
+--mph              OBJECT IDENTIFIER ::=  { exciter 18 } 
+--cmmb             OBJECT IDENTIFIER ::=  { exciter 19 } 
+
+--uaxST            OBJECT IDENTIFIER ::=  { uax 1 }
+--uaxDD            OBJECT IDENTIFIER ::=  { uax 2 }
+
+--vaxST            OBJECT IDENTIFIER ::=  { vax 1 }
+--vaxDD            OBJECT IDENTIFIER ::=  { vax 2 }
+
+
+harris	OBJECT IDENTIFIER ::= { enterprises 290 }
+bcd2	OBJECT IDENTIFIER ::= { harris 9 }
+
+transmission	MODULE-IDENTITY
+	LAST-UPDATED	"1104200000Z"  --20Apr2011
+	ORGANIZATION	"Harris Corp.  Broadcast Division, Transmission Group"
+	CONTACT-INFO
+		"Harris Corporation
+		Broadcast Systems
+		5300 Kings Island Drive, Suite 101
+		Mason, OH 45040, USA"
+        DESCRIPTION 
+    	"The structure of management information (SMI) for
+		Harris' Broadcast System MIBs."
+
+	REVISION	"1104200000Z"  --20Apr2011
+      DESCRIPTION 
+    	"Added FAX TX and NPlus1 Branch.
+	   Zhiqun Hu, zhu@harris.com"
+
+	REVISION	"1012070000Z"  --07Dec2010
+      DESCRIPTION 
+    	"Added micromax exciter.
+	   Zhiqun Hu, zhu@harris.com"
+		
+	REVISION	"1011180000Z"  --18Nev2010
+      DESCRIPTION 
+    	"Added zxa TX and moved HPX to transmitters 30.
+	   Zhiqun Hu, zhu@harris.com"
+
+	REVISION	"1002050000Z"  --05Feb2010
+      DESCRIPTION 
+    	"Define uax,vax,uaxST,uaxDD,vaxST,vaxDD.
+	   Vincent Li, vincent.li@harris.com"
+     		
+	REVISION	"1001220000Z"  --22Jan2010
+      DESCRIPTION 
+    	"Define FLO and other modulation nodes under exciter.
+	   Vincent Li, vincent.li@harris.com"
+	   
+	REVISION	"1001200000Z"  --20Jan2010
+      DESCRIPTION 
+    	"Added base and modulation under exciter.
+	   Zhiqun Hu, zhu@harris.com"
+
+	REVISION	"0911110000Z"  --11Nov2009
+      DESCRIPTION 
+    	"Added vlx, uax, hpx, zxb.
+	   Zhiqun Hu, zhu@harris.com"
+
+	REVISION	"0911100000Z"  --10Nov2009
+      DESCRIPTION 
+    	"Added ulx.
+	   Carrie Li, cli01@harris.com"
+
+	REVISION	"0910200000Z"  --20Oct2009
+      DESCRIPTION 
+    	"Added lband.
+	   Carrie Li, cli01@harris.com"
+
+	REVISION	"0604100000Z"  --10April2006
+      DESCRIPTION 
+    	"Added apexD2.
+	   Shilpa Amarnath, samarnat@harris.com"
+
+	REVISION	"0601230000Z"  --23Jan2006
+      DESCRIPTION 
+    	"Added platinumA3.
+	   Shilpa Amarnath, samarnat@harris.com"
+
+	REVISION	"0601180000Z"  --18Jan2006
+      DESCRIPTION 
+    	"Added atlasD2.
+	   Shilpa Amarnath, samarnat@harris.com"
+
+	REVISION	"0509260000Z"  --26Sep2005
+      DESCRIPTION 
+    	"Added 3dxhpA1.
+	   Shilpa Amarnath, samarnat@harris.com"
+
+	REVISION	"0507150000Z"  --15Jul2005
+      DESCRIPTION 
+    	"Added custspecial branch.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0503250000Z"  --25Mar2005
+      DESCRIPTION 
+    	"Added platinumD3.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0512170000Z"  --17Dec2005
+      DESCRIPTION 
+    	"Added platinumA2.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0411030000Z"  --03Nov2004
+      DESCRIPTION 
+    	"Assigned atlasA1 OID 17 instead of 8.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0410270000Z"  --27Oct2004
+      DESCRIPTION 
+    	"Added gpio branch.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0408260000Z"  --26Aug2004
+      DESCRIPTION 
+    	"Added powerCD transmitter.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0302040000Z"  --04Feb2003
+	DESCRIPTION 
+	"Official revision.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0301200000Z"  --20Jan2003
+	DESCRIPTION 
+	"Added excitersB. Renamed exciters to excitersA. Assigned supervisors OID 4 instead of OID 3. Added device list.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0211210000Z"  --21Nov2002
+	DESCRIPTION 
+	"Put transmission into the right branch (HARRIS-MIB). Added supervisors.
+	   Manfred Schmid, mschmid@harris.com"
+
+	REVISION	"0110300900Z"  --30Sep2001
+	DESCRIPTION 
+	"Initial revision.
+	   Mike Suchoff, In Tune, Inc. mikes@in-tune.com 919-933-8495"
+
+
+    ::= { bcd2 2 }
+
+
+transmitters OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "RF transmitters are defined in this branch"
+    ::= { transmission 1 }
+
+excitersA OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "RF exciters A are defined in this branch"
+    ::= { transmission 2 } 
+
+excitersB OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "RF exciters B are defined in this branch"
+    ::= { transmission 3 } 
+
+supervisors OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "supervisors are defined in this branch
+         supervisors are devices controlling or monitoring groups of other devices"
+    ::= { transmission 4 } 
+
+receivers OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "receivers are defined in this branch"
+    ::= { transmission 5 } 
+
+gpio OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "general purpose IO used for external control are defined in this branch"
+    ::= { transmission 6 } 
+    
+exciter OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "exciter are defined in this branch"
+    ::= { transmission 7 } 
+
+nplus1 OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "TX Nplus1 systems are defined in this branch"
+    ::= { transmission 8 } 
+
+custspecial OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "The root OID from which customer specials start. Each customer special shall be given a unique
+         OID in this branch by assigning a consecutive number starting at 1."
+          
+    ::= { transmission 252 } 
+
+temporary OBJECT-IDENTITY
+    STATUS current
+    DESCRIPTION
+        "The root OID from which experimental and/or work-in-progress mibs
+        are developed.  These OIDs are temporary and are removed when permanent
+        OIDs (usually within products) are assigned."
+    ::= { transmission 253 }
+
+agentCaps OBJECT-IDENTITY
+    STATUS current
+    DESCRIPTION
+        "The root OID from which AGENT-CAPABILITIES values may be assigned."
+    ::= { transmission 254 }
+
+mgmtReqs OBJECT-IDENTITY
+    STATUS current
+    DESCRIPTION
+        "The root OID from which MODULE-COMPLIANCE values may be assigned."
+    ::= { transmission 255 }
+
+
+uax OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "uax are defined in this branch"
+    ::= { transmitters 26 }
+
+vax OBJECT-IDENTITY
+    STATUS  current
+    DESCRIPTION
+        "vax are defined in this branch"
+    ::= { transmitters 27 }    
+
+
+END
+

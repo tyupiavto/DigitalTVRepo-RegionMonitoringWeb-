@@ -1,0 +1,1399 @@
+-- HARRIS BASE TRANSMITTER MIB
+
+-- Copyright 2002-2005 Harris Corporation.  All Rights
+-- Reserved.  Reproduction of this document is authorized on
+-- condition that the foregoing copyright notice is included.
+-- This Harris SNMP Management Information Base Specification
+-- (Specification) embodies Harris' confidential and
+-- proprietary intellectual property.  Harris retains all
+-- title and ownership in the Specification, including any
+-- revisions.
+
+-- Compatibility policy:
+-- If the initial revision date is the same, then 2 versions of a MIB are compatible
+-- If the initial revision date differs, then the version with the newer date invalidates all older versions.
+
+HARRIS-TX-BASE-MIB        DEFINITIONS       ::=   BEGIN
+
+IMPORTS
+       
+    MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE,
+        Gauge32, Integer32                      FROM    SNMPv2-SMI
+        TruthValue, DisplayString               FROM    SNMPv2-TC
+        OBJECT-GROUP, NOTIFICATION-GROUP        FROM    SNMPv2-CONF
+        transmitters                            FROM    HARRIS-TRANSMISSION-SMI
+ ;
+
+base    MODULE-IDENTITY
+
+        LAST-UPDATED                     "1011260000Z"  --26Nov2010
+        ORGANIZATION                     "Harris Corporation"    
+        CONTACT-INFO                     "Harris Corporation
+                                          Vincent Li
+                                          Broadcast Systems
+                                          5300 Kings Island Drive, Suite 101
+                                          Mason, OH 45040, USA
+                                          zhu@harris.com"
+        DESCRIPTION                      "MIB for all common data of the transmitters"
+        
+	      REVISION	                       "1011260000Z"  --26Nov2010
+        DESCRIPTION                      "Change allTrapEnable from TruthValue into Integer32
+                                          to extend its range.
+	                                        Vincent Li, vincent.li@harris.com"   
+	                                        
+	      REVISION	                       "1008120000Z"  --12Aug2010
+        DESCRIPTION                      "add drvControl branch, excSwitch,excSwitchMode,auxControl,individual trap enable
+	                                        Vincent Li, vincent.li@harris.com"
+                                          		
+	      REVISION	                       "1002100000Z"  --10Feb2010
+        DESCRIPTION                      "add allTrapEnable
+	                                        Vincent Li, vincent.li@harris.com"
+
+        REVISION                         "0502150000Z"  -- 15Feb2005
+        DESCRIPTION                      "added outAuralForwardPower, outAuralReflectedPower, outVSWR, outAuralVSWR"
+
+        REVISION                         "0309080000Z"  -- 08Sep2003
+        DESCRIPTION                      "Initial revision"
+        ::= { transmitters 1 }
+
+-- textual conventions
+TXBaseControl ::=   TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION "basic control commands
+                 0        reserved
+                 600..699 reserved "
+    SYNTAX INTEGER {
+        on                  (1),
+        off                 (2),
+        totalPowerRaise     (3),
+        totalPowerLower     (4)        
+    }    
+
+TXBaseStatus ::=   TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION "Assigned to status"
+    SYNTAX INTEGER {
+        on                  (1),
+        off                 (2)
+    }    
+
+SwitchOpt ::=   TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION "switch exciter"
+    SYNTAX INTEGER {
+        excAOn                 (1),
+        excBOn                 (2)
+    }  
+
+SwitchMode ::=   TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION "switch exciter"
+    SYNTAX INTEGER {
+        auto                   (1),
+        manual                 (2)
+    }
+
+AuxControlValue ::=   TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION "switch exciter"
+    SYNTAX INTEGER {
+        auxOn                  (1),
+        auxOff                 (2)
+    }
+    
+-- order: Faults,Status,Meters,Control,Config
+ 
+-- 1st level branch
+events                      OBJECT IDENTIFIER   ::= { base 0 }
+driveChain                  OBJECT IDENTIFIER   ::= { base 1 }
+powerAmp                    OBJECT IDENTIFIER   ::= { base 2 }
+powerSupply                 OBJECT IDENTIFIER   ::= { base 3 }
+output                      OBJECT IDENTIFIER   ::= { base 4 }
+system                      OBJECT IDENTIFIER   ::= { base 5 }
+groups                      OBJECT IDENTIFIER   ::= { base 6 }
+
+-- 2nd level branch
+drvFaults                   OBJECT IDENTIFIER   ::= { driveChain 1 }
+drvStatus                   OBJECT IDENTIFIER   ::= { driveChain 2 }
+drvControl                  OBJECT IDENTIFIER   ::= { driveChain 3 }
+
+paFaults                    OBJECT IDENTIFIER   ::= { powerAmp 1 }
+
+outFaults                   OBJECT IDENTIFIER   ::= { output 1 }
+outStatus                   OBJECT IDENTIFIER   ::= { output 2 }
+outMeters                   OBJECT IDENTIFIER   ::= { output 3 }
+
+psFaults                    OBJECT IDENTIFIER   ::= { powerSupply 1 }
+
+sysFaults                   OBJECT IDENTIFIER   ::= { system 1 }
+sysStatus                   OBJECT IDENTIFIER   ::= { system 2 }
+sysControl                  OBJECT IDENTIFIER   ::= { system 3 }
+sysConfig                   OBJECT IDENTIFIER   ::= { system 4 }
+
+    
+-- 3rd level branch
+
+-- last level branch
+
+-- end level branch
+
+
+
+drvSumFault                           OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Drive chain summary fault: 1=Fault, 2=Ok
+
+                                                                                                             "
+
+   ::= {        drvFaults                                     1  }
+
+
+drvSumWarning                         OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Drive chain summary warning: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+   ::= {        drvFaults                                     2  }
+
+
+
+drvInputOk                            OBJECT-TYPE
+
+   SYNTAX               TruthValue
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       Inputsignal ok: 1=Ok, 2=Not ok
+
+
+                                                                                                             "
+
+   ::= {        drvStatus                                     1  }
+
+
+excSwitch                            OBJECT-TYPE
+
+   SYNTAX               SwitchOpt
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-write
+
+   STATUS               current
+   DESCRIPTION          "       exciter Switch: 1=ExciterA On, 2=ExciterB On
+
+
+                                                                                                             "
+
+   ::= {        drvControl                                     1  }
+
+
+excSwitchMode                            OBJECT-TYPE
+
+   SYNTAX               SwitchMode
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-write
+
+   STATUS               current
+   DESCRIPTION          "       exciter Switch Mode: 1=auto, 2=manual
+
+
+                                                                                                             "
+
+   ::= {        drvControl                                     2  }
+      
+   
+outSumFault                           OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Output summary fault: 1=Fault, 2=Ok
+
+                                                                                                             "
+
+   ::= {        outFaults                                     1  }
+
+
+outSumWarning                         OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Output summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+   ::= {        outFaults                                     2  }
+
+
+
+outForwardPower                       OBJECT-TYPE
+
+   SYNTAX               Gauge32
+   UNITS                "       mW                         "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       System forward power level. 
+
+
+                                                                                                             "
+
+   ::= {        outMeters                                     1  }
+
+
+outReflectedPower                     OBJECT-TYPE
+
+   SYNTAX               Gauge32
+
+   UNITS                "       mW                         "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       System reflected power level
+
+                                                                                                             "
+
+   ::= {        outMeters                                     2  }
+
+
+outReflectionFactor                   OBJECT-TYPE
+
+   SYNTAX               Integer32
+
+   UNITS                "       dB/10                      "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Factor outReflectedPower/outForwardPower. Fr = 100 * log
+                                (outReflectedPower/outForwardPower)
+                                                                                                             "
+
+   ::= {        outMeters                                     3  }
+
+
+outVSWR                               OBJECT-TYPE
+
+   SYNTAX               Gauge32
+
+   UNITS                "       e-3                        "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       System VSWR
+
+
+                                                                                                             "
+   ::= {        outMeters                                     4  }
+
+
+
+outAuralForwardPower                  OBJECT-TYPE
+
+   SYNTAX               Gauge32
+   UNITS                "       mW                         "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       System aural forward power level (valid for analog Tx only)
+
+
+                                                                                                             "
+
+   ::= {        outMeters                                     5  }
+
+
+outAuralReflectedPower                OBJECT-TYPE
+
+   SYNTAX               Gauge32
+
+   UNITS                "       mW                         "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       System aural reflected power level (valid for analog Tx only)
+
+                                                                                                             "
+
+   ::= {        outMeters                                     6  }
+
+
+outAuralVSWR                          OBJECT-TYPE
+
+   SYNTAX               Gauge32
+
+   UNITS                "       e-3                        "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Aural VSWR (valid for analog Tx only)
+
+
+                                                                                                             "
+   ::= {        outMeters                                     7  }
+
+
+
+outOk                                 OBJECT-TYPE
+
+   SYNTAX               TruthValue
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       RF output signal ok: 1=Ok, 2=Not ok
+
+
+                                                                                                             "
+
+   ::= {        outStatus                                     1  }
+
+
+paSumFault                            OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Power amplifier summary fault: 1=Fault, 2=Ok
+
+                                                                                                             "
+
+   ::= {        paFaults                                      1  }
+
+
+paSumWarning                          OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Power amplifier summary warning: 1=Warning, 2=Ok
+
+                                                                                                             "
+
+   ::= {        paFaults                                      2  }
+
+
+psSumFault                            OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Power supply summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+   ::= {        psFaults                                      1  }
+
+
+
+psSumWarning                          OBJECT-TYPE
+
+   SYNTAX               TruthValue
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       Power supply summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+   ::= {        psFaults                                      2  }
+
+
+deviceName                            OBJECT-TYPE
+
+   SYNTAX               DisplayString
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Title
+
+                                                                                                             "
+
+   ::= {        sysConfig                                     1  }
+
+
+modelNumber                           OBJECT-TYPE
+
+   SYNTAX               DisplayString
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Model name (ShortName)
+
+
+                                                                                                             "
+   ::= {        sysConfig                                     2  }
+
+
+
+txFrequency                           OBJECT-TYPE
+
+   SYNTAX               Unsigned32
+   UNITS                "       Hz                         "
+
+   MAX-ACCESS           read-write
+
+   STATUS               current
+   DESCRIPTION          "       Transmitter frequency
+
+
+                                                                                                             "
+
+   ::= {        sysConfig                                     3  }
+
+
+txControl                             OBJECT-TYPE
+
+   SYNTAX               TXBaseControl
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "       Transmitter control enumerations: 1=On, 2=Off, 3=RaisePwr,
+                                4=LowerPwr
+                                                                                                             "
+
+   ::= {        sysControl                                    1  }
+
+
+txControlValue                        OBJECT-TYPE
+
+   SYNTAX               DisplayString
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "       Argument for txControl
+
+                                                                                                             "
+
+   ::= {        sysControl                                    2  }
+   
+                                             
+auxControl                                    OBJECT-TYPE
+
+   SYNTAX               AuxControlValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    AuxControlValue: 1 = auxOn(Customer Sepcial), 2 = auxOff(Customer Sepcial)
+
+                                                                                                             "
+
+   ::= {        sysControl                                    3  }
+
+
+allTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               Integer32
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable all traps. 0= Enable/Disble trap individually, 1=Enable all traps, 2=Disable all traps.
+
+                                                                                                             "
+
+   ::= {        sysControl                                    4  }
+   
+
+dataSourceOfflineTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable dataSourceOfflineTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    5  }
+   
+
+drvInputOkTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable drvInputOkTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    6  }
+   
+
+drvSumFaultTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable drvSumFaultTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    7  }
+   
+
+drvSumWarningTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable drvSumWarningTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    8  } 
+   
+
+outOkTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable outOkTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    9  }   
+   
+
+outSumFaultTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable outSumFaultTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    10  }
+   
+
+outSumWarningTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable outSumWarningTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    11  } 
+   
+
+paSumFaultTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable paSumFaultTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    12  } 
+   
+
+paSumWarningTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable paSumWarningTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    13  } 
+   
+
+psSumFaultTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable psSumFaultTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    14  } 
+   
+
+psSumWarningTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable psSumWarningTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    15  }    
+   
+
+remoteEnableTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable remoteEnableTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    16  }
+   
+
+sysSumFaultTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable sysSumFaultTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    17  }
+   
+
+sysSumWarningTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable sysSumWarningTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    18  }
+   
+
+txSumFaultTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable txSumFaultTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    19  }
+   
+
+txSumWarningTrapEnable                        OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-write
+
+   STATUS               current
+
+   DESCRIPTION          "    Enable/Disable txSumWarningTrap: 1 = Enable trap, 2 = Disable trap
+
+                                                                                                             "
+
+   ::= {        sysControl                                    20  }
+   
+      
+dataSourceOffline                     OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Connection ecdi to transmitter: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+   ::= {        sysFaults                                     1  }
+
+
+
+sysSumFault                           OBJECT-TYPE
+
+   SYNTAX               TruthValue
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       System section summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+   ::= {        sysFaults                                     2  }
+
+
+sysSumWarning                         OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       System section summary warning: 1=Warning, 2=Ok
+
+                                                                                                             "
+
+   ::= {        sysFaults                                     3  }
+
+
+txSumFault                            OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Transmitter overall summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+   ::= {        sysFaults                                     4  }
+
+
+
+txSumWarning                          OBJECT-TYPE
+
+   SYNTAX               TruthValue
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       Transmitter overall summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+   ::= {        sysFaults                                     5  }
+
+
+eventPriority                         OBJECT-TYPE
+
+   SYNTAX               INTEGER
+
+   UNITS                "                                  "
+   MAX-ACCESS           not-accessible
+
+   STATUS               current
+
+   DESCRIPTION          "       Trap priority level: 1=(Sum)Fault, 2=(Sum)Warning, 3=Info
+
+                                                                                                             "
+
+   ::= {        sysFaults                                     6  }
+
+eventDescription                      OBJECT-TYPE
+
+   SYNTAX               DisplayString
+
+   UNITS                "                                  "
+   MAX-ACCESS           not-accessible
+
+   STATUS               current
+
+   DESCRIPTION          "       Trap details
+
+                                                                                                             "
+
+   ::= {        sysFaults                                     7  }
+
+
+eventIndex                            OBJECT-TYPE
+
+   SYNTAX               Counter32
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           not-accessible
+   STATUS               current
+
+   DESCRIPTION          "       Running index for events
+
+
+                                                                                                             "
+   ::= {        sysFaults                                     8  }
+
+
+
+remoteEnable                          OBJECT-TYPE
+
+   SYNTAX               TruthValue
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+
+   STATUS               current
+   DESCRIPTION          "       Remote Enable: 1=Remote, 2=Local
+
+
+                                                                                                             "
+
+   ::= {        sysStatus                                     1  }
+
+
+txStatus                              OBJECT-TYPE
+
+   SYNTAX               TXBaseStatus
+
+   UNITS                "                                  "
+   MAX-ACCESS           read-only
+
+   STATUS               current
+
+   DESCRIPTION          "       Transmitter on state enumerations: 0=NA, 1=On, 2=Off
+
+                                                                                                             "
+
+   ::= {        sysStatus                                     2  }
+
+
+txTest                                OBJECT-TYPE
+
+   SYNTAX               TruthValue
+
+   UNITS                "                                  "
+
+   MAX-ACCESS           read-only
+   STATUS               current
+
+   DESCRIPTION          "       Trap generated during configuration to test the trap connectivity
+
+
+                                                                                                             "
+   ::= {        sysStatus                                     3  }
+
+
+-- trap begins
+
+dataSourceOfflineTrap                                    NOTIFICATION-TYPE
+
+    OBJECTS           {   dataSourceOffline                                  ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Connection ecdi to transmitter: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             1  }
+
+
+drvSumFaultTrap                                          NOTIFICATION-TYPE
+
+    OBJECTS           {   drvSumFault                                        ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Drive chain summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             2  }
+
+
+drvSumWarningTrap                                        NOTIFICATION-TYPE
+
+    OBJECTS           {   drvSumWarning                                      ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Drive chain summary warning: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             3  }
+
+
+drvInputOkTrap                                           NOTIFICATION-TYPE
+
+    OBJECTS           {   drvInputOk                                         ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Inputsignal ok: 1=Ok, 2=Not ok
+
+
+                                                                                                             "
+
+    ::= {       events             4  }
+
+
+paSumFaultTrap                                           NOTIFICATION-TYPE
+
+    OBJECTS           {   paSumFault                                         ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Power amplifier summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             5  }
+
+
+paSumWarningTrap                                         NOTIFICATION-TYPE
+
+    OBJECTS           {   paSumWarning                                       ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Power amplifier summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             6  }
+
+
+psSumFaultTrap                                           NOTIFICATION-TYPE
+
+    OBJECTS           {   psSumFault                                         ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Power supply summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             7  }
+
+
+psSumWarningTrap                                         NOTIFICATION-TYPE
+
+    OBJECTS           {   psSumWarning                                       ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Power supply summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             8  }
+
+
+outSumFaultTrap                                          NOTIFICATION-TYPE
+
+    OBJECTS           {   outSumFault                                        ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Output summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events             9  }
+
+
+
+
+
+
+
+
+
+
+outSumWarningTrap                                        NOTIFICATION-TYPE
+
+    OBJECTS           {   outSumWarning                                      ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Output summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events            10  }
+
+
+outOkTrap                                                NOTIFICATION-TYPE
+
+    OBJECTS           {   outOk                                              ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    RF output signal ok: 1=Ok, 2=Not ok
+
+
+                                                                                                             "
+
+    ::= {       events            11  }
+
+
+sysSumFaultTrap                                          NOTIFICATION-TYPE
+
+    OBJECTS           {   sysSumFault                                        ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    System section summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events            12  }
+
+
+sysSumWarningTrap                                        NOTIFICATION-TYPE
+
+    OBJECTS           {   sysSumWarning                                      ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    System section summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events            13  }
+
+
+txSumFaultTrap                                           NOTIFICATION-TYPE
+
+    OBJECTS           {   txSumFault                                         ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Transmitter overall summary fault: 1=Fault, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events            14  }
+
+
+txSumWarningTrap                                         NOTIFICATION-TYPE
+
+    OBJECTS           {   txSumWarning                                       ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Transmitter overall summary warning: 1=Warning, 2=Ok
+
+
+                                                                                                             "
+
+    ::= {       events            15  }
+
+
+remoteEnableTrap                                         NOTIFICATION-TYPE
+
+    OBJECTS           {   remoteEnable                                       ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Remote Enable: 1=Remote, 2=Local
+
+
+                                                                                                             "
+
+    ::= {       events            16  }
+
+
+txTestTrap                                               NOTIFICATION-TYPE
+
+    OBJECTS           {   txTest                                             ,  eventPriority        ,  eventDescription          ,   eventIndex      }
+
+    STATUS                  current
+    DESCRIPTION             "    Trap generated during configuration to test the trap connectivity
+
+
+                                                                                                             "
+
+    ::= {       events            17  }
+
+
+-- trap ends
+
+
+  objectGroup         OBJECT-GROUP
+    OBJECTS                {
+
+                             dataSourceOffline                                             ,
+
+                             deviceName                                                    ,
+
+                             drvInputOk                                                    ,
+
+                             drvSumFault                                                   ,
+
+                             drvSumWarning                                                 ,
+                             
+                             excSwitch                                                     ,
+                             
+                             excSwitchMode                                                 ,
+
+                             eventDescription                                              ,
+
+                             eventIndex                                                    ,
+
+
+
+
+                             eventPriority                                                 ,
+
+                             modelNumber                                                   ,
+
+                             outAuralForwardPower                                          ,
+
+                             outAuralReflectedPower                                        ,
+
+                             outAuralVSWR                                                  ,
+
+                             outForwardPower                                               ,
+
+                             outOk                                                         ,
+
+                             outReflectedPower                                             ,
+
+                             outReflectionFactor                                           ,
+
+                             outSumFault                                                   ,
+
+                             outSumWarning                                                 ,
+
+                             outVSWR                                                       ,
+
+                             paSumFault                                                    ,
+
+                             paSumWarning                                                  ,
+
+                             psSumFault                                                    ,
+
+                             psSumWarning                                                  ,
+
+                             remoteEnable                                                  ,
+
+                             sysSumFault                                                   ,
+
+                             sysSumWarning                                                 ,
+
+                             txControl                                                     ,
+
+                             txControlValue                                                ,     
+                            
+                             auxControl                                                          ,  
+                             
+                             allTrapEnable                                                       ,
+                             
+                             dataSourceOfflineTrapEnable                                         ,
+
+                             drvInputOkTrapEnable                                                ,
+
+                             drvSumFaultTrapEnable                                               ,
+
+                             drvSumWarningTrapEnable                                             ,
+
+                             outOkTrapEnable                                                     ,
+
+                             outSumFaultTrapEnable                                               ,
+
+                             outSumWarningTrapEnable                                             ,
+
+                             paSumFaultTrapEnable                                                ,
+
+                             paSumWarningTrapEnable                                              ,
+
+                             psSumFaultTrapEnable                                                ,
+
+                             psSumWarningTrapEnable                                              ,
+
+                             remoteEnableTrapEnable                                              ,
+
+                             sysSumFaultTrapEnable                                               ,
+
+                             sysSumWarningTrapEnable                                             ,
+
+                             txSumFaultTrapEnable                                                ,
+
+                             txSumWarningTrapEnable                                              ,  
+                                                    
+                             txFrequency                                                   ,
+
+                             txStatus                                                      ,
+
+                             txSumFault                                                    ,
+
+                             txSumWarning                                                  ,
+
+                             txTest                                                         
+
+                            }
+
+    STATUS                   current
+
+    DESCRIPTION             "base objects"
+    ::= {        groups          1             }
+
+
+ eventGroup         NOTIFICATION-GROUP
+   NOTIFICATIONS            {
+
+                              dataSourceOfflineTrap                                         ,
+
+                              drvInputOkTrap                                                ,
+
+                              drvSumFaultTrap                                               ,
+
+                              drvSumWarningTrap                                             ,
+
+                              outOkTrap                                                     ,
+
+                              outSumFaultTrap                                               ,
+
+                              outSumWarningTrap                                             ,
+
+                              paSumFaultTrap                                                ,
+
+                              paSumWarningTrap                                              ,
+
+                              psSumFaultTrap                                                ,
+
+                              psSumWarningTrap                                              ,
+
+                              remoteEnableTrap                                              ,
+
+                              sysSumFaultTrap                                               ,
+
+                              sysSumWarningTrap                                             ,
+
+                              txSumFaultTrap                                                ,
+
+                              txSumWarningTrap                                              ,
+
+                              txTestTrap                                                     
+
+                            }
+
+   STATUS                   current
+
+   DESCRIPTION              "base events"
+   ::= {        groups        2              }
+
+
+
+  END
+

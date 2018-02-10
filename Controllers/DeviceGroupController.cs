@@ -15,6 +15,7 @@ namespace AdminPanelDevice.Controllers
         DeviceContext db = new DeviceContext();
         DeviceType devicetype = new DeviceType();
         public static List<Group> groupList = new List<Group>();
+        string _path, _FileName;
         //public List<DeviceType> DeviceInsert = new List<DeviceType>();
         public static string DeviceName;
         // GET: DeviceGroup
@@ -52,13 +53,14 @@ namespace AdminPanelDevice.Controllers
         public JsonResult DeviceCreate(DeviceType type)
         {
             string pathname = "";
+            
             try
             {
                 if (type.mib_file.ContentLength > 0)
                 {
-                    string _FileName = Path.GetFileName(type.mib_file.FileName);
-                    string _path = Path.Combine(Server.MapPath("~/MibFiles/"), _FileName);
-                    pathname = "MibFiles/" + _FileName;
+                     _FileName = Path.GetFileName(type.mib_file.FileName);
+                     _path = Path.Combine(Server.MapPath("~"), _FileName);
+                    pathname = /*"MibFiles/" +*/ _FileName;
                     type.mib_file.SaveAs(_path);
                 }
 
@@ -73,7 +75,9 @@ namespace AdminPanelDevice.Controllers
 
                 int dvcID = db.devicesTypes.Select(s => s.ID).ToList().LastOrDefault();
 
-                new BuildMIBTree(pathname, dvcID); // mib file save 
+                //new BuildMIBTree(pathname, dvcID); // mib file save 
+                new MibTreeCreate(_FileName, dvcID);
+
 
                 var dvD = db.devicesTypes.ToList();
                 string[] separators = { "/" };
@@ -87,8 +91,9 @@ namespace AdminPanelDevice.Controllers
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
+              
             }
 
             return Json("", JsonRequestBehavior.AllowGet);

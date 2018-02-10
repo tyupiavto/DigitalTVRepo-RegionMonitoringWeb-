@@ -1,0 +1,450 @@
+InfrastructureNetwork DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-IDENTITY, OBJECT-TYPE, MODULE-IDENTITY,
+    NOTIFICATION-TYPE, enterprises, Integer32
+		FROM SNMPv2-SMI
+	MODULE-COMPLIANCE, OBJECT-GROUP
+		FROM SNMPv2-CONF
+	TEXTUAL-CONVENTION, DisplayString
+		FROM SNMPv2-TC;
+
+infrastructureNetwork MODULE-IDENTITY
+    LAST-UPDATED "201003151530Z"
+    ORGANIZATION
+        "Harris Corporation - Leitch Business Unit.
+		25 Dyas Road,
+		North York,Ontario
+		M3B 1V7, Canada"
+    CONTACT-INFO
+		"BCDService@harris.com"
+	DESCRIPTION 
+        "Base MIB for Infrastructure and Networking products"
+
+    REVISION "201003151530Z"
+    DESCRIPTION
+        "Initial Implementation"
+::= { enterprises 290 9 3 }
+
+-- Object Identifiers
+experimental    OBJECT IDENTIFIER ::= { infrastructureNetwork 1 }
+ccsp            OBJECT IDENTIFIER ::= { infrastructureNetwork 3 }
+
+common          OBJECT IDENTIFIER ::= { ccsp 1 }
+trapOutstanding OBJECT IDENTIFIER ::= { ccsp 2 }
+preset          OBJECT IDENTIFIER ::= { ccsp 3 }
+
+-- Product Family Listing (Note, we don't support anything with family < 10)
+--   as they are reserved for future expansion
+Selenio          OBJECT IDENTIFIER ::= { ccsp 21 }
+
+trapInformation OBJECT IDENTIFIER ::= { common 2 }
+
+trapFields        OBJECT IDENTIFIER ::= { trapInformation 2 }
+trapDefinitions   OBJECT IDENTIFIER ::= { trapInformation 3 }
+
+presetSystem      OBJECT IDENTIFIER ::= { preset 1 }
+presetModule      OBJECT IDENTIFIER ::= { preset 2 }
+
+--- Common Index List (Indexes that may be common to multiple products)
+commonIndexList OBJECT IDENTIFIER ::= { common 1 }
+
+slotId OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Common Slot ID Index"
+::= { commonIndexList 1 }
+
+frameId OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Common Frame ID Index"
+::= { commonIndexList 2 }
+
+subdeviceId OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Subdevice Indexing"
+::= { commonIndexList 3 }
+
+uniqueAlarmIdx OBJECT-TYPE
+    SYNTAX      OBJECT IDENTIFIER
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Unique Alarm Indexing"
+::= { commonIndexList 4 }
+
+tableIdx OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Arbituary index internally used by tables"
+::= { commonIndexList 5 }
+
+--- Alarm Enumerations
+AlarmEnabled ::= TEXTUAL-CONVENTION
+	STATUS     current
+	DESCRIPTION 
+	"Alarm Enabled"
+	SYNTAX  INTEGER {  
+		alarmDisabled (0),
+		alarmEnabled  (1)
+	}
+
+AlarmAcknowledged ::= TEXTUAL-CONVENTION
+	STATUS     current
+	DESCRIPTION 
+	"Alarm Acknowledged"
+	SYNTAX  INTEGER {  
+		alarmNotAcknowleged (0),
+		alarmAcknowledged (1)
+	}
+
+AlarmIsAsserted ::= TEXTUAL-CONVENTION
+	STATUS     current
+	DESCRIPTION 
+	"Alarm Is Asserted"
+	SYNTAX  INTEGER {  
+		alarmNotAsserted (0),
+		alarmAsserted (1)
+	}
+
+DeviceState ::= TEXTUAL-CONVENTION
+	STATUS     current
+	DESCRIPTION 
+	"Device State"
+	SYNTAX  INTEGER {  
+		deviceStateInactive (0),
+		deviceStateNetworkActive (1)
+	}
+
+--- Common Trap Interface
+trapAlarmObj OBJECT-TYPE
+    SYNTAX      OBJECT IDENTIFIER
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "Object Id of Alarm Type"
+::= { trapFields 1 }
+
+trapInstanceRaw OBJECT-TYPE
+    SYNTAX      DisplayString -- Will be of the form "1.2"
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "Instance Information for trap"
+::= { trapFields 2 }
+
+trapInstanceString OBJECT-TYPE
+    SYNTAX      DisplayString -- Will be of the form "slot.1/channel.center"
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "Instance Information as a string for trap"
+::= { trapFields 3 }
+
+trapPriority OBJECT-TYPE
+    SYNTAX      INTEGER
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "Priority of trap"
+::= { trapFields 4 }
+
+trapAlarmData OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "Additional Error information for trap"
+::= { trapFields 5 }
+
+trapState OBJECT-TYPE
+    SYNTAX      AlarmIsAsserted
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "State of trap"
+::= { trapFields 6 }
+
+trapDeviceState OBJECT-TYPE
+    SYNTAX      DeviceState
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "State of the device"
+::= { trapFields 7 }
+
+-- Actual Trap definitions
+trapAlarm NOTIFICATION-TYPE
+    OBJECTS {
+      trapAlarmObj,
+      trapInstanceRaw,
+      trapInstanceString,
+      trapPriority,
+      trapAlarmData,
+      trapState
+    }
+    STATUS      current
+    DESCRIPTION "Standard alarm notification for nextgen frame"
+::= { trapDefinitions 1 }
+
+-- XXXI: Do we want to keep the notifications looking like alarms for 
+--       consistency, or do we want them to look different?
+trapNotification NOTIFICATION-TYPE
+    OBJECTS {
+      trapAlarmObj,      -- Reference to device that generated the notification
+      trapInstanceRaw,
+      trapInstanceString,
+      trapAlarmData      -- Notification Message
+    }
+    STATUS      current
+    DESCRIPTION "Standard notification for nextgen frame"
+::= { trapDefinitions 2 }
+
+trapStateChange NOTIFICATION-TYPE
+    OBJECTS {
+      trapAlarmObj,      -- Reference to device that generated the notification
+      trapInstanceRaw,
+      trapInstanceString,
+      trapDeviceState    -- Device State
+    }
+    STATUS      current
+    DESCRIPTION "Standard notification for nextgen frame"
+::= { trapDefinitions 3 }
+
+-- Facility to list outstanding alarms
+trapOutstandingTable  OBJECT-TYPE
+	SYNTAX SEQUENCE OF TrapOutstandingEntry  
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION
+	"parameter."
+::= { trapOutstanding 1 }
+
+trapOutstandingEntry  OBJECT-TYPE
+	SYNTAX TrapOutstandingEntry
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+	""
+	INDEX { uniqueAlarmIdx } -- uniqueAlarmIdx is of the form { productFamily, productId, zero or more slot objId, alarmId, zero or more alarmTableIdx }
+::= { trapOutstandingTable 1 }
+
+TrapOutstandingEntry ::= SEQUENCE {
+    trapOutstandingAlarmObj       OBJECT IDENTIFIER,
+    trapOutstandingInstanceRaw    DisplayString,
+    trapOutstandingInstanceString DisplayString,
+    trapOutstandingPriority       INTEGER,
+    trapOutstandingAlarmData      DisplayString
+}
+
+trapOutstandingAlarmObj OBJECT-TYPE
+    SYNTAX      OBJECT IDENTIFIER
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Object Id of Alarm Type"
+::= { trapOutstandingEntry 1 }
+
+trapOutstandingInstanceRaw OBJECT-TYPE
+    SYNTAX      DisplayString -- Will be of the form "0.1.2"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Instance Information as the raw objectID for trap as a string"
+::= { trapOutstandingEntry 2 }
+
+trapOutstandingInstanceString OBJECT-TYPE
+    SYNTAX      DisplayString -- Will be of the form "/frame.0/slot.1/channel.center"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Instance Information as a string for trap"
+::= { trapOutstandingEntry 3 }
+
+trapOutstandingPriority OBJECT-TYPE
+    SYNTAX      INTEGER
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Priority of trap"
+::= { trapOutstandingEntry 4 }
+
+trapOutstandingAlarmData OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Additional Error information for trap"
+::= { trapOutstandingEntry 5 }
+
+-- System Preset
+presetSystemTable OBJECT-TYPE
+	SYNTAX     SEQUENCE OF PresetSystemEntry
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+		"System presets"
+::= { presetSystem 1 }
+
+presetSystemEntry OBJECT-TYPE
+	SYNTAX     PresetSystemEntry
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+		"Entry for System preset table"
+    INDEX { presetSystemIndex }
+::= { presetSystemTable 1 }
+
+PresetSystemEntry ::= SEQUENCE {
+    presetSystemIndex           INTEGER,
+    presetSystemTag             DisplayString,
+    presetSystemDate            DisplayString,
+    presetSystemLoad            Integer32,
+    presetSystemSave            Integer32,
+    presetSystemDelete          Integer32
+}
+
+presetSystemIndex  OBJECT-TYPE
+	SYNTAX     INTEGER
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+		"Index of system preset"
+::= { presetSystemEntry 1 }
+
+presetSystemTag  OBJECT-TYPE
+	SYNTAX     DisplayString
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Name of system preset"
+::= { presetSystemEntry 2 }
+
+presetSystemDate  OBJECT-TYPE
+	SYNTAX     DisplayString
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION 
+		"Date of when preset was saved"
+::= { presetSystemEntry 3 }
+
+presetSystemLoad  OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Command variable that loads the indexed preset file
+		into the system.
+		Setting the value to 1 initiates the command.
+		Other values are ignored.
+		"
+::= { presetSystemEntry 4 }
+
+presetSystemSave  OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Command variable that saves the system configuration
+		into the indexed preset file.  The preset is given the name
+		assigned to this row's 'tag' variable when the command occurs.
+		Setting the value to 1 initiates the command.
+		Other values are ignored.
+		"
+::= { presetSystemEntry 5 }
+
+presetSystemDelete  OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Command variable that deletes the indexed preset file.
+		Setting the value to 1 initiates the command.
+		Other values are ignored.
+		"
+::= { presetSystemEntry 6 }
+
+
+-- Module Preset
+presetModuleTable OBJECT-TYPE
+	SYNTAX     SEQUENCE OF PresetModuleEntry
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+		"Module presets"
+::= { presetModule 1 }
+
+presetModuleEntry OBJECT-TYPE
+	SYNTAX     PresetModuleEntry
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+		"Entry for Module preset table"
+    INDEX { presetModuleIndex }
+::= { presetModuleTable 1 }
+
+PresetModuleEntry ::= SEQUENCE {
+    presetModuleIndex           INTEGER,
+    presetModuleTag             DisplayString,
+    presetModuleDate            DisplayString,
+    presetModuleLoad            Integer32,
+    presetModuleSave            Integer32,
+    presetModuleDelete          Integer32
+}
+
+presetModuleIndex  OBJECT-TYPE
+	SYNTAX     INTEGER
+	MAX-ACCESS not-accessible
+	STATUS     current
+	DESCRIPTION 
+		"Index of Module preset"
+::= { presetModuleEntry 1 }
+
+presetModuleTag   OBJECT-TYPE
+	SYNTAX     DisplayString
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Name of module preset"
+::= { presetModuleEntry 2 }
+
+presetModuleDate  OBJECT-TYPE
+	SYNTAX     DisplayString
+	MAX-ACCESS read-only
+	STATUS     current
+	DESCRIPTION 
+		"Date of when preset was saved"
+::= { presetModuleEntry 3 }
+
+presetModuleLoad  OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Command variable that loads the indexed preset file
+		into the module of a designated slot.
+		Setting the value to N initiates the command for slot N.
+		Valid slot numbers depend on the device.
+		Invalid slot numbers are rejected.
+		"
+::= { presetModuleEntry 4 }
+
+presetModuleSave  OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Command variable that saves a slot's configuration
+		into the indexed preset file.  The preset is given the name
+		assigned to this row's 'tag' variable when the command occurs.
+		Setting the value to N initiates the command for slot N.
+		Valid slot numbers depend on the device.
+		Invalid slot numbers are rejected.
+		"
+::= { presetModuleEntry 5 }
+
+presetModuleDelete  OBJECT-TYPE
+	SYNTAX     Integer32
+	MAX-ACCESS read-write
+	STATUS     current
+	DESCRIPTION 
+		"Command variable that deletes the indexed preset file.
+		Setting the value to 1 initiates the command.
+		Other values are rejected.
+		"
+::= { presetModuleEntry 6 }
+
+END

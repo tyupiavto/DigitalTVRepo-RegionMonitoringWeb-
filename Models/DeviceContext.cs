@@ -25,6 +25,9 @@ namespace AdminPanelDevice.Models
         public DbSet<MibGet> MibGets { get; set; }
         public DbSet<LiveValue> LiveValues { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Countrie> Countries { get; set; }
+        public DbSet<States> States { get; set; }
+        public DbSet<City> Citys { get; set; }
 
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 

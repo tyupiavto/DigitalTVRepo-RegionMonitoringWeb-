@@ -56,6 +56,7 @@ namespace AdminPanelDevice.Infrastructure
             DeviceMibID = db.MibTreeInformations.Select(s => s.DeviceID).ToList().LastOrDefault();
             while (objSnmpMIB.LastError == 0)
             {
+                
                 t1 = new TreeNode(objSnmp.OIDNameShort);
                 t1.Target = objSnmp.OID;
                 strParent = objSnmp.OID.TrimEnd(strTrim1).TrimEnd(strTrim2);

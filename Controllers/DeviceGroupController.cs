@@ -18,6 +18,12 @@ namespace AdminPanelDevice.Controllers
         string _path, _FileName;
         //public List<DeviceType> DeviceInsert = new List<DeviceType>();
         public static string DeviceName;
+        public static List<Countrie> countrie = new List<Countrie>();
+        public static List<States> states = new List<States>();
+        public static List<City> city = new List<City>();
+        public static int countrieIndicator=0;
+        public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
+       
         // GET: DeviceGroup
         public ActionResult Index()
         {
@@ -98,9 +104,97 @@ namespace AdminPanelDevice.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
-        public class FileData
+
+        [HttpPost]
+        public PartialViewResult Countries(string CountrieName,string StateName, string CityName)
         {
-            HttpPostedFileBase FileUploadMib { get; set; }
+            TitleTowerName TowerName = new TitleTowerName();
+
+            if (CountrieName == null)
+            {
+                countrie = db.Countries.ToList();
+                TowerName.CountrieName = "Counter";
+            }
+
+            if (CountrieName != null  && StateName=="")
+            {
+                city = new List<City>();
+                states = new List<States>();
+
+                var counterID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
+                states = db.States.Where(s=>s.CountrieID==counterID).ToList();
+                ViewBag.countrieName = CountrieName;
+                TowerName.CountrieName = CountrieName;
+             
+            }
+            if (StateName!=null && StateName!="")
+            {
+                var StateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+                city = db.Citys.Where(c => c.StateID == StateID).ToList();
+                TowerName.StateName = StateName;
+                TowerName.CountrieName = CountrieName;
+            }
+            else
+            {
+                TowerName.StateName = "State";
+            }
+            ViewBag.countrie = countrie;
+            ViewBag.state = states;
+            ViewBag.city = city;
+
+            ViewBag.countrieName = CountrieName;
+            TitleTowor.Add(TowerName);
+            return PartialView("_CountriesSearch",TitleTowor);
+        }
+
+        [HttpPost]
+        public PartialViewResult countrieSearch(string countrieSearchName)
+        {
+            if (countrieSearchName == null) { 
+            countrie = db.Countries.ToList();
+            }
+            else
+            {
+                countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName)).ToList();
+            }
+            ViewBag.countrie = countrie;
+            return PartialView("_Countrie");
+        }
+
+        [HttpPost]
+        public PartialViewResult stateSearch(string CountrieName, string stateSearchName)
+        {
+            if (stateSearchName == null && CountrieName!=null)
+            {
+                var countrieID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
+                states = db.States.Where(s => s.CountrieID == countrieID).ToList();
+                ViewBag.countrie = states;
+            }
+            else
+            {
+               var statesSearch = states.Where(s => s.StateName.Contains(stateSearchName)).ToList();
+                ViewBag.countrie = statesSearch;
+            }
+            
+            return PartialView("_State");
+        }
+
+        [HttpPost]
+        public PartialViewResult citySearch(string StateName, string citySearchName)
+        {
+            if (citySearchName == null & StateName!=null)
+            {
+                var countrieID = db.States.Where(c => c.StateName == StateName).FirstOrDefault().ID;
+                 city = db.Citys.Where(c=>c.StateID == countrieID).ToList();
+                 ViewBag.city = city;
+            }
+            else
+            {
+               var citySearch = city.Where(c=>c.CityName.Contains(citySearchName)).ToList();
+                ViewBag.city = citySearch;
+            }
+            
+            return PartialView("_City");
         }
     }
 }

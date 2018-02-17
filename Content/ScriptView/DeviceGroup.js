@@ -1,4 +1,4 @@
-﻿var GroupName, deviceName, Name, ManuFacture, Model, Purpose;
+﻿var GroupName, deviceName, Name, ManuFacture, Model, Purpose,CountrieName,StateName,CityName;
 $('#create_group').click(function () {
     GroupName = $('#group_name').val();
     $.post("/DeviceGroup/GroupCreate", { 'GroupName': GroupName }, function (Response) {
@@ -28,6 +28,7 @@ device_add.on("click", "li span", function (e) {
     }
 });
 
+
 var file; var DeviceInsert = []; var array = [];
 $('#add_file').click(function () {
 
@@ -50,3 +51,5 @@ $('#add_file').click(function () {
         }
     });
 });
+
+

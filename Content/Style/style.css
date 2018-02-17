@@ -3355,7 +3355,7 @@ input[type="password"]:focus{
 /* Search Form styled */
 /*-----------------------------------*/
 
-.boxed-velvet.widget_search.styled .inner {padding: 27px 20px;}
+.boxed-velvet.widget_search.styled .inner {padding: 10px 5px;}
 .boxed-velvet.widget_search.styled .input_wrap input {padding-left: 10px;}
 
 /*-----------------------------------*/

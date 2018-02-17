@@ -1,0 +1,85 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.TitleTowerName>
+
+@{ 
+    var countrie = ViewBag.countrie;
+    var state = ViewBag.state;
+    var city = ViewBag.city;
+    var indicator = ViewBag.Indicator;
+    var countrieName = "";
+    var stateName="";
+    var cityName = "";
+}
+     @foreach (var item in Model)
+     {
+         countrieName = item.CountrieName;
+         stateName = item.StateName;
+         cityName = item.CityName;
+     }
+<table style="width: 100%;" id="adapterSettings">
+    <tbody>
+        <tr><th colspan="2">Countrie</th></tr>
+        <tr>
+            <td class="adapterInput" colspan="2" style="text-align: center;">
+                <ul class="typeSelect" id="typeSelect">
+                    <li>
+                        <span class="type">@countrieName</span><span class="arrow">
+                            <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                        </span>
+                    </li>
+                </ul>
+                <ul class="typeDropDownList" id="typeDropDownList" style="width: 145px; display: none; position:relative;">
+                    <input class="deviceInput inputField gradient" name="countries_search" id="countries_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white">
+                     <div id="countrie_partial"></div>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <table style="width: 100%; margin-top:5px;" id="adapterSettings">
+        <tbody>
+
+            <tr><th colspan="2">State</th></tr>
+            <tr>
+                <td class="adapterInput" colspan="2" style="text-align: center;">
+                    <ul id="typeSelectState" class="typeSelect">
+                        <li>
+                            <span class="type">@stateName</span><span class="arrow">
+                                <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="typeDropDownList" id="typeDropDownListState" style="width: 145px; display: none; position:relative">
+                        <input class="deviceInput inputField gradient" name="state_search" id="state_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white">
+
+                        <div id="state_partial"></div>
+
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+<table style="width: 100%; margin-top:5px;" id="adapterSettings">
+    <tbody>
+
+        <tr><th colspan="2">City</th></tr>
+        <tr>
+            <td class="adapterInput" colspan="2" style="text-align: center;">
+                <ul id="typeSelectCity" class="typeSelect">
+                    <li>
+                        <span class="type">City</span><span class="arrow">
+                            <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                        </span>
+                    </li>
+                </ul>
+                <ul class="typeDropDownList" id="typeDropDownListCity" style="width: 145px; display: none; position:relative">
+                    <input class="deviceInput inputField gradient" name="city_search" id="city_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white">
+                    <div id="city_partial"></div>
+
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="~/Content/ScriptView/CountrieSearch.js"></script>

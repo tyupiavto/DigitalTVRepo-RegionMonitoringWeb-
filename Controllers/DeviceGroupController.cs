@@ -7,6 +7,10 @@ using AdminPanelDevice.Models;
 using System.Collections;
 using System.IO;
 using AdminPanelDevice.Infrastructure;
+using Dapper;
+using System.Data.SqlClient;
+using System.Data;
+using System.Configuration;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -44,7 +48,11 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult GroupShow()
         {
-            groupList = db.Groups.ToList();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                groupList = connection.Query<Group>("Select * From [Group] ").ToList();
+            }
+            //groupList = db.Groups.ToList();
             return PartialView("~/Views/DeviceGroup/_Group.cshtml", groupList);
         }
         [HttpPost]
@@ -112,7 +120,12 @@ namespace AdminPanelDevice.Controllers
 
             if (CountrieName == null)
             {
-                countrie = db.Countries.ToList();
+
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                {
+                    countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
+                }
+                //countrie = db.Countries.ToList();
                 TowerName.CountrieName = "Counter";
             }
 
@@ -182,7 +195,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult citySearch(string StateName, string citySearchName)
         {
-            if (citySearchName == null & StateName!=null)
+            if (citySearchName == null & StateName!=null && StateName!="")
             {
                 var countrieID = db.States.Where(c => c.StateName == StateName).FirstOrDefault().ID;
                  city = db.Citys.Where(c=>c.StateID == countrieID).ToList();

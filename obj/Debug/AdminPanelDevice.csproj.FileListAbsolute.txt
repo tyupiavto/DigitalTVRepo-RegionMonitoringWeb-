@@ -95,3 +95,5 @@ C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanel
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Xml.XPath.dll
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Xml.XPath.XDocument.dll
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.Migrations.lastdb.resources
+C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Dapper.dll
+C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Dapper.xml

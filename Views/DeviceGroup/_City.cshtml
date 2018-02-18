@@ -1,7 +1,20 @@
 ﻿@{
     var city = ViewBag.city;
+    var ID = 1;
 }
 @foreach (var item in city)
 {
     <li>@item.CityName</li>
+        <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:225px;">
+            <div class="rowCheckbox">
+                <div class="custom-checkbox" id="@ID">
+                    <input name="city_checked" id="city_checked@(ID)" type="checkbox" value="@item.CityName" hidefocus="true" style="outline: none;" class="gradient">
+                    <label @*for="city_checked"*@ id="checked_add@(ID)" value="@ID" class="" style="background-size:19px;"></label>
+                </div>
+            </div>
+        </div>
+        ID++;
 }
+
+    <script src="~/Content/ScriptView/CountrieSearch.js"></script>
+    

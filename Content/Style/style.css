@@ -5,7 +5,7 @@ Description: 100+ elements
 Version: 1.0
 Author: PixelKit
 Author URI: http://pixelkit.com
-
+   
 CSS STRUCTURE:
 
 1. GENERAL TYPOGRAPHY
@@ -469,14 +469,14 @@ h6.foo{
     position:relative;
 }
 /* states */
-.custom-checkbox label {background:url(/images/styled_checkbox.png) no-repeat;}
+.custom-checkbox label {background:url(/image/styled_checkbox.png) no-repeat;}
 .custom-radio label {background:url(/image/styled_radiobutton.png) no-repeat;}
-.custom-checkbox label, .custom-radio label {background-position:0 0;}
-.custom-checkbox label.checked, .custom-radio label.checked {background-position:0 -100px;}
+.custom-checkbox label, .custom-radio label {background-position:0 4px;}
+.custom-checkbox label.checked, .custom-radio label.checked {background-position:0 -69px;}
 .checkbox-red .custom-checkbox label.checked, .radio-red .custom-radio label.checked {background-position:0 -200px;}
 .custom-checkbox label.focus, .custom-radio label.focus {outline:0;}
 
-.checkbox-large .custom-checkbox label {background:url(images/styled_checkbox_large.png) no-repeat; height: 34px; line-height: 24px; padding-left:95px;}
+.checkbox-large .custom-checkbox label {background:url(/image/styled_checkbox_large.png) no-repeat; height: 34px; line-height: 24px; padding-left:95px;}
 .checkbox-large .custom-checkbox label {background-position:0 0;}
 .checkbox-large .custom-checkbox label.checked {background-position:0 -100px;}
 
@@ -601,7 +601,7 @@ h6.foo{
     -moz-box-shadow: 5px 5px 22px -2px rgba(0, 0, 0, 0.5);
 }
 .boxed-velvet{
-    background: url(images/bg-widget2.png) repeat;
+    background: url(/image/bg-widget2.png) repeat;
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -615,7 +615,7 @@ h6.foo{
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE2Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: url(data:/image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjE2Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
     background: -moz-linear-gradient(top,  rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.16)), color-stop(100%,rgba(255,255,255,0)));
     background: -webkit-linear-gradient(top,  rgba(255,255,255,0.16) 0%,rgba(255,255,255,0) 100%);
@@ -822,7 +822,7 @@ h6.foo{
 
 .price_col .price_col_head {
 	position:relative;
-	background:url(images/price-head-yellow.png) left bottom repeat-x;
+	background:url(/image/price-head-yellow.png) left bottom repeat-x;
 	border-radius: 8px 8px 0 0;
 	-webkit-border-radius: 8px 8px 0 0;
 	-moz-border-radius: 8px 8px 0 0;
@@ -830,8 +830,8 @@ h6.foo{
     -webkit-box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.3);
 }
-.price_col.price_col_red .price_col_head {background:url(images/price-head-red.png) left bottom repeat-x;}
-.price_col.price_col_blue .price_col_head {background:url(images/price-head-blue.png) left bottom repeat-x;}
+.price_col.price_col_red .price_col_head {background:url(/image/price-head-red.png) left bottom repeat-x;}
+.price_col.price_col_blue .price_col_head {background:url(/image/price-head-blue.png) left bottom repeat-x;}
 
 /*Pricing Body*/
 
@@ -871,7 +871,7 @@ h6.foo{
 /*Pricing Bottom*/
 
 .price_col .price_col_foot{
-    background: url(images/price-bottom.png) left top repeat-x;
+    background: url(/image/price-bottom.png) left top repeat-x;
     border-radius:0 0 6px 6px;
     -webkit-border-radius:0 0 6px 6px;
     -moz-border-radius:0 0 6px 6px;
@@ -973,7 +973,7 @@ h6.foo{
     font-weight: 400;
 	color: #aeb6bd;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.33);
-    background: url(images/categories-bg2.png) left top repeat-x;
+    background: url(/image/categories-bg2.png) left top repeat-x;
     padding: 11px 5px 10px 23px;
 }
 .widget_categories li a span{
@@ -1200,7 +1200,7 @@ only screen and (            min-resolution: 2dppx){
 	color: #55aece; 
     padding-right:36px;
     padding-left: 18px;
-    background: url(images/icons/likes.png);
+    background: url(/image/icons/likes.png);
     background-repeat: no-repeat;
     background-position: right 0;
 }
@@ -1327,7 +1327,7 @@ only screen and (            min-resolution: 2dppx){
     border-radius:6px;
     -webkit-border-radius:6px;
     -moz-border-radius:6px;
-    background: url(images/bg-widget.png) repeat;
+    background: url(/image/bg-widget.png) repeat;
     position: relative;
     z-index: 0;
 }
@@ -1549,7 +1549,7 @@ only screen and (            min-resolution: 2dppx){
 	position: relative;
 }
 .comment-body {
-	background: url(images/comment-bg.png) repeat;
+	background: url(/image/comment-bg.png) repeat;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
     border-radius: 5px;
@@ -1605,7 +1605,7 @@ only screen and (            min-resolution: 2dppx){
 	top:14px;
 	left:-7px;
 	z-index: 2;
-	background: url(images/comment_arrow.png) no-repeat;
+	background: url(/image/comment_arrow.png) no-repeat;
 }
 .comment-author {
 	margin-bottom: 5px;
@@ -1685,7 +1685,7 @@ label, input, button, select, textarea {
     -moz-box-shadow: none;
 }
  .add-comment-velvet.add-comment{
-    background: url(images/comment-bg3.png) repeat;
+    background: url(/image/comment-bg3.png) repeat;
     border-top: 1px solid #52585F;
     border-left: 1px solid #3C434D;
 }
@@ -1705,7 +1705,7 @@ label, input, button, select, textarea {
     box-shadow: 0 2px 2px rgba(0,0,0,0.26);
     -webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.26);
     -moz-box-shadow: 0 2px 2px rgba(0,0,0,0.26);
-    background: url(images/comment-bg2.png) repeat;
+    background: url(/image/comment-bg2.png) repeat;
     padding: 11px 20px 9px 12px;
 }
 .add-comment-title h3{
@@ -1717,7 +1717,7 @@ label, input, button, select, textarea {
     padding-left: 25px;
     height: 20px;
     line-height: 16px;
-    background: url(images/comment-title.png) no-repeat;
+    background: url(/image/comment-title.png) no-repeat;
     font-size: 16px;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.33);
     color: #aeb6bd;
@@ -1837,7 +1837,7 @@ input[type="password"]:focus{
  .add-comment-velvet .comment-form .rowSubmit {
     height: 57px;
     padding: 15px 35px 0;
-    background: url(images/comment-rowsubmit.png) repeat-x;
+    background: url(/image/comment-rowsubmit.png) repeat-x;
 }
 .contact-form.boxed .comment-form .rowSubmit {height: 58px;}
 .comment-form .link-reset{margin-right: 5px;}
@@ -1989,7 +1989,7 @@ input[type="password"]:focus{
 .widget_search input::-webkit-input-placeholder {color:#a4a4a4;}
 .widget_search input:-moz-placeholder {color:#a4a4a4;}
 .widget_search .input_icon{
-    background: url(images/icons/search.png);
+    background: url(/image/icons/search.png);
     width: 16px;
     height: 16px;
     left: 10px;
@@ -2546,10 +2546,10 @@ input[type="password"]:focus{
     box-shadow: 0 5px 5px -1px rgba(0, 0, 0, 0.2);
 }
 .dropdown ul li{
-    background: url(images/cusel-bg-1.png) left top repeat-x;
+    background: url(/image/cusel-bg-1.png) left top repeat-x;
 }
 .dropdown ul li:hover{
-    background: url(images/cusel-bg-2.png) left top repeat-x;
+    background: url(/image/cusel-bg-2.png) left top repeat-x;
 }
 .ie8 .dropdown ul li:hover{filter:none;}
 
@@ -2779,7 +2779,7 @@ input[type="password"]:focus{
 .input_date{position: relative;}
 
 .input_date .input_icon{
-	background:url(images/icons/calendar.png) no-repeat;
+	background:url(/image/icons/calendar.png) no-repeat;
 	width: 20px;
 	height: 21px;
     top: 26px;
@@ -3023,7 +3023,7 @@ input[type="password"]:focus{
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    background: url(images/bg-widget.png) repeat;
+    background: url(/image/bg-widget.png) repeat;
     position: relative;
     z-index: 0;
     padding: 5px 5px 9px;
@@ -3414,7 +3414,7 @@ input[type="password"]:focus{
 	border: 0 none;
     height: 15px;
     padding: 4px 1px 0 4px;
-	background: url(images/progressbars.png);
+	background: url(/image/progressbars.png);
     position: relative;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -3428,13 +3428,13 @@ input[type="password"]:focus{
     right: -9px;
     width: 9px;
     height: 19px;
-    background: url(images/progressbars.png) right 0;
+    background: url(/image/progressbars.png) right 0;
 }
 .progressbar .ui-progressbar .ui-progressbar-value {
 	margin: 0;
 	height: 13px;
 	position: relative;
-	background: url(images/progressbars.png) left -19px no-repeat;
+	background: url(/image/progressbars.png) left -19px no-repeat;
 	min-width: 5px !important;
     z-index: 2;
 }
@@ -3447,7 +3447,7 @@ input[type="password"]:focus{
     z-index: 1;
 	width: 33px;
 	height: 33px;
-	background:url(images/progressbars.png) 0 -45px no-repeat;
+	background:url(/image/progressbars.png) 0 -45px no-repeat;
 }
 
 /* Progress Bars style 2 */
@@ -3455,7 +3455,7 @@ input[type="password"]:focus{
 .progressbar.style2{z-index: 2;}
 
 .progressbar.style2 .ui-progressbar .ui-progressbar-value:after{
-	background:url(images/progressbars.png) right -19px no-repeat;
+	background:url(/image/progressbars.png) right -19px no-repeat;
 	width: 6px;
 	height: 13px;
 	top:0;
@@ -3477,10 +3477,10 @@ input[type="password"]:focus{
 
 .progressbar.style2 .downloadbar .ui-progressbar .ui-progressbar-value {
 	position: relative;
-    background:url(images/progressbars.png) left -32px no-repeat;
+    background:url(/image/progressbars.png) left -32px no-repeat;
 }
 .progressbar.style2 .downloadbar .ui-progressbar .ui-progressbar-value:after{
-    background:url(images/progressbars.png) right -32px no-repeat;
+    background:url(/image/progressbars.png) right -32px no-repeat;
     width: 5px;
     height: 13px;
     top:0;
@@ -3495,7 +3495,7 @@ input[type="password"]:focus{
     position: relative;
     width: 149px;
 	height: 149px;
-    background: url(images/knob-volume-bg.png) no-repeat;
+    background: url(/image/knob-volume-bg.png) no-repeat;
 	padding:47px 50px;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -3521,7 +3521,7 @@ input[type="password"]:focus{
     border: 1px solid #464D55;
     border-top: 1px solid #535F6D;
     border-bottom: 0 none;
-    background: url(images/bg-tabs.png) repeat;
+    background: url(/image/bg-tabs.png) repeat;
 }
 .tabs_framed.styled .tabs li.active {
     height: 36px;
@@ -3558,7 +3558,7 @@ input[type="password"]:focus{
 
 .tabs_framed.styled .tab-content {
     overflow: visible;
-    background: url(images/bg-tabs.png) repeat;
+    background: url(/image/bg-tabs.png) repeat;
     border: 0 none;
     border-top: 1px solid #525B68;
     border-left: 1px solid #525B68;
@@ -3804,7 +3804,7 @@ input[type="password"]:focus{
 }
 
 .widget_profile .counters{
-    background: url(images/profile-bg.png) repeat-x;
+    background: url(/image/profile-bg.png) repeat-x;
     -webkit-border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
@@ -3879,7 +3879,7 @@ input[type="password"]:focus{
     line-height: 20px;
     white-space: nowrap;
     text-align: center;
-    background: url(images/jslider.png) -15px -32px no-repeat;
+    background: url(/image/jslider.png) -15px -32px no-repeat;
 }
 .flot-text{
     position: absolute;
@@ -3947,5 +3947,5 @@ input[type="password"]:focus{
 .controls .checkbox-large label{margin-bottom: 8px;}
 
 .badges{margin-bottom: 50px;}
-.ribbons{background: url(images/ribbons-shadow.png) 0 0 no-repeat; padding-top: 26px; padding-left: 4px; height: 206px; position: relative; top:-26px;}
+.ribbons{background: url(/image/ribbons-shadow.png) 0 0 no-repeat; padding-top: 26px; padding-left: 4px; height: 206px; position: relative; top:-26px;}
 .ribbons .ribbon{margin-bottom: 4px; display: block;}

@@ -9,6 +9,7 @@
 <link href="~/Content/Style/display.css" rel="stylesheet" />
 <link href="~/Content/Style/DeviceInput.css" rel="stylesheet" />
 <link href="~/Content/Style/cusel.css" rel="stylesheet" />
+@*<link href="~/Content/Style/CheckedStyle.css" rel="stylesheet" />*@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />
 
 <div id="leftDiv">
@@ -130,7 +131,7 @@
 
 @*</div>*@
 <div id="mainDiv" >
-    
+   
 </div>
 
 <!-- Modal Group -->
@@ -151,21 +152,42 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 
 <script>
     var counter;
     $(document).ready(function () {
         counter = 0;
         $('.devInfo').hide();
+
+        //var ListCount = 1;
+        //$(document).on('click touch', '.addList', function () {
+        //    var newtr = '<tr class="tableBody" id="' + ListCount + '_' + ListCount + '"><td class="tableConn">Link ' + (ListCount + 1) + '</td></tr>';
+        //    ListCount += 1;
+        //    $(newtr).insertBefore('.addList');
+
+        //});
         //$('#DevName').click(function () {
         //    $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
         //});
 
         //$("#mainDiv").sortable({
         //    revert: true
+        //});
+        
+        //$('#checked_add').click(function () {
+        //    if ($('#city_checked').is(':checked') == true) {
+        //        $('#checked_add').removeClass("checked").addClass("");
+        //        $("#city_checked").prop('checked', false);
+        //        alert("true");
+        //    }
+        // else {
+        //        $('#checked_add').removeClass("").addClass("checked");
+        //        $("#city_checked").prop('checked', true);
+        //        alert("false");
+        //    }
         //});
 
         var handled = false;                                           // countries search and full countries
@@ -257,6 +279,11 @@
             $('#typeSelectCity .type').text(value);
             $('#typeDropDownListCity').toggle();
         });
+
+        //$(document).on('click touch', '.addList', function () {
+        //    $('.addList').val("hey brat");
+           
+        //});
 
         //var handled = false;
         //$('body').on('click touchend', '#typeSelect', function (e) {
@@ -383,7 +410,7 @@
                         var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();;
                         var Class = ui.draggable.attr("class");
                         var title = ui.draggable.text().trim();
-                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="'+(counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add"><span class="addList">Add new link</span></td></tr></table>');
+                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr"><td class="add"><span class="addList' + (counter + 1)+'"></span></td></tr></table>');
                         $(this).append(item);
                         counter++;
                         foo();

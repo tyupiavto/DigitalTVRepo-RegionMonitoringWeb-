@@ -33,16 +33,20 @@ body {
     /*margin: 0;*/
     margin-top: -50px;
     padding: 0;
-    overflow: auto;
+    overflow: hidden;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.33);
 }
-
+#city_all #city_select {
+    width: 29%;
+    margin-left: 187px;
+    display: none;
+} 
 #deviceInfo {
     min-height: auto;
     border-bottom: 3px solid rgba(0,0,0,0.2);
     padding: 3px;
-    overflow: auto;
-    margin-top:50px;
+    overflow: hidden;
+    margin-top: 50px;
 }
 
 #menu {
@@ -181,7 +185,7 @@ body {
 
 #settingsDiv {
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     box-sizing: border-box;
 }
 
@@ -297,6 +301,31 @@ body {
 .devInfo::-webkit-scrollbar-thumb:active {
     background: linear-gradient(left, #22ADD4, #1E98BA);
 }
+
+.search_count_stat_city::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+    background: url(/image/comment-bg.png) repeat;
+    border: 1px solid #ccc;
+}
+.search_count_stat_city {
+    max-height: 250px;
+    overflow-y: auto !important
+}
+
+    .search_count_stat_city::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: url(/image/comment-bg3.jpg) repeat;
+        border: 1px solid #aaa;
+    }
+
+        .search_count_stat_city::-webkit-scrollbar-thumb:hover {
+            background: url(/image/bg-tabs.png) repeat;
+        }
+
+        .search_count_stat_city::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(left, #22ADD4, #1E98BA);
+        }
 
 #displaySizes {
     list-style: none;
@@ -587,51 +616,38 @@ body {
 .type {
 	min-width: 150px;
 }
-
-/*.btn {
-	width: 100%;
-	background: url(/image/rsz_buttons.png);
-	background-size: cover;
-	border: 1px solid rgba(0,0,0,0.7);
-	height: 22px;
-	color: #b8c0c8;
-	cursor: pointer;
-	border-radius: 4px;
-	outline: none;
-	box-shadow: 0 2px 2px rgba(0,0,0,0.26);
-    -webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.26);
-    -moz-box-shadow: 0 2px 2px rgba(0,0,0,0.26);
+#add_city {
+    width: 28%;
+    height:20px;
+    font-size: 11px;
+    padding-left: 16px;
+    margin-left: 2px;
+    line-height:19px;
+    margin-top:-6px;
 }
-
-.btn:hover {
-	background: url(/image/hover_buttons.png) no-repeat;
-	background-size: cover;
-	border: none;
-	color: white;
-	border: 1px solid rgba(0,0,0,0.7);
-}*/
-
 .btn {
-	background: url(/image/rsz_buttons.png);
-	background-size: cover;
-	border: 1px solid rgba(0,0,0,0.7);
-	height: 35px;
-	color: #b8c0c8;
-	cursor: pointer;
-	border-radius: 4px;
-	outline: none;
-	box-shadow: 0 2px 2px rgba(0,0,0,0.26);
+    width: 100%;
+    background: url(/image/rsz_buttons.png);
+    background-size: cover;
+    border: 1px solid rgba(0,0,0,0.7);
+    height: 22px;
+    color: #b8c0c8;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.26);
     -webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.26);
     -moz-box-shadow: 0 2px 2px rgba(0,0,0,0.26);
 }
 
-.btn:hover {
-	background: url(/image/hover_buttons.png) no-repeat;
-	background-size: cover;
-	border: none;
-	color: white;
-	border: 1px solid rgba(0,0,0,0.7);
-}
+    .btn:hover {
+        background: url(/image/hover_buttons.png) no-repeat;
+        background-size: cover;
+        border: none;
+        color: white;
+        border: 1px solid rgba(0,0,0,0.7);
+    }
+
 
 #clear {
 	margin-top: -3px;

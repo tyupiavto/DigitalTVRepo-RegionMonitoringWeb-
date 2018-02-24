@@ -11,7 +11,6 @@ $('#DevName').click(function () {
         $('#deviceName').html("");
         $('#deviceName').html(Response);
     }, 'text');
-
     $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
 });
 

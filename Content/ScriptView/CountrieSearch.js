@@ -1,4 +1,4 @@
-﻿var countrieSearchName, StateName, CountrieName, citySearchName,parentId;
+﻿var countrieSearchName, StateName, CountrieName, citySearchName,parentId,addcityName;
 //var handled = false;
 //$('body').on('click touchend', '#typeSelect', function (e) {
 //    var width = $(this).width();
@@ -85,7 +85,7 @@
 
 $(document).on('click touchend', '.settings', function () { // add device setting open
     parentId = $(this).closest($(".foo")).attr("id");
-    $.post("/DeviceGroup/Countries", {}, function (Response) {
+    $.post("/DeviceGroup/Countries", { parentId: parentId }, function (Response) {
         $('#settingsDiv').html("");
         $('#settingsDiv').html(Response);
     }, 'text');
@@ -93,10 +93,10 @@ $(document).on('click touchend', '.settings', function () { // add device settin
 });
 $('#countries_search').keyup(function () {
     countrieSearchName = $('#countries_search').val();
-    if ($('#countries_search').val().length == 1) {
-        $('#countries_search').val(countrieSearchName.toUpperCase());
-        countrieSearchName = countrieSearchName.toUpperCase();
-    }
+    //if ($('#countries_search').val().length == 1) {
+    //    //$('#countries_search').val(countrieSearchName.toUpperCase());
+    //    countrieSearchName = countrieSearchName.toUpperCase();
+    //}
 
 
     $.post("/DeviceGroup/countrieSearch", { countrieSearchName: countrieSearchName}, function (Response) {
@@ -107,10 +107,6 @@ $('#countries_search').keyup(function () {
 
 $('#state_search').keyup(function () {
     stateSearchName = $('#state_search').val();
-    if ($('#state_search').val().length == 1) {
-        $('#state_search').val(stateSearchName.toUpperCase());
-        stateSearchName = stateSearchName.toUpperCase();
-    }
     $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName ,stateSearchName: stateSearchName }, function (Response) {
         $('#state_partial').html("");
         $('#state_partial').html(Response);
@@ -119,133 +115,79 @@ $('#state_search').keyup(function () {
 
 $('#city_search').keyup(function () {
     citySearchName = $('#city_search').val();
-    if ($('#city_search').val().length == 1) {
-        $('#city_search').val(citySearchName.toUpperCase());
-        citySearchName = citySearchName.toUpperCase();
-    }
     $.post("/DeviceGroup/citySearch", { StateName: StateName, citySearchName: citySearchName }, function (Response) {
         $('#city_partial').html("");
         $('#city_partial').html(Response);
     }, 'text');
 });
 
-
-var checkcity;
-checkcity = $('.rowCheckbox');
-checkcity.on("click", "div", function (e) {
-    var cityid = $(this).attr("id");
-    if ($('#city_checked' + cityid).is(':checked') == false) {
-        $('#checked_add'+ cityid).removeClass("").addClass("checked");
-        $("#city_checked" + cityid).prop('checked', true);
-        //alert("true");
+$('#city_list').click(function () {
+    if ($("#city_all").css("display") == "block") {
+        $('#city_allselect').css("display", "none");
+    } else {
+        $('#city_allselect').css("display", "block");
     }
-    else {
-        $('#checked_add' + cityid).removeClass("checked").addClass("");
-        $("#city_checked" + cityid).prop('checked', false);
-        //alert("false");
-    }
-
-    var addnewcity = '<tr class="tableBody" id="' + $('#city_checked' + cityid).val() + '"><td class="tableConn">' + $('#city_checked' + cityid).val() + '</td></tr>';
-    $(addnewcity).insertBefore('.addList' + parentId);
-    addPoints(); 
+  
 });
 
-function addPoints() {
-    jsPlumb.setContainer("mainDiv");
-    jsPlumb.draggable($('.foo'), {
-        //containment:"parent",
-        stack: '.foo',
-        grid: [10, 10]
-    });
-    $('.tableBody').each(function () {
-        if (!$(this).hasClass('jtk-endpoint-anchor')) {
-            var objId = $(this).closest('.foo').attr("id");
-            if (!$(this).hasClass('screen')) {
-                jsPlumb.addEndpoint($(this), {
-                    anchor: "Right",
-                    isSource: true,
-                    isTarget: false,
-                    connector: ["Bezier", { curviness: 130 }],
-                    endpoint: "Blank",
-                    cssClass: "blankEndpoint class" + objId,
-                    connectorOverlays: [
-                        ["Arrow", { width: 10, height: 10, length: 10, location: 0.97, id: "arrow", foldback: 0.8 }]
-                    ],
-                    connectorStyle: { stroke: "grey", strokeWidth: 3 },
-                    connectorHoverStyle: { lineWidth: 3 },
-                    maxConnections: -1,
-                    uuid: $(this).attr("id") + 'r'
-                });
-                jsPlumb.addEndpoint($(this), {
-                    anchor: "Left",
-                    isSource: false,
-                    isTarget: true,
-                    connector: ["Bezier", { curviness: 130 }],
-                    endpoint: "Blank",
-                    cssClass: "blankEndpoint class" + objId,
-                    connectorOverlays: [
-                        ["Arrow", { width: 10, height: 10, length: 10, location: 0.97, id: "arrow", foldback: 0.8 }]
-                    ],
-                    connectorStyle: { stroke: "grey", strokeWidth: 3 },
-                    connectorHoverStyle: { lineWidth: 3 },
-                    uuid: $(this).attr("id") + 'l'
-                });
-            }
-            else {
-                jsPlumb.addEndpoint($(this), {
-                    anchor: "Top",
-                    isSource: false,
-                    isTarget: true,
-                    connector: ["Bezier", { curviness: 130 }],
-                    endpoint: "Blank",
-                    cssClass: "blankEndpoint class" + objId,
-                    /*connectorOverlays:[ 
-                        [ "Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]
-                    ],*/
-                    connectorStyle: { stroke: "grey", strokeWidth: 3 },
-                    connectorHoverStyle: { lineWidth: 3 },
-                    maxConnections: 1,
-                    uuid: $(this).attr("id") + 't'
-                });
-            }
-        }
-    });
-    setImage();
-}
+$('#city_all').click(function () {
+    $('#name_all').text("All");
+    $('#city_allselect').css("display", "none");
+    //$('#city_select').css("display", "none");
+    var selectallName = "All";
+    stateName = $('#state').text();
+    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function (Response) {
+        $('#city_partial').html("");
+        $('#city_partial').html(Response);
+    }, 'text');
 
-function setImage() { //Setting image to endpoints without connection
-    var eps = $('.blankEndpoint');
-    eps.each(function () {
-        if (!$(this).hasClass('jtk-endpoint-connected')) {
-            $(this).css({ 'min-width': '18px', 'min-height': '18px', 'background': 'url(/image/no_connection_radiobutton.png) no-repeat', 'background-size': '100%', 'margin-left': '-9px', 'margin-top': '-9px' });
-        }
-    });
-}
-
-
-function setImageOnConnection() { 
-    $('.jtk-endpoint-connected').css({ 'min-width': '18px', 'min-height': '18px', 'background': 'url(/image/connected_radiobutton.png) no-repeat', 'background-size': '100%', 'margin-left': '-9px', 'margin-top': '-9px' });
-}
-
-jsPlumb.bind("connection", function (connection) {
-    setImage();
-    setImageOnConnection();
 });
 
-jsPlumb.bind("connectionDetached", function (connection) {
-    connection.sourceEndpoint.removeClass('jtk-endpoint-connected');
-    setImage();
+$('#city_select').click(function () {
+    $('#name_all').text("Select");
+    //$('#city_all').css("display", "none");
+    $('#city_allselect').css("display", "none");
+    var selectallName = "Select";
+    stateName = $('#state').text();
+    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function (Response) {
+        $('#city_partial').html("");
+        $('#city_partial').html(Response);
+    }, 'text');
 });
-//$('#checked_add2').click(function () {
-    
-//    if ($('#city_checked2').is(':checked') == false) {
-//        $('#checked_add2').removeClass("").addClass("checked");
-//        $("#city_checked2").prop('checked', true);
-//        //alert("true");
-//    }
-//    else {
-//        $('#checked_add2').removeClass("checked").addClass("");
-//        $("#city_checked2").prop('checked', false);
-//        //alert("false");
-//    }
+
+//$('#city_all').click(function () {
+//    $('#name_all').text("All");
+//    $('#city_all').css("display", "none");
+//    $('#city_select').css("display", "none");
+//    var selectallName = "All";
+//    stateName = $('#state').text();
+//    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function () {
+//        alert(Response);
+//        $('#city_partial').html("");
+//        $('#city_partial').html(Response);
+//    },'text');
+
 //});
+
+//$('#city_select').click(function () {
+//    $('#name_all').text("Select");
+//    $('#city_all').css("display", "none");
+//    $('#city_select').css("display", "none");
+//    var selectallName = "Select";
+//    stateName = $('#state').text();
+//    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function () {
+//        alert(Response);
+//        $('#city_partial').html("");
+//        $('#city_partial').html(Response);
+//    },'text');
+//});
+
+$('#add_city').click(function () {
+    addcityName = $('#city_name_add').val();
+
+    $.post("/DeviceGroup/CityAdd", { StateName: StateName, addcityName:addcityName }, function (Response) {
+        $('#city_partial').html("");
+        $('#city_partial').html(Response);
+        $('#city_name_add').val("");
+    }, 'text');
+});

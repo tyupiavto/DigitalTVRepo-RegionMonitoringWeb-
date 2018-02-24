@@ -14,5 +14,7 @@ namespace AdminPanelDevice.Models
         public int ID { get; set; }
         public string CityName { get; set; }
         public int StateID { get; set; }
+        [NotMapped]
+        public int CheckedID { get; set; }
     }
 }

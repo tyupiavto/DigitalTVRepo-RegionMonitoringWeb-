@@ -19,5 +19,9 @@ namespace AdminPanelDevice.Models
         public string IP { get; set; }
         public int Phone { get; set; }
         public string Status { get; set; }
+        public int CountriesID { get; set; }
+        public int StateID { get; set; }
+        public int CityCheckedID { get; set; }
+        public int CountriesListID { get; set; }
     }
 }

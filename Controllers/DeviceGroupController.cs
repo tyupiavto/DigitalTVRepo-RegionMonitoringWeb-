@@ -27,7 +27,11 @@ namespace AdminPanelDevice.Controllers
         public static List<City> city = new List<City>();
         public static int countrieIndicator=0;
         public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
-       
+        string searchName;
+        public static string countrieName;
+        public static int countrieID;
+        public Tower tower = new Tower();
+        public static int CountriesListID;
         // GET: DeviceGroup
         public ActionResult Index()
         {
@@ -114,8 +118,10 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult Countries(string CountrieName,string StateName, string CityName)
+        public PartialViewResult Countries(string CountrieName,string StateName, string CityName, int parentId)
         {
+            CountriesListID = parentId;
+
             TitleTowerName TowerName = new TitleTowerName();
 
             if (CountrieName == null)
@@ -126,36 +132,40 @@ namespace AdminPanelDevice.Controllers
                     countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
                 }
                 //countrie = db.Countries.ToList();
-                TowerName.CountrieName = "Counter";
+                TowerName.CountrieName = "Countrie";
             }
 
-            if (CountrieName != null  && StateName=="")
-            {
-                city = new List<City>();
-                states = new List<States>();
+            //if (CountrieName != null  && StateName=="")
+            //{
+            //    city = new List<City>();
+            //    states = new List<States>();
 
-                var counterID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
-                states = db.States.Where(s=>s.CountrieID==counterID).ToList();
-                ViewBag.countrieName = CountrieName;
-                TowerName.CountrieName = CountrieName;
+            //    var counterID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
+            //    states = db.States.Where(s=>s.CountrieID==counterID).ToList();
+            //    ViewBag.countrieName = CountrieName;
+            //    TowerName.CountrieName = CountrieName;
              
-            }
-            if (StateName!=null && StateName!="")
-            {
-                var StateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-                city = db.Citys.Where(c => c.StateID == StateID).ToList();
-                TowerName.StateName = StateName;
-                TowerName.CountrieName = CountrieName;
-            }
-            else
-            {
-                TowerName.StateName = "State";
-            }
+            //}
+            //if (StateName!=null && StateName!="")
+            //{
+            //    var StateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+            //    city = db.Citys.Where(c => c.StateID == StateID).ToList();
+            //    TowerName.StateName = StateName;
+            //    TowerName.CountrieName = CountrieName;
+            //}
+            //else
+            //{
+            //    TowerName.StateName = "State";
+            //}
             ViewBag.countrie = countrie;
-            ViewBag.state = states;
-            ViewBag.city = city;
-
             ViewBag.countrieName = CountrieName;
+            ViewBag.CountrieListID = CountriesListID; 
+            //ViewBag.state = states;
+            //ViewBag.city = city;
+
+            TowerName.StateName = "State";
+            TowerName.CityName = "City";
+        
             TitleTowor.Add(TowerName);
             return PartialView("_CountriesSearch",TitleTowor);
         }
@@ -163,13 +173,30 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult countrieSearch(string countrieSearchName)
         {
-            if (countrieSearchName == null) { 
-            countrie = db.Countries.ToList();
+            if (countrieSearchName == null)
+            {
+
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                {
+                    countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
+                }
+                //countrie = db.Countries.ToList();
             }
             else
             {
-                countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName)).ToList();
+                if (countrieSearchName.Length >= 1)
+                {
+                    searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
+                    countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName) || c.CountrieName.Contains(searchName)).ToList();
+                }
+                else
+                {
+                    countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName)).ToList();
+                }
             }
+            states.Clear();
+            city.Clear();
+
             ViewBag.countrie = countrie;
             return PartialView("_Countrie");
         }
@@ -177,37 +204,137 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult stateSearch(string CountrieName, string stateSearchName)
         {
-            if (stateSearchName == null && CountrieName!=null)
+            countrieName = CountrieName;
+            if (stateSearchName == null && CountrieName != null)
             {
-                var countrieID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
+                countrieID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
                 states = db.States.Where(s => s.CountrieID == countrieID).ToList();
                 ViewBag.countrie = states;
             }
-            else
+            if (stateSearchName != null && CountrieName != null)
             {
-               var statesSearch = states.Where(s => s.StateName.Contains(stateSearchName)).ToList();
-                ViewBag.countrie = statesSearch;
+                if (stateSearchName.Length >= 1)
+                {
+                    searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
+                  var state = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
+                    ViewBag.countrie = state;
+                }
+                else {
+                    states = db.States.Where(s => s.CountrieID == countrieID).ToList();
+                    ViewBag.countrie = states;
+                }
+               
             }
-            
+            city.Clear();
             return PartialView("_State");
         }
 
         [HttpPost]
         public PartialViewResult citySearch(string StateName, string citySearchName)
         {
+
+            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+            var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID==countrieID && t.StateID==stateID).ToList().Select(t=>t.CityCheckedID).ToList();
+
             if (citySearchName == null & StateName!=null && StateName!="")
             {
-                var countrieID = db.States.Where(c => c.StateName == StateName).FirstOrDefault().ID;
-                 city = db.Citys.Where(c=>c.StateID == countrieID).ToList();
+               var statesID = db.States.Where(c => c.StateName == StateName).FirstOrDefault().ID;
+                 city = db.Citys.Where(c=>c.StateID == statesID).ToList();
                  ViewBag.city = city;
+            }
+            if (citySearchName != null & StateName != null && StateName != "")
+            {
+                if (citySearchName.Length >= 1)
+                {
+                    searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
+                    var citys = city.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
+                    ViewBag.city = citys;
+                }
+                else
+                {
+                    city = db.Citys.Where(c => c.StateID == countrieID).ToList();
+                    ViewBag.city = city;
+                }
+            }
+            
+            return PartialView("_City",cityChecked);
+        }
+
+        [HttpPost]
+        public PartialViewResult CityAdd (string StateName, string addcityName)
+        {
+            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+            var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
+
+            City citys = new City();
+            citys.CityName = addcityName;
+            citys.StateID = stateID;
+            db.Citys.Add(citys);
+            db.SaveChanges();
+
+            city = db.Citys.Where(c => c.StateID == stateID).ToList();
+            ViewBag.city = city;
+
+            return PartialView("_City", cityChecked);
+        }
+
+        [HttpPost]
+        public JsonResult TowerInsert(string countrieName,string stateName, string cityName, int cityid)
+        {
+            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            var stateID = db.States.Where(s => s.StateName == stateName).FirstOrDefault().ID;
+
+            tower.Name = cityName;
+            tower.NumberID = db.towers.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
+            tower.CountriesID = countrieID;
+            tower.StateID = stateID;
+            tower.CityCheckedID = cityid;
+            tower.CountriesListID = CountriesListID;
+            //tower.Name = TowerType.Name;
+            //tower.LattiTube = TowerType.LattiTube;
+            //tower.LongiTube = TowerType.LongiTube;
+            //tower.IP = TowerType.IP;
+            //tower.Phone = TowerType.Phone;
+            //tower.Status = TowerType.Status;
+
+            db.towers.Add(tower);
+            db.SaveChanges();
+            return Json("");
+        }
+
+        [HttpPost]
+        public PartialViewResult SelectAll(string selectallName, string StateName)
+        {
+            
+            Tower tw = new Tower();
+            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+            var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
+            if (selectallName == "All")
+            {
+                city.Clear();
+                city = db.Citys.Where(c => c.StateID == stateID).ToList();
+                ViewBag.city = city;
             }
             else
             {
-               var citySearch = city.Where(c=>c.CityName.Contains(citySearchName)).ToList();
-                ViewBag.city = citySearch;
+                city.Clear();
+                foreach (var item in cityChecked)
+                {
+                    City ct = new City();
+                    tw = db.towers.Where(t => t.CityCheckedID == item).FirstOrDefault();
+                    ct.CityName = tw.Name;
+                    ct.StateID = tw.StateID;
+                    ct.CheckedID = tw.CityCheckedID;
+                    city.Add(ct);
+                }
+                ViewBag.city = city;
             }
-            
-            return PartialView("_City");
+            return PartialView("_City", cityChecked);
         }
+
+
     }
 }

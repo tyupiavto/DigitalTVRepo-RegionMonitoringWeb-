@@ -20,7 +20,7 @@
             <li>
                 @*<span id="DevName">Device</span>*@
                 <span id="DevName">Device </span>
-                <span id="AddGroup" data-toggle="modal" data-target="#GroupModal" style="width: 60px;margin-left:77%; margin-top:-7.6%;">Add Group</span>
+                <span id="AddGroup" data-toggle="modal" data-target="#groupModal" style="width: 60px;margin-left:198px; margin-top:-20px;">Add Group</span>
                 
                     <ul id="deviceName" class="devInfo"></ul>
                 
@@ -135,15 +135,15 @@
 </div>
 
 <!-- Modal Group -->
-<div class="container">
-    <div class="modal fade" id="GroupModal" role="dialog">
-        <div class="modal-dialog" @*style="margin-left:-20%;"*@>
+<div>
+    <div class="modal fade" id="groupModal" role="dialog">
+        <div class="modal-dialog">
             <div class="widget-container widget_search styled boxed-velvet" style="width:250px;">
                 <div class="inner gradient">
                     <form method="get" id="searchform2" action="#">
                         <div class="clearfix">
-                            <span class="btn btn-small" style="opacity: 1;"><input type="button" id="create_group" value="create" @*hidefocus="true"*@ style="outline: none;" class="gradient" @*data-dismiss="modal"*@></span>
-                            <div class="input_wrap"><input class="inputField gradient" name="group_name" id="group_name" placeholder="Group Name" value="" type="text" @*hidefocus="true"*@ style="outline: none; color: white"></div>
+                            <span class="btn btn-small" style="opacity: 2001;"><input type="button" id="create_group" value="create" hidefocus="true" style="outline: none;" class="gradient" data-dismiss="modal"></span>
+                            <div class="input_wrap"><input class="inputField gradient" name="group_name" id="group_name" placeholder="Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white"></div>
                         </div>
                     </form>
                 </div>
@@ -162,6 +162,9 @@
         counter = 0;
         $('.devInfo').hide();
 
+        //
+
+        //
         //var ListCount = 1;
         //$(document).on('click touch', '.addList', function () {
         //    var newtr = '<tr class="tableBody" id="' + ListCount + '_' + ListCount + '"><td class="tableConn">Link ' + (ListCount + 1) + '</td></tr>';
@@ -190,9 +193,9 @@
         //    }
         //});
 
-        var handled = false;                                           // countries search and full countries
+        var handled = false; var width;                                          // countries search and full countries
         $('body').on('click touchend', '#typeSelect', function (e) {
-            var width = $(this).width();
+             width = $(this).width();
             if (e.type == "touchend") {
                 handled = true;
                 $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
@@ -215,10 +218,13 @@
             var value = $(this).text();
             CountrieName = value;
             StateName = null;
-            $.post("/DeviceGroup/Countries", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-                $('#settingsDiv').html("");
-                $('#settingsDiv').html(Response);
-            }, 'text');
+            $('.header' + $('#typeDropDownList').attr('value')).text(value);
+            $('#typeSelect #countrie').text(value);
+            $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
+            //$.post("/DeviceGroup/countrieSearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
+            //    $('#settingsDiv').html("");
+            //    $('#settingsDiv').html(Response);
+            //}, 'text');
 
         });
 
@@ -246,10 +252,12 @@
         $('body').on('click touchend', '#typeDropDownListState li', function () {
             var value = $(this).text();
             StateName = value;
-            $.post("/DeviceGroup/Countries", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-                $('#settingsDiv').html("");
-                $('#settingsDiv').html(Response);
-            }, 'text');
+            $('#typeSelectState #state').text(value);
+            $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+            //$.post("/DeviceGroup/Countries", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
+            //    $('#settingsDiv').html("");
+            //    $('#settingsDiv').html(Response);
+            //}, 'text');
           
         });
 
@@ -274,11 +282,12 @@
 
         });
 
-        $('body').on('click touchend', '#typeDropDownListCity li', function () {
-            var value = $(this).text();
-            $('#typeSelectCity .type').text(value);
-            $('#typeDropDownListCity').toggle();
-        });
+        //$('body').on('click touchend', '#typeDropDownListCity li', function () {
+        //    var value = $(this).text();
+        //    alert("city");
+        //    $('#typeSelectCity .type').text(value);
+        //    $('#typeDropDownListCity').toggle();
+        //});
 
         //$(document).on('click touch', '.addList', function () {
         //    $('.addList').val("hey brat");
@@ -410,7 +419,7 @@
                         var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();;
                         var Class = ui.draggable.attr("class");
                         var title = ui.draggable.text().trim();
-                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr"><td class="add"><span class="addList' + (counter + 1)+'"></span></td></tr></table>');
+                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (counter + 1) + '">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr"><td class="add"><span class="addList' + (counter + 1)+'"></span></td></tr></table>');
                         $(this).append(item);
                         counter++;
                         foo();

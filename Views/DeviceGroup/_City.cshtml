@@ -2,7 +2,8 @@
 @{
     var city = ViewBag.city;
     var ID = 1;
-    foreach(var item in Model)
+    var diagramID = ViewBag.DiagramID;
+    foreach (var item in Model)
     {
         city[item-1].CheckedID = item;
     }
@@ -10,8 +11,8 @@
 @foreach (var item in city)
 {
     <li>@item.CityName</li>
-        <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:225px;z-index:0;">
-            <div class="rowCheckbox">
+        <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:222px;z-index:0;">
+            <div class="rowCheckbox" id="@diagramID">
                 <div class="custom-checkbox" id="@ID">
                     @if (item.CheckedID != 0 && item.CheckedID == ID)
                     {
@@ -23,7 +24,6 @@
                     <input name="city_checked" id="city_checked@(ID)" type="checkbox" value="@item.CityName" hidefocus="true" style="outline: none;" class="gradient">
                      <label @*for="city_checked"*@ id="checked_add@(ID)" value="@ID" class="" style="background-size:19px;"></label>
                     }
-                    
                 </div>
             </div>
         </div>
@@ -31,4 +31,4 @@
 }
     @*<script src="~/Content/ScriptView/CountrieSearch.js"></script>*@
 
-        @*<script src="~/Content/ScriptView/CheckedCity.js"></script>*@
+        <script src="~/Content/ScriptView/CheckedCity.js"></script>

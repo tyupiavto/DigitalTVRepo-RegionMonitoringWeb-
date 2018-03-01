@@ -23,7 +23,7 @@
             <td class="adapterInput" colspan="2" style="text-align: center;">
                 <ul class="typeSelect" id="typeSelect">
                     <li>
-                        <span class="type" id="countrie">@countrieName</span><span class="arrow">
+                        <span class="type" value="@countrieName" id="countrie">@countrieName</span><span class="arrow">
                             <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
                         </span>
                     </li>
@@ -50,7 +50,7 @@
                             </span>
                         </li>
                     </ul>
-                    <ul class="typeDropDownList" id="typeDropDownListState" style="width: 145px; display: none; position:relative">
+                    <ul class="typeDropDownList" id="typeDropDownListState" value="@countrieListID" style="width: 145px; display: none; position:relative">
                         <input class="deviceInput inputField gradient" name="state_search" id="state_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white">
                         <div id="state_partial" class="search_count_stat_city"></div>
 
@@ -74,20 +74,18 @@
                     </li>
                 </ul>
 
-                <ul class="typeDropDownList" id="typeDropDownListCity" style="width: 145px; display: none; position:relative;">
-                    @*<div id="_partial" class="search_count_stat_city">*@
+                <ul class="typeDropDownList" id="typeDropDownListCity" value="@countrieListID" style="width: 145px; display: none; position:relative;">
                     <li id="city_list" style="width: 29%; margin-left: 187px; margin-top:2px; height:20px;">
                         <span class="type" id="name_all">All</span><span class="arrow" id="city_list">
                             <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
                         </span>
                     </li>
                     <ul class="dyseqList typeDropDownList" id="city_allselect" style="width:30%; display: none; margin-left:186px; z-index:1;">
-                    <li id="city_all" @*style="width: 29%;margin-left: 187px;*@ display:none">All</li>
-                    <li id="city_select" @*style="width: 29%;margin-left: 187px;*@ display:none">Select</li>
+                    <li id="city_all" display:none">All</li>
+                    <li id="city_select"display:none">Select</li>
                     </ul>
                   
 
-            @*</div>*@
             <input class="deviceInput inputField gradient" name="city_search" id="city_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white; font-size:11px; font-weight:100; width:70%; margin-left:-80px; margin-top:-21px;">
 
             <input class="deviceInput inputField gradient" name="city_name_add" id="city_name_add" placeholder="City" value="" type="text" hidefocus="true" style="outline: none;  color: white; font-size: 11px;font-weight: 100; width: 70%;margin-left: -3px;margin-top: -6px">

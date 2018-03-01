@@ -241,12 +241,16 @@
     <Compile Include="Models\Devices.cs" />
     <Compile Include="Models\DeviceType.cs" />
     <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\HtmlSave.cs" />
     <Compile Include="Models\Line.cs" />
     <Compile Include="Models\LiveValue.cs" />
     <Compile Include="Models\MibGet.cs" />
     <Compile Include="Models\MibTreeInformation.cs" />
+    <Compile Include="Models\PointConnection.cs" />
+    <Compile Include="Models\pointList.cs" />
     <Compile Include="Models\Preset.cs" />
     <Compile Include="Models\presetThread.cs" />
+    <Compile Include="Models\ReturnedHtml.cs" />
     <Compile Include="Models\ScanningInterval.cs" />
     <Compile Include="Models\States.cs" />
     <Compile Include="Models\TitleTowerName.cs" />
@@ -294,6 +298,7 @@
     <Content Include="Views\DeviceGroup\_Countrie.cshtml" />
     <Content Include="Views\DeviceGroup\_State.cshtml" />
     <Content Include="Views\DeviceGroup\_City.cshtml" />
+    <Content Include="Views\DeviceGroup\_mainDiagram.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -303,6 +308,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="HtmlText\" />
     <Folder Include="Icons\" />
     <Folder Include="image\" />
     <Folder Include="MibFiles\" />
@@ -370,7 +376,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60620</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60620/</IISUrl>
+          <IISUrl>http://localhost:60630/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,4 +1,5 @@
-﻿var countrieSearchName, StateName, CountrieName, citySearchName,parentId,addcityName;
+﻿var countrieSearchName, StateName, CountrieName, citySearchName, parentId, addcityName;
+var countrieSettingName, stateSettingName;
 //var handled = false;
 //$('body').on('click touchend', '#typeSelect', function (e) {
 //    var width = $(this).width();
@@ -85,7 +86,9 @@
 
 $(document).on('click touchend', '.settings', function () { // add device setting open
     parentId = $(this).closest($(".foo")).attr("id");
-    $.post("/DeviceGroup/Countries", { parentId: parentId }, function (Response) {
+    countrieSettingName = $('.header' + parentId).text();
+    stateSettingName = $('#state' + parentId).text();
+    $.post("/DeviceGroup/Countries", { parentId: parentId, countrieSettingName: countrieSettingName, stateSettingName: stateSettingName }, function (Response) {
         $('#settingsDiv').html("");
         $('#settingsDiv').html(Response);
     }, 'text');

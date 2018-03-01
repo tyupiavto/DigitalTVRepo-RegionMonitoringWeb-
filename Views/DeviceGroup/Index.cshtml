@@ -20,7 +20,7 @@
             <li>
                 @*<span id="DevName">Device</span>*@
                 <span id="DevName">Device </span>
-                <span id="AddGroup" data-toggle="modal" data-target="#groupModal" style="width: 60px;margin-left:198px; margin-top:-20px;">Add Group</span>
+                <span id="AddGroup" @*data-toggle="modal" data-target="#groupModal"*@ style="width: 60px;margin-left:198px; margin-top:-20px;">Add Group</span>
                 
                     <ul id="deviceName" class="devInfo"></ul>
                 
@@ -36,10 +36,11 @@
             </li>
             <!-- List of available displays -->
             <li>
-                <span id="Disp">Display</span>
-                <ul id="display" class="devInfo">
-                    @*<li class="display">
-                        </li>*@
+                <span id="tower_menu">Tower</span>
+                <ul id="tower_drag" class="devInfo">
+                    <li class="tower">Tower
+                        
+                    </li>
                 </ul>
             </li>
             <!-- List of available audio output devices -->
@@ -130,7 +131,7 @@
             </span></th></tr><tr><td class="add"><span class="addList">Add new link</span></td></tr></table>*@
 
 @*</div>*@
-<div id="mainDiv" >
+<div id="mainDiv" name="mainDiv" >
    
 </div>
 
@@ -157,13 +158,17 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 
 <script>
-    var counter;
+    //var counter;
     $(document).ready(function () {
-        counter = 0;
+     
         $('.devInfo').hide();
 
-        //
+        
+        window.onload = loadDiagram();
 
+        $(window).on("beforeunload", function (e) {
+            //saveDiagram();
+        });
         //
         //var ListCount = 1;
         //$(document).on('click touch', '.addList', function () {
@@ -174,7 +179,7 @@
         //});
         //$('#DevName').click(function () {
         //    $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        //});
+        //});1
 
         //$("#mainDiv").sortable({
         //    revert: true
@@ -225,7 +230,6 @@
             //    $('#settingsDiv').html("");
             //    $('#settingsDiv').html(Response);
             //}, 'text');
-
         });
 
         var handledstate = false;                                           // states search and full states
@@ -238,6 +242,9 @@
             else
                 if (e.type == "click" && !handledstate) {
                     $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+                    CountrieName = $('#typeSelect #countrie').text();
+                    //alert($('#countrie').attr("value"));
+                    //alert($('#countrie').text());
                     $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
                         $('#state_partial').html("");
                         $('#state_partial').html(Response);
@@ -253,11 +260,8 @@
             var value = $(this).text();
             StateName = value;
             $('#typeSelectState #state').text(value);
+            $('#state' + $('#typeDropDownListState').attr("value")).text(value);
             $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-            //$.post("/DeviceGroup/Countries", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-            //    $('#settingsDiv').html("");
-            //    $('#settingsDiv').html(Response);
-            //}, 'text');
           
         });
 
@@ -271,7 +275,9 @@
             else
                 if (e.type == "click" && !handledcity) {
                     $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
-                    $.post("/DeviceGroup/citySearch", { StateName: StateName, CityName: CityName }, function (Response) {
+                    CountrieName = $('#typeSelect #countrie').text();
+                    StateName = $('#state').text();
+                    $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
                         $('#city_partial').html("");
                         $('#city_partial').html(Response);
                     }, 'text');
@@ -281,86 +287,6 @@
                 }
 
         });
-
-        //$('body').on('click touchend', '#typeDropDownListCity li', function () {
-        //    var value = $(this).text();
-        //    alert("city");
-        //    $('#typeSelectCity .type').text(value);
-        //    $('#typeDropDownListCity').toggle();
-        //});
-
-        //$(document).on('click touch', '.addList', function () {
-        //    $('.addList').val("hey brat");
-           
-        //});
-
-        //var handled = false;
-        //$('body').on('click touchend', '#typeSelect', function (e) {
-        //    var width = $(this).width();
-        //    if (e.type == "touchend") {
-        //        handled = true;
-        //        $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-        //    }
-        //    else 
-        //        if (e.type == "click" && !handled) {
-        //            $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-        //        }
-        //        else {
-        //            handled = false;
-        //        }
-            
-        //});
-
-        //var handledstate = false;
-        //$('body').on('click touchend', '#typeSelectState', function (e) {
-        //    var width = $(this).width();
-        //    if (e.type == "touchend") {
-        //        handledstate = true;
-        //        $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-        //    }
-        //    else
-        //        if (e.type == "click" && !handled) {
-        //            $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-        //        }
-        //        else {
-        //            handledstate = false;
-        //        }
-
-        //});
-
-        //$('body').on('click touchend', '#typeDropDownList li', function () {
-        //    var value = $(this).text();
-        //    $('#typeSelect .type').text(value);
-        //    $('#typeDropDownList').toggle();
-        //    //showTable();
-        //});
-
-        //$('body').on('click touchend', '#typeDropDownListState li', function () {
-        //    var value = $(this).text();
-        //    $('#typeSelectState .type').text(value);
-        //    $('#typeDropDownListState').toggle();
-        //    //showTable();
-        //});
-
-        //$('.last').click(function () {
-        //    $('.cuselText').text($('.last').text());
-
-        //});
-        
-
-        //$('.select_styled').click(function () {
-        //    if ($('.cusel-scroll-wrap').css("display") == "block") {
-        //        $('.cusel-scroll-wrap').css("display", "none");
-        //    }
-        //    else {
-        //        $('.cusel-scroll-wrap').css("display", "block");
-        //    }
-        //});
-
-        //$('#cuselFrame-contact_subject').click(function () {
-        //    alert("no");
-           
-        //});
 
         $('#countrie').click(function () {
             $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
@@ -377,8 +303,13 @@
             revert: 'invalid'
         });
 
-
-
+        $('#tower_menu').click(function () {
+            $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        });
+        $('#tower_drag li').draggable({
+            helper: 'clone',
+            revert: 'invalid'
+        });
         function foo() {
             $('.foo').each(function () {
                 //Making dropped elements draggable again
@@ -395,6 +326,7 @@
                         $('.contextmenu').hide();
                         $(this).css({ 'z-index': '11' });
                         $(".class" + draggedItemId).css({ 'z-index': '15' });
+                        //saveDiagram();
                     },
                     stop: function () {
                         var draggedItemId = $(this).attr('id');
@@ -406,23 +338,26 @@
                         if ($(this).position().top < 0) {
                             $(this).css({ 'top': '0' });
                         }
+                        saveDiagram();
                     }
                 });
             });
         }
+      var  counter = $('.foo').length;
             $("#mainDiv").droppable({
                 drop: function (ev, ui) {
-
+                    counter = $('.foo').length;
                     if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
                         var pos = ui.draggable.offset(), dPos = $(this).offset();
                         var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();;
                         var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();;
                         var Class = ui.draggable.attr("class");
                         var title = ui.draggable.text().trim();
-                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (counter + 1) + '">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr"><td class="add"><span class="addList' + (counter + 1)+'"></span></td></tr></table>');
+                        var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (counter + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (counter + 1) + '">' + title + '</span><span class="settings"><span id="state' + (counter + 1) +'"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (counter + 1) +'"><span class="addList' + (counter + 1)+'"></span></td></tr></table>');
                         $(this).append(item);
                         counter++;
                         foo();
+                        //saveDiagram();
                     }
                 }
             });
@@ -431,6 +366,11 @@
 
             var mouseDown = false;
             var prevCoords = { x: 0, y: 0 };
+
+            $('#AddGroup').click(function () {
+                saveDiagram();
+                alert("save");
+            });
 
             //$("#mainDiv").mousedown(function (e) {
             //    mouseDown = !$(e.target).closest('.foo').length;

@@ -28,7 +28,8 @@ namespace AdminPanelDevice.Models
         public DbSet<Countrie> Countries { get; set; }
         public DbSet<States> States { get; set; }
         public DbSet<City> Citys { get; set; }
-
+        public DbSet<HtmlSave> HtmlSaves { get; set; }
+        public DbSet<PointConnection> PointConnections { get; set; }
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 
 

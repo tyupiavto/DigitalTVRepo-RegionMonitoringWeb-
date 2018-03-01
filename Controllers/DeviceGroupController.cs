@@ -11,6 +11,9 @@ using Dapper;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
+using System.Web.UI;
+using System.Xml;
+using System.Web.Routing;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -23,8 +26,10 @@ namespace AdminPanelDevice.Controllers
         //public List<DeviceType> DeviceInsert = new List<DeviceType>();
         public static string DeviceName;
         public static List<Countrie> countrie = new List<Countrie>();
+        public List<PointConnection> pointConnection = new List<PointConnection>();
         public static List<States> states = new List<States>();
         public static List<City> city = new List<City>();
+        public ArrayList PointConnect = new ArrayList();
         public static int countrieIndicator=0;
         public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
         string searchName;
@@ -32,6 +37,7 @@ namespace AdminPanelDevice.Controllers
         public static int countrieID;
         public Tower tower = new Tower();
         public static int CountriesListID;
+        public static string Html;
         // GET: DeviceGroup
         public ActionResult Index()
         {
@@ -118,22 +124,22 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult Countries(string CountrieName,string StateName, string CityName, int parentId)
+        public PartialViewResult Countries(string CountrieName,string StateName, string CityName, int parentId, string countrieSettingName, string stateSettingName)
         {
             CountriesListID = parentId;
 
             TitleTowerName TowerName = new TitleTowerName();
 
-            if (CountrieName == null)
-            {
+            //if (CountrieName == null)
+            //{
 
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                {
-                    countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
-                }
-                //countrie = db.Countries.ToList();
-                TowerName.CountrieName = "Countrie";
-            }
+            //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //    {
+            //        countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
+            //    }
+            //    //countrie = db.Countries.ToList();
+                
+            //}
 
             //if (CountrieName != null  && StateName=="")
             //{
@@ -159,13 +165,21 @@ namespace AdminPanelDevice.Controllers
             //}
             ViewBag.countrie = countrie;
             ViewBag.countrieName = CountrieName;
-            ViewBag.CountrieListID = CountriesListID; 
+            ViewBag.CountrieListID = CountriesListID;
             //ViewBag.state = states;
             //ViewBag.city = city;
-
-            TowerName.StateName = "State";
-            TowerName.CityName = "City";
-        
+            if (countrieName == null && stateSettingName == null)
+            {
+                TowerName.CountrieName = "Countrie";
+                TowerName.StateName = "State";
+                TowerName.CityName = "City";
+            }
+            else
+            {
+                TowerName.CountrieName = countrieSettingName;
+                TowerName.StateName = stateSettingName;
+                TowerName.CityName = "City";
+            }
             TitleTowor.Add(TowerName);
             return PartialView("_CountriesSearch",TitleTowor);
         }
@@ -188,9 +202,19 @@ namespace AdminPanelDevice.Controllers
                 {
                     searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
                     countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName) || c.CountrieName.Contains(searchName)).ToList();
+
+                    //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                    //{
+                    //    countrie = connection.Query<Countrie>(@"Select * From  Countrie Where CONTAINS CountrieName=countrieSearchName").ToList();
+                    //}
+
                 }
                 else
                 {
+                    //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                    //{
+                    //    countrie = connection.Query<Countrie>("Select * From  Countrie Where CountrieName.Contains(countrieSearchName) ").ToList();
+                    //}
                     countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName)).ToList();
                 }
             }
@@ -230,10 +254,9 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult citySearch(string StateName, string citySearchName)
+        public PartialViewResult citySearch(string CountrieName , string StateName, string citySearchName)
         {
-
-            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            var countrieID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
             var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
             var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID==countrieID && t.StateID==stateID).ToList().Select(t=>t.CityCheckedID).ToList();
 
@@ -257,7 +280,7 @@ namespace AdminPanelDevice.Controllers
                     ViewBag.city = city;
                 }
             }
-            
+            ViewBag.DiagramID = CountriesListID;
             return PartialView("_City",cityChecked);
         }
 
@@ -292,14 +315,18 @@ namespace AdminPanelDevice.Controllers
             tower.StateID = stateID;
             tower.CityCheckedID = cityid;
             tower.CountriesListID = CountriesListID;
-            //tower.Name = TowerType.Name;
-            //tower.LattiTube = TowerType.LattiTube;
-            //tower.LongiTube = TowerType.LongiTube;
-            //tower.IP = TowerType.IP;
-            //tower.Phone = TowerType.Phone;
-            //tower.Status = TowerType.Status;
 
             db.towers.Add(tower);
+            db.SaveChanges();
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult TowerDelete(int towerDeleteID, int cityid)
+        {
+            var deleteTower = db.towers.Where(t => t.CountriesListID == towerDeleteID).Where(c => c.CityCheckedID == cityid).FirstOrDefault();
+
+            db.towers.Remove(deleteTower); 
             db.SaveChanges();
             return Json("");
         }
@@ -334,7 +361,94 @@ namespace AdminPanelDevice.Controllers
             }
             return PartialView("_City", cityChecked);
         }
+         
+        [HttpPost]
+        public JsonResult SaveDiagram (ReturnedHtml files)
+        {
+
+            //HtmlSave htmlsave = new HtmlSave();
+
+            //htmlsave = db.HtmlSaves.FirstOrDefault();
+            //if (htmlsave!=null)
+            //db.HtmlSaves.Remove(htmlsave);
+
+            //htmlsave = new HtmlSave();
+            //htmlsave.HtmlFile = files.name;
+
+            //db.HtmlSaves.Add(htmlsave);
+            //db.SaveChanges();
+            Html = files.Html;
+            string text = files.Html;
+            string pointXml = files.Xml;
+            System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
+            //System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\PointXml.xml", pointXml);
+            return Json("");
+        }
 
 
+        [HttpPost]
+        public JsonResult PointConnections(Array[] connections)
+        {
+            try
+            {
+                List<PointConnection> point = new List<PointConnection>();
+                //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                //{
+                //    point = connection.Query<PointConnection>("Select * From  PointConnection ").ToList();
+                //}
+              
+                if (connections != null)
+                {
+                    var points = db.PointConnections.ToList();
+                    db.PointConnections.RemoveRange(points);
+                    db.SaveChanges();
+
+                    PointConnect.AddRange(connections);
+                    PointConnection pointConnection = new PointConnection();
+                    foreach (string[] item in PointConnect)
+                    {
+                        pointConnection.GetUuids = item[0];
+                        pointConnection.SourceId = item[1];
+                        pointConnection.TargetId = item[2];
+                        pointConnection.PointRight = item[3];
+                        pointConnection.PointLeft = item[4];
+
+                        db.PointConnections.Add(pointConnection);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e) { } 
+
+            return Json("");
+        }
+
+        public JsonResult LoadDiagram ()
+        {
+
+            string html = "";
+            string pointXml = "";
+            Html = null;
+            //HtmlSave html = new HtmlSave();
+            //html.HtmlFile = db.HtmlSaves.Select(s => s.HtmlFile).FirstOrDefault();
+            if (Html == null)
+            {
+             html = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt");
+             pointXml= System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\PointXml.xml");
+                Html = "";
+            }
+            else
+            {
+                html = Html;
+            }
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                pointConnection = connection.Query<PointConnection>("Select * From  PointConnection ").ToList();
+            }
+            //string html = db.HtmlSaves.Select(s => s.HtmlFile).FirstOrDefault();
+            return Json(new { htmlData= html , pointData= pointConnection });
+        }
+
+  
     }
 }

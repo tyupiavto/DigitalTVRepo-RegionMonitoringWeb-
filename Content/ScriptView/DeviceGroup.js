@@ -10,17 +10,17 @@ $('#DevName').click(function () {
     $.post("/DeviceGroup/GroupShow", {}, function (Response) {
         $('#deviceName').html("");
         $('#deviceName').html(Response);
+        $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
     }, 'text');
-    $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
 });
 
 var device_add;
 device_add = $('#deviceName');
 device_add.on("click", "li span", function (e) {
-    var deviceID = $(this).attr("value");
-    if (e.target.id == "add_device" + deviceID) {
-        deviceName = $('#group_name' + deviceID).text();
-        $.post("/DeviceGroup/AddDevice", { deviceName: deviceName}, function (Response) {
+    var deviceGroupID = $(this).attr("value");
+    if (e.target.id == "add_device" + deviceGroupID) {
+        deviceName = $('#group_name' + deviceGroupID).text();
+        $.post("/DeviceGroup/AddDevice", { deviceName: deviceName, deviceGroupID: deviceGroupID }, function (Response) {
             $('#add_device_partial').html("");
             $('#add_device_partial').html(Response);
         },'text');
@@ -50,5 +50,7 @@ $('#add_file').click(function () {
         }
     });
 });
+
+
 
 

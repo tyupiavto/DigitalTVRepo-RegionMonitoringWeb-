@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -149,9 +150,11 @@
     <Content Include="Content\ScriptView\CheckedCity.js" />
     <Content Include="Content\ScriptView\CountrieSearch.js" />
     <Content Include="Content\ScriptView\DeviceGroup.js" />
+    <Content Include="Content\ScriptView\DeviceManage.js" />
     <Content Include="Content\ScriptView\DevicePanel.js" />
     <Content Include="Content\ScriptView\DeviceUpdate.js" />
     <Content Include="Content\ScriptView\Get.js" />
+    <Content Include="Content\ScriptView\GroupShowList.js" />
     <Content Include="Content\ScriptView\TowerUpdate.js" />
     <Content Include="Content\ScriptView\TowerPanel.js" />
     <Content Include="Content\ScriptView\WalkSend.js" />
@@ -299,6 +302,10 @@
     <Content Include="Views\DeviceGroup\_State.cshtml" />
     <Content Include="Views\DeviceGroup\_City.cshtml" />
     <Content Include="Views\DeviceGroup\_mainDiagram.cshtml" />
+    <Content Include="Views\DeviceGroup\_DeviceListView.cshtml" />
+    <Content Include="Views\DeviceGroup\_DeviceSettings.cshtml" />
+    <Content Include="Views\DeviceGroup\_ScaninningInterval.cshtml" />
+    <Content Include="Views\DeviceGroup\_walk.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,6 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.ScanningInterval>
+
+@foreach (var item in Model)
+{
+    <li id="@item.ID">@item.Interval</li>
+}

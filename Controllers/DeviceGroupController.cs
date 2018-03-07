@@ -29,15 +29,19 @@ namespace AdminPanelDevice.Controllers
         public List<PointConnection> pointConnection = new List<PointConnection>();
         public static List<States> states = new List<States>();
         public static List<City> city = new List<City>();
+        public List<DeviceType> GroupListView = new List<DeviceType>();
+        public List<MibTreeInformation> mibInformation = new List<MibTreeInformation>();
         public ArrayList PointConnect = new ArrayList();
         public static int countrieIndicator=0;
         public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
+        public List<ScanningInterval> intervalTime = new List<ScanningInterval>();
         string searchName;
         public static string countrieName;
         public static int countrieID;
         public Tower tower = new Tower();
         public static int CountriesListID;
         public static string Html;
+        public static int DeviceGroupID;
         // GET: DeviceGroup
         public ActionResult Index()
         {
@@ -66,8 +70,9 @@ namespace AdminPanelDevice.Controllers
             return PartialView("~/Views/DeviceGroup/_Group.cshtml", groupList);
         }
         [HttpPost]
-        public PartialViewResult AddDevice(string deviceName)
+        public PartialViewResult AddDevice(string deviceName, int deviceGroupID)
         {
+            DeviceGroupID = deviceGroupID;
             DeviceName = deviceName;
             return PartialView("~/Views/DeviceGroup/_AddDevice.cshtml");
         }
@@ -94,6 +99,7 @@ namespace AdminPanelDevice.Controllers
                 devicetype.Purpose = type.Purpose;
                 devicetype.MibParser = pathname;
                 devicetype.NumberID = db.devicesTypes.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
+                devicetype.DeviceGroupID = DeviceGroupID;
                 db.devicesTypes.Add(devicetype);
                 db.SaveChanges();
 
@@ -365,18 +371,6 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult SaveDiagram (ReturnedHtml files)
         {
-
-            //HtmlSave htmlsave = new HtmlSave();
-
-            //htmlsave = db.HtmlSaves.FirstOrDefault();
-            //if (htmlsave!=null)
-            //db.HtmlSaves.Remove(htmlsave);
-
-            //htmlsave = new HtmlSave();
-            //htmlsave.HtmlFile = files.name;
-
-            //db.HtmlSaves.Add(htmlsave);
-            //db.SaveChanges();
             Html = files.Html;
             string text = files.Html;
             string pointXml = files.Xml;
@@ -423,6 +417,7 @@ namespace AdminPanelDevice.Controllers
             return Json("");
         }
 
+        [HttpPost]
         public JsonResult LoadDiagram ()
         {
 
@@ -449,6 +444,47 @@ namespace AdminPanelDevice.Controllers
             return Json(new { htmlData= html , pointData= pointConnection });
         }
 
-  
+        [HttpPost]
+        public PartialViewResult DeviceList (int deviceGroupList)
+        {
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    GroupList = connection.Query<DeviceType>("Select * From DeviceType ").ToList();
+            //}
+
+            GroupListView = db.devicesTypes.Where(d => d.DeviceGroupID == deviceGroupList).ToList();
+
+            return PartialView("_DeviceListView",GroupListView);
+        }
+
+        [HttpPost]
+        public PartialViewResult DeviceManegeSetting (int dvcID , string DeviceName)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+            }
+            ViewBag.DeviceName = DeviceName;
+            return PartialView("_DeviceSettings");
+        }
+
+        [HttpPost]
+        public PartialViewResult ScanIntervalDvc()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+            }
+            return PartialView("_ScaninningInterval", intervalTime);
+        }
+        [HttpPost]
+        public PartialViewResult WalkMib ()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
+            }
+            return PartialView("_DeviceSettings", mibInformation);
+        }
     }
 }

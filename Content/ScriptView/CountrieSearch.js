@@ -94,6 +94,10 @@ $(document).on('click touchend', '.settings', function () { // add device settin
     }, 'text');
 
 });
+
+
+
+
 $('#countries_search').keyup(function () {
     countrieSearchName = $('#countries_search').val();
     //if ($('#countries_search').val().length == 1) {
@@ -130,7 +134,6 @@ $('#city_list').click(function () {
     } else {
         $('#city_allselect').css("display", "block");
     }
-  
 });
 
 $('#city_all').click(function () {
@@ -194,3 +197,10 @@ $('#add_city').click(function () {
         $('#city_name_add').val("");
     }, 'text');
 });
+
+
+//$('#group_li' + $('#group_li').attr("value"))
+
+//$('#group_li').click(function () {
+//    $("#group_li").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+//});

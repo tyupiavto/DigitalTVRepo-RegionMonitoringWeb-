@@ -11,7 +11,7 @@
 @foreach (var item in city)
 {
     <li>@item.CityName</li>
-        <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:222px;z-index:0;">
+        <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:222px;z-index:0; height:24px;">
             <div class="rowCheckbox" id="@diagramID">
                 <div class="custom-checkbox" id="@ID">
                     @if (item.CheckedID != 0 && item.CheckedID == ID)

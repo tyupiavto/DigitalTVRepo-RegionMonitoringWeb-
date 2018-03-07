@@ -18,6 +18,14 @@ body {
     background: rgba(0, 0, 0, 0.3);
 	overflow: auto;
 }
+.device_setting_style {
+    background: linear-gradient(to bottom, rgba(53,59,67,1) 0%,rgba(58,64,72,1) 16%,rgba(64,70,78,1) 39%,rgba(74,80,86,1) 65%,rgba(82,88,96,1) 85%,rgba(85,91,98,1) 100%);
+    background-repeat: repeat;
+    background-position: 300px;
+    min-width: 1305px;
+    margin-left: -400px;
+    margin-top: -15px;
+}
 
 #leftDiv {
     display: inline-block;
@@ -78,7 +86,7 @@ body {
 #menu li ul li {
     background: url(/image/comment-bg3.jpg) repeat;
     width: 100%;
-    max-width: 250px;
+    max-width: 265px;
     text-align: center;
     min-height: 20px;
     line-height: 20px;
@@ -142,7 +150,11 @@ body {
     box-shadow: 5px 5px rgba(0,0,0, 0.1);
     border-spacing: 0px;
 }
-
+.setting_group {
+    font-size: 13px;
+    margin-top: 3px;
+    position: absolute;
+} 
 .thClass {
     min-width: 150px;
     width: 102%;
@@ -187,6 +199,18 @@ body {
 }
 
 .settings {
+    float: right;
+    margin-top: 3px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+.device_settings {
+    float: right;
+    margin-top: 3px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+.tower_settings {
     float: right;
     margin-top: 3px;
     margin-right: 8px;

@@ -144,18 +144,18 @@ namespace AdminPanelDevice.Controllers
                 IPadrress = IP;
                 ViewBag.IP = IPadrress;
 
-                var devicename = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
-                var walkOid = db.MibTreeInformations.Where(m => m.DeviceID == devicename.ID).FirstOrDefault();
-                deviceTypeID = devicename.ID;
+                //var devicename = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
+                //var walkOid = db.MibTreeInformations.Where(m => m.DeviceID == devicename.ID).FirstOrDefault();
+                //deviceTypeID = devicename.ID;
                 OctetString community = new OctetString("public");
 
                 AgentParameters param = new AgentParameters(community);
                 param.Version = SnmpVersion.Ver2;
 
-                IpAddress agent = new IpAddress(IP);
+                IpAddress agent = new IpAddress("192.168.24.12");
 
                 UdpTarget target = new UdpTarget((IPAddress)agent, 161, 2000, 1);
-                Oid rootOid = new Oid(walkOid.OID); // ifDescr
+                Oid rootOid = new Oid(".1.3.6.1.4.1"); // ifDescr
                                                     //Oid rootOid = new Oid(".1.3.6.1.4.1.23180.2.1.1.1"); // ifDescr
 
                 Oid lastOid = (Oid)rootOid.Clone();

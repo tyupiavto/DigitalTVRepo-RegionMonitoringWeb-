@@ -18,7 +18,7 @@ namespace AdminPanelDevice.Models
         public string Manufacture { get; set; }
         public string Purpose { get; set; }
         public string MibParser { get; set; }
-
+        public int DeviceGroupID { get; set; }
         [NotMapped]
         public HttpPostedFileBase mib_file { get; set; }
     }

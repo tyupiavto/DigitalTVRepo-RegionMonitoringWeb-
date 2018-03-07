@@ -1,0 +1,5 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.MibTreeInformation>
+@foreach (var item in Model)
+{
+    <li id="@item.ID">@item.Description</li>
+}

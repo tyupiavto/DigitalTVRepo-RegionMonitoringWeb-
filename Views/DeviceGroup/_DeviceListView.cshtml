@@ -1,0 +1,13 @@
+﻿
+@model  IEnumerable<AdminPanelDevice.Models.DeviceType>
+
+
+@foreach (var item in Model)
+{
+    <li class="device_list" id="group_li" value="@(item.NumberID)" style="margin-top:2px;z-index:100; width:240px;">
+        @*<span id="group_name@(item.NumberID)" value="@item.Name">@item.Name</span>*@
+        @item.Name
+    </li>
+}
+<script src="~/Content/ScriptView/GroupShowList.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />

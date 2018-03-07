@@ -97,3 +97,4 @@ C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanel
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.Migrations.lastdb.resources
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Dapper.dll
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Dapper.xml
+C:\Users\tyupi\Documents\Visual Studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.csproj.CoreCompileInputs.cache

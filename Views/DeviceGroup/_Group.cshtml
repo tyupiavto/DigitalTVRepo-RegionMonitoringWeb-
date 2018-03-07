@@ -1,13 +1,14 @@
 ﻿@model  IEnumerable<AdminPanelDevice.Models.Group>
 
 
-    @foreach (var item in Model)
-    {
-        <li id="group_li">
-            <span id="group_name@(item.GroupNameID)"  value="@item.GroupName">@item.GroupName</span>
-            <span id="add_device@(item.GroupNameID)" value="@(item.GroupNameID)"style="width: 24%; margin-left: 76%; margin-top: -8.2%">Add Device</span>
-        </li>
+@foreach (var item in Model)
+{
+<li id="group_li" value="@(item.GroupNameID)" style="margin-top:2px;">
+    <span id="group_name@(item.GroupNameID)" value="@item.GroupName">@item.GroupName</span>
+    <span id="add_device@(item.GroupNameID)" value="@(item.GroupNameID)" style="width: 24%; margin-left: 76%; margin-top: -8.2%">Add Device</span>
+    <ul id="deviceGroupName@(item.GroupNameID)" class="devInfo"></ul>
+</li>
+   
+}
 
-    }
-
-@*<script src="~/Content/ScriptView/DeviceGroup.js"></script>*@
+@*<script src="~/Content/ScriptView/GroupShow.js"></script>*@

@@ -1,5 +1,8 @@
 ﻿
 var dvcID, DeviceName;
+
+$(document).ready(function () { 
+
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     dvcID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.header' + dvcID).text();
@@ -8,36 +11,38 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     }
 
     //$.post("/DeviceGroup/DeviceManegeSetting", { dvcID: dvcID, DeviceName: DeviceName}, function (Response) {
-    //    $('#settingsDiv').html("");
-    //    $('#settingsDiv').html(Response);
+    //    $('#search_time_interval').html("");
+    //    $('#search_time_interval').html(Response);
     //}, 'text');
 
+    var $modal = $('#myModal');
     $.post("/DeviceGroup/WalkMib", {}, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
+        //$modal.modal("show");
     }, 'text');
-
+    
 });
 
 
 var handled = false; var width;                                          // countries search and full countries
-$('body').on('click touchend', '#Select_Time', function (e) {
+$('body').on('click touchend', '#select_time', function (e) {
     width = $(this).width();
 
     if (e.type == "touchend") {
         handled = true;
-        $('#Select_Time_List').css({ 'width': width + 12 }).toggle();
-        $('.Select_Time li').css('widht', '93%');
+        $('#select_time_list').css({ 'width': width + 12 }).toggle();
+        $('.select_time li').css('widht', '93%');
     }
     else
         if (e.type == "click" && !handled) {
-            $('#Select_Time_List').css({ 'width': width + 12 }).toggle();
+            $('#select_time_list').css({ 'width': width + 12 }).toggle();
             
-            if ($('#Select_Time_List').css("display") == "block") {
-                $('#Select_Time_List').css("display", "block");
+            if ($('#select_time_list').css("display") == "block") {
+                $('#select_time_list').css("display", "block");
             }
             else {
-                $('#Select_Time_List').css("display", "block");
+                $('#select_time_list').css("display", "block");
             }
             $.post("/DeviceGroup/ScanIntervalDvc", {}, function (Response) {
                 $('#interva_partial').html("");
@@ -56,4 +61,6 @@ $('body').on('click touchend', '#Select_Time_List li', function () {
     $('#time_interval').text(value);
     $('#Select_Time_List').css({ 'width': width + 12 }).toggle();
     $('#Select_Time_List').css("display", "none");
+});
+
 });

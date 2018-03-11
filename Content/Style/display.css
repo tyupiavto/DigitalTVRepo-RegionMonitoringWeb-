@@ -29,20 +29,24 @@ body {
     box-shadow: 5px 5px rgba(0,0,0, 0.1);
     border-spacing: 0px;
     /*background-position: 300px;*/
-    min-width: 1000px;
-    margin-left: -300px;
-    margin-top: -15px;
+    min-width: 850px;
+    margin-left: -150px;
+    margin-top: -20px;
 }
 .information_walk td {
     border-left: 1px solid rgba(0,0,0,0.3);
     border-bottom: 1px solid rgba(0,0,0,0.3)
+}
+#header_device td {
+    border-left: 1px solid rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(0,0,0,0.3);
 }
 .streamsInfo th:first-child {
     border-left: none;
 }
 .titileGroup {
     background: url(/image/comment-bg2.png) repeat;
-    width:96%;
+    width:100%;
 }
 .streamsInfo th {
     margin: 0;
@@ -59,13 +63,13 @@ body {
 .streamsInfo td {
     margin: 0;
     padding: 0;
-    /*border-left: 1px solid rgba(0,0,0,0.3);
-    border-bottom: 1px solid rgba(0,0,0,0.3);*/
+    /*position: absolute;*/
+    height: 20px;
     border-top: 1px solid rgba(0,0,0,0.3);
     background: url(/image/comment-bg2.png) repeat;
     border-collapse: collapse;
     text-align: center;
-    line-height:25px;
+    line-height: 20px;
     min-width: 50px;
 }
 .valueDiv {
@@ -75,7 +79,7 @@ body {
     max-width: 200px;
     color: white;
 }
-.modal_hiden {
+#modal_hiden {
     margin-top: -30px;
     width: 5px;
     height: 5px;
@@ -90,7 +94,7 @@ body {
     color: #b8c0c8;
 }
 
-.device_settings_name {
+#device_settings_name {
     font-size: 13px;
     margin-left: 50%;
     margin-top: -5px;
@@ -273,6 +277,13 @@ body {
     margin-right: 8px;
     cursor: pointer;
 }
+#device_settings {
+    height: 575px;
+    color: #333;
+    /*margin-top: -15px;*/
+    margin-left: -14px;
+    width: 877px;
+}
 .device_settings {
     float: right;
     margin-top: 3px;
@@ -375,8 +386,10 @@ body {
 }
 
 .scroll_walk {
+    height:545px;
     max-height: 550px;
     overflow-y: auto !important;
+    margin-top: -15px;
 }
 
     .scroll_walk::-webkit-scrollbar {
@@ -596,7 +609,7 @@ input[type="password"]:focus {
     }
 
 /*btn*/
-.buttons-wrap {
+/*.buttons-wrap {
     margin-bottom: 50px;
 }
 
@@ -748,7 +761,7 @@ input[type="password"]:focus {
             text-shadow: 0 1px 1px rgba(188,83,39,0.75);
         }
 
-    /* Button Shape */
+   
     .btn.btn-black span, .btn.btn-black input {
         background-position: left -74px;
     }
@@ -865,5 +878,5 @@ input[type="password"]:focus {
 
 .btn.btn-follow {
     background-position: right -1093px;
-}
+}*/
 /*btn*/

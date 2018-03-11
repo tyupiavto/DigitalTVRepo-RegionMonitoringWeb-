@@ -113,7 +113,7 @@
 
     <div id="settingsDiv">
 
-        </div>
+    </div>
 
 </div>
 <!-- Container for context menu. It appears only when user right clicks on one of the tables -->
@@ -144,50 +144,90 @@
         <!-- Modal content-->
         <div class="modal-content device_setting_style">
             <div class="modal-header" style="height:20px; margin-top:-5px;background: url(/image/comment-bg2.png) repeat;">
-                <tr class="tableHeader">
-                    <th class="thClass"><span class="header device_settings_name">Tower</span>
-                     </th>
-                </tr>
-                <button type="button" class="close modal_hiden" data-dismiss="modal">&times;</button>
+                <span class="header" id="device_settings_name">Tower</span>
+                <button type="button" class="close" id="modal_hiden" data-dismiss="modal">&times;</button>
             </div>
-            <div class="titileGroup" style="margin-left:15px;">
-                <table style="margin-left:19%;">
-                    <tr class="streamsInfo">
-                        <td>Name</td>
-                    </tr>
-                </table>
-                <table style="margin-top:-26px; margin-left:50%;">
-                    <tr class="streamsInfo">
-                        <td>Value</td>
-                    </tr>
-                </table>
-                <table style="margin-top:-26px; margin-left:62.5%;">
-                    <tr class="streamsInfo">
-                        <td>Map</td>
-                    </tr>
-                </table>
-                <table style="margin-top:-26px; margin-left:65.7%;">
-                    <tr class="streamsInfo">
-                        <td>Log</td>
-                    </tr>
-                </table>
-                <table style="margin-top:-26px; margin-left:70.8%;">
-                    <tr class="streamsInfo">
-                        <td>Scanning Interval</td>
-                    </tr>
-                </table>
-                <table style="margin-top:-26px; margin-left:80%;">
-                    <tr class="streamsInfo">
-                        <td>Set</td>
+            <div class="titileGroup" style="height:21px;">
+                <table>
+                    <tr class="streamsInfo" id="header_device">
+                        <td style="width:60%;">
+                            <div class="descriptionDiv">Name</div>
+                        </td>
+                        <td style="width:30%;">
+                            <div class="descriptionDiv">Value</div>
+                        </td>
+                        <td style="width:5%;">
+                            <div class="descriptionDiv">Map</div>
+                        </td>
+                        <td style="width:5%;">
+                            <div class="descriptionDiv">Log</div>
+                        </td>
+                        <td style="width:13%;">
+                            <div class="descriptionDiv">Scanning Interval</div>
+                        </td>
+                        <td style="width:10%;">
+                            <div class="descriptionDiv">Set</div>
+                        </td>
                     </tr>
                 </table>
             </div>
-            <div class="modal-body" id="device_settings" style="height:550px; color: #333; margin-top:-15px;">
-           
+            <div class="titileGroup" style="height:21px; margin-top:1px;">
+                <table>
+                    <tr>
+                        <td>
+                            <input class="deviceInput inputField gradient" name="description_value_search" id="description_value_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white;width:300px;">
+                        </td>
+                        <td class="adapterInput" id="select_list" value="8" style="text-align: center; padding:4px; position: absolute; text-align: center; padding: 4px; width: 112px; margin-left: 40px; height:20px; z-index:5;">
+                            <ul class="select_list" id="select_list" value="8" style="min-width: 36px; min-height: 18px; padding: 4px; margin-top: -4px; margin-left: -18px;">
+                                <li>
+                                    <span class="type" value="" id="interval">20</span><span class="arrow" style=" height:19px;">
+                                        <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="select_list_information" id="select_list_information" value="8" style="min-width:79px; width:79px; position: relative; display: none;">
+                                <div id="interva_partial8" class="search_time_interval" style="position:absolute; width:79px;">
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="1">20</li>
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="50">50</li>
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="5">100</li>
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="10">500</li>
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="20">1000</li>
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="30">3000</li>
+                                </div>
+                            </ul>
+                        </td>
+                        <td style="margin-left: 341px;position: absolute; margin-top: 4px">
+                            <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
+                                <div class="rowCheckbox map_check_all">
+                                    <div class="custom-checkbox" id="">
+                                        <input name="map_checked" id="map_checked_all" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                        <label id="map_checked_add_all" value="" class="" style="background-size:19px;"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="margin-left: 376px;position: absolute; margin-top: 4px">
+                            <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
+                                <div class="rowCheckbox log_check_all">
+                                    <div class="custom-checkbox" id="">
+
+                                        <input name="log_checked" id="log_checked_all" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                        <label id="log_checked_add_all" value="" class="" style="background-size:19px;"></label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="position:absolute;">
+                            <ul id="timButtons">
+                                <li><input type="button" id="Time" value="Time" class="btn" style="height: 19px;margin-left: 403px; width: 80px; line-height: 0;font-size: 12px;margin-top:1px;"></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            @*<div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>*@
+            <div class="modal-body" id="device_settings">
+            </div>
         </div>
 
     </div>
@@ -210,7 +250,69 @@
             </div>
         </div>
     </div>*@
+@*<div class="container">*@
+<!-- Modal  SET -->
+<div class="modal fade" id="SetModal" role="dialog">
+    <div class="modal-dialog" @*style="margin-left:-20%;"*@>
 
+        <!-- Modal content-->
+        <div class="modal-content" style=" height:140px; width:436px; border-top: 1px solid rgba(0,0,0,0.3); background: url(/image/comment-bg2.png) repeat;  border-collapse: collapse;">
+            <div class="modal-body">
+                <div class="titileGroup" style="margin-left: -13px; margin-top: -13px; width:104%;">
+                    <table>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">Description</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="descriptionDiv"> dskks kskd ks kdk dk dk</div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">OID</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="descriptionDiv">.1.3.2.6.4.1.280.4.2.3.6.32.1</div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">Value</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="descriptionDiv">Tstring</div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">DataType</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="descriptionDiv">nbnbnbnbbnbbbn</div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td style="width:10%;">
+                                <div class="descriptionDiv">Set Value</div>
+                            </td>
+                            <td style="width:90%;">
+                                <input type="text" class="form-control" id="SetValue" style="margin-left:25px;">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-left:300px; margin-top:3px;">
+                    <button type="button" class="btn btn-info" id="SendSet" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px; ">Send</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="width:50px; height:22px; line-height:9px; font-size:11px;">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*</div>*@
 @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
@@ -255,6 +357,8 @@
         //        alert("false");
         //    }
         //});
+
+
 
         var handled = false; var width;                                          // countries search and full countries
         $('body').on('click touchend', '#typeSelect', function (e) {

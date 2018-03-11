@@ -278,7 +278,7 @@ h6.foo{
 /* Buttons */
 /*-----------------------------------*/
 
-.buttons-wrap{margin-bottom: 50px;}
+/*.buttons-wrap{margin-bottom: 50px;}
 .buttons .btn{margin-right:20px; margin-bottom:20px;}
 
 .btn:hover, .btn:focus {
@@ -410,7 +410,7 @@ h6.foo{
     text-shadow:0 1px 1px rgba(188,83,39,0.75);
 }
 
-/* Button Shape */
+/* Button Shape 
 .btn.btn-black span, .btn.btn-black input{background-position:left -74px;}
 .btn.btn-black{background-position:right -111px;}
 
@@ -445,7 +445,7 @@ h6.foo{
 .btn.btn-send {background-position:right -777px; padding-right: 15px;}
 
 .btn.btn-follow span, .btn.btn-follow input{background-position:left -1064px;}
-.btn.btn-follow {background-position:right -1093px;}
+.btn.btn-follow {background-position:right -1093px;}*/
 
 /*-----------------------------------*/
 /* Custom checkboxes, radios */

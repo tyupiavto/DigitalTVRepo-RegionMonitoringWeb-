@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Web.UI;
 using System.Xml;
 using System.Web.Routing;
+using PagedList;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -30,7 +31,7 @@ namespace AdminPanelDevice.Controllers
         public static List<States> states = new List<States>();
         public static List<City> city = new List<City>();
         public List<DeviceType> GroupListView = new List<DeviceType>();
-        public List<MibTreeInformation> mibInformation = new List<MibTreeInformation>();
+        public static List<MibTreeInformation> mibInformation = new List<MibTreeInformation>();
         public ArrayList PointConnect = new ArrayList();
         public static int countrieIndicator=0;
         public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
@@ -42,11 +43,13 @@ namespace AdminPanelDevice.Controllers
         public static int CountriesListID;
         public static string Html;
         public static int DeviceGroupID;
+        public static int viewSearch = 20;
         // GET: DeviceGroup
-        public ActionResult Index()
+        public ActionResult Index(int ? page)
         {
+            //page = 1;
 
-            return View();
+            return View(mibInformation.ToPagedList(page ?? 1, viewSearch));
         }
         [HttpPost]
         public JsonResult GroupCreate(string GroupName)
@@ -136,44 +139,11 @@ namespace AdminPanelDevice.Controllers
 
             TitleTowerName TowerName = new TitleTowerName();
 
-            //if (CountrieName == null)
-            //{
-
-            //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //    {
-            //        countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
-            //    }
-            //    //countrie = db.Countries.ToList();
-                
-            //}
-
-            //if (CountrieName != null  && StateName=="")
-            //{
-            //    city = new List<City>();
-            //    states = new List<States>();
-
-            //    var counterID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
-            //    states = db.States.Where(s=>s.CountrieID==counterID).ToList();
-            //    ViewBag.countrieName = CountrieName;
-            //    TowerName.CountrieName = CountrieName;
-             
-            //}
-            //if (StateName!=null && StateName!="")
-            //{
-            //    var StateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-            //    city = db.Citys.Where(c => c.StateID == StateID).ToList();
-            //    TowerName.StateName = StateName;
-            //    TowerName.CountrieName = CountrieName;
-            //}
-            //else
-            //{
-            //    TowerName.StateName = "State";
-            //}
+          
             ViewBag.countrie = countrie;
             ViewBag.countrieName = CountrieName;
             ViewBag.CountrieListID = CountriesListID;
-            //ViewBag.state = states;
-            //ViewBag.city = city;
+           
             if (countrieName == null && stateSettingName == null)
             {
                 TowerName.CountrieName = "Countrie";
@@ -468,23 +438,39 @@ namespace AdminPanelDevice.Controllers
             return PartialView("_DeviceSettings");
         }
 
+        //[HttpPost]
+        //public PartialViewResult ScanIntervalDvc()
+        //{
+        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+        //    {
+        //        intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+        //    }
+        //    return PartialView("_ScaninningInterval", intervalTime);
+        //}
         [HttpPost]
-        public PartialViewResult ScanIntervalDvc()
+        public PartialViewResult WalkMib (int? page)
+        {
+            //page = 1;
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
+            }
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+            }
+            ViewBag.IntervalTime = intervalTime;
+            return PartialView("_DeviceSettings",mibInformation.ToPagedList(page ?? 1, viewSearch));
+        }
+
+        public PartialViewResult PageNumber(int? page)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
-            return PartialView("_ScaninningInterval", intervalTime);
-        }
-        [HttpPost]
-        public PartialViewResult WalkMib ()
-        {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
-            }
-            return PartialView("_DeviceSettings", mibInformation);
+            ViewBag.IntervalTime = intervalTime;
+            return PartialView("_DeviceSettings", mibInformation.ToPagedList(page ?? 1, viewSearch));
         }
     }
 }

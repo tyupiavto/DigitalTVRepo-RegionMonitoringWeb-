@@ -15,6 +15,8 @@ using System.Web.UI;
 using System.Xml;
 using System.Web.Routing;
 using PagedList;
+using SnmpSharpNet;
+using System.Net;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -35,7 +37,10 @@ namespace AdminPanelDevice.Controllers
         public ArrayList PointConnect = new ArrayList();
         public static int countrieIndicator=0;
         public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
-        public List<ScanningInterval> intervalTime = new List<ScanningInterval>();
+        public static List<ScanningInterval> intervalTime = new List<ScanningInterval>();
+        public static List<WalkDevice> walkList = new List<WalkDevice>();
+        public static List<WalkDevice> walkSearch = new List<WalkDevice>();
+
         string searchName;
         public static string countrieName;
         public static int countrieID;
@@ -43,13 +48,33 @@ namespace AdminPanelDevice.Controllers
         public static int CountriesListID;
         public static string Html;
         public static int DeviceGroupID;
-        public static int viewSearch = 20;
+        public static int pageListNumber = 20;
+        public static List<int> Checked = new List<int>();
+        public static ArrayList Time = new ArrayList();
+        public List<int> CheckedPreset = new List<int>();
+        public ArrayList TimePreset = new ArrayList();
+        public static int deviceTypeID;
+        public int ID = 0;
+        public static string IPadrress;
+        public static int EditInd = 0;
+        public static int PresetIND = 0;
+        public static string PresetEditName;
+        public static string Select;
+        public static string All;
+        public static string SearchNameWalk;
+        public bool search = false;
+        public int QuerydeviceID;
+        public static bool MibWalkIndicator =true;
+
+        public SnmpPacket result;
+
+
         // GET: DeviceGroup
         public ActionResult Index(int ? page)
         {
             //page = 1;
 
-            return View(mibInformation.ToPagedList(page ?? 1, viewSearch));
+            return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
         [HttpPost]
         public JsonResult GroupCreate(string GroupName)
@@ -448,29 +473,282 @@ namespace AdminPanelDevice.Controllers
         //    return PartialView("_ScaninningInterval", intervalTime);
         //}
         [HttpPost]
-        public PartialViewResult WalkMib (int? page)
+        public PartialViewResult LoadMib (int? page, string DeviceName)
         {
             //page = 1;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
+                string cmdString = "Select * From DeviceType where Name = '"+DeviceName+"'";
+                 QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
             }
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                string cmdString = "Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID;
+
+                mibInformation = connection.Query<MibTreeInformation>(cmdString).ToList();
+            }
+
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
             ViewBag.IntervalTime = intervalTime;
-            return PartialView("_DeviceSettings",mibInformation.ToPagedList(page ?? 1, viewSearch));
+            ViewBag.ViewSearch = pageListNumber;
+            return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
 
-        public PartialViewResult PageNumber(int? page)
+        [HttpPost]
+        public PartialViewResult WalkSend(int? page, string IP, int Port, string Version)
         {
+            MibWalkIndicator = false;
+            
+            //Checked.Clear();
+            //Time.Clear();
+            //walkSearch.Clear();
+            //SearchNameWalk = "";
+
+            //if (presetName == "Preset")
+            //{
+            PresetIND = 0;
+            walkList.Clear();
+            IPadrress = IP;
+            ViewBag.IP = IPadrress;
+
+            // var devicename = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
+            //var walkOid = db.MibTreeInformations.Where(m => m.DeviceID == devicename.ID).FirstOrDefault();
+            // deviceTypeID = devicename.ID;
+            OctetString community = new OctetString("public");
+
+            AgentParameters param = new AgentParameters(community);
+            if (Version == "V1")
+            {
+                param.Version = SnmpVersion.Ver1;
+            }
+            if (Version == "V2")
+            {
+                param.Version = SnmpVersion.Ver2;
+            }
+            IpAddress agent = new IpAddress(IP);
+
+                UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
+                Oid rootOid = new Oid(".1.3.6.1.4.1"); // ifDescr
+                                                       //Oid rootOid = new Oid(".1.3.6.1.4.1.23180.2.1.1.1"); // ifDescr
+
+                Oid lastOid = (Oid)rootOid.Clone();
+
+                Pdu pdu = new Pdu(PduType.GetNext);
+
+                while (lastOid != null)
+                {
+                    try
+                    {
+                        if (pdu.RequestId != 0)
+                        {
+                            pdu.RequestId += 1;
+                        }
+                        pdu.VbList.Clear();
+                        pdu.VbList.Add(lastOid);
+                 
+                    if (Version == "V1")
+                    {
+                         result = (SnmpV1Packet)target.Request(pdu, param);
+                    }
+                    if (Version == "V2")
+                    {
+                         result =(SnmpV2Packet)target.Request(pdu, param);
+                    }
+
+                    if (result != null)
+                        {
+                            if (result.Pdu.ErrorStatus != 0)
+                            {
+                                lastOid = null;
+                                break;
+                            }
+                            else
+                            {
+                                foreach (Vb v in result.Pdu.VbList)
+                                {
+
+                                    if (rootOid.IsRootOf(v.Oid))
+                                    {
+                                        WalkDevice walk = new WalkDevice();
+                                        ID++;
+                                        walk.ID = ID;
+                                        walk.WalkID = ID;
+                                        string oid =v.Oid.ToString();
+                                        var OidMibdescription = db.MibTreeInformations.Where(m => m.OID == oid).FirstOrDefault();
+                                        if (OidMibdescription == null)
+                                        {
+                                            oid = oid.Remove(oid.Length - 1);
+                                            oid = oid.Remove(oid.Length - 1);
+                                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                                        }
+                                        if (OidMibdescription == null)
+                                        {
+                                            oid = oid.Remove(oid.Length - 1);
+                                            oid = oid.Remove(oid.Length - 1);
+                                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                                            if (OidMibdescription != null)
+                                                walk.WalkDescription = OidMibdescription.Description;
+                                        }
+                                        else
+                                        {
+                                            walk.WalkDescription = OidMibdescription.Description;
+                                        }
+                                        if (OidMibdescription != null)
+                                            walk.WalkDescription = OidMibdescription.Description;
+
+                                        walk.WalkOID = v.Oid.ToString();
+                                        walk.Type = v.Value.ToString();
+                                        walk.value = SnmpConstants.GetTypeName(v.Value.Type);
+                                        walk.Time = 60;
+                                        walkList.Add(walk);
+                                        lastOid = v.Oid;
+                                    }
+                                    else
+                                    {
+                                        lastOid = null;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e) { }
+                }
+
+                target.Close();
+            //}
+            //else
+            //{
+            //    var presetname = db.Presets.Where(p => p.PresetName == presetName).FirstOrDefault();
+            //    walkList = db.WalkDevices.Where(w => w.PresetID == presetname.ID).ToList();
+            //}
+            EditInd = 0;
+            ViewBag.Edit = EditInd;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
             ViewBag.IntervalTime = intervalTime;
-            return PartialView("_DeviceSettings", mibInformation.ToPagedList(page ?? 1, viewSearch));
+            ViewBag.ViewSearch = pageListNumber;
+            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
+
+        [HttpPost]
+        public JsonResult SetSend(string SetOID, int SetValue)
+        {
+
+
+            IpAddress agent = new IpAddress("192.168.4.42");
+
+            UdpTarget target = new UdpTarget((IPAddress)agent, 161, 4000, 1);
+            Pdu.SetPdu();
+            Pdu pdu = new Pdu(PduType.Set);
+            pdu.VbList.Add(new Oid(SetOID), new Integer32(SetValue));
+
+            AgentParameters aparam = new AgentParameters(SnmpVersion.Ver2, new OctetString("private"), true);
+            SnmpV2Packet response;
+            try
+            {
+                response = target.Request(pdu, aparam) as SnmpV2Packet;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public PartialViewResult WalkSearchList(int? page, string SearchName, List<int> ChekedList, Array[] TimeChange, List<int> UnChecked)
+        {
+            page = 1;
+            search = true;
+            SearchNameWalk = SearchName;
+
+            CheckedUnchecked(ChekedList, TimeChange, UnChecked); // add checked and change time
+
+            ViewBag.IntervalTime = intervalTime;
+            ViewBag.ViewSearch = pageListNumber;
+            if (SearchName.Length >= 1)
+            {
+                walkSearch.Clear();
+                walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
+
+                return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
+            }
+
+            else
+            {
+                walkSearch.Clear();
+                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+            }
+
+        }
+
+        [HttpPost]
+        public PartialViewResult PageList(int? page, int pageList, List<int> ChekedList, Array[] TimeChange, List<int> UnChecked) // page list number search
+        {
+            ViewBag.IntervalTime = intervalTime;
+            ViewBag.pageListNumber = pageListNumber;
+            page = 1;
+            pageListNumber = pageList;
+            CheckedUnchecked(ChekedList, TimeChange, UnChecked);
+            if (MibWalkIndicator = true)
+            {
+                return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
+            }
+            else
+            {
+                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+            }
+        }
+
+        public PartialViewResult PageNumber(int? page , List<int> ChekedList, Array[] TimeChange, List<int> UnChecked) // pagelistView number click
+        {
+            ViewBag.IntervalTime = intervalTime;
+            ViewBag.ViewSearch = pageListNumber;
+            CheckedUnchecked(ChekedList, TimeChange, UnChecked);
+            if (MibWalkIndicator==true)
+            {
+                return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
+            }
+            else
+            {
+                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+            }
+        }
+
+        public void CheckedUnchecked(List<int> ChekedList, Array[] TimeChange, List<int> UnChecked) // add checked and change time
+        {
+            if (UnChecked != null)
+            {
+                foreach (var ch in UnChecked)
+                {
+                    if (ChekedList != null)
+                    {
+                        ChekedList.Remove(ch);
+                    }
+                    else
+                    {
+                        Checked.Remove(ch);
+                    }
+                }
+            }
+            if (ChekedList != null)
+            {
+                Checked.AddRange(ChekedList);
+            }
+            if (TimeChange != null)
+            {
+                Time.AddRange(TimeChange);
+            }
+
+            ViewBag.Tim = Time;
+            ViewBag.Checke = Checked;
+        }
+
     }
 }

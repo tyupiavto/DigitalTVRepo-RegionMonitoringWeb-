@@ -19,7 +19,6 @@ namespace AdminPanelDevice.Models
         public int OidID { get; set; }
         public int Time { get; set; }
         public int PresetID { get; set; }
-
         [NotMapped]
         public string value { get; set; }
 

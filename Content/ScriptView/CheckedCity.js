@@ -7,6 +7,7 @@ var filedata, towerDeleteID;
 
     checkcity = $('.rowCheckbox');
     checkcity.on("click", "div", function (e) {
+    //$('body').on('click touched', '#city_check div', function() {
         var cityid = $(this).attr("id");
       
         if ($('#city_checked' + cityid).is(':checked') == false) {

@@ -309,7 +309,7 @@
     <Content Include="Views\DeviceGroup\_ScaninningInterval.cshtml" />
     <Content Include="Views\DeviceGroup\_walk.cshtml" />
     <Content Include="Views\DeviceSetting\Index.cshtml" />
-    <Content Include="Views\DeviceGroup\Indexs.cshtml" />
+    <Content Include="Views\DeviceGroup\_DeviceMibSetting.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

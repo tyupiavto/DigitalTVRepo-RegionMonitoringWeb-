@@ -8,7 +8,7 @@
 <link href="~/Content/Style/main.css" rel="stylesheet" />
 <link href="~/Content/Style/display.css" rel="stylesheet" />
 <link href="~/Content/Style/DeviceInput.css" rel="stylesheet" />
-<link href="~/Content/Style/cusel.css" rel="stylesheet" />
+@*<link href="~/Content/Style/cusel.css" rel="stylesheet" />*@
 @*<link href="~/Content/Style/CheckedStyle.css" rel="stylesheet" />*@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />
 
@@ -235,6 +235,51 @@
                                 </div>
                             </div>
                         </td>
+                        <td class="adapterInput" id="preset_add_remove" style="position:absolute;margin-left:129px;">
+                            <ul class="Type typeSelect" style="height:22px;width: 59px;">
+                                <li>
+                                    <span class="type" id="Type">
+                                        <input type="text" name="presetName" class="presetName Text" id="preset_name" placeholder="Preset Name" style="width: 92%;margin-top: -5px; margin-left: -5px; border:none;" autocomplete="off">
+                                    </span>
+                                    <span class="arrow">
+                                        <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="TypeList typeDropDownList" id="preset_list_remove" style="width: 145px; display: none; z-index:1;">
+                                <div id="interva_partial" class="preset_list_remove">
+
+                                </div>
+                            </ul>
+                        </td>
+                        <td style="position:absolute;margin-left:280px;">
+                            <ul id="timButtons">
+                                <li><input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;"></li>
+                            </ul>
+                        </td>
+                        @* ///////////////////////////////////////////////////////////////////////////                            *@
+                        <td class="adapterInput" id="inerval_add_remove" style="position:absolute;margin-left:360px;">
+                            <ul class="Type typeSelect" style="height:22px;width: 59px;">
+                                <li>
+                                    <span class="type" id="Type">
+                                        <input type="text" class="Text" id="interval_number" placeholder="Interval Add" style="width: 92%;margin-top: -5px; margin-left: -5px; border:none;" autocomplete="off">
+                                    </span>
+                                    <span class="arrow">
+                                        <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul class="TypeList typeDropDownList" id="interval_list_remove" style="width: 145px; display: none; z-index:1;">
+                                <div id="interva_partial" class="interval_list_remove">
+
+                                </div>
+                            </ul>
+                        </td>
+                        <td style="position:absolute;margin-left:510px;">
+                            <ul id="timButtons">
+                                <li><input type="button" id="interval_add" value="Add" class="btn" style="height:20px; width:52px;line-height:6px;"></li>
+                            </ul>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -309,7 +354,7 @@
                                 <div class="descriptionDiv">Set Value</div>
                             </td>
                             <td style="width:90%;">
-                                <input type="text" class="form-control" id="set_send_value" style="margin-left:25px;">
+                                <input type="text" class="form-control" id="set_send_value">
                             </td>
                         </tr>
                     </table>
@@ -548,30 +593,34 @@
                     foo();
                 }
 
-                $("#dropDivs").droppable({
+                $(".tower").droppable({
                     containment: '.foo',
                     drop: function (ev, ui) {
                         //diagramLenght = $('.foo').length;
                         //if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
                         var pos = ui.draggable.offset(), dPos = $(this).offset();
-                        var droppedTop = ui.position.top - $(this).offset().top + $('#device_drag').scrollTop();
-                        var droppedLeft = ui.position.left - $(this).offset().left + $('#device_drag').scrollLeft();
+                        var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
+                        var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
 
                         if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('device_list')) {
                             var Class = ui.draggable.attr("class");
+                            var idTarget = ev.target.id;
                             var title = ui.draggable.text().trim(35);
-                            var height = $(this).height();
+                            var height = $(".add" + idTarget).height();
                             var lenght = $('#dropDivs').length;
+                            var id = $('.foo').length;
+       
                             if (title.length > 35) {
                                 title = title.substr(0, title.length - (title.length - 31)) + '...';
                             }
                             droppedTop = height;
-                            var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBody tableHeader" style="display:inline-table"><th class="thClass"><span class="device_header' + diagramLenght + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr></table>');
-                            $(this).height(height + 35);
-                            $(this).append(item);
+                            var item = $('<table class="foo elementTable tableBodyTower ' + Class + '" name="' + title + '" id="' + (id + 1) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span class="device_header' + diagramLenght + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr></table>');
+                          
+                            $(".add" + idTarget).height(height + 35);
+                            $(".add" + idTarget).append(item);
                             //diagramLenght++;
-                            foo();
-                            addPoints();
+                            //foo();
+                            addPointsTower();
                             saveDiagram();
                             //$("table tbody").sortable({
                             //    update: function (event, ui) {
@@ -580,35 +629,11 @@
                             //        });
                             //    }
                             //});
-                            //saveDiagram();
                         }
                     }
                 });
             }
         });
-        //$(".device_list tbody").sortable();
-        //$("#dropDivs ul").disableSelection();
-        //$("#dropDivs").droppable({
-        //    drop: function (ev, ui) {
-        //        diagramLenght = $('.foo').length;
-        //        //if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
-        //        var pos = ui.draggable.offset(), dPos = $(this).offset();
-        //        var droppedTop = ui.position.top - $(this).offset().top + $('#device_drag').scrollTop();;
-        //        var droppedLeft = ui.position.left - $(this).offset().left + $('#device_drag').scrollLeft();;
-
-        //        if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('device_list')) {
-        //            var Class = ui.draggable.attr("class");
-        //            var title = ui.draggable.text().trim();
-        //            var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
-        //            $(this).append(item);
-        //            diagramLenght++;
-        //            foo();
-        //            //saveDiagram();
-        //        }
-        //    }
-        //});
-
-
 
         function getElemByCoordinates(x, y) {
             elem = document.elementFromPoint(x, y);

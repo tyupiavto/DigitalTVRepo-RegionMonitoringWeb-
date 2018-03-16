@@ -1,4 +1,6 @@
 ﻿
+
+
 $('#page_list').on('click', 'a', function (e) {
     e.preventDefault();
     $.ajax({

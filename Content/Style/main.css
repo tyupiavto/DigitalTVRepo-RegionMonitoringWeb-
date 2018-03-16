@@ -175,7 +175,14 @@ body {
     margin-left: -2px;
     cursor: default;
 }
-
+.tableBodyTowers {
+    display: block;
+    min-height: 25px;
+    text-align: center;
+    width: 102%;
+    margin-left: -2px;
+    cursor: default;
+} 
 .foo tbody tr td {
     display: block;
     line-height: 25px;

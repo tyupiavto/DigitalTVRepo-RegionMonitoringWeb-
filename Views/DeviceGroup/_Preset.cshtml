@@ -1,0 +1,10 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.Preset> 
+@foreach (var item in Model)
+{
+<li class="preset@(item.DeviceID)" id="@item.DeviceID" >@item.PresetName
+    <span class="arrow removePreset" id="@item.DeviceID" value="@item.PresetName">
+        <img src="/image/remove.png" width="100%" height="100%" alt="remove" title="remove">
+    </span>
+</li>
+}
+

@@ -608,6 +608,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.Tim = Time;
             ViewBag.Checke = Checked;
         }
+
     }
 
          

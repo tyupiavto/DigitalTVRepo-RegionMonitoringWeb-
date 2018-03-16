@@ -5,20 +5,20 @@ var connections = new Array();
 var connect = new Array();
 var filedata, towerDeleteID;
 
-    checkcity = $('.rowCheckbox');
-    checkcity.on("click", "div", function (e) {
-    //$('body').on('click touched', '#city_check div', function() {
+    //checkcity = $('.rowCheckbox');
+    //checkcity.on("click", "div", function (e) {
+    $('body').on('click touched', '#city_check div', function() {
         var cityid = $(this).attr("id");
-      
+        
         if ($('#city_checked' + cityid).is(':checked') == false) {
             $('#checked_add' + cityid).removeClass("").addClass("checked");
             $("#city_checked" + cityid).prop('checked', true);
           
-            var addnewcity = '<tr class="tableBody  city_remove' + cityid + '_' + $(this).parent().attr("id")+'" id="city_' + ($('.tableConn').length + 1) + '"><td class="tableConn">' + $('#city_checked' + cityid).val() + '</td></tr>';
+            var addnewcity = '<tr class="tableBody  city_remove' + cityid + '_' + $(this).parent().attr("value")+'" id="city_' + ($('.tableConn').length + 1) + '"><td class="tableConn">' + $('#city_checked' + cityid).val() + '</td></tr>';
             $(addnewcity).insertBefore('.add' + parentId);
          
             addPoints();
-            saveDiagram();
+            //saveDiagram();
 
             cityName = $('#city_checked' + cityid).val();
             countrieName = $('#typeSelect #countrie').text();
@@ -29,7 +29,7 @@ var filedata, towerDeleteID;
         else {
             $('#checked_add' + cityid).removeClass("checked").addClass("");
             $("#city_checked" + cityid).prop('checked', false);
-            var id = $(".city_remove" + cityid + "_" + $(this).parent().attr("id")).attr("id");
+            var id = $(".city_remove" + cityid + "_" + $(this).parent().attr("value")).attr("id");
             jsPlumb.remove($('#' + id));
             towerDeleteID = $(this).parent().attr("id");
             $.post("/DeviceGroup/TowerDelete", { towerDeleteID: towerDeleteID, cityid: cityid }, function () {
@@ -80,6 +80,7 @@ var filedata, towerDeleteID;
                     });
                 }
                 else {
+                     alert($(this));
                     jsPlumb.addEndpoint($(this), {
                         anchor: "Top",
                         isSource: false,
@@ -132,6 +133,7 @@ var filedata, towerDeleteID;
     function saveDiagram() {
        
         $(".tableBody").removeClass("jtk-endpoint-anchor");
+        $(".tableBodyTower").removeClass("jtk-endpoint-anchor");
         //Creating array to save all existing connections
         connections = [];
         $.each(jsPlumb.getConnections(), function (idx, connection) {
@@ -148,8 +150,8 @@ var filedata, towerDeleteID;
         filedata.append("connect[]", connections);
         filedata.append("Html", $('#mainDiv').html());
         
-        $(".tableBody").removeClass("jtk-endpoint-anchor");
-        
+       // $(".tableBody").removeClass("jtk-endpoint-anchor");
+      //  $(".tableBodyTower").removeClass("jtk-endpoint-anchor");
             $.post("/DeviceGroup/PointConnections", { connections: connections }, function (Response) {
 
             }, 'json');
@@ -163,6 +165,7 @@ var filedata, towerDeleteID;
             url: '/DeviceGroup/SaveDiagram',
             success: function (Response) {
                 $(".tableBody").addClass("jtk-endpoint-anchor");
+                $(".tableBodyTower").addClass("jtk-endpoint-anchor");
             }
         });
     }
@@ -185,14 +188,81 @@ var filedata, towerDeleteID;
                 $("#mainDiv .foo").draggable();
                 removePointsAndConnections();
                 addPoints();
-
+                addPointsTower();
                 $.each(Response.pointData, function (i,item) {
                     var pointright = item.PointRight;
-                    var pointlist = item.PointLeft;
+                    var pointLeft = item.PointLeft;
                     jsPlumb.connect({
-                        uuids: [pointright.toString(), pointlist.toString()]
+                        uuids: [pointright.toString(), pointLeft.toString()]
                 });
                 });
             });
 
+    }
+
+
+
+        function addPointsTower() {
+            jsPlumb.setContainer("mainDiv");
+            jsPlumb.draggable($('.foo'), {
+                //containment:"parent",
+                stack: '.foo',
+                grid: [10, 10]
+            });
+            $('.tableBodyTower').each(function () {
+                if (!$(this).hasClass('jtk-endpoint-anchor')) {
+                    var objId = $(this).closest('.foo').attr("id");
+                    if (!$(this).hasClass('screen')) {
+                        jsPlumb.addEndpoint($(this), {
+                            anchor: "Right",
+                            isSource: true,
+                            isTarget: false,
+                            connector: ["Bezier", { curviness: 130 }],
+                            endpoint: "Blank",
+                            cssClass: "blankEndpoint class" + objId,
+                            connectorOverlays: [
+                                ["Arrow", { width: 10, height: 10, length: 10, location: 0.97, id: "arrow", foldback: 0.8 }]
+                            ],
+                            connectorStyle: { stroke: "grey", strokeWidth: 3 },
+                            connectorHoverStyle: { lineWidth: 3 },
+                            maxConnections: -1,
+                            uuid: $(this).attr("id") + 'r'
+                        });
+                        jsPlumb.addEndpoint($(this), {
+                            anchor: "Left",
+                            isSource: false,
+                            isTarget: true,
+                            connector: ["Bezier", { curviness: 130 }],
+                            endpoint: "Blank",
+                            cssClass: "blankEndpoint class" + objId,
+                            connectorOverlays: [
+                                ["Arrow", { width: 10, height: 10, length: 10, location: 0.97, id: "arrow", foldback: 0.8 }]
+                            ],
+                            connectorStyle: { stroke: "grey", strokeWidth: 3 },
+                            connectorHoverStyle: { lineWidth: 3 },
+                            uuid: $(this).attr("id") + 'l'
+                        });
+                    }
+                    else {
+                        alert($(this));
+                        jsPlumb.addEndpoint($(this), {
+                            anchor: "Top",
+                            isSource: false,
+                            isTarget: true,
+                            connector: ["Bezier", { curviness: 130 }],
+                            endpoint: "Blank",
+                            cssClass: "blankEndpoint class" + objId,
+                            /*connectorOverlays:[ 
+                                [ "Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]
+                            ],*/
+                            connectorStyle: { stroke: "grey", strokeWidth: 3 },
+                            connectorHoverStyle: { lineWidth: 3 },
+                            maxConnections: 1,
+                            uuid: $(this).attr("id") + 't'
+                        });
+                    }
+                }
+            });
+            setImage();
+            //saveDiagram();
         }

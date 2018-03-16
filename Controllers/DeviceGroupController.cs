@@ -17,6 +17,7 @@ using System.Web.Routing;
 using PagedList;
 using SnmpSharpNet;
 using System.Net;
+using System.Drawing;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -40,6 +41,8 @@ namespace AdminPanelDevice.Controllers
         public static List<ScanningInterval> intervalTime = new List<ScanningInterval>();
         public static List<WalkDevice> walkList = new List<WalkDevice>();
         public static List<WalkDevice> walkSearch = new List<WalkDevice>();
+        public  List<WalkDevice> PresetList = new List<WalkDevice>();
+        public List<ScanningInterval> intervalList = new List<ScanningInterval>();
 
         string searchName;
         public static string countrieName;
@@ -49,8 +52,10 @@ namespace AdminPanelDevice.Controllers
         public static string Html;
         public static int DeviceGroupID;
         public static int pageListNumber = 20;
-        public static List<int> Checked = new List<int>();
-        public static ArrayList Time = new ArrayList();
+        public static int DefaultInterval = 60;
+        public static List<int> CheckedLog = new List<int>();
+        public static List<int> CheckedMap = new List<int>();
+        public static ArrayList Interval = new ArrayList();
         public List<int> CheckedPreset = new List<int>();
         public ArrayList TimePreset = new ArrayList();
         public static int deviceTypeID;
@@ -63,17 +68,22 @@ namespace AdminPanelDevice.Controllers
         public static string All;
         public static string SearchNameWalk;
         public bool search = false;
-        public int QuerydeviceID;
+        public static int QuerydeviceID;
         public static bool MibWalkIndicator =true;
 
         public SnmpPacket result;
 
+        public struct intervalValue
+        {
+          public  int intervalID { get; set; }
+          public  int intervalVal { get; set; }
+        }
 
         // GET: DeviceGroup
         public ActionResult Index(int ? page)
         {
             //page = 1;
-
+            ViewBag.Preset = "";
             return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
         [HttpPost]
@@ -424,7 +434,7 @@ namespace AdminPanelDevice.Controllers
             if (Html == null)
             {
              html = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt");
-             pointXml= System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\PointXml.xml");
+             //pointXml= System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\PointXml.xml");
                 Html = "";
             }
             else
@@ -463,15 +473,7 @@ namespace AdminPanelDevice.Controllers
             return PartialView("_DeviceSettings");
         }
 
-        //[HttpPost]
-        //public PartialViewResult ScanIntervalDvc()
-        //{
-        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-        //    {
-        //        intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
-        //    }
-        //    return PartialView("_ScaninningInterval", intervalTime);
-        //}
+
         [HttpPost]
         public PartialViewResult LoadMib (int? page, string DeviceName)
         {
@@ -481,6 +483,7 @@ namespace AdminPanelDevice.Controllers
                 string cmdString = "Select * From DeviceType where Name = '"+DeviceName+"'";
                  QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
             }
+
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 string cmdString = "Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID;
@@ -493,7 +496,7 @@ namespace AdminPanelDevice.Controllers
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
             ViewBag.IntervalTime = intervalTime;
-            ViewBag.ViewSearch = pageListNumber;
+            ViewBag.pageListNumber = pageListNumber;
             return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -502,10 +505,7 @@ namespace AdminPanelDevice.Controllers
         {
             MibWalkIndicator = false;
             
-            //Checked.Clear();
-            //Time.Clear();
-            //walkSearch.Clear();
-            //SearchNameWalk = "";
+
 
             //if (presetName == "Preset")
             //{
@@ -513,7 +513,7 @@ namespace AdminPanelDevice.Controllers
             walkList.Clear();
             IPadrress = IP;
             ViewBag.IP = IPadrress;
-
+           
             // var devicename = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
             //var walkOid = db.MibTreeInformations.Where(m => m.DeviceID == devicename.ID).FirstOrDefault();
             // deviceTypeID = devicename.ID;
@@ -618,12 +618,7 @@ namespace AdminPanelDevice.Controllers
                 }
 
                 target.Close();
-            //}
-            //else
-            //{
-            //    var presetname = db.Presets.Where(p => p.PresetName == presetName).FirstOrDefault();
-            //    walkList = db.WalkDevices.Where(w => w.PresetID == presetname.ID).ToList();
-            //}
+            
             EditInd = 0;
             ViewBag.Edit = EditInd;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -631,7 +626,8 @@ namespace AdminPanelDevice.Controllers
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
             ViewBag.IntervalTime = intervalTime;
-            ViewBag.ViewSearch = pageListNumber;
+            ViewBag.pageListNumber = pageListNumber;
+            ViewBag.defaultInterval = DefaultInterval;
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -662,41 +658,67 @@ namespace AdminPanelDevice.Controllers
 
 
         [HttpPost]
-        public PartialViewResult WalkSearchList(int? page, string SearchName, List<int> ChekedList, Array[] TimeChange, List<int> UnChecked)
+        public PartialViewResult WalkSearchList(int? page, string SearchName)
         {
             page = 1;
             search = true;
             SearchNameWalk = SearchName;
 
-            CheckedUnchecked(ChekedList, TimeChange, UnChecked); // add checked and change time
-
             ViewBag.IntervalTime = intervalTime;
-            ViewBag.ViewSearch = pageListNumber;
-            if (SearchName.Length >= 1)
+            ViewBag.pageListNumber = pageListNumber;
+            ViewBag.CheckedMap = CheckedMap;
+            ViewBag.CheckedLog = CheckedLog;
+            ViewBag.Interval = Interval;
+            ViewBag.defaultInterval = DefaultInterval;
+
+            if (MibWalkIndicator == true)
             {
-                walkSearch.Clear();
-                walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
+                if (SearchName.Length >= 1)
+                {
+                    walkSearch.Clear();
+                    walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
 
-                return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
+                    return PartialView("_DeviceMibSetting", walkSearch.ToPagedList(page ?? 1, pageListNumber));
+                }
+
+                else
+                {
+                    walkSearch.Clear();
+                    return PartialView("_DeviceMibSetting", walkList.ToPagedList(page ?? 1, pageListNumber));
+                }
             }
-
             else
             {
-                walkSearch.Clear();
-                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                if (SearchName.Length >= 1)
+                {
+                    walkSearch.Clear();
+                    walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
+
+                    return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
+                }
+
+                else
+                {
+                    walkSearch.Clear();
+                    return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                }
             }
 
         }
 
         [HttpPost]
-        public PartialViewResult PageList(int? page, int pageList, List<int> ChekedList, Array[] TimeChange, List<int> UnChecked) // page list number search
+        public PartialViewResult PageList(int? page, int pageList) // page list number search
         {
             ViewBag.IntervalTime = intervalTime;
             ViewBag.pageListNumber = pageListNumber;
+            ViewBag.CheckedLog = CheckedLog;
+            ViewBag.CheckedMap = CheckedMap;
+            ViewBag.Interval = Interval;
+            ViewBag.defaultInterval = DefaultInterval;
             page = 1;
             pageListNumber = pageList;
-            CheckedUnchecked(ChekedList, TimeChange, UnChecked);
-            if (MibWalkIndicator = true)
+
+            if (MibWalkIndicator == true)
             {
                 return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
             }
@@ -706,11 +728,15 @@ namespace AdminPanelDevice.Controllers
             }
         }
 
-        public PartialViewResult PageNumber(int? page , List<int> ChekedList, Array[] TimeChange, List<int> UnChecked) // pagelistView number click
+        public PartialViewResult PageNumber(int? page) // pagelistView number click
         {
             ViewBag.IntervalTime = intervalTime;
-            ViewBag.ViewSearch = pageListNumber;
-            CheckedUnchecked(ChekedList, TimeChange, UnChecked);
+            ViewBag.pageListNumber = pageListNumber;
+            ViewBag.CheckedLog = CheckedLog;
+            ViewBag.CheckedMap = CheckedMap;
+            ViewBag.Interval = Interval;
+            ViewBag.defaultInterval = DefaultInterval;
+
             if (MibWalkIndicator==true)
             {
                 return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
@@ -720,34 +746,205 @@ namespace AdminPanelDevice.Controllers
                 return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
             }
         }
-
-        public void CheckedUnchecked(List<int> ChekedList, Array[] TimeChange, List<int> UnChecked) // add checked and change time
+        [HttpPost]
+        public JsonResult UncheckLog(int unChechkID) // uncheckd log
         {
-            if (UnChecked != null)
+            CheckedLog.Remove(unChechkID);
+            ViewBag.CheckedLog = CheckedLog;
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult CheckLog(int chechkID) // checked log
+        {
+            CheckedLog.Add(chechkID);
+            ViewBag.CheckedLog = CheckedLog;
+            return Json("");
+        }
+
+        [HttpPost] 
+        public JsonResult UncheckMap(int unChechkID) // unchecked map
+        {
+            CheckedMap.Remove(unChechkID);
+            ViewBag.CheckedMap = CheckedMap;
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult CheckMap(int chechkID) // checked map
+        {
+            CheckedMap.Add(chechkID);
+            ViewBag.CheckedMap = CheckedMap;
+            return Json("");
+        }
+        
+        [HttpPost]
+        public PartialViewResult ViewAddInterval()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                foreach (var ch in UnChecked)
-                {
-                    if (ChekedList != null)
-                    {
-                        ChekedList.Remove(ch);
-                    }
-                    else
-                    {
-                        Checked.Remove(ch);
-                    }
-                }
+                intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
-            if (ChekedList != null)
+            ViewBag.IntervalTime = intervalTime;
+            return PartialView("_ScaninningInterval", intervalTime);
+        }
+
+        [HttpPost]
+        public JsonResult IntervalSearch(int intervalID , int Interval)
+        {
+            intervalValue intr=new intervalValue();
+            intr.intervalID = intervalID;
+            intr.intervalVal = Interval;
+
+            DeviceGroupController.Interval.Add(intr);
+            ViewBag.Interval = DeviceGroupController.Interval;
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult PresetSave (string presetName, string IpAddress)
+        {
+            Preset preset = new Preset();
+            preset.DeviceID = db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
+            preset.PresetName = presetName;
+            preset.DeviceIP = IpAddress;
+            preset.DeviceTypeID = QuerydeviceID;
+            db.Presets.Add(preset);
+            db.SaveChanges();
+
+            foreach (intervalValue tim in Interval)
             {
-                Checked.AddRange(ChekedList);
-            }
-            if (TimeChange != null)
-            {
-                Time.AddRange(TimeChange);
+                int id =tim.intervalID;
+                walkList[id - 1].Time = Convert.ToInt32(tim.intervalVal);
             }
 
-            ViewBag.Tim = Time;
-            ViewBag.Checke = Checked;
+            PresetFill pre = new PresetFill();
+            PresetList = pre.presetFillLoad(walkList, PresetList, CheckedLog, CheckedMap,presetName);
+
+            db.WalkDevices.AddRange(PresetList);
+            db.SaveChanges();
+            return Json("");
+        }
+
+        [HttpPost]
+        public PartialViewResult PresetListName()
+        {
+            List<Preset> presetList = new List<Preset>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                presetList = connection.Query<Preset>("Select * From  Preset ").ToList();
+            }
+            return PartialView("_Preset",presetList);
+        }
+
+        [HttpPost]
+        public PartialViewResult PresetRemove(string presetName)
+        {
+            Preset presetremove = new Preset();
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    string cmdString = "Select * From Preset where PresetName='" + presetName+"'"; 
+            //    presetremove = connection.Query<Preset>(cmdString).FirstOrDefault();
+            //}
+            presetremove = db.Presets.Where(p => p.PresetName == presetName).FirstOrDefault();
+            db.Presets.Remove(presetremove);
+            db.SaveChanges();
+            List<Preset> presetList = new List<Preset>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                presetList = connection.Query<Preset>("Select * From  Preset ").ToList();
+            }
+            return PartialView("_Preset", presetList);
+        }
+
+        [HttpPost]
+        public PartialViewResult intervalListView()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                intervalList = connection.Query<ScanningInterval>("Select * From  ScanningInterval ").ToList();
+            }
+            return PartialView("_Interval", intervalList);
+        }
+
+        [HttpPost]
+        public PartialViewResult IntervalRemove(int intervalID)
+        {
+            ScanningInterval intervalremove = new ScanningInterval();
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    string cmdString = "Select * From Preset where PresetName='" + presetName+"'"; 
+            //    presetremove = connection.Query<Preset>(cmdString).FirstOrDefault();
+            //}
+            intervalremove = db.ScanningIntervals.Where(p => p.IntervalID == intervalID).FirstOrDefault();
+            db.ScanningIntervals.Remove(intervalremove);
+            db.SaveChanges();
+
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                intervalList = connection.Query<ScanningInterval>("Select * From  ScanningInterval ").ToList();
+            }
+            return PartialView("_Interval", intervalList);
+        }
+
+        [HttpPost]
+        public PartialViewResult IntervalAdd (int second)
+        {
+            ScanningInterval sc = new ScanningInterval();
+            sc.Interval = second;
+            sc.IntervalID = db.ScanningIntervals.Select(s => s.IntervalID).ToList().LastOrDefault() + 1;
+            db.ScanningIntervals.Add(sc);
+            db.SaveChanges();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                intervalList = connection.Query<ScanningInterval>("Select * From  ScanningInterval ").ToList();
+            }
+            return PartialView("_Interval", intervalList);
+        }
+
+        [HttpPost]
+        public PartialViewResult PresetSearch(int ? page ,string presetSearchName)
+        {
+            page = 1;
+            int presetID;
+
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                string cmdString = "Select * From Preset where PresetName = '" + presetSearchName + "'";
+                presetID = connection.Query<Preset>(cmdString).FirstOrDefault().ID;
+                string log = "Select * From WalkDevice where PresetID = '" + presetID+"'";
+                CheckedLog = connection.Query<WalkDevice>(log).ToList().Select(s=>s.LogID).ToList();
+
+                string map = "Select * From WalkDevice where PresetID = '" + presetID + "'";
+                CheckedMap = connection.Query<WalkDevice>(map).ToList().Select(s => s.MapID).ToList();
+
+                string interval = "Select * From WalkDevice where PresetID = '" + presetID + "'";
+                var query = from pro in db.WalkDevices
+                            select new TimList() { intervalID = pro.CheckID, intervalVal = pro.Time };
+                var tm = query.ToList();
+                Interval.AddRange(tm);
+            }
+
+            ViewBag.IntervalTime = intervalTime;
+            ViewBag.CheckedLog = CheckedLog;
+            ViewBag.CheckedMap = CheckedMap;
+            ViewBag.Interval = Interval;
+            ViewBag.defaultInterval = DefaultInterval;
+            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+        }
+
+        [HttpPost]
+        public PartialViewResult DefaultIntervalSearch (int ? page , int intervalNumber)
+        {
+            ViewBag.IntervalTime = intervalTime;
+            ViewBag.pageListNumber = pageListNumber;
+            ViewBag.CheckedLog = CheckedLog;
+            ViewBag.CheckedMap = CheckedMap;
+            ViewBag.Interval = Interval;
+            DefaultInterval = intervalNumber;
+            ViewBag.defaultInterval = DefaultInterval;
+
+           return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
     }

@@ -1,5 +1,5 @@
 ﻿
-var dvcID, DeviceName, timeID, SetOID, SetValue, SearchName, IP,Port,Version;
+var dvcID, DeviceName,intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second;
 
 var CheckArray = new Array();
 var walkArray = new Array();
@@ -9,6 +9,7 @@ var TimeChange = new Array();
 var tm = new Array();
 var UnChecked = new Array();
 //$(document).ready(function () { 
+
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     dvcID = $(this).closest($(".foo")).attr("id");
@@ -40,15 +41,19 @@ $('#walk_send').click(function () { // device walk ip port version
 var handled = false; var width;                
 $('body').on('click touchend', '#select_time', function (e) { // time intervel search
     width = 0;
-      timeID = $(this).attr("value");
+    intervalID = $(this).attr("value");
     if (e.type == "touchend") {
         handled = true;
-        $('#select_time_list' + timeID).css({ 'width': width + 0 }).toggle();
-        $('.select_time' + timeID + ' li').css('widht', '93%');
+        $('#select_time_list' + intervalID).css({ 'width': width + 0 }).toggle();
+        $('.select_time' + intervalID + ' li').css('widht', '93%');
     }
     else
         if (e.type == "click" && !handled) {
-            $('#select_time_list' + timeID).css({ 'width': width + 0 }).toggle();
+            $.post("/DeviceGroup/ViewAddInterval", {}, function (Response) {
+                $('.search_time_interval').html("");
+                $('.search_time_interval').html(Response);
+                $('#select_time_list' + intervalID).css({ 'width': width + 0 }).toggle();
+            }, 'text');           
         }
         else {
             handled = false;
@@ -56,8 +61,9 @@ $('body').on('click touchend', '#select_time', function (e) { // time intervel s
 });
 
 $('body').on('click touchend', '.search_time_interval li', function () { // time interval add
-    var value = $(this).attr("value");
-    $('#interval' + timeID).text(value);
+    var Interval = $(this).attr("value");
+    $('#interval' + intervalID).text(Interval);
+    $.post("/DeviceGroup/IntervalSearch", { intervalID: intervalID, Interval: Interval }, function () { }, 'json');
 });
 
 $('body').on('click touchend', '#select_list', function (e) {// search number  list information
@@ -78,7 +84,7 @@ $('body').on('click touchend', '#select_list', function (e) {// search number  l
 $('body').on('click touchend', '.walk_list_search li', function () { // walk list add
     var pageList = $(this).attr("value");
     $('#walk_list').text(pageList);
-    $.post("/DeviceGroup/PageList", { pageList: pageList, ChekedList: ChekedList, TimeChange: TimeChange, UnChecked: UnChecked}, function (Response) {
+    $.post("/DeviceGroup/PageList", { pageList: pageList}, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
     });
@@ -113,6 +119,81 @@ $('body').on('click touchend','.walk_list_version li', function () { // time int
 
 });
 
+$('body').on('click touchend', '#preset_add_remove', function (e) { //preset add remove list
+    width = 145;
+    if (e.type == "touchend") {
+        handled = true;
+        $('#preset_list_remove').css({ 'width': width + 0 }).toggle();
+        $('#preset_add_remove li').css('widht', '93%');
+    }
+    else
+        if (e.type == "click" && !handled) {
+            $('#preset_list_remove').css({ 'width': width + 0 }).toggle();
+            $.post("/DeviceGroup/PresetListName", {}, function (Response) {
+                $('.preset_list_remove').html("");
+                $('.preset_list_remove').html(Response);
+            },'text');
+        }
+        else {
+            handled = false;
+        }
+});
+
+$('body').on('click touchend', '.preset_list_remove li', function () { // selected  preset  click add 
+    presetSearchName = $(this).children().attr("value");
+    $('#preset_name').val($(this).children().attr("value"));
+    $.post("/DeviceGroup/PresetSearch", { presetSearchName: presetSearchName}, function (Response) {
+        $('#device_settings').html("");
+        $('#device_settings').html(Response);
+    },'text');
+});
+
+$('body').on('click touchend','.removePreset' , function () {
+    presetName = $(this).attr("value");
+    $.post("/DeviceGroup/PresetRemove", { presetName: presetName}, function (Response) {
+        $('.preset_list_remove').html("");
+        $('.preset_list_remove').html(Response);
+    },'text');
+});
+
+$('body').on('click touchend', '#inerval_add_remove', function (e) { //interval add removel list
+    width = 145;
+    if (e.type == "touchend") {
+        handled = true;
+        $('#interval_list_remove').css({ 'width': width + 0 }).toggle();
+        $('#inerval_add_remove li').css('widht', '93%');
+    }
+    else
+        if (e.type == "click" && !handled) {
+            $('#interval_list_remove').css({ 'width': width + 0 }).toggle();
+            $.post("/DeviceGroup/intervalListView", {}, function (Response) {
+                $('.interval_list_remove').html("");
+                $('.interval_list_remove').html(Response);
+            },'text');
+        }
+        else {
+            handled = false;
+        }
+});
+
+$('body').on('click touchend', '.interval_list_remove li', function () { //interval default search
+    intervalNumber = $(this).children().attr("value");
+    $('#interval_number').val(intervalNumber);
+    $.post("/DeviceGroup/DefaultIntervalSearch", { intervalNumber: intervalNumber}, function (Response) {
+        $('#device_settings').html("");
+        $('#device_settings').html(Response);
+    }, 'text');
+});
+
+$('body').on('click touchend', '.removeInterval', function () {
+
+    intervalID = $(this).attr("id");
+    $.post("/DeviceGroup/IntervalRemove", { intervalID: intervalID }, function (Response) {
+        $('.interval_list_remove').html("");
+        $('.interval_list_remove').html(Response);
+    },'text');
+});
+
     $('body').on('click touchend', '#setButtons', function () { // open modal set and send set 
         var setID = $(this).attr("value");
         $('#set_description').text($('#description' + setID).text());
@@ -130,7 +211,7 @@ $('body').on('click touchend','.walk_list_version li', function () { // time int
 
     $('#walk_search_click').click(function () { // search description value
         SearchName = $('#description_value_search').val();
-        $.post("/DeviceGroup/WalkSearchList", { SearchName: SearchName, ChekedList: ChekedList, TimeChange: TimeChange, UnChecked: UnChecked}, function (Response) {
+        $.post("/DeviceGroup/WalkSearchList", { SearchName: SearchName}, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
         },'text');
@@ -169,7 +250,13 @@ $('body').on('click touched', '.map_check div', function () { // map click check
     if ($('#map_checked' + mapID).is(':checked') == false) {
         $('#map_checked_add' + mapID).removeClass("").addClass("checked");
         $("#map_checked" + mapID).prop('checked', true);
+
+        chechkID = mapID;
+        $.post("/DeviceGroup/CheckMap", { chechkID: chechkID }, function () { }, 'json'); // map check 
     } else {
+        unChechkID = mapID;
+        $.post("/DeviceGroup/UncheckMap", { unChechkID: unChechkID }, function () { }, 'json'); // map uncheck 
+
         $('#map_checked_add' + mapID).removeClass("checked").addClass("");
         $("#map_checked" + mapID).prop('checked', false);
     }
@@ -177,14 +264,33 @@ $('body').on('click touched', '.map_check div', function () { // map click check
 $('body').on('click touched', '.log_check div', function () { // log checked preset 
     var logID = $(this).attr("id");
     if ($('#log_checked' + logID).is(':checked') == false) {
-        ChekedList.push(logID);
+        chechkID = logID;
+        $.post("/DeviceGroup/CheckLog", { chechkID: chechkID }, function () { }, 'json'); // log check 
 
         $('#log_checked_add' + logID).removeClass("").addClass("checked");
         $("#log_checked" + logID).prop('checked', true);
     } else {
-        UnChecked.push(logID);
-
+        unChechkID = logID;
+        $.post("/DeviceGroup/UncheckLog", { unChechkID: unChechkID }, function () { }, 'json'); // log uncheck 
         $('#log_checked_add' + logID).removeClass("checked").addClass("");
         $("#log_checked" + logID).prop('checked', false);
     }
+});
+
+$('#preset_save').click(function () {
+    presetName = $('#preset_name').val();
+    IpAddress = $('#tower_ip').val();
+
+    $.post("/DeviceGroup/PresetSave", { presetName: presetName, IpAddress: IpAddress}, function () {
+        $('#preset_name').val("");
+    },'json');
+});
+
+$('#interval_add').click(function () { /// interval save 
+    second = $('#interval_number').val();
+    $.post("/DeviceGroup/IntervalAdd", { second: second}, function (Response) {
+        $('.interval_list_remove').html("");
+        $('.interval_list_remove').html(Response);
+        $('#interval_number').val("");
+    },'text');
 });

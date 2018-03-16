@@ -1,0 +1,11 @@
+﻿
+@model IEnumerable<AdminPanelDevice.Models.ScanningInterval>
+@foreach (var inter in Model)
+{
+    <li class="interval@(inter.IntervalID)" id="@inter.IntervalID">
+       @inter.Interval
+    <span class="arrow removeInterval" id="@inter.IntervalID" value="@inter.Interval">
+        <img src="/image/remove.png" width="100%" height="100%" alt="remove" title="remove">
+    </span>
+</li>
+}

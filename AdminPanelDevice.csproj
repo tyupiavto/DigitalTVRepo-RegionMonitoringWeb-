@@ -226,6 +226,7 @@
     <Compile Include="Helpers\PickerHelper.cs" />
     <Compile Include="Infrastructure\BuildMIBTree.cs" />
     <Compile Include="Infrastructure\MibTreeCreate.cs" />
+    <Compile Include="Infrastructure\PresetFill.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.Designer.cs">
       <DependentUpon>201712081256218_device db schema.cs</DependentUpon>
@@ -258,6 +259,7 @@
     <Compile Include="Models\ReturnedHtml.cs" />
     <Compile Include="Models\ScanningInterval.cs" />
     <Compile Include="Models\States.cs" />
+    <Compile Include="Models\TimList.cs" />
     <Compile Include="Models\TitleTowerName.cs" />
     <Compile Include="Models\Tower.cs" />
     <Compile Include="Models\TreeStructure.cs" />
@@ -310,6 +312,9 @@
     <Content Include="Views\DeviceGroup\_walk.cshtml" />
     <Content Include="Views\DeviceSetting\Index.cshtml" />
     <Content Include="Views\DeviceGroup\_DeviceMibSetting.cshtml" />
+    <Content Include="Views\_RemovePreset.cshtml" />
+    <Content Include="Views\DeviceGroup\_Preset.cshtml" />
+    <Content Include="Views\DeviceGroup\_Interval.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

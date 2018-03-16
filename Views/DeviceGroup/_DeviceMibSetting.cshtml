@@ -5,43 +5,14 @@
 @using AdminPanelDevice.Helpers
 
 @{
-    ViewBag.Title = "Index";
+    //ViewBag.Title = "Index";
     //AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
     var IntervalNumber = ViewBag.IntervalTime;
     var pageList = ViewBag.pageListNumber;
     //IntervalNumber = IntervalNumber.OrderBy(o => o.Interval).ToList();
     //int[] number = { 20, 30, 50, 100, 2000 };
-    Layout = "../Shared/_Layout.cshtml";
 }
-@section Script {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var edit = @Html.Raw(Json.Encode(@ViewBag.Edit));
-            var click_checked = @Html.Raw(Json.Encode(@ViewBag.Checke));
-            var oid_time = @Html.Raw(Json.Encode(@ViewBag.Tim));
-            @*var all=@Html.Raw(Json.Encode(ViewBag.All));
-            var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
-            $.each(click_checked, function (i,val) {
-                $('#log_checked_add' + val).removeClass("").addClass("checked");
-                $("#log_checked" + val).prop('checked', true);
-            });
-            //$.each(oid_time, function (j, value) {
-            //    $('#Time' + value).val(value[1]);
-            //});
-            //if (edit == 1) {
-            //    $('.walk_edit').css("display", "block");
-            //    $('#walk_click').css("display", "none");
-            //}
-            //if (all == "All") {
-            //    $('#selected_search').val("All").change();
-            //}
-            //if (select == "Select") {
-            //    $('#selected_search').val("Select").change();
-            //}
-    });
-    </script>
-    @*<script src="~/Content/ScriptView/WalkSend.js"></script>*@
-}
+
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <div class="form-group scroll_walk">
     <table class="table" style="table-layout:fixed; width:100%;">
@@ -156,4 +127,4 @@
 @*</div>*@
 @*<script src="~/Content/ScriptView/DeviceManage.js"></script>*@
 <script src="~/Content/ScriptView/pageListClick.js"></script>
-<link href="~/Content/Style/main.css" rel="stylesheet" />
+@*<link href="~/Content/Style/main.css" rel="stylesheet" />*@

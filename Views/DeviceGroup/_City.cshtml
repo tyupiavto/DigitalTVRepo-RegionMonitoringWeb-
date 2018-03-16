@@ -12,8 +12,8 @@
 {
     <li>@item.CityName</li>
         <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:222px;z-index:0; height:24px;">
-            <div class="rowCheckbox" id="@diagramID">
-                <div class="custom-checkbox" id="@ID">
+            <div class="rowCheckbox" value="@diagramID" id="city_check">
+                <div class="custom-checkbox"  id="@ID">
                     @if (item.CheckedID != 0 && item.CheckedID == ID)
                     {
                     <input name="city_checked" id="city_checked@(ID)" checked="checked" type="checkbox" value="@item.CityName" hidefocus="true" style="outline: none;" class="gradient">
@@ -31,4 +31,4 @@
 }
     @*<script src="~/Content/ScriptView/CountrieSearch.js"></script>*@
 
-        <script src="~/Content/ScriptView/CheckedCity.js"></script>
+        @*<script src="~/Content/ScriptView/CheckedCity.js"></script>*@

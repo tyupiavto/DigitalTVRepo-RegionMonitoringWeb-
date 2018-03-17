@@ -23,8 +23,14 @@
             {
                 <tr id="@item.MibID" class="information_walk">
                     <td style="width:60%;">
+                        @if (item.Description == "")
+                        {
+                    <div class="descriptionDiv" title="@item.Description" id="description@(item.MibID)" style="color:darkred;" value="@item.Syntax">Is Not Description</div>
+                        }
+                        else
+                        {
                         <div class="descriptionDiv" title="@item.Description" id="description@(item.MibID)" value="@item.Syntax">@item.Description</div>
-                        @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
+                        }    @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                     </td>
                     <td style="width:30%">
                         <div class="valueDiv" id="Value@(item.MibID)" value="" style="color: #b8c0c8;"></div>

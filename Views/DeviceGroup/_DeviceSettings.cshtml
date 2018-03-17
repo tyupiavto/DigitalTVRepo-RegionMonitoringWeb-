@@ -48,7 +48,14 @@
                 {
                     <tr id="@item.WalkID" class="information_walk">
                         <td style="width:60%;">
-                            <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" value="@item.WalkOID">@item.WalkDescription</div>
+                            @if (item.WalkDescription == "")
+                            {
+                        <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
+                            }
+                            else
+                            {
+                        <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" value="@item.WalkOID">@item.WalkDescription</div>
+                            }
                             @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                         </td>
                         <td style="width:30%">

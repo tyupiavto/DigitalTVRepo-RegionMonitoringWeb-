@@ -21,7 +21,7 @@ var filedata, towerDeleteID;
             //saveDiagram();
 
             cityName = $('#city_checked' + cityid).val();
-            countrieName = $('#typeSelect #countrie').text();
+            countrieName = $('#typeSelect #countrieName').text();
             stateName = $('#typeSelectState #state').text();
             $.post("/DeviceGroup/TowerInsert", { countrieName: countrieName, stateName: stateName, cityName: cityName, cityid: cityid }, function () {
             });

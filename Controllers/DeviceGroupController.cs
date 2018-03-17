@@ -205,28 +205,27 @@ namespace AdminPanelDevice.Controllers
                 {
                     countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
                 }
-                //countrie = db.Countries.ToList();
             }
             else
             {
                 if (countrieSearchName.Length >= 1)
                 {
                     searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
-                    countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName) || c.CountrieName.Contains(searchName)).ToList();
+                    string queryCuntries = "Select * From Countrie Where CountrieName Like '" + countrieSearchName + "%'";
 
-                    //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                    //{
-                    //    countrie = connection.Query<Countrie>(@"Select * From  Countrie Where CONTAINS CountrieName=countrieSearchName").ToList();
-                    //}
+                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                    {
+                        countrie = connection.Query<Countrie>(queryCuntries).ToList();
+                    }
 
                 }
                 else
                 {
-                    //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                    //{
-                    //    countrie = connection.Query<Countrie>("Select * From  Countrie Where CountrieName.Contains(countrieSearchName) ").ToList();
-                    //}
-                    countrie = db.Countries.Where(c => c.CountrieName.Contains(countrieSearchName)).ToList();
+                    string queryCuntries = "Select * From Countrie Where CountrieName Like '" + countrieSearchName + "%'";
+                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                    {
+                        countrie = connection.Query<Countrie>(queryCuntries).ToList();
+                    }
                 }
             }
             states.Clear();
@@ -242,20 +241,35 @@ namespace AdminPanelDevice.Controllers
             countrieName = CountrieName;
             if (stateSearchName == null && CountrieName != null)
             {
-                countrieID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
-                states = db.States.Where(s => s.CountrieID == countrieID).ToList();
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                {
+                    string queryCountrie = "Select * from Countrie where CountrieName = '" + CountrieName + "'";
+                    countrieID = connection.Query<Countrie>(queryCountrie).FirstOrDefault().ID;
+                    string queryState = "select * from States where CountrieID='" + countrieID + "'";
+                    states = connection.Query<States>(queryState).ToList();
+                }
+
                 ViewBag.countrie = states;
             }
             if (stateSearchName != null && CountrieName != null)
             {
                 if (stateSearchName.Length >= 1)
                 {
-                    searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
-                  var state = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
-                    ViewBag.countrie = state;
+                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                    {
+                        string queryState = "select * from States where CountrieID='" + countrieID + "' Select * From States where  StateName Like'" + stateSearchName + "%'";
+                        states = connection.Query<States>(queryState).ToList();
+                    }
+                        searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
+                        var state = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
+                        ViewBag.countrie = state;
                 }
                 else {
-                    states = db.States.Where(s => s.CountrieID == countrieID).ToList();
+                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                    {
+                        string querySearch = "select * from States where CountrieID='" + countrieID +"'";
+                        states = connection.Query<States>(querySearch).ToList();
+                    }
                     ViewBag.countrie = states;
                 }
                
@@ -265,34 +279,37 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult citySearch(string CountrieName , string StateName, string citySearchName)
+        public PartialViewResult citySearch(string CountrieName, string StateName, string citySearchName)
         {
-            var countrieID = db.Countries.Where(c => c.CountrieName == CountrieName).FirstOrDefault().ID;
-            var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-            var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID==countrieID && t.StateID==stateID).ToList().Select(t=>t.CityCheckedID).ToList();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var countrieID = connection.Query<Countrie>("select * from Countrie where CountrieName='" + CountrieName + "'").FirstOrDefault().ID;
+                var stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
+                var cityChecked = connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "' and StateID='" + stateID + "'").ToList().Select(t => t.CityCheckedID).ToList();
 
-            if (citySearchName == null & StateName!=null && StateName!="")
-            {
-               var statesID = db.States.Where(c => c.StateName == StateName).FirstOrDefault().ID;
-                 city = db.Citys.Where(c=>c.StateID == statesID).ToList();
-                 ViewBag.city = city;
-            }
-            if (citySearchName != null & StateName != null && StateName != "")
-            {
-                if (citySearchName.Length >= 1)
+                if (citySearchName == null & StateName != null && StateName != "")
                 {
-                    searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
-                    var citys = city.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
-                    ViewBag.city = citys;
-                }
-                else
-                {
-                    city = db.Citys.Where(c => c.StateID == countrieID).ToList();
+                   stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
+                   city=connection.Query<City>("Select * from City where  StateID='" + stateID + "'").ToList();
+
                     ViewBag.city = city;
                 }
+                if (citySearchName != null & StateName != null && StateName != "")
+                {
+                    if (citySearchName.Length >= 1)
+                    {
+                        var citys = connection.Query<City>("Select * from City where CityName like '" + citySearchName + "%'");
+                        ViewBag.city = citys;
+                    }
+                    else
+                    {
+                        city = connection.Query<City>("Select * From City where StateID='" + countrieID + "'").ToList();
+                        ViewBag.city = city;
+                    }
+                }
+                ViewBag.DiagramID = CountriesListID;
+                return PartialView("_City", cityChecked);
             }
-            ViewBag.DiagramID = CountriesListID;
-            return PartialView("_City",cityChecked);
         }
 
         [HttpPost]
@@ -505,8 +522,6 @@ namespace AdminPanelDevice.Controllers
         {
             MibWalkIndicator = false;
             
-
-
             //if (presetName == "Preset")
             //{
             PresetIND = 0;

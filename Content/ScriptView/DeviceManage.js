@@ -16,22 +16,24 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     DeviceName =$('.device_header' + dvcID).text();
     //if (DeviceName.length > 15) {
     //    DeviceName = DeviceName.substr(0, DeviceName.length - (DeviceName.length - 12)) + '...';
-    //} 
+    //}
+    $('#myModal').modal();
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
     }, 'text');
-    
     });
 
 $('#walk_send').click(function () { // device walk ip port version
     IP = $('#tower_ip').val();
     Port = $('#tower_port').val();
     Version = $('#walk_version').text();
+    $('#load_walk').css("display", "block");
+
     $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
-
+        $('#load_walk').css("display", "none");
         $('#walk_checked_add').removeClass("").addClass("checked");
         $("#walk_checked").prop('checked', true);
     });

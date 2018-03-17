@@ -64,78 +64,21 @@
             </li>
 
             <div id="add_device_partial">
-                @*<li>
-                        <div class="widget-container widget_categories widget_categories_filter boxed">
-                            <div class="inner">
-                                <ul>
-                                    <li class="first gradient"><div class="input_wrap"><input class="deviceInput inputField gradient" name="device_name" id="device_name" placeholder="Device Name" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
-                                    <li class="current-menu-item gradient "><div class="input_wrap"><input class=" deviceInput inputField gradient" name="manufacture_name" id="manufacture_name" placeholder="ManuFacture" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
-                                    <li class="gradient"><div class="input_wrap"><input class="deviceInput inputField gradient" name="model_name" id="model_name" placeholder="Model" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
-                                    <li class="gradient"><div class="input_wrap"><input class="deviceInput inputField gradient" name="purpose_name" id="purpose_name" placeholder="Purpose" value="" type="text" hidefocus="true" style="outline: none; color: white"></div></li>
-                                    <li>
-                                        <input name="mib_file" type="file" id="FileUpload" accept="file/*" style="display: none">
-                                        <span class="btn btn-send" style="opacity: 0.8; height:25px; padding-right:0px">
-                                            <label class="btn btn-send" for="FileUpload" style="height: 25px; width: 100%; line-height:25px;">Browser</label>
-                                        </span>
-                                        <span class="btn btn-send" style="opacity: 0.8; height:25px; padding-right:0px;margin-top:3px">
-                                            <label class="btn btn-send" for="FileUpload" style="height: 25px; width: 100%; line-height:25px;">Add</label>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>*@
             </div>
-            @*<li>
-                    <span id="Adapter">Adapters</span>
-                    <ul id="adapters" class="devInfo">
-                        <li class="adapter">
-                            Adapter 0
-                        </li>
-                        <li class="adapter">
-                            Adapter 1
-                        </li>
-                    </ul>
-                </li>*@
         </ul>
-
-        <!-- Buttons for saving, loading, clearing diagram and changing mode (This block is temporary) -->
-        <!--<input type="button" id="save" name="save" value="save" />
-        <input type="button" id="load" name="load" value="load" />-->
-        @*<input type="button" id="clear" name="clear" value="Clear Diagram" class="btn" />
-            <ul id="zoomButtons">
-                <li><input type="button" id="zoomin" name="zoomin" value="Zoom in" class="btn" /></li>
-                <li><input type="button" id="zoomout" name="zoomout" value="Zoom out" class="btn" /></li>
-            </ul>*@
-        <!--<button id="black">dark</button>
-        <button id="white">light</button>-->
     </div>
-
     <div id="settingsDiv">
 
     </div>
-
 </div>
-<!-- Container for context menu. It appears only when user right clicks on one of the tables -->
-@*<div id="contextMenuDiv">
-        <ul class="contextmenu" id="context">
-            <li><a href="" class="hideTable">Close</a></li>
-        </ul>
-    </div>*@
 
-@*<table class="foo elementTable " name="title" id="">
-    <tr class="tableHeader">
-        <th class="thClass">
-        <span class="header">stereo</span>
-        <span class="settings">
-        <img src="/Icons/pignon.png" style="width:17px; height:17px"alt="Settings" title="Settings" />
-            </span></th></tr><tr><td class="add"><span class="addList">Add new link</span></td></tr></table>*@
-
-@*</div>*@
 <div id="mainDiv" name="mainDiv">
 
 </div>
 
+<div id="load_walk" name="Load">
+        <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
+</div>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -290,24 +233,7 @@
     </div>
 </div>
 
-<!-- Modal Group -->
-@*<div>
-        <div class="modal fade" id="groupModal" role="dialog">
-            <div class="modal-dialog">
-                <div class="widget-container widget_search styled boxed-velvet" style="width:250px;">
-                    <div class="inner gradient">
-                        <form method="get" id="searchform2" action="#">
-                            <div class="clearfix">
-                                <span class="btn btn-small" style="opacity: 2001;"><input type="button" id="create_group" value="create" hidefocus="true" style="outline: none;" class="gradient" data-dismiss="modal"></span>
-                                <div class="input_wrap"><input class="inputField gradient" name="group_name" id="group_name" placeholder="Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white"></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
-@*<div class="container">*@
+
 <!-- Modal  SET -->
 <div class="modal fade" id="SetModal" role="dialog">
     <div class="modal-dialog" @*style="margin-left:-20%;"*@>
@@ -417,91 +343,92 @@
 
 
 
-        var handled = false; var width;                                          // countries search and full countries
-        $('body').on('click touchend', '#typeSelect', function (e) {
-            width = $(this).width();
-            if (e.type == "touchend") {
-                handled = true;
-                $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-                $('.typeSelect li').css('widht', '93%');
-            }
-            else
-                if (e.type == "click" && !handled) {
-                    $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-                    $.post("/DeviceGroup/countrieSearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-                        $('#countrie_partial').html("");
-                        $('#countrie_partial').html(Response);
-                    }, 'text');
-                }
-                else {
-                    handled = false;
-                }
-        });
+        //var handled = false; var width;                                          // countries search and full countries
+        //$('body').on('click touchend', '#typeSelect', function (e) {
+        //    width = $(this).width();
+        //    if (e.type == "touchend") {
+        //        handled = true;
+        //        $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
+        //        $('.typeSelect li').css('widht', '93%');
+        //    }
+        //    else
+        //        if (e.type == "click" && !handled) {
+        //            $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
+        //            $.post("/DeviceGroup/countrieSearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
+        //                $('#countrie_partial').html("");
+        //                $('#countrie_partial').html(Response);
+        //            }, 'text');
+        //        }
+        //        else {
+        //            handled = false;
+        //        }
+        //});
 
-        $('body').on('click touchend', '#typeDropDownList li', function () {
-            var value = $(this).text();
-            CountrieName = value;
-            StateName = null;
-            $('.header' + $('#typeDropDownList').attr('value')).text(value);
-            $('#typeSelect #countrie').text(value);
-            $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-        });
+        //$('body').on('click touchend', '#typeDropDownList li', function () {
+        //    var value = $(this).text();
+        //    CountrieName = value;
+        //    StateName = null;
+        //    $('#countrieName').text(value);
+        //    $('.header' + $('#typeDropDownList').attr('value')).text(value);
+        //    $('#typeSelect #countrie').text(value);
+        //    $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
+        //});
 
-        var handledstate = false;                                           // states search and full states
-        $('body').on('click touchend', '#typeSelectState', function (e) {
-            var width = $(this).width();
-            if (e.type == "touchend") {
-                handledstate = true;
-                $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-            }
-            else
-                if (e.type == "click" && !handledstate) {
-                    $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-                    CountrieName = $('#typeSelect #countrie').text();
-                    //alert($('#countrie').attr("value"));
-                    //alert($('#countrie').text());
-                    $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
-                        $('#state_partial').html("");
-                        $('#state_partial').html(Response);
-                    }, 'text');
-                }
-                else {
-                    handledstate = false;
-                }
+        //var handledstate = false;                                           // states search and full states
+        //$('body').on('click touchend', '#typeSelectState', function (e) {
+        //    var width = $(this).width();
+        //    if (e.type == "touchend") {
+        //        handledstate = true;
+        //        $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+        //    }
+        //    else
+        //        if (e.type == "click" && !handledstate) {
+        //            $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+        //            CountrieName = $('#typeSelect #countrieName').text();
+        //            //alert($('#countrie').attr("value"));
+        //            //alert($('#countrie').text());
+        //            $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
+        //                $('#state_partial').html("");
+        //                $('#state_partial').html(Response);
+        //            }, 'text');
+        //        }
+        //        else {
+        //            handledstate = false;
+        //        }
 
-        });
+        //});
 
-        $('body').on('click touchend', '#typeDropDownListState li', function () {
-            var value = $(this).text();
-            StateName = value;
-            $('#typeSelectState #state').text(value);
-            $('#state' + $('#typeDropDownListState').attr("value")).text(value);
-            $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+        //$('body').on('click touchend', '#typeDropDownListState li', function () {
+        //    var value = $(this).text();
+        //    StateName = value;
+        //    $('#typeSelectState #state').text(value);
+        //    $('#state' + $('#typeDropDownListState').attr("value")).text(value);
+        //    $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
 
-        });
+        //});
 
-        var handledcity = false;
-        $('body').on('click touchend', '#typeSelectCity', function (e) {
-            var width = $(this).width();
-            if (e.type == "touchend") {
-                handledcity = true;
-                $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
-            }
-            else
-                if (e.type == "click" && !handledcity) {
-                    $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
-                    CountrieName = $('#typeSelect #countrie').text();
-                    StateName = $('#state').text();
-                    $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-                        $('#city_partial').html("");
-                        $('#city_partial').html(Response);
-                    }, 'text');
-                }
-                else {
-                    handledcity = false;
-                }
+        //var handledcity = false;
+        //$('body').on('click touchend', '#typeSelectCity', function (e) {
+        //    var width = $(this).width();
+        //    if (e.type == "touchend") {
+        //        handledcity = true;
+        //        $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
+        //    }
+        //    else
+        //        if (e.type == "click" && !handledcity) {
+        //            $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
+        //            CountrieName = $('#typeSelect #countrieName').text();
+        //            StateName = $('#state').text();
+        //            $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
+        //                $('#city_partial').html("");
+        //                $('#city_partial').html(Response);
+        //            }, 'text');
+        //        }
+        //        else {
+        //            handledcity = false;
+        //        }
 
-        });
+        //});
 
         $('#countrie').click(function () {
             $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
@@ -614,7 +541,7 @@
                                 title = title.substr(0, title.length - (title.length - 31)) + '...';
                             }
                             droppedTop = height;
-                            var item = $('<table class="foo elementTable tableBodyTower ' + Class + '" name="' + title + '" id="' + (id + 1) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span class="device_header' + diagramLenght + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr></table>');
+                            var item = $('<table class="foo elementTable tableBodyTower ' + Class + '" name="' + title + '" id="' + (id + 1) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span class="device_header' + (id + 1) + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr></table>');
                           
                             $(".add" + idTarget).height(height + 35);
                             $(".add" + idTarget).append(item);

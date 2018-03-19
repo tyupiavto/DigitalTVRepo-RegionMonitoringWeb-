@@ -497,8 +497,8 @@ namespace AdminPanelDevice.Controllers
             //page = 1;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                string cmdString = "Select * From DeviceType where Name = '"+DeviceName+"'";
-                 QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
+                string cmdString = "Select * From DeviceType where Name ='"+DeviceName+"'";
+                QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
             }
 
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -518,7 +518,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult WalkSend(int? page, string IP, int Port, string Version)
+        public PartialViewResult WalkSend(int? page, string IP, int Port, string Version , string communityRead)
         {
             MibWalkIndicator = false;
             
@@ -532,7 +532,7 @@ namespace AdminPanelDevice.Controllers
             // var devicename = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
             //var walkOid = db.MibTreeInformations.Where(m => m.DeviceID == devicename.ID).FirstOrDefault();
             // deviceTypeID = devicename.ID;
-            OctetString community = new OctetString("public");
+            OctetString community = new OctetString(communityRead);
 
             AgentParameters param = new AgentParameters(community);
             if (Version == "V1")
@@ -585,13 +585,15 @@ namespace AdminPanelDevice.Controllers
                                 foreach (Vb v in result.Pdu.VbList)
                                 {
 
-                                    if (rootOid.IsRootOf(v.Oid))
+                                if (rootOid.IsRootOf(v.Oid))
+                                {
+                                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                                     {
                                         WalkDevice walk = new WalkDevice();
                                         ID++;
                                         walk.ID = ID;
                                         walk.WalkID = ID;
-                                        string oid =v.Oid.ToString();
+                                        string oid = v.Oid.ToString();
                                         var OidMibdescription = db.MibTreeInformations.Where(m => m.OID == oid).FirstOrDefault();
                                         if (OidMibdescription == null)
                                         {
@@ -604,6 +606,7 @@ namespace AdminPanelDevice.Controllers
                                             oid = oid.Remove(oid.Length - 1);
                                             oid = oid.Remove(oid.Length - 1);
                                             OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                         
                                             if (OidMibdescription != null)
                                                 walk.WalkDescription = OidMibdescription.Description;
                                         }
@@ -621,10 +624,11 @@ namespace AdminPanelDevice.Controllers
                                         walkList.Add(walk);
                                         lastOid = v.Oid;
                                     }
-                                    else
-                                    {
-                                        lastOid = null;
-                                    }
+                                }
+                                else
+                                {
+                                    lastOid = null;
+                                }
                                 }
                             }
                         }
@@ -647,18 +651,18 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetSend(string SetOID, int SetValue)
+        public JsonResult SetSend(string IP,string SetOID, int SetValue,string communityWrite)
         {
 
 
-            IpAddress agent = new IpAddress("192.168.4.42");
+            IpAddress agent = new IpAddress(IP);
 
             UdpTarget target = new UdpTarget((IPAddress)agent, 161, 4000, 1);
             Pdu.SetPdu();
             Pdu pdu = new Pdu(PduType.Set);
             pdu.VbList.Add(new Oid(SetOID), new Integer32(SetValue));
 
-            AgentParameters aparam = new AgentParameters(SnmpVersion.Ver2, new OctetString("private"), true);
+            AgentParameters aparam = new AgentParameters(SnmpVersion.Ver2, new OctetString(communityWrite), true);
             SnmpV2Packet response;
             try
             {
@@ -960,6 +964,13 @@ namespace AdminPanelDevice.Controllers
             ViewBag.defaultInterval = DefaultInterval;
 
            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+        }
+
+        [HttpPost]
+        public PartialViewResult Gps (string k)
+        {
+
+            return PartialView("_Gps",JsonRequestBehavior.AllowGet);
         }
 
     }

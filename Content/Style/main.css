@@ -212,6 +212,20 @@ body {
 	max-height: 20px;
     cursor: pointer;
 }
+.GpsSetting {
+    float: right;
+    margin-top: 3px;
+    margin-right: 8px;
+    max-height: 20px;
+    cursor: pointer;
+}
+.version_settings {
+    float: right;
+    margin-top: 3px;
+    margin-right: 8px;
+    max-height: 20px;
+    cursor: pointer;
+}
 .device_settings {
     float: right;
     margin-top: 3px;
@@ -1017,3 +1031,18 @@ body {
     margin-left: 50%;
     margin-top: 15%;
 }
+
+.setModal {
+    height: 140px;
+    width: 461px;
+    border-top: 1px solid rgba(0,0,0,0.3);
+    background: url(/image/comment-bg2.png) repeat;
+    border-collapse: collapse;
+}
+
+.versionModal {
+    height: 53px;
+    width: 300px;
+    border-top: 1px solid rgba(0,0,0,0.3);
+    background: url(/image/comment-bg2.png) repeat;
+    border-collapse: collapse

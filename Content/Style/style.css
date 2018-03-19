@@ -479,7 +479,9 @@ h6.foo{
 .checkbox-large .custom-checkbox label {background:url(/image/styled_checkbox_large.png) no-repeat; height: 34px; line-height: 24px; padding-left:95px;}
 .checkbox-large .custom-checkbox label {background-position:0 0;}
 .checkbox-large .custom-checkbox label.checked {background-position:0 -100px;}
-
+.custom-checkbox label.checkedGps, .custom-radio label.checkedGps {
+    background-position: 0 -142px;
+}
 /*-----------------------------------*/
 /* Ribbons */
 /*-----------------------------------*/

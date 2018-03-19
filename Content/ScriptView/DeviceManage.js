@@ -1,5 +1,5 @@
 ﻿
-var dvcID, DeviceName,intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second;
+var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead;
 
 var CheckArray = new Array();
 var walkArray = new Array();
@@ -17,7 +17,7 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     //if (DeviceName.length > 15) {
     //    DeviceName = DeviceName.substr(0, DeviceName.length - (DeviceName.length - 12)) + '...';
     //}
-    $('#myModal').modal();
+    //$('#myModal').modal();
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
@@ -29,8 +29,8 @@ $('#walk_send').click(function () { // device walk ip port version
     Port = $('#tower_port').val();
     Version = $('#walk_version').text();
     $('#load_walk').css("display", "block");
-
-    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version }, function (Response) {
+    communityRead = $('#read_community').val();
+    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
         $('#load_walk').css("display", "none");
@@ -122,7 +122,7 @@ $('body').on('click touchend','.walk_list_version li', function () { // time int
 });
 
 $('body').on('click touchend', '#preset_add_remove', function (e) { //preset add remove list
-    width = 145;
+    width = 101;
     if (e.type == "touchend") {
         handled = true;
         $('#preset_list_remove').css({ 'width': width + 0 }).toggle();
@@ -159,7 +159,7 @@ $('body').on('click touchend','.removePreset' , function () {
 });
 
 $('body').on('click touchend', '#inerval_add_remove', function (e) { //interval add removel list
-    width = 145;
+    width = 101;
     if (e.type == "touchend") {
         handled = true;
         $('#interval_list_remove').css({ 'width': width + 0 }).toggle();
@@ -207,7 +207,9 @@ $('body').on('click touchend', '.removeInterval', function () {
     $('#SendSet').click(function () { // set send value
         SetOID = $('#set_oid').text();
         SetValue = $('#set_send_value').val();
-        $.post("/DeviceGroup/SetSend", { SetOID: SetOID, SetValue: SetValue }, function () {
+        communityWrite = $('#write_community').val();
+        IP = $('#tower_ip').val();
+        $.post("/DeviceGroup/SetSend", { IP: IP, SetOID: SetOID, SetValue: SetValue, communityWrite: communityWrite }, function () {
         },'json');
     });
 
@@ -279,6 +281,22 @@ $('body').on('click touched', '.log_check div', function () { // log checked pre
     }
 });
 
+$('body').on('contextmenu touched', '.log_check div', function () { // log checked preset 
+    var logID = $(this).attr("id");
+    //if ($('#log_checked' + logID).is(':checked') == false) {
+    //    chechkID = logID;
+        //$.post("/DeviceGroup/CheckLog", { chechkID: chechkID }, function () { }, 'json'); // log check 
+
+        $('#log_checked_add' + logID).removeClass("").addClass("checkedGps");
+        //$("#log_checked" + logID).prop('checked', true);
+    //} else {
+        unChechkID = logID;
+        //$.post("/DeviceGroup/UncheckLog", { unChechkID: unChechkID }, function () { }, 'json'); // log uncheck 
+        //$('#log_checked_add' + logID).removeClass("checkedGps").addClass("");
+        //$("#log_checked" + logID).prop('checked', false);
+    //}
+});
+
 $('#preset_save').click(function () {
     presetName = $('#preset_name').val();
     IpAddress = $('#tower_ip').val();
@@ -296,3 +314,14 @@ $('#interval_add').click(function () { /// interval save
         $('#interval_number').val("");
     },'text');
 });
+
+$(document).on('click touchend', '#GpsSetting', function () { // add device setting open
+   //var  GpsID = $(this).closest($(".foo")).attr("id");
+    
+    $.post("/DeviceGroup/Gps", {}, function (Response) {
+        $('#device_settings').html("");
+        $('#device_settings').html(Response);
+    }, 'text');
+});
+
+

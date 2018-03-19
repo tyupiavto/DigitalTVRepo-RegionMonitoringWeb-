@@ -21,7 +21,7 @@
                 @*<span id="DevName">Device</span>*@
                 <span id="DevName">Device </span>
                 <span id="AddGroup" style="width: 60px;margin-left:198px; margin-top:-20px;">Add Group</span>
-                <span id="Add" data-toggle="modal" data-target="#myModal" style="width: 60px;margin-left:198px; margin-top:20px;">Add</span>
+                @*<span id="Add" data-toggle="modal" data-target="#myModal" style="width: 60px;margin-left:198px; margin-top:20px;">Add</span>*@
                 <ul id="deviceName" class="devInfo"></ul>
 
             </li>
@@ -31,7 +31,6 @@
                 <ul id="countries" class="devInfo">
                     <li class="countries">
                         Countrie
-
                     </li>
                 </ul>
             </li>
@@ -77,11 +76,11 @@
 </div>
 
 <div id="load_walk" name="Load">
-        <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
+    <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
 </div>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade col-lg-12" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -96,61 +95,20 @@
                 </div>
                 <button type="button" class="close" id="modal_hiden" data-dismiss="modal">&times;</button>
             </div>
-            <div class="titileGroup" style="height:21px;">
-                <table>
-                    <tr class="streamsInfo" id="header_device">
-                        <td style="width:60%;">
-                            <div class="descriptionDiv">Name</div>
-                        </td>
-                        <td style="width:30%;">
-                            <div class="descriptionDiv">Value</div>
-                        </td>
-                        <td style="width:5%;">
-                            <div class="descriptionDiv" style="margin-left:15px;">Map</div>
-                            <div class="input_styled checklist pull-left" style="margin-top:-23px; height:20px;">
-                                <div class="rowCheckbox map_check_all">
-                                    <div class="custom-checkbox" id="">
-                                        <input name="map_checked" id="map_checked_all" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                        <label id="map_checked_add_all" value="" class="" style="background-size:19px;"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td style="width:5%;">
-                            <div class="descriptionDiv" style="margin-left:15px;">Log</div>
-                            <div class="input_styled checklist pull-left" style="margin-top:-23px;height:20px;">
-                                <div class="rowCheckbox log_check_all">
-                                    <div class="custom-checkbox" id="">
 
-                                        <input name="log_checked" id="log_checked_all" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                        <label id="log_checked_add_all" value="" class="" style="background-size:19px;"></label>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td style="width:13%;">
-                            <div class="descriptionDiv">Scanning Interval</div>
-                        </td>
-                        <td style="width:10%;">
-                            <div class="descriptionDiv">Set</div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
             <div class="titileGroup" style="height:21px; margin-top:1px;">
                 <table>
                     <tr>
-                        <td>
+                        <td style="width:18%;">
                             <input class="deviceInput inputField gradient port_ip" id="tower_ip" placeholder="IP" value="" type="text" hidefocus="true" style="color: #b8c0c8; font-size:12px; width:150px; margin-top:-5px;">
                         </td>
-                        <td>
-                            <input class="deviceInput inputField gradient port_ip" id="tower_port" placeholder="Port" value="" type="text" hidefocus="true" style="margin-left:5px; color: #b8c0c8; font-size:12px; width:60px;margin-top:-5px;">
+                        <td style="width:8%;">
+                            <input class="deviceInput inputField gradient port_ip" id="tower_port" placeholder="Port" value="161" type="text" hidefocus="true" style="margin-left:5px; color: #b8c0c8; font-size:12px; width:60px;margin-top:-5px;">
                         </td>
-                        <td id="select_version">
+                        <td id="select_version" style="width:9%;">
                             <ul class="select_version" id="" style=" min-width: 54px; min-height: 18px;padding: 4px; width: 60px; margin-left:5px;">
                                 <li>
-                                    <span class="type" value="" id="walk_version">V1</span><span class="arrow" style=" height:19px;">
+                                    <span class="type" value="" id="walk_version">V2</span><span class="arrow" style=" height:19px;">
                                         <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
                                     </span>
                                 </li>
@@ -163,13 +121,16 @@
                                 </div>
                             </ul>
                         </td>
-                        <td style="position:absolute;">
+                        <td style="width:3%;">
+                            <span class="version_settings" id="version_setting" style="margin-top: 3px; position: absolute"><img src="/Icons/pignon.png" alt="Version Settings" title="Version Settings" style="width:17px; height:17px;" data-toggle="modal" data-target="#VersionModal"/></span>
+                        </td>
+                        <td style="width:7.5%;">
                             <ul id="timButtons">
-                                <li><input type="button" id="walk_send" value="Walk" class="btn" style="height:20px;margin-left:5px; width:52px;"></li>
+                                <li><input type="button" id="walk_send" value="Walk" class="btn" style="height:20px;margin-left:5px; width:52px;margin-top:-3px;"></li>
                             </ul>
                         </td>
-                        <td>
-                            <div class="input_styled checklist pull-left" style="margin-top:-2px;margin-left:61px; position:absolute; height:20px;">
+                        <td style="width:6.8%;">
+                            <div class="input_styled checklist pull-left" style="margin-top:-2px;position:absolute; height:20px;">
                                 <div class="rowCheckbox walk_check">
                                     <div class="custom-checkbox" id="">
                                         <input id="walk_checked" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
@@ -178,50 +139,98 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="adapterInput" id="preset_add_remove" style="position:absolute;margin-left:129px;">
-                            <ul class="Type typeSelect" style="height:22px;width: 59px;">
+                        <td class="adapterInput" id="preset_add_remove" style="width:14%">
+                            <ul class="Type typeSelect" style="height: 22px;width: 101px;min-width:46px;">
                                 <li>
                                     <span class="type" id="Type">
-                                        <input type="text" name="presetName" class="presetName Text" id="preset_name" placeholder="Preset Name" style="width: 92%;margin-top: -5px; margin-left: -5px; border:none;" autocomplete="off">
+                                        <input type="text" name="presetName" class="presetName Text" id="preset_name" placeholder="Preset Name" style="width:88%;margin-top: -5px; margin-left: -5px; border:none;" autocomplete="off">
                                     </span>
                                     <span class="arrow">
                                         <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
                                     </span>
                                 </li>
                             </ul>
-                            <ul class="TypeList typeDropDownList" id="preset_list_remove" style="width: 145px; display: none; z-index:1;">
+                            <ul class="TypeList typeDropDownList" id="preset_list_remove" style="width:101px; display: none; z-index:1;">
                                 <div id="interva_partial" class="preset_list_remove">
 
                                 </div>
                             </ul>
                         </td>
-                        <td style="position:absolute;margin-left:280px;">
+                        <td style="width:13.4%;">
                             <ul id="timButtons">
-                                <li><input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;"></li>
+                                <li><input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;"></li>
                             </ul>
                         </td>
+                        <td style="width:4%">
+                            <div class="input_styled checklist pull-left" style="margin-top:-6px; height:20px;">
+                                <div class="rowCheckbox map_check_all" style="margin-top:3px;">
+                                    <div class="custom-checkbox" id="">
+                                        <input name="map_checked" id="map_checked_all" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                        <label id="map_checked_add_all" value="" class="" style="background-size:19px;"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width:4%;">
+                            <div class="input_styled checklist pull-left" style="margin-top:-6px;height:20px;">
+                                <div class="rowCheckbox log_check_all" style="margin-top:3px;">
+                                    <div class="custom-checkbox" id="">
+
+                                        <input name="log_checked" id="log_checked_all" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                        <label id="log_checked_add_all" value="" class="" style="background-size:19px;"></label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                         @* ///////////////////////////////////////////////////////////////////////////                            *@
-                        <td class="adapterInput" id="inerval_add_remove" style="position:absolute;margin-left:360px;">
-                            <ul class="Type typeSelect" style="height:22px;width: 59px;">
+                        <td class="adapterInput" id="inerval_add_remove" style="width:13%;">
+                            <ul class="Type typeSelect" style="height: 22px;width: 101px;min-width:46px;">
                                 <li>
                                     <span class="type" id="Type">
-                                        <input type="text" class="Text" id="interval_number" placeholder="Interval Add" style="width: 92%;margin-top: -5px; margin-left: -5px; border:none;" autocomplete="off">
+                                        <input type="text" class="Text" id="interval_number" placeholder="Interval Add" style="width:88%;margin-top: -5px; margin-left: -5px; border:none;" autocomplete="off">
                                     </span>
                                     <span class="arrow">
                                         <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
                                     </span>
                                 </li>
                             </ul>
-                            <ul class="TypeList typeDropDownList" id="interval_list_remove" style="width: 145px; display: none; z-index:1;">
+                            <ul class="TypeList typeDropDownList" id="interval_list_remove" style="width: 101px; display: none; z-index:1;">
                                 <div id="interva_partial" class="interval_list_remove">
 
                                 </div>
                             </ul>
                         </td>
-                        <td style="position:absolute;margin-left:510px;">
+                        <td style="width:10%;">
                             <ul id="timButtons">
-                                <li><input type="button" id="interval_add" value="Add" class="btn" style="height:20px; width:52px;line-height:6px;"></li>
+                                <li><input type="button" id="interval_add" value="Add" class="btn" style="height:20px; width:52px;line-height:6px; margin-top:-3px;"></li>
                             </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="titileGroup" style="height:21px;margin-left:1px;">
+                <table style="table-layout: fixed;width: 100%">
+                    <tr class="streamsInfo" id="header_device">
+                        <td style="width:60%;">
+                            <div class="descriptionDiv">Name</div>
+                        </td>
+                        <td style="width:30%;">
+                            <div class="descriptionDiv">Value</div>
+                        </td>
+                        <td style="width:5%;">
+                            <div class="descriptionDiv">Map</div>
+                        </td>
+                        <td style="width:5%;">
+                            <div class="descriptionDiv">Log</div>
+                        </td>
+                        <td style="width:13%;">
+                            <div class="descriptionDiv">Scanning Interval</div>
+                        </td>
+                        <td style="width:11.5%;">
+                            <div class="descriptionDiv">Set</div>
                         </td>
                     </tr>
                 </table>
@@ -239,7 +248,7 @@
     <div class="modal-dialog" @*style="margin-left:-20%;"*@>
 
         <!-- Modal content-->
-        <div class="modal-content" style=" height:140px; width:461px; border-top: 1px solid rgba(0,0,0,0.3); background: url(/image/comment-bg2.png) repeat;  border-collapse: collapse;">
+        <div class="modal-content setModal">
             <div class="modal-body">
                 <div class="titileGroup" style="margin-left: -13px; margin-top: -13px; width:106%;">
                     <table>
@@ -295,10 +304,45 @@
     </div>
 </div>
 
+<!-- Modal  Version -->
+<div class="modal fade" id="VersionModal" role="dialog">
+    <div class="modal-dialog" @*style="margin-left:-20%;"*@>
+
+        <!-- Modal content-->
+        <div class="modal-content versionModal" style="margin-left:20%; margin-top:20%;">
+            <div class="modal-body">
+                <div class="titileGroup" style="margin-left: -13px; margin-top: -13px; width:110%;">
+                    <table>
+                        <tr class="streamsInfo" id="header_device">
+                            <td style="width:10%;">
+                                <div class="descriptionDiv">Read Community</div>
+                            </td>
+                            <td style="width:90%;">
+                                <input type="text" class="form-control" id="read_community"style="color: white;background-color: #515862" value="public">
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td style="width:10%;">
+                                <div class="descriptionDiv">Write Community</div>
+                            </td>
+                            <td style="width:90%;">
+                                <input type="text" class="form-control" id="write_community" style="color:white;background-color: #515862" value="private">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                @*<div style="margin-left:165px; margin-top:3px;">
+                    <button type="button" class="btn btn-info" id="SendCommunity" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px;margin-left:65px;">Send</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="width:50px; height:22px; line-height:9px; font-size:11px;">Close</button>
+                </div>*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @*</div>*@
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+
 
 <script>
     //var counter;
@@ -514,7 +558,7 @@
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                     var title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();
@@ -536,13 +580,13 @@
                             var height = $(".add" + idTarget).height();
                             var lenght = $('#dropDivs').length;
                             var id = $('.foo').length;
-       
+
                             if (title.length > 35) {
                                 title = title.substr(0, title.length - (title.length - 31)) + '...';
                             }
                             droppedTop = height;
-                            var item = $('<table class="foo elementTable tableBodyTower ' + Class + '" name="' + title + '" id="' + (id + 1) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span class="device_header' + (id + 1) + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr></table>');
-                          
+                            var item = $('<table class="foo elementTable tableBodyTower ' + Class + '" name="' + title + '" id="' + (id + 1) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span class="device_header' + (id + 1) + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings"data-toggle="modal" data-target="#myModal" /></span></th></tr></table>');
+
                             $(".add" + idTarget).height(height + 35);
                             $(".add" + idTarget).append(item);
                             //diagramLenght++;
@@ -594,7 +638,6 @@
             alert("save");
         });
 
-
         //$("#mainDiv").mousedown(function (e) {
         //    mouseDown = !$(e.target).closest('.foo').length;
         //}).mousemove(function (e) {
@@ -619,6 +662,8 @@
     });
 
 </script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- BS JavaScript -->
 
 <style>
     .dropdown-wrap,

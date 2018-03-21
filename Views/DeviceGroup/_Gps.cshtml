@@ -1,38 +1,95 @@
-﻿<table style="width: 99.8%; margin-top:5px;" id="adapterSettings">
+﻿@model IEnumerable<AdminPanelDevice.Models.DeviceType>
+@*<tr><th colspan="2">Gps Coordinate Settings</th></tr>*@
+<table style="width: 99.5%;" id="adapterSettings">
     <tbody>
-
-        <tr><th colspan="2">City</th></tr>
-        <tr>
-            <td class="adapterInput" colspan="2" style="text-align: center;">
-                <ul id="typeSelectCity" class="typeSelect">
-                    <li>
-                        <span class="type">City</span><span class="arrow">
-                            <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
-                        </span>
-                    </li>
-                </ul>
-
-                <ul class="typeDropDownList" id="typeDropDownListCity" value="" style="width: 145px; display: none; position:relative;">
-                    <li id="city_list" style="width: 29%; margin-left: 187px; margin-top:2px; height:20px;">
-                        <span class="type" id="name_all">All</span><span class="arrow" id="city_list">
-                            <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
-                        </span>
-                    </li>
-                    <ul class="dyseqList typeDropDownList" id="city_allselect" style="width:30%; display: none; margin-left:186px; z-index:1;">
-                        <li id="city_all" display:none">All</li>
-                        <li id="city_select" display:none">Select</li>
+            <tr>
+                <td style="width:10%;" class="gpsStyle">
+                    <div class="descriptionDiv" style="margin-left:3px;margin-top:3px;max-width: 56px;">Lattitube</div>
+                </td>
+                <td style="width:90%" class="gpsStyle" id="lattitube_select">
+                    <ul class="select_time" id="" value="2" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
+                        <li style="height:10px;">
+                                <input type="text" name="presetName" class="Text" id="lattitube_name" placeholder="Lattitube" autocomplete="off" style="border: none; width: 94.2%;margin-top: -4px;height: 18px; margin-left: -4px; font-size: 11px; background: linear-gradient(rgb(53, 59, 67) 0%, rgb(58, 64, 72) 16%, rgb(64, 70, 78) 39%, rgb(74, 80, 86) 65%, rgb(82, 88, 96) 85%, rgb(85, 91, 98) 100%);" />
+                         <span class="arrow" style=" height:19px;">
+                                <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                            </span>
+                        </li>
                     </ul>
+                    <ul class="TypeList typeDropDownList gpsStyleSelect" id="gps_list_lattitube">
+                        <div id="lattitube_list"></div>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%;" class="gpsStyle">
+                    <div class="descriptionDiv" style="margin-left:2px;margin-top:3px; max-width: 56px;">Longitube</div>
+                </td>
+                <td style="width:90%" class="gpsStyle"  id="longitube_select">
+                    <ul class="select_time" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
+                        <li style="height:10px;">
+                            <input type="text" name="presetName" class="Text" id="longitube_name" placeholder="Longitube" autocomplete="off" style="border: none; width: 94.2%;margin-top: -4px;height: 18px; margin-left: -4px; font-size: 11px; background: linear-gradient(rgb(53, 59, 67) 0%, rgb(58, 64, 72) 16%, rgb(64, 70, 78) 39%, rgb(74, 80, 86) 65%, rgb(82, 88, 96) 85%, rgb(85, 91, 98) 100%);"/>
+                         <span class="arrow" style=" height:19px;">
+                                <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="TypeList typeDropDownList gpsStyleSelect" id="gps_list_longitube">
+                        <div id="longitube_list"></div>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%;" class="gpsStyle">
+                    <div class="descriptionDiv" style="margin-left:3px;margin-top:3px;max-width: 56px;">Altitube</div>
+                </td>
+                <td style="width:90%" class="gpsStyle" id="altitube_select">
+                    <ul class="select_time" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
+                        <li style="height:10px;">
+                            <input type="text" name="" class="" id="altitube_name" placeholder="Altitube"  autocomplete="off" style="border: none; width: 94.2%;margin-top: -4px;height: 18px; margin-left: -4px; font-size: 11px; background: linear-gradient(rgb(53, 59, 67) 0%, rgb(58, 64, 72) 16%, rgb(64, 70, 78) 39%, rgb(74, 80, 86) 65%, rgb(82, 88, 96) 85%, rgb(85, 91, 98) 100%);"/>
+                           <span class="arrow" style=" height:19px;">
+                                <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="TypeList typeDropDownList gpsStyleSelect" id="gps_list_altitude">
+                        @*<input class="deviceInput inputField gradient" id="altitude_cordinate" placeholder="Altitude" value="" type="text" hidefocus="true" style="color: #b8c0c8; font-size:12px; width:183px;">
+                        <span class="arrow removeInterval addgps" id="add_gps_coordinate" value="">
+                            +
+                        </span>*@
+                        <div id="altitube_list"></div>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+               <td></td>
+               <td style="height:21px;">
+                   <input type="button" id="gps_cor_add" value="Add" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-1px; margin-left:152px;">
+               </td>
+            </tr>
+        <ul class="typeDropDownList" style="display: block; width: 263px; margin-top:0px; position:relative;">
+            @foreach (var item in Model)
+            {
+                if (item.Name.Length > 35)
+                {
+                    var namecat = item.Name;
+                    namecat = namecat.Remove(32, item.Name.Length - 35) + "...";
+                    <li value="@item.Name" id="gpsDevice_name@(item.NumberID)">@namecat</li>
+                }
+                else
+                {
+                    <li value="@item.Name"id="gpsDevice_name@(item.NumberID)">@item.Name</li>
+                }
+                <div class="input_styled checklist pull-left" style="margin-top:-24px;margin-left:222px;z-index:0; height:24px;">
+                    <div class="rowCheckbox" value="" id="gps_check">
+                        <div class="custom-checkbox" id="@item.NumberID">
 
-
-                    <input class="deviceInput inputField gradient" name="city_search" id="city_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white; font-size:11px; font-weight:100; width:70%; margin-left:-80px; margin-top:-21px;">
-
-                    <input class="deviceInput inputField gradient" name="city_name_add" id="city_name_add" placeholder="City" value="" type="text" hidefocus="true" style="outline: none;  color: white; font-size: 11px;font-weight: 100; width: 70%;margin-left: -3px;margin-top: -6px">
-                    <input type="button" id="add_city" name="add_city" value="Add City" class="btn">
-
-                    <div id="city_partial" class="search_count_stat_city" style="margin-top:2px;"></div>
-
-                </ul>
-            </td>
-        </tr>
+                            <input name="gps_checked" id="gps_checked@(item.NumberID)" type="checkbox" value="@item.Name" hidefocus="true" style="outline: none;" class="gradient">
+                            <label for="gps_checked" id="gps_checked_add@(item.NumberID)" value="@item.NumberID" class="" style="background-size:19px;"></label>
+                        </div>
+                    </div>
+                </div>
+            }
+        </ul>
     </tbody>
 </table>
+

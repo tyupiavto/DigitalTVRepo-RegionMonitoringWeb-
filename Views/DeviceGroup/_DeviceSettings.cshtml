@@ -79,7 +79,7 @@
                                     <div class="custom-checkbox" id="@item.WalkID">
 
                                         <input name="log_checked" id="log_checked@(item.WalkID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                        <label id="log_checked_add@(item.WalkID)" value="" class="" style="background-size:19px;"></label>
+                                        <label id="log_checked_add@(item.WalkID)" value="" class="context-menu-one" style="background-size:19px;"></label>
 
                                     </div>
                                 </div>
@@ -109,19 +109,6 @@
                                 <li><button type="button" id="set@(item.WalkID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
                             </ul>
                         </td>
-                        @*<ul class="dyseqList typeDropDownList" id="city_allselect" style="width: 30%; display: block; margin-left: 186px; z-index: 1;">
-                              @foreach (var interval in IntervalNumber) {
-                                <li id="search_interval" style="display:none" value="@interval.Interval">@interval.Interval</li>
-                              }
-                            </ul>*@
-
-                        @*<td style="width:20%;"></td>*@
-
-
-                        @*<td>
-                                <button class="btn btn-info" type="button" id="set_click" value="OpenSet@(item.ID)" data-toggle="modal" data-target="#SETModal">Set</button>
-                            </td>*@
-
                     </tr>
 
                 }

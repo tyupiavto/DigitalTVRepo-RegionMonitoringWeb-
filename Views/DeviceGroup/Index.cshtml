@@ -122,7 +122,7 @@
                             </ul>
                         </td>
                         <td style="width:3%;">
-                            <span class="version_settings" id="version_setting" style="margin-top: 3px; position: absolute"><img src="/Icons/pignon.png" alt="Version Settings" title="Version Settings" style="width:17px; height:17px;" data-toggle="modal" data-target="#VersionModal"/></span>
+                            <span class="version_settings" id="version_setting" style="margin-top: 3px; position: absolute"><img src="/Icons/pignon.png" alt="Version Settings" title="Version Settings" style="width:17px; height:17px;" data-toggle="modal" data-target="#VersionModal" /></span>
                         </td>
                         <td style="width:7.5%;">
                             <ul id="timButtons">
@@ -209,7 +209,11 @@
                     </tr>
                 </table>
             </div>
-
+            <ul class='custom-menu' style="display:none;">
+                <span style="font-size: 11px;margin-left:2px;">GPS Select</span>
+                <li data-action="Yes">Yes</li>
+                <li data-action="No">No</li>
+            </ul>
 
             <div class="titileGroup" style="height:21px;margin-left:1px;">
                 <table style="table-layout: fixed;width: 100%">
@@ -558,7 +562,7 @@
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                     var title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) +' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();
@@ -582,10 +586,13 @@
                             var id = $('.foo').length;
 
                             if (title.length > 35) {
-                                title = title.substr(0, title.length - (title.length - 31)) + '...';
+                                var titleName = title.substr(0, title.length - (title.length - 31)) + '...';
+                            }
+                            else {
+                                titleName = title;
                             }
                             droppedTop = height;
-                            var item = $('<table class="foo elementTable tableBodyTower ' + Class + '" name="' + title + '" id="' + (id + 1) + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span class="device_header' + (id + 1) + '">' + title + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings"data-toggle="modal" data-target="#myModal" /></span></th></tr></table>');
+                            var item = $('<table class="foo elementTable tableBodyTower tower_name' + (id + 1) + '" ' + Class + '" name="' + title + '" id="' + (id + 1) + '" title="Tower' + idTarget + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span value="' + title + '" class="device_header' + (id + 1) + '">' + titleName + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings"data-toggle="modal" data-target="#myModal" /></span></th></tr></table>');
 
                             $(".add" + idTarget).height(height + 35);
                             $(".add" + idTarget).append(item);

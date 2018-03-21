@@ -43,7 +43,7 @@ namespace AdminPanelDevice.Controllers
         public static List<WalkDevice> walkSearch = new List<WalkDevice>();
         public  List<WalkDevice> PresetList = new List<WalkDevice>();
         public List<ScanningInterval> intervalList = new List<ScanningInterval>();
-
+        public static List<int> GPSCoordinate = new List<int>();
         string searchName;
         public static string countrieName;
         public static int countrieID;
@@ -211,7 +211,7 @@ namespace AdminPanelDevice.Controllers
                 if (countrieSearchName.Length >= 1)
                 {
                     searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
-                    string queryCuntries = "Select * From Countrie Where CountrieName Like '" + countrieSearchName + "%'";
+                    string queryCuntries = "Select * From Countrie Where CountrieName Like N'" + countrieSearchName + "%'";
 
                     using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                     {
@@ -221,7 +221,7 @@ namespace AdminPanelDevice.Controllers
                 }
                 else
                 {
-                    string queryCuntries = "Select * From Countrie Where CountrieName Like '" + countrieSearchName + "%'";
+                    string queryCuntries = "Select * From Countrie Where CountrieName Like N'" + countrieSearchName + "%'";
                     using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                     {
                         countrie = connection.Query<Countrie>(queryCuntries).ToList();
@@ -257,7 +257,7 @@ namespace AdminPanelDevice.Controllers
                 {
                     using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                     {
-                        string queryState = "select * from States where CountrieID='" + countrieID + "' Select * From States where  StateName Like'" + stateSearchName + "%'";
+                        string queryState = "select * from States where CountrieID='" + countrieID + "' Select * From States where  StateName Like N'" + stateSearchName + "%'";
                         states = connection.Query<States>(queryState).ToList();
                     }
                         searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
@@ -298,7 +298,7 @@ namespace AdminPanelDevice.Controllers
                 {
                     if (citySearchName.Length >= 1)
                     {
-                        var citys = connection.Query<City>("Select * from City where CityName like '" + citySearchName + "%'");
+                        var citys = connection.Query<City>("Select * from City where CityName like N'" + citySearchName + "%'");
                         ViewBag.city = citys;
                     }
                     else
@@ -469,14 +469,12 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult DeviceList (int deviceGroupList)
         {
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //    GroupList = connection.Query<DeviceType>("Select * From DeviceType ").ToList();
-            //}
-
-            GroupListView = db.devicesTypes.Where(d => d.DeviceGroupID == deviceGroupList).ToList();
-
-            return PartialView("_DeviceListView",GroupListView);
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                GroupListView = connection.Query<DeviceType>("Select * From DeviceType").ToList();
+                ////GroupListView = db.devicesTypes.Where(d => d.DeviceGroupID == deviceGroupList).ToList();
+                return PartialView("_DeviceListView", GroupListView);
+            }
         }
 
         [HttpPost]
@@ -497,7 +495,7 @@ namespace AdminPanelDevice.Controllers
             //page = 1;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                string cmdString = "Select * From DeviceType where Name ='"+DeviceName+"'";
+                string cmdString = "Select * From DeviceType where Name='"+DeviceName+"'";
                 QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
             }
 
@@ -545,7 +543,7 @@ namespace AdminPanelDevice.Controllers
             }
             IpAddress agent = new IpAddress(IP);
 
-                UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
+                UdpTarget target = new UdpTarget((IPAddress)agent, Port, 6000, 1);
                 Oid rootOid = new Oid(".1.3.6.1.4.1"); // ifDescr
                                                        //Oid rootOid = new Oid(".1.3.6.1.4.1.23180.2.1.1.1"); // ifDescr
 
@@ -821,7 +819,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult PresetSave (string presetName, string IpAddress)
+        public JsonResult PresetSave (string presetName, string IpAddress, string towerNameID)
         {
             Preset preset = new Preset();
             preset.DeviceID = db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
@@ -829,6 +827,18 @@ namespace AdminPanelDevice.Controllers
             preset.DeviceIP = IpAddress;
             preset.DeviceTypeID = QuerydeviceID;
             db.Presets.Add(preset);
+          
+
+            TowerGps gps = new TowerGps();
+            gps.Lattitube = walkList[GPSCoordinate[0]-1].Type;
+            gps.Longitude = walkList[GPSCoordinate[1]-1].Type;
+            gps.Altitude = walkList[GPSCoordinate[2]-1].Type;
+            gps.PresetName = presetName;
+            gps.TowerNameID = towerNameID;
+            gps.DeviceID = QuerydeviceID;
+
+            db.towerGps.Add(gps);
+
             db.SaveChanges();
 
             foreach (intervalValue tim in Interval)
@@ -967,10 +977,42 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult Gps (string k)
+        public PartialViewResult TowerGpsSetting(List<string> devicetype)
         {
+            List<DeviceType> gpsDevice = new List<DeviceType>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                foreach (var item in devicetype)
+                {
+                    gpsDevice.Add( connection.Query<DeviceType>("Select * from DeviceType where Name like N'"+item+"%'").FirstOrDefault());
+                }
+            }
+            return PartialView("_Gps", gpsDevice);
+        }
 
-            return PartialView("_Gps",JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public JsonResult GpsSelect(int GpsID)
+        {
+            GPSCoordinate.Add(GpsID);
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult GpsUnSelect(int GpsID)
+        {
+            GPSCoordinate.Remove(GpsID);
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult CheckGps(string deviceGpsName)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
+                var gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").ToList();
+                return Json(gpsCordinate);
+            }
         }
 
     }

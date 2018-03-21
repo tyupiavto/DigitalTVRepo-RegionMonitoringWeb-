@@ -155,6 +155,7 @@
     <Content Include="Content\ScriptView\DevicePanel.js" />
     <Content Include="Content\ScriptView\DeviceUpdate.js" />
     <Content Include="Content\ScriptView\Get.js" />
+    <Content Include="Content\ScriptView\GPSCheck.js" />
     <Content Include="Content\ScriptView\GroupShowList.js" />
     <Content Include="Content\ScriptView\pageListClick.js" />
     <Content Include="Content\ScriptView\TowerUpdate.js" />
@@ -263,6 +264,7 @@
     <Compile Include="Models\TimList.cs" />
     <Compile Include="Models\TitleTowerName.cs" />
     <Compile Include="Models\Tower.cs" />
+    <Compile Include="Models\TowerGps.cs" />
     <Compile Include="Models\TreeStructure.cs" />
     <Compile Include="Models\WalkDevice.cs" />
     <Compile Include="Models\WalkInformation.cs" />

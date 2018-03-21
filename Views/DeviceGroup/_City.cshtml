@@ -17,12 +17,12 @@
                     @if (item.CheckedID != 0 && item.CheckedID == ID)
                     {
                     <input name="city_checked" id="city_checked@(ID)" checked="checked" type="checkbox" value="@item.CityName" hidefocus="true" style="outline: none;" class="gradient">
-                    <label @*for="city_checked"*@ id="checked_add@(ID)" value="@ID" class="checked" style="background-size:19px;"></label>
+                    <label id="checked_add@(ID)" value="@ID" class="checked" style="background-size:19px;"></label>
                     }
                     else
                     {
                     <input name="city_checked" id="city_checked@(ID)" type="checkbox" value="@item.CityName" hidefocus="true" style="outline: none;" class="gradient">
-                     <label @*for="city_checked"*@ id="checked_add@(ID)" value="@ID" class="" style="background-size:19px;"></label>
+                     <label id="checked_add@(ID)" value="@ID" class="" style="background-size:19px;"></label>
                     }
                 </div>
             </div>

@@ -23,7 +23,7 @@
             {
                 <tr id="@item.MibID" class="information_walk">
                     <td style="width:60%;">
-                        @if (item.Description == "")
+                        @if (item.Description == "" || item.Description == null)
                         {
                     <div class="descriptionDiv" title="@item.Description" id="description@(item.MibID)" style="color:darkred;" value="@item.Syntax">Is Not Description</div>
                         }

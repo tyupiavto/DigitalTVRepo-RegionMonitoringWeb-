@@ -30,6 +30,7 @@ namespace AdminPanelDevice.Models
         public DbSet<City> Citys { get; set; }
         public DbSet<HtmlSave> HtmlSaves { get; set; }
         public DbSet<PointConnection> PointConnections { get; set; }
+        public DbSet<TowerGps> towerGps { get; set; }
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 
 

@@ -1,23 +1,24 @@
 ﻿
-var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead;
+var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID;
+//var TowerNameID;
+//var CheckArray = new Array();
+//var walkArray = new Array();
+//var array = new Array();
+//var ChekedList = new Array();
+//var TimeChange = new Array();
+//var tm = new Array();
+//var devicetype = new Array();
 
-var CheckArray = new Array();
-var walkArray = new Array();
-var array = new Array();
-var ChekedList = new Array();
-var TimeChange = new Array();
-var tm = new Array();
-var UnChecked = new Array();
 //$(document).ready(function () { 
 
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     dvcID = $(this).closest($(".foo")).attr("id");
-    DeviceName =$('.device_header' + dvcID).text();
+    DeviceName = $('.device_header' + dvcID).text();
+    $('#device_settings_name').text($('.tower_name' + dvcID).attr("title"));
     //if (DeviceName.length > 15) {
     //    DeviceName = DeviceName.substr(0, DeviceName.length - (DeviceName.length - 12)) + '...';
     //}
-    //$('#myModal').modal();
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
@@ -219,20 +220,7 @@ $('body').on('click touchend', '.removeInterval', function () {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
         },'text');
-    //$.ajax({
-    //    type: 'POST',
-    //    data: {
-    //        'SearchName': SearchName, ChekedList: ChekedList, TimeChange: TimeChange, UnChecked: UnChecked
-    //    },
-    //    dataType: 'text',
-    //    url: '/Walk/SearchList',
-    //    success: function (Response) {
-    //        $('#walkdraw').html("");
-    //        $('#walkdraw').html(Response);
-    //        window.location.href = "/Walk/Index";
 
-    //    }
-    //});
 });
 $('body').on('click touched', '.walk_check div', function () { // walk unchecked , show mib file  
     var mapID = $(this).attr("id");
@@ -265,6 +253,7 @@ $('body').on('click touched', '.map_check div', function () { // map click check
         $("#map_checked" + mapID).prop('checked', false);
     }
 });
+
 $('body').on('click touched', '.log_check div', function () { // log checked preset 
     var logID = $(this).attr("id");
     if ($('#log_checked' + logID).is(':checked') == false) {
@@ -280,48 +269,21 @@ $('body').on('click touched', '.log_check div', function () { // log checked pre
         $("#log_checked" + logID).prop('checked', false);
     }
 });
-
-$('body').on('contextmenu touched', '.log_check div', function () { // log checked preset 
-    var logID = $(this).attr("id");
-    //if ($('#log_checked' + logID).is(':checked') == false) {
-    //    chechkID = logID;
-        //$.post("/DeviceGroup/CheckLog", { chechkID: chechkID }, function () { }, 'json'); // log check 
-
-        $('#log_checked_add' + logID).removeClass("").addClass("checkedGps");
-        //$("#log_checked" + logID).prop('checked', true);
-    //} else {
-        unChechkID = logID;
-        //$.post("/DeviceGroup/UncheckLog", { unChechkID: unChechkID }, function () { }, 'json'); // log uncheck 
-        //$('#log_checked_add' + logID).removeClass("checkedGps").addClass("");
-        //$("#log_checked" + logID).prop('checked', false);
-    //}
-});
-
 $('#preset_save').click(function () {
     presetName = $('#preset_name').val();
     IpAddress = $('#tower_ip').val();
-
-    $.post("/DeviceGroup/PresetSave", { presetName: presetName, IpAddress: IpAddress}, function () {
+    TowerNameID = $('#device_settings_name').text();
+    $.post("/DeviceGroup/PresetSave", { presetName: presetName, IpAddress: IpAddress, TowerNameID: TowerNameID }, function () {
         $('#preset_name').val("");
-    },'json');
+    }, 'json');
 });
 
 $('#interval_add').click(function () { /// interval save 
     second = $('#interval_number').val();
-    $.post("/DeviceGroup/IntervalAdd", { second: second}, function (Response) {
+    $.post("/DeviceGroup/IntervalAdd", { second: second }, function (Response) {
         $('.interval_list_remove').html("");
         $('.interval_list_remove').html(Response);
         $('#interval_number').val("");
-    },'text');
-});
-
-$(document).on('click touchend', '#GpsSetting', function () { // add device setting open
-   //var  GpsID = $(this).closest($(".foo")).attr("id");
-    
-    $.post("/DeviceGroup/Gps", {}, function (Response) {
-        $('#device_settings').html("");
-        $('#device_settings').html(Response);
     }, 'text');
 });
-
 

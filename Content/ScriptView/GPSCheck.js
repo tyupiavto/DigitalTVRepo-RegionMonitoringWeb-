@@ -5,7 +5,7 @@ var liLattitube = new Array();
 var liLongitube = new Array();
 var liAltitube = new Array();
 var gpsInd = 0;
-var deviceGpsName, textadd;
+var deviceGpsName, textadd,gpscheckInd=0;
 $(document).on('click touchend', '#GpsSetting', function () { // add device setting open
     var GpsID = $(this).closest($(".foo")).attr("id");
     var dv = $('.device_list_name' + GpsID);
@@ -62,33 +62,38 @@ $(".custom-menu li").click(function (event) {
 
 $('body').on('click touched', '#gps_check div', function () { // map click checked 
     var gpsID = $(this).attr("id");
-    if ($('#gps_checked' + gpsID).is(':checked') == false) {
-        $('#gps_checked_add' + gpsID).removeClass("").addClass("checked");
-        $("#gps_checked" + gpsID).prop('checked', true);
-        deviceGpsName = $('#gpsDevice_name' + gpsID).attr("value");
-        $.post("/DeviceGroup/CheckGps", { deviceGpsName: deviceGpsName }, function (Response) {
-            $.each(Response, function (i, value) {
-                liLongitube.push("<li id='lattibute'>" + value.Longitude + "</li>");
-                liLattitube.push("<li id='lattibute'>" + value.Lattitube + "</li>");
-                liAltitube.push("<li id='lattibute'>" + value.Altitude + "</li>");
-            });
-            $('#lattitube_list').html(liLattitube);
-            $('#longitube_list').html(liLongitube);
-            $('#altitube_list').html(liAltitube);
-            liLongitube = [];
-            liLattitube = [];
-            liAltitube = [];
-        }, 'json'); // map check 
+
+    if ($('#gps_checked' + gpsID).is(':checked') == false ) {
+        
+        if (gpscheckInd != 1) {
+            gpscheckInd = 1;
+            $('#gps_checked_add' + gpsID).removeClass("").addClass("checked");
+            $("#gps_checked" + gpsID).prop('checked', true);
+            deviceGpsName = $('#gpsDevice_name' + gpsID).attr("value");
+            $.post("/DeviceGroup/CheckGps", { deviceGpsName: deviceGpsName }, function (Response) {
+                $.each(Response, function (i, value) {
+                    liLongitube.push("<li id='lattibute'>" + value.Longitude + "</li>");
+                    liLattitube.push("<li id='lattibute'>" + value.Lattitube + "</li>");
+                    liAltitube.push("<li id='lattibute'>" + value.Altitude + "</li>");
+                });
+                $('#lattitube_list').html(liLattitube);
+                $('#longitube_list').html(liLongitube);
+                $('#altitube_list').html(liAltitube);
+                liLongitube = [];
+                liLattitube = [];
+                liAltitube = [];
+            }, 'json');
+        }
     } else {
         $('#lattitube_list').html("");
         $('#longitube_list').html("");
         $('#altitube_list').html("");
         $('#gps_checked_add' + gpsID).removeClass("checked").addClass("");
         $("#gps_checked" + gpsID).prop('checked', false);
-
-        $('#lattitube_name').val("Lattitube");
-        $('#longitube_name').val("Longitube");
-        $('#altitube_name').val("Altitube");
+        gpscheckInd = 0;
+        //$('#lattitube_name').val("Lattitube");
+        //$('#longitube_name').val("Longitube");
+        //$('#altitube_name').val("Altitube");
       
     }
 });

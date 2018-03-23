@@ -18,12 +18,13 @@
         <ul id="menu">
             <!-- Device name -->
             <li>
-                @*<span id="DevName">Device</span>*@
                 <span id="DevName">Device </span>
-                <span id="AddGroup" style="width: 60px;margin-left:198px; margin-top:-20px;">Add Group</span>
-                @*<span id="Add" data-toggle="modal" data-target="#myModal" style="width: 60px;margin-left:198px; margin-top:20px;">Add</span>*@
-                <ul id="deviceName" class="devInfo"></ul>
-
+             
+                <div id="deviceNameGroup" style="display:none; margin-top:1px;">
+                    <input class="deviceInput inputField gradient" id="add_group_name" placeholder="Add Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white; width:69%;">
+                    <button type="button" class="btn btn-default" id="add_group" style="width:30% ;height: 20px;" >Add Group</button>
+                    <ul id="deviceName" class="devInfo" style="display:block"></ul>
+                </div>
             </li>
             <!-- List of available interfaces -->
             <li>
@@ -87,8 +88,8 @@
         <div class="modal-content device_setting_style">
             <div class="modal-header" style="height:20px; margin-top:-5px;background: url(/image/comment-bg2.png) repeat;">
                 <span class="header" id="device_settings_name">Tower</span>
-                <div style="margin-top:-8px;margin-left:129px;">
-                    <input class="deviceInput inputField gradient" name="description_value_search" id="description_value_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white;width:200px;">
+                <div style="margin-top:-8px;margin-left:170px;">
+                    <input class="deviceInput inputField gradient" name="description_value_search" id="description_value_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white;width:155px;">
                     <button type="button" class="btn btn-default btn-sm" id="walk_search_click" style="width: 30px;height: 20px; margin-left: -3px">
                         <span class="glyphicon glyphicon-search" style="margin-top: -3px; margin-left: -2px"></span>
                     </button>
@@ -233,8 +234,11 @@
                         <td style="width:13%;">
                             <div class="descriptionDiv">Scanning Interval</div>
                         </td>
-                        <td style="width:11.5%;">
+                        <td style="width:10%;">
                             <div class="descriptionDiv">Set</div>
+                        </td>
+                        <td style="width:11.5%;">
+                            <div class="descriptionDiv">Get</div>
                         </td>
                     </tr>
                 </table>
@@ -640,10 +644,10 @@
         //var mouseDown = false;
         //var prevCoords = { x: 0, y: 0 };
 
-        $('#AddGroup').click(function () {
-            saveDiagram();
-            alert("save");
-        });
+        //$('#AddGroup').click(function () {
+        //    saveDiagram();
+        //    alert("save");
+        //});
 
         //$("#mainDiv").mousedown(function (e) {
         //    mouseDown = !$(e.target).closest('.foo').length;

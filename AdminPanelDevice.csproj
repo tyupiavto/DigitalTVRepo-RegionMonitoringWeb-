@@ -220,6 +220,7 @@
     <Compile Include="Controllers\DiagramController.cs" />
     <Compile Include="Controllers\GetNextController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\TowerController.cs" />
     <Compile Include="Controllers\WalkController.cs" />
     <Compile Include="Global.asax.cs">
@@ -319,6 +320,7 @@
     <Content Include="Views\DeviceGroup\_Preset.cshtml" />
     <Content Include="Views\DeviceGroup\_Interval.cshtml" />
     <Content Include="Views\DeviceGroup\_Gps.cshtml" />
+    <Content Include="Views\Map\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -330,7 +332,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="HtmlText\" />
     <Folder Include="Icons\" />
-    <Folder Include="image\" />
+    <Folder Include="image\mapImage\" />
     <Folder Include="MibFiles\" />
     <Folder Include="Views\GetNext\" />
   </ItemGroup>

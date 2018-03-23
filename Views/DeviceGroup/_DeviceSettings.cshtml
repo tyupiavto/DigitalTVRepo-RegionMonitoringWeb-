@@ -16,6 +16,7 @@
     var interval_time = @Html.Raw(Json.Encode(@ViewBag.Interval));
     var click_checked_log = @Html.Raw(Json.Encode(@ViewBag.CheckedLog));
     var click_checked_map = @Html.Raw(Json.Encode(@ViewBag.CheckedMap));
+    var GPS =@Html.Raw(Json.Encode(@ViewBag.GPS));
     var int = 1;
     @*var all=@Html.Raw(Json.Encode(ViewBag.All));
         var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
@@ -31,7 +32,10 @@
 
     $.each(interval_time, function (j, val) {
     $('#interval' + val.intervalID).text(val.intervalVal);
-    });
+     });
+        $.each(GPS, function (i, val) {
+            $('#map_checked_add' + val).removeClass("").addClass("checkedGps");
+        });
     });
     </script>
 
@@ -46,70 +50,72 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr id="@item.WalkID" class="information_walk">
-                        <td style="width:60%;">
-                            @if (item.WalkDescription == "" || item.WalkDescription == null)
-                            {
-                        <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
-                            }
-                            else
-                            {
-                        <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" value="@item.WalkOID">@item.WalkDescription</div>
-                            }
-                            @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
-                        </td>
-                        <td style="width:30%">
-                            <div class="valueDiv" title="@item.Type" id="Value@(item.WalkID)" value="@item.value" style="color: #b8c0c8;">@item.Type</div>
-                            @*<div id="Type@(item.WalkID)" style="display:none">@item.value</div>*@
+                <tr id="@item.WalkID" class="information_walk">
+                    <td style="width:60%;">
+                        @if (item.WalkDescription == "" || item.WalkDescription == null)
+        {
+                <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
+}
+else
+{
+                <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" value="@item.WalkOID">@item.WalkDescription</div>
+}
+                        @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
+                    </td>
+                    <td style="width:30%">
+                        <div class="valueDiv" title="@item.Type" id="Value@(item.WalkID)" value="@item.value" style="color: #b8c0c8;">@item.Type</div>
+                        @*<div id="Type@(item.WalkID)" style="display:none">@item.value</div>*@
 
-                        </td>
-                        <td style="width:5%;">
-                            <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
-                                <div class="rowCheckbox map_check">
-                                    <div class="custom-checkbox" id="@item.WalkID">
-                                        <input name="map_checked" id="map_checked@(item.WalkID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                        <label id="map_checked_add@(item.WalkID)" style="background-size:19px;"></label>
-                                    </div>
+                    </td>
+                    <td style="width:5%;">
+                        <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
+                            <div class="rowCheckbox map_check">
+                                <div class="custom-checkbox" id="@item.WalkID">
+                                    <input name="map_checked" id="map_checked@(item.WalkID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                    <label id="map_checked_add@(item.WalkID)" style="background-size:19px;"></label>
                                 </div>
                             </div>
-                        </td>
-                        <td style="width:5%;">
-                            <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
-                                <div class="rowCheckbox log_check">
-                                    <div class="custom-checkbox" id="@item.WalkID">
+                        </div>
+                    </td>
+                    <td style="width:5%;">
+                        <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
+                            <div class="rowCheckbox log_check">
+                                <div class="custom-checkbox" id="@item.WalkID">
 
-                                        <input name="log_checked" id="log_checked@(item.WalkID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                        <label id="log_checked_add@(item.WalkID)" value="" class="context-menu-one" style="background-size:19px;"></label>
+                                    <input name="log_checked" id="log_checked@(item.WalkID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                    <label id="log_checked_add@(item.WalkID)" value="" class="context-menu-one" style="background-size:19px;"></label>
 
-                                    </div>
                                 </div>
                             </div>
-                        </td>
+                        </div>
+                    </td>
 
-                        <td class="adapterInput" id="select_time" value="@item.WalkID" style="text-align: center; width:13%; padding:4px;">
-                            <ul class="select_time" id="select_time@(item.WalkID)" value="@item.WalkID" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
-                                <li>
-                                    <span class="type" value="" id="interval@(item.WalkID)">@ViewBag.defaultInterval</span><span class="arrow" style=" height:19px;">
-                                        <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
-                                    </span>
-                                </li>
-                            </ul>
-                            <ul class="select_time_list" id="select_time_list@(item.WalkID)" value="@item.WalkID" style="min-width:79px; width:79px; position: relative; display: none;">
-                                <div id="interva_partial@(item.WalkID)" class="search_time_interval" style="position:absolute; width:79px;">
-                                    @*@foreach (var time in IntervalNumber)
-                                    {
-                                        <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="@time.Interval">@time.Interval</li>
-                                    }*@
-                                </div>
-                            </ul>
-                        </td>
+                    <td class="adapterInput" id="select_time" value="@item.WalkID" style="text-align: center; width:13%; padding:4px;">
+                        <ul class="select_time" id="select_time@(item.WalkID)" value="@item.WalkID" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
+                            <li>
+                                <span class="type" value="" id="interval@(item.WalkID)">@ViewBag.defaultInterval</span><span class="arrow" style=" height:19px;">
+                                    <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                                </span>
+                            </li>
+                        </ul>
+                        <ul class="select_time_list" id="select_time_list@(item.WalkID)" value="@item.WalkID" style="min-width:79px; width:79px; position: relative; display: none;">
+                            <div id="interva_partial@(item.WalkID)" class="search_time_interval" style="position:absolute; width:79px;">
 
-                        <td style="width:10%;">
-                            <ul id="setButtons" value="@item.WalkID">
-                                <li><button type="button" id="set@(item.WalkID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
-                            </ul>
-                        </td>
-                    </tr>
+                            </div>
+                        </ul>
+                    </td>
+
+                    <td style="width:10%;">
+                        <ul id="setButtons" value="@item.WalkID">
+                            <li><button type="button" id="set@(item.WalkID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
+                        </ul>
+                    </td>
+                    <td style="width:10%;">
+                        <ul id="getButtons" value="@item.WalkID">
+                            <li><button type="button" id="get@(item.WalkID)" value="Get" class="btn" style="line-height:9px; font-size:11px;">Get</button></li>
+                        </ul>
+                    </td>
+                </tr>
 
                 }
 

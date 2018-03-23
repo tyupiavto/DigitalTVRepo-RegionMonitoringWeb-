@@ -14,7 +14,7 @@ var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName,
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     dvcID = $(this).closest($(".foo")).attr("id");
-    DeviceName = $('.device_header' + dvcID).text();
+    DeviceName = $('.device_header' + dvcID).attr("value");
     $('#device_settings_name').text($('.tower_name' + dvcID).attr("title"));
     //if (DeviceName.length > 15) {
     //    DeviceName = DeviceName.substr(0, DeviceName.length - (DeviceName.length - 12)) + '...';
@@ -32,11 +32,12 @@ $('#walk_send').click(function () { // device walk ip port version
     $('#load_walk').css("display", "block");
     communityRead = $('#read_community').val();
     $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead }, function (Response) {
-        $('#device_settings').html("");
-        $('#device_settings').html(Response);
         $('#load_walk').css("display", "none");
         $('#walk_checked_add').removeClass("").addClass("checked");
         $("#walk_checked").prop('checked', true);
+        $('#device_settings').html("");
+        $('#device_settings').html(Response);
+       
     });
 });
 
@@ -285,5 +286,26 @@ $('#interval_add').click(function () { /// interval save
         $('.interval_list_remove').html(Response);
         $('#interval_number').val("");
     }, 'text');
+});
+
+$('body').on('click touchend', '#getButtons', function () { // open modal set and send set 
+    var getID = $(this).attr("value");
+    var getOid = $('#description' + getID).attr("value");
+    IP = $('#tower_ip').val();
+    if (IP != "") {
+        Port = $('#tower_port').val();
+        Version = $('#walk_version').text();
+        $('#load_walk').css("display", "block");
+        communityRead = $('#read_community').val();
+        $.post("/DeviceGroup/Get", { getOid: getOid, Version: Version, communityRead: communityRead, IP: IP, Port: Port }, function (Response) {
+            $('#load_walk').css("display", "none");
+            $('#Value' + getID).text(Response);
+            $('#Value' + getID).css("color", "#9dff75");
+            $('#description' + getID).css("color", "#9dff75");
+        });
+    }
+    else {
+        alert("Please enter IP");
+    }
 });
 

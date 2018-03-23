@@ -261,8 +261,7 @@ namespace AdminPanelDevice.Controllers
                         states = connection.Query<States>(queryState).ToList();
                     }
                         searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
-                        var state = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
-                        ViewBag.countrie = state;
+                        ViewBag.countrie = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
                 }
                 else {
                     using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -298,12 +297,14 @@ namespace AdminPanelDevice.Controllers
                 {
                     if (citySearchName.Length >= 1)
                     {
-                        var citys = connection.Query<City>("Select * from City where CityName like N'" + citySearchName + "%'");
-                        ViewBag.city = citys;
+                       
+                        var citys = connection.Query<City>("select * from City where StateID='" + stateID + "' Select * from City where CityName like N'" + citySearchName + "%'").ToList();
+                        searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
+                        ViewBag.city = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
                     }
                     else
                     {
-                        city = connection.Query<City>("Select * From City where StateID='" + countrieID + "'").ToList();
+                        city = connection.Query<City>("Select * From City where StateID='" + stateID + "'").ToList();
                         ViewBag.city = city;
                     }
                 }
@@ -495,7 +496,7 @@ namespace AdminPanelDevice.Controllers
             //page = 1;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                string cmdString = "Select * From DeviceType where Name='"+DeviceName+"'";
+                string cmdString = "Select * From DeviceType where Name=N'"+DeviceName+"'";
                 QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
             }
 
@@ -543,8 +544,8 @@ namespace AdminPanelDevice.Controllers
             }
             IpAddress agent = new IpAddress(IP);
 
-                UdpTarget target = new UdpTarget((IPAddress)agent, Port, 6000, 1);
-                Oid rootOid = new Oid(".1.3.6.1.4.1"); // ifDescr
+                UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
+                Oid rootOid = new Oid(".1.3.6.1.4"); // ifDescr
                                                        //Oid rootOid = new Oid(".1.3.6.1.4.1.23180.2.1.1.1"); // ifDescr
 
                 Oid lastOid = (Oid)rootOid.Clone();
@@ -686,6 +687,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.CheckedLog = CheckedLog;
             ViewBag.Interval = Interval;
+            ViewBag.GPS = GPSCoordinate;
             ViewBag.defaultInterval = DefaultInterval;
 
             if (MibWalkIndicator == true)
@@ -731,6 +733,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedLog = CheckedLog;
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.Interval = Interval;
+            ViewBag.GPS = GPSCoordinate;
             ViewBag.defaultInterval = DefaultInterval;
             page = 1;
             pageListNumber = pageList;
@@ -752,6 +755,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedLog = CheckedLog;
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.Interval = Interval;
+            ViewBag.GPS = GPSCoordinate;
             ViewBag.defaultInterval = DefaultInterval;
 
             if (MibWalkIndicator==true)
@@ -902,8 +906,8 @@ namespace AdminPanelDevice.Controllers
             ScanningInterval intervalremove = new ScanningInterval();
             //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             //{
-            //    string cmdString = "Select * From Preset where PresetName='" + presetName+"'"; 
-            //    presetremove = connection.Query<Preset>(cmdString).FirstOrDefault();
+            //    string cmdString = "Select * From ScanningInterval where IntervalID ='" + intervalID + "'";
+            //    intervalremove = connection.Query<ScanningInterval>(cmdString).FirstOrDefault();
             //}
             intervalremove = db.ScanningIntervals.Where(p => p.IntervalID == intervalID).FirstOrDefault();
             db.ScanningIntervals.Remove(intervalremove);
@@ -958,6 +962,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedLog = CheckedLog;
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.Interval = Interval;
+            ViewBag.GPS = GPSCoordinate;
             ViewBag.defaultInterval = DefaultInterval;
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
@@ -970,6 +975,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedLog = CheckedLog;
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.Interval = Interval;
+            ViewBag.GPS = GPSCoordinate;
             DefaultInterval = intervalNumber;
             ViewBag.defaultInterval = DefaultInterval;
 
@@ -994,6 +1000,7 @@ namespace AdminPanelDevice.Controllers
         public JsonResult GpsSelect(int GpsID)
         {
             GPSCoordinate.Add(GpsID);
+            ViewBag.GPS = GPSCoordinate;
             return Json("");
         }
 
@@ -1001,6 +1008,7 @@ namespace AdminPanelDevice.Controllers
         public JsonResult GpsUnSelect(int GpsID)
         {
             GPSCoordinate.Remove(GpsID);
+            ViewBag.GPS = GPSCoordinate;
             return Json("");
         }
 
@@ -1013,6 +1021,49 @@ namespace AdminPanelDevice.Controllers
                 var gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").ToList();
                 return Json(gpsCordinate);
             }
+        }
+
+        [HttpPost]
+        public JsonResult Get (string getOid,string Version,string communityRead, string IP , int Port)
+        {
+            OctetString community = new OctetString(communityRead);
+
+            AgentParameters param = new AgentParameters(community);
+            if (Version == "V1")
+            {
+                param.Version = SnmpVersion.Ver1;
+            }
+            if (Version == "V2")
+            {
+                param.Version = SnmpVersion.Ver2;
+            }
+            IpAddress agent = new IpAddress(IP);
+
+            UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
+       
+            Pdu pdu = new Pdu(PduType.Get);
+                try
+                {
+                    if (pdu.RequestId != 0)
+                    {
+                        pdu.RequestId += 1;
+                    }
+                    pdu.VbList.Clear();
+                    pdu.VbList.Add("1.3.6.1.4.1.23180.2.1.1.1.3.5.1.12");
+
+                    if (Version == "V1")
+                    {
+                        result = (SnmpV1Packet)target.Request(pdu, param);
+                    }
+                    if (Version == "V2")
+                    {
+                        result = (SnmpV2Packet)target.Request(pdu, param);
+                    }
+                }
+                catch (Exception e) { }
+
+            target.Close();
+            return Json(result.Pdu.VbList[0].Value.ToString());
         }
 
     }

@@ -18,6 +18,12 @@ body {
     background: rgba(0, 0, 0, 0.3);
 	overflow: auto;
 }
+
+input::-webkit-input-placeholder {
+    font-size: 12px;
+    line-height: 3;
+    font-weight:600;
+}
 .device_setting_style {
     border: 1px solid #515151;
     border-radius: 6px;
@@ -29,7 +35,7 @@ body {
     box-shadow: 5px 5px rgba(0,0,0, 0.1);
     border-spacing: 0px;
     /*background-position: 300px;*/
-    min-width: 850px;
+    min-width: 880px;
     margin-left: -150px;
     margin-top: -20px;
 }
@@ -284,7 +290,7 @@ body {
     color: #333;
     /*margin-top: -15px;*/
     margin-left: -14px;
-    width: 877px;
+    width: 908px;
 }
 .device_settings {
     float: right;
@@ -662,6 +668,6 @@ input[type="password"]:focus {
     width: 185px;
     z-index: 1;
     display: none;
-    position:relative;
+    position:absolute;
     background: linear-gradient(rgb(53, 59, 67) 0%, rgb(58, 64, 72) 16%, rgb(64, 70, 78) 39%, rgb(74, 80, 86) 65%, rgb(82, 88, 96) 85%, rgb(85, 91, 98) 100%);
 }

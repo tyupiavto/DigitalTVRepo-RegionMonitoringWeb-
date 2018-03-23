@@ -1,6 +1,6 @@
 ﻿var GroupName, deviceName, Name, ManuFacture, Model, Purpose,CountrieName,StateName,CityName;
-$('#create_group').click(function () {
-    GroupName = $('#group_name').val();
+$('#add_group').click(function () {
+    GroupName = $('#add_group_name').val();
     $.post("/DeviceGroup/GroupCreate", { 'GroupName': GroupName }, function (Response) {
         $('#group_name').val("");
     }, 'json');
@@ -10,7 +10,8 @@ $('#DevName').click(function () {
     $.post("/DeviceGroup/GroupShow", {}, function (Response) {
         $('#deviceName').html("");
         $('#deviceName').html(Response);
-        $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        $('#deviceName').css("display", "block");
+        $("#deviceNameGroup").animate({ height: 'toggle', opacity: 'toggle' }, 300);
     }, 'text');
 });
 

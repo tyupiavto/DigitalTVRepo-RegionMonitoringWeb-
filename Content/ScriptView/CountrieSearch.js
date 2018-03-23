@@ -12,16 +12,14 @@ $(document).on('click touchend', '.settings', function () { // add device settin
 
 });
 
-$('#countries_search').keyup(function () {
+$('body').on('keyup touchend', '#countries_search', function () {
     countrieSearchName = $('#countries_search').val();
-
     $.post("/DeviceGroup/countrieSearch", { countrieSearchName: countrieSearchName}, function (Response) {
         $('#countrie_partial').html("");
         $('#countrie_partial').html(Response);
     }, 'text');
 });
-
-$('#state_search').keyup(function () {
+$('body').on('keyup touchend', '#state_search', function () {
     stateSearchName = $('#state_search').val();
     CountrieName = $('#countrieName').text();
 
@@ -31,9 +29,9 @@ $('#state_search').keyup(function () {
     }, 'text');
 });
 
-$('#city_search').keyup(function () {
+$('body').on('keyup touchend', '#city_search', function () {
     CountrieName = $('#countrieName').text();
-    StateName=$('#state_search').val();
+    StateName = $('#state').text();
     citySearchName = $('#city_search').val();
 
     $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, citySearchName: citySearchName }, function (Response) {
@@ -42,12 +40,36 @@ $('#city_search').keyup(function () {
     }, 'text');
 });
 
-$('#city_list').click(function () {
-    if ($("#city_all").css("display") == "block") {
-        $('#city_allselect').css("display", "none");
-    } else {
-        $('#city_allselect').css("display", "block");
+
+$('body').on('click touchend', '#city_select_all', function (e) { // time intervel search
+    width = $(this).width - 5;
+    intervalID = $(this).attr("value");
+    if (e.type == "touchend") {
+        handled = true;
+        $('#city_allselect' + intervalID).css({ 'width': width + 0 }).toggle();
+        //$('#city_select_all' + intervalID + ' li').css('widht', '93%');
     }
+    else
+        if (e.type == "click" && !handled) {
+            $('#city_allselect').css({ 'width': width + 0 }).toggle();
+        }
+        else {
+            handled = false;
+        }
+});
+$('body').on('click touchend', '#city_allselect li', function () {
+    stateName = $('#state').text();
+    var selectallName = "";
+    if ($(this).attr("value") == "All") {
+        selectallName = "All";
+    }
+    else {
+        selectallName = "Select";
+    }
+    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function (Response) {
+        $('#city_partial').html("");
+        $('#city_partial').html(Response);
+    }, 'text');
 });
 
 $('#city_all').click(function () {

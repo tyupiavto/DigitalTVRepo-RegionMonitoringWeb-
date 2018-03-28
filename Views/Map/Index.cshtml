@@ -170,20 +170,50 @@
             }
             ]
         };
-        var myCenter = new google.maps.LatLng(42.280200,42.736320);
-        var marker = new google.maps.Marker({
-            position: myCenter,
-            animation: google.maps.Animation.BOUNCE
-        });
+        var myCenter = new google.maps.LatLng(42.280200, 42.736320);
+        var myCenters = new google.maps.LatLng(42.280200, 43.736320);
 
-        marker.setMap(googleMap);
+        var stavanger = new google.maps.LatLng(42.280200, 42.706320);
+        var amsterdam = new google.maps.LatLng(42.280200, 43.706320);
+        var georgia = new google.maps.LatLng(42.315407, 43.356892);
+        var lineSymbol = {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+        };
 
         var maps = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        var marker = new google.maps.Marker({
+            position: myCenter,
+            icon: image,
+            animation: google.maps.Animation.BOUNCE
+        });
+        var markers = new google.maps.Marker({
+            draggable: true,
+            //animation: google.maps.Animation.DROP,
+            position: myCenters,
+            icon: image
+        });
+        var flightPath = new google.maps.Polyline({
+            path: [stavanger, amsterdam],
+            //geodesic: true,
+            //strokeColor: "#0000FF",
+            //strokeOpacity: 0.8,
+            //strokeWeight: 2,
+            icon: lineSymbol,
+            offset: '10%',
+            map:maps
+        });
+
       
-    }
-    
-   
+        markers.setMap(maps);
+        marker.setMap(maps);
+        //flightPath.setMap(maps);
+//        marker.setMap(googleMap);
        
+    }
+       // 
+      
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOjC5S0IeB6iri-m5G82-PNMu4EfyrqIs&callback=myMap"></script>

@@ -52,6 +52,13 @@ $('#add_file').click(function () {
     });
 });
 
+$('body').on('click touchend', '#clear_diagram', function () {
+    alert("You want to delete ?");
+    $.post("/DeviceGroup/ClearDiagram", function (Response) {
+        $("#mainDiv").html("");
+    },'json');
+});
+
 
 
 

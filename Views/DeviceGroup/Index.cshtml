@@ -44,24 +44,20 @@
                     </li>
                 </ul>
             </li>
-            <!-- List of available audio output devices -->
-            <li>
+            <input type="button" id="clear_diagram" name="clear" value="Clear Diagram" class="btn">
+            @*<li>
                 <span id="Output">Output</span>
                 <ul id="output" class="devInfo">
-                    @*<li>
-                        </li>*@
+                   
                 </ul>
-            </li>
-            <!-- List of streams -->
-            <li>
+            </li>*@
+           
+            @*<li>
                 <span id="Stream">Streams</span>
                 <ul id="streams" class="devInfo">
-                    @*<li class="stream">
-
-                        </li>*@
-
+                   
                 </ul>
-            </li>
+            </li>*@
 
             <div id="add_device_partial">
             </div>
@@ -364,123 +360,7 @@
         $(window).on("beforeunload", function (e) {
             //saveDiagram();
         });
-        //
-        //var ListCount = 1;
-        //$(document).on('click touch', '.addList', function () {
-        //    var newtr = '<tr class="tableBody" id="' + ListCount + '_' + ListCount + '"><td class="tableConn">Link ' + (ListCount + 1) + '</td></tr>';
-        //    ListCount += 1;
-        //    $(newtr).insertBefore('.addList');
 
-        //});
-        //$('#DevName').click(function () {
-        //    $("#deviceName").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        //});1
-
-        //$("#mainDiv").sortable({
-        //    revert: true
-        //});
-
-        //$('#checked_add').click(function () {
-        //    if ($('#city_checked').is(':checked') == true) {
-        //        $('#checked_add').removeClass("checked").addClass("");
-        //        $("#city_checked").prop('checked', false);
-        //        alert("true");
-        //    }
-        // else {
-        //        $('#checked_add').removeClass("").addClass("checked");
-        //        $("#city_checked").prop('checked', true);
-        //        alert("false");
-        //    }
-        //});
-
-
-
-        //var handled = false; var width;                                          // countries search and full countries
-        //$('body').on('click touchend', '#typeSelect', function (e) {
-        //    width = $(this).width();
-        //    if (e.type == "touchend") {
-        //        handled = true;
-        //        $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-        //        $('.typeSelect li').css('widht', '93%');
-        //    }
-        //    else
-        //        if (e.type == "click" && !handled) {
-        //            $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-        //            $.post("/DeviceGroup/countrieSearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-        //                $('#countrie_partial').html("");
-        //                $('#countrie_partial').html(Response);
-        //            }, 'text');
-        //        }
-        //        else {
-        //            handled = false;
-        //        }
-        //});
-
-        //$('body').on('click touchend', '#typeDropDownList li', function () {
-        //    var value = $(this).text();
-        //    CountrieName = value;
-        //    StateName = null;
-        //    $('#countrieName').text(value);
-        //    $('.header' + $('#typeDropDownList').attr('value')).text(value);
-        //    $('#typeSelect #countrie').text(value);
-        //    $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
-        //});
-
-        //var handledstate = false;                                           // states search and full states
-        //$('body').on('click touchend', '#typeSelectState', function (e) {
-        //    var width = $(this).width();
-        //    if (e.type == "touchend") {
-        //        handledstate = true;
-        //        $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-        //    }
-        //    else
-        //        if (e.type == "click" && !handledstate) {
-        //            $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-        //            CountrieName = $('#typeSelect #countrieName').text();
-        //            //alert($('#countrie').attr("value"));
-        //            //alert($('#countrie').text());
-        //            $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
-        //                $('#state_partial').html("");
-        //                $('#state_partial').html(Response);
-        //            }, 'text');
-        //        }
-        //        else {
-        //            handledstate = false;
-        //        }
-
-        //});
-
-        //$('body').on('click touchend', '#typeDropDownListState li', function () {
-        //    var value = $(this).text();
-        //    StateName = value;
-        //    $('#typeSelectState #state').text(value);
-        //    $('#state' + $('#typeDropDownListState').attr("value")).text(value);
-        //    $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-
-        //});
-
-        //var handledcity = false;
-        //$('body').on('click touchend', '#typeSelectCity', function (e) {
-        //    var width = $(this).width();
-        //    if (e.type == "touchend") {
-        //        handledcity = true;
-        //        $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
-        //    }
-        //    else
-        //        if (e.type == "click" && !handledcity) {
-        //            $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
-        //            CountrieName = $('#typeSelect #countrieName').text();
-        //            StateName = $('#state').text();
-        //            $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
-        //                $('#city_partial').html("");
-        //                $('#city_partial').html(Response);
-        //            }, 'text');
-        //        }
-        //        else {
-        //            handledcity = false;
-        //        }
-
-        //});
 
         $('#countrie').click(function () {
             $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
@@ -560,16 +440,18 @@
                     $(this).append(item);
                     diagramLenght++;
                     foo();
-                    //saveDiagram();
+                    saveDiagram();
                 }
                 if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('tower')) {
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                     var title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) +' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
-                    foo();
+                  //  foo();
+                    addPoints();
+                    saveDiagram();
                 }
 
                 $(".tower").droppable({
@@ -602,7 +484,7 @@
                             $(".add" + idTarget).append(item);
                             //diagramLenght++;
                             //foo();
-                            addPointsTower();
+                            //addPointsTower();
                             saveDiagram();
                             //$("table tbody").sortable({
                             //    update: function (event, ui) {
@@ -676,7 +558,7 @@
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <!-- BS JavaScript -->
 
-<style>
+@*<style>
     .dropdown-wrap,
     .widget_search.styled,
     .widget_profile {
@@ -725,5 +607,5 @@
         top: 9px;
         right: auto;
     }
-</style>
+</style>*@
 

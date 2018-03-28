@@ -122,7 +122,7 @@ $('#city_select').click(function () {
 //    },'text');
 //});
 
-$('#add_city').click(function () {
+$('body').on('click touchend','#add_city',function () {
     addcityName = $('#city_name_add').val();
 
     $.post("/DeviceGroup/CityAdd", { StateName: StateName, addcityName:addcityName }, function (Response) {

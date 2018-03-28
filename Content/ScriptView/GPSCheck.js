@@ -4,11 +4,13 @@ var res = new Array();
 var liLattitube = new Array();
 var liLongitube = new Array();
 var liAltitube = new Array();
-var gpsInd = 0;
-var deviceGpsName, textadd,gpscheckInd=0;
+var GpsCoordinate = new Array();
+var gpsInd = 0, GpsID, TowerGpsID;
+var deviceGpsName, lattitube, longitube, altitube, textadd,gpscheckInd=0;
 $(document).on('click touchend', '#GpsSetting', function () { // add device setting open
-    var GpsID = $(this).closest($(".foo")).attr("id");
-    var dv = $('.device_list_name' + GpsID);
+     TowerGpsID = $(this).closest($(".foo")).attr("id");
+     var dv = $('.device_list_name' + TowerGpsID);
+    gpscheckInd = 0;
     dv.find('table').each(function () {
         devicetype.push($(this).attr("name"));
     });
@@ -61,39 +63,40 @@ $(".custom-menu li").click(function (event) {
 });
 
 $('body').on('click touched', '#gps_check div', function () { // map click checked 
-    var gpsID = $(this).attr("id");
+    var gpscheckID = $(this).attr("id");
 
-    if ($('#gps_checked' + gpsID).is(':checked') == false ) {
+    if ($('#gps_checked' + gpscheckID).is(':checked') == false ) {
         
         if (gpscheckInd != 1) {
             gpscheckInd = 1;
-            $('#gps_checked_add' + gpsID).removeClass("").addClass("checked");
-            $("#gps_checked" + gpsID).prop('checked', true);
-            deviceGpsName = $('#gpsDevice_name' + gpsID).attr("value");
+            $('#gps_checked_add' + gpscheckID).removeClass("").addClass("checked");
+            $("#gps_checked" + gpscheckID).prop('checked', true);
+            //deviceGpsName = $('#gpsDevice_name' + gpsID).attr("value");
+            deviceGpsName = $('.header' + TowerGpsID).text();
             $.post("/DeviceGroup/CheckGps", { deviceGpsName: deviceGpsName }, function (Response) {
                 $.each(Response, function (i, value) {
-                    liLongitube.push("<li id='lattibute'>" + value.Longitude + "</li>");
-                    liLattitube.push("<li id='lattibute'>" + value.Lattitube + "</li>");
-                    liAltitube.push("<li id='lattibute'>" + value.Altitude + "</li>");
+                    GpsCoordinate.push("<li id='lattibute'>" + value.Longitube + "</li>");
+                    GpsCoordinate.push("<li id='lattibute'>" + value.Lattitube + "</li>");
+                    GpsCoordinate.push("<li id='lattibute'>" + value.Altitube + "</li>");
                 });
-                $('#lattitube_list').html(liLattitube);
-                $('#longitube_list').html(liLongitube);
-                $('#altitube_list').html(liAltitube);
-                liLongitube = [];
-                liLattitube = [];
-                liAltitube = [];
+                $('#lattitube_list').html(GpsCoordinate);
+                $('#longitube_list').html(GpsCoordinate);
+                $('#altitube_list').html(GpsCoordinate);
+                GpsCoordinate = [];
+                //liLattitube = [];
+                //liAltitube = [];
             }, 'json');
         }
     } else {
         $('#lattitube_list').html("");
         $('#longitube_list').html("");
         $('#altitube_list').html("");
-        $('#gps_checked_add' + gpsID).removeClass("checked").addClass("");
-        $("#gps_checked" + gpsID).prop('checked', false);
+        $('#gps_checked_add' + gpscheckID).removeClass("checked").addClass("");
+        $("#gps_checked" + gpscheckID).prop('checked', false);
         gpscheckInd = 0;
-        //$('#lattitube_name').val("Lattitube");
-        //$('#longitube_name').val("Longitube");
-        //$('#altitube_name').val("Altitube");
+        $('#lattitube_name').val("");
+        $('#longitube_name').val("");
+        $('#altitube_name').val("");
       
     }
 });
@@ -159,3 +162,9 @@ $('body').on('click touchend', '#gps_list_altitude li', function () { // walk li
     $('#altitube_name').val($(this).text());
 });
 
+$('body').on('click touchend', '#gps_cor_sub', function () {
+    lattitube = $('#lattitube_name').val();
+    longitube = $('#longitube_name').val();
+    altitube= $('#altitube_name').val();
+    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube }, function () { }, 'json');
+});

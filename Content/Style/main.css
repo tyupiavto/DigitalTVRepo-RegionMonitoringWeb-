@@ -176,7 +176,7 @@ body {
     cursor: default;
 }
 .tableBodyTowers {
-    display: block;
+    display: inline-table;
     min-height: 25px;
     text-align: center;
     width: 102%;

@@ -397,14 +397,17 @@ namespace AdminPanelDevice.Controllers
             Html = files.Html;
             string text = files.Html;
             string pointXml = files.Xml;
-            System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
-            //System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\PointXml.xml", pointXml);
+            try
+            {
+                System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
+            }
+            catch { }
             return Json("");
         }
 
 
         [HttpPost]
-        public JsonResult PointConnections(Array[] connections)
+        public JsonResult PointConnections(Array[] connections, int connectionInd)
         {
             try
             {
@@ -413,27 +416,31 @@ namespace AdminPanelDevice.Controllers
                 //{
                 //    point = connection.Query<PointConnection>("Select * From  PointConnection ").ToList();
                 //}
+
+                //if (connections != null)
+                //{
               
-                if (connections != null)
-                {
                     var points = db.PointConnections.ToList();
                     db.PointConnections.RemoveRange(points);
                     db.SaveChanges();
 
                     PointConnect.AddRange(connections);
-                    PointConnection pointConnection = new PointConnection();
-                    foreach (string[] item in PointConnect)
+                    if (connectionInd != 1)
                     {
-                        pointConnection.GetUuids = item[0];
-                        pointConnection.SourceId = item[1];
-                        pointConnection.TargetId = item[2];
-                        pointConnection.PointRight = item[3];
-                        pointConnection.PointLeft = item[4];
+                        PointConnection pointConnection = new PointConnection();
+                        foreach (string[] item in PointConnect)
+                        {
+                            pointConnection.GetUuids = item[0];
+                            pointConnection.SourceId = item[1];
+                            pointConnection.TargetId = item[2];
+                            pointConnection.PointRight = item[3];
+                            pointConnection.PointLeft = item[4];
 
-                        db.PointConnections.Add(pointConnection);
-                        db.SaveChanges();
+                            db.PointConnections.Add(pointConnection);
+                            db.SaveChanges();
+                        }
                     }
-                }
+              
             }
             catch (Exception e) { } 
 
@@ -445,14 +452,14 @@ namespace AdminPanelDevice.Controllers
         {
 
             string html = "";
-            string pointXml = "";
+           
             Html = null;
             //HtmlSave html = new HtmlSave();
             //html.HtmlFile = db.HtmlSaves.Select(s => s.HtmlFile).FirstOrDefault();
             if (Html == null)
             {
              html = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt");
-             //pointXml= System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\PointXml.xml");
+         
                 Html = "";
             }
             else
@@ -525,12 +532,12 @@ namespace AdminPanelDevice.Controllers
             //{
             PresetIND = 0;
             walkList.Clear();
+            GPSCoordinate.Clear();
+            CheckedLog.Clear();
+            CheckedMap.Clear();
             IPadrress = IP;
             ViewBag.IP = IPadrress;
            
-            // var devicename = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
-            //var walkOid = db.MibTreeInformations.Where(m => m.DeviceID == devicename.ID).FirstOrDefault();
-            // deviceTypeID = devicename.ID;
             OctetString community = new OctetString(communityRead);
 
             AgentParameters param = new AgentParameters(community);
@@ -835,12 +842,12 @@ namespace AdminPanelDevice.Controllers
 
             TowerGps gps = new TowerGps();
             gps.Lattitube = walkList[GPSCoordinate[0]-1].Type;
-            gps.Longitude = walkList[GPSCoordinate[1]-1].Type;
-            gps.Altitude = walkList[GPSCoordinate[2]-1].Type;
+            gps.Longitube = walkList[GPSCoordinate[1]-1].Type;
+            gps.Altitube = walkList[GPSCoordinate[2]-1].Type;
             gps.PresetName = presetName;
             gps.TowerNameID = towerNameID;
             gps.DeviceID = QuerydeviceID;
-
+            gps.IP = IpAddress;
             db.towerGps.Add(gps);
 
             db.SaveChanges();
@@ -1017,8 +1024,8 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
-                var gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").ToList();
+                //var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
+                var gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where TowerNameID='" + deviceGpsName + "'").ToList();
                 return Json(gpsCordinate);
             }
         }
@@ -1049,7 +1056,7 @@ namespace AdminPanelDevice.Controllers
                         pdu.RequestId += 1;
                     }
                     pdu.VbList.Clear();
-                    pdu.VbList.Add("1.3.6.1.4.1.23180.2.1.1.1.3.5.1.12");
+                    pdu.VbList.Add(getOid);
 
                     if (Version == "V1")
                     {
@@ -1065,6 +1072,41 @@ namespace AdminPanelDevice.Controllers
             target.Close();
             return Json(result.Pdu.VbList[0].Value.ToString());
         }
+        [HttpPost]
+        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
+                TowerGps gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").FirstOrDefault();
+                connection.Query<TowerGps>("delete from TowerGps where ID='" + gpsCordinate.ID + "'");
+                
+                gpsCordinate.Lattitube = lattitube;
+                gpsCordinate.Longitube = longitube;
+                gpsCordinate.Altitube = altitube;
 
+                db.towerGps.Add(gpsCordinate);
+                db.SaveChanges();
+            }
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult ClearDiagram() {
+
+            Html = "";
+            using(IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<Tower>("delete from Tower");
+                connection.Query<PointConnection>("delete from PointConnection");
+            }
+            string text = "";
+            try
+            {
+                System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
+            }
+            catch { }
+            return Json("");
+        }
     }
 }

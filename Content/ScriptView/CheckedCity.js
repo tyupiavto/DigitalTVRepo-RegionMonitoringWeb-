@@ -14,11 +14,11 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
             $('#checked_add' + cityid).removeClass("").addClass("checked");
             $("#city_checked" + cityid).prop('checked', true);
           
-            var addnewcity = '<tr class="tableBody  city_remove' + cityid + '_' + $(this).parent().attr("value")+'" id="city_' + ($('.tableConn').length + 1) + '"><td class="tableConn">' + $('#city_checked' + cityid).val() + '</td></tr>';
+            var addnewcity = '<tr class="tableBody  city_remove' + cityid + '_' + $(this).parent().attr("value")+'" id="city_' + ($('.tableConn').length + 1) + '" ><td class="tableConn">' + $('#city_checked' + cityid).val() + '</td></tr>';
             $(addnewcity).insertBefore('.add' + parentId);
          
             addPoints();
-            //saveDiagram();
+            saveDiagram();
 
             cityName = $('#city_checked' + cityid).val();
             countrieName = $('#typeSelect #countrieName').text();
@@ -31,9 +31,9 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
             $("#city_checked" + cityid).prop('checked', false);
             var id = $(".city_remove" + cityid + "_" + $(this).parent().attr("value")).attr("id");
             jsPlumb.remove($('#' + id));
-            towerDeleteID = $(this).parent().attr("id");
+            towerDeleteID = $(this).parent().attr("value");
             $.post("/DeviceGroup/TowerDelete", { towerDeleteID: towerDeleteID, cityid: cityid }, function () {
-              saveDiagram();
+             // saveDiagram();
             });
         }
     });
@@ -107,9 +107,6 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
                         connector: ["Bezier", { curviness: 130 }],
                         endpoint: "Blank",
                         cssClass: "blankEndpoint class" + objId,
-                        /*connectorOverlays:[ 
-                            [ "Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]
-                        ],*/
                         connectorStyle: { stroke: "grey", strokeWidth: 3 },
                         connectorHoverStyle: { lineWidth: 3 },
                         maxConnections: 1,
@@ -126,7 +123,7 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
         var eps = $('.blankEndpoint');
         eps.each(function () {
             if (!$(this).hasClass('jtk-endpoint-connected')) {
-                $(this).css({ 'min-width': '18px', 'min-height': '18px', 'background': 'url(/image/no_connection_radiobutton.png) no-repeat', 'background-size': '100%', 'margin-left': '-9px', 'margin-top': '-9px', 'z-index': '13' });
+                $(this).css({ 'min-width': '18px', 'min-height': '18px', 'background': 'url(/image/no_connection_radiobutton.png) no-repeat', 'background-size': '100%', 'margin-left': '-9px', 'margin-top': '-9px', 'z-index': '15' });
             }
         });
         saveDiagram();
@@ -140,28 +137,14 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
     jsPlumb.bind("connection", function (connection) {
         setImage();
         setImageOnConnection();
-        connectionInd = 0;
-        ConnectionPoint();
-        saveDiagram();
-        $.post("/DeviceGroup/PointConnections", { connections: connections, connectionInd: connectionInd }, function (Response) {
-
-        }, 'json');
     });
 
     jsPlumb.bind("connectionDetached", function (connection) {
         connection.sourceEndpoint.removeClass('jtk-endpoint-connected');
         setImage();
-        if (connections.length == 1) {
-            connectionInd = 1;
-        }
-        else {
-            connectionInd = 0;
-        }
+        
         saveDiagram();
-        ConnectionPoint();
-        $.post("/DeviceGroup/PointConnections", { connections: connections, connectionInd: connectionInd }, function (Response) {
 
-        }, 'json');
     });
 
     function ConnectionPoint() {
@@ -182,23 +165,16 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
         $(".tableBody").removeClass("jtk-endpoint-anchor");
       //  $(".tableBodyTower").removeClass("jtk-endpoint-anchor");
         //Creating array to save all existing connections
-        //connections = [];
-        //$.each(jsPlumb.getConnections(), function (idx, connection) {
-        //    connect.push(connection.id);
-        //    connect.push(connection.sourceId);
-        //    connect.push(connection.targetId);
-        //    connect.push(connection.getUuids()[0]);
-        //    connect.push(connection.getUuids()[1]);
-        //    connections.push(connect);
-        //    connect = [];
-        //});
+
+        ConnectionPoint();
 
         filedata = new FormData();
         filedata.append("connect[]", connections);
         filedata.append("Html", $('#mainDiv').html());
-        //$.post("/DeviceGroup/PointConnections", { connections: connections, connectionInd: connectionInd }, function (Response) {
 
-        //}, 'json');
+        $.post("/DeviceGroup/PointConnections", { connections: connections }, function (Response) {
+
+        }, 'json');
        // $(".tableBody").removeClass("jtk-endpoint-anchor");
       //  $(".tableBodyTower").removeClass("jtk-endpoint-anchor");
                 
@@ -246,7 +222,9 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
             });
 
     }
-
+    $(window).on("beforeunload", function (e) {
+        saveDiagram();
+    });
 
 
         //function addPointsTower() {

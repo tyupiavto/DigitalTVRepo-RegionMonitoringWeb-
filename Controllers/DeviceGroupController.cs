@@ -35,7 +35,7 @@ namespace AdminPanelDevice.Controllers
         public static List<City> city = new List<City>();
         public List<DeviceType> GroupListView = new List<DeviceType>();
         public static List<MibTreeInformation> mibInformation = new List<MibTreeInformation>();
-        public ArrayList PointConnect = new ArrayList();
+        //public ArrayList PointConnect = new ArrayList();
         public static int countrieIndicator=0;
         public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
         public static List<ScanningInterval> intervalTime = new List<ScanningInterval>();
@@ -407,26 +407,31 @@ namespace AdminPanelDevice.Controllers
 
 
         [HttpPost]
-        public JsonResult PointConnections(Array[] connections, int connectionInd)
+        public JsonResult PointConnections(Array[] connections)
         {
             try
             {
                 List<PointConnection> point = new List<PointConnection>();
-                //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                //{
-                //    point = connection.Query<PointConnection>("Select * From  PointConnection ").ToList();
-                //}
+           
 
                 //if (connections != null)
                 //{
-              
-                    var points = db.PointConnections.ToList();
-                    db.PointConnections.RemoveRange(points);
-                    db.SaveChanges();
+                //if (connectionInd == 1)
+                //{
+                //    var points = db.PointConnections.ToList();
+                //db.PointConnections.RemoveRange(points);
+                //db.SaveChanges();
+                //}
+
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                {
+                   connection.Query<PointConnection>("delete From  PointConnection ");
+                }
+
+                ArrayList PointConnect = new ArrayList();
 
                     PointConnect.AddRange(connections);
-                    if (connectionInd != 1)
-                    {
+                   
                         PointConnection pointConnection = new PointConnection();
                         foreach (string[] item in PointConnect)
                         {
@@ -439,7 +444,6 @@ namespace AdminPanelDevice.Controllers
                             db.PointConnections.Add(pointConnection);
                             db.SaveChanges();
                         }
-                    }
               
             }
             catch (Exception e) { } 
@@ -1073,14 +1077,28 @@ namespace AdminPanelDevice.Controllers
             return Json(result.Pdu.VbList[0].Value.ToString());
         }
         [HttpPost]
-        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube)
+        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            if (gpscheckInd != 0)
             {
-                var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
-                TowerGps gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").FirstOrDefault();
-                connection.Query<TowerGps>("delete from TowerGps where ID='" + gpsCordinate.ID + "'");
-                
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                {
+                    var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
+                    TowerGps gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").FirstOrDefault();
+                    connection.Query<TowerGps>("delete from TowerGps where ID='" + gpsCordinate.ID + "'");
+
+                    gpsCordinate.Lattitube = lattitube;
+                    gpsCordinate.Longitube = longitube;
+                    gpsCordinate.Altitube = altitube;
+
+                    db.towerGps.Add(gpsCordinate);
+                    db.SaveChanges();
+                }
+            }
+            else
+            {
+                TowerGps gpsCordinate = new TowerGps();
+                gpsCordinate.TowerNameID = towerName;
                 gpsCordinate.Lattitube = lattitube;
                 gpsCordinate.Longitube = longitube;
                 gpsCordinate.Altitube = altitube;

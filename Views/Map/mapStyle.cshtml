@@ -22,9 +22,12 @@
 </head>
 <body>
     <div id="map"></div>
-    <script  type="text/javascript">
-        var listgps = @Html.Raw(Json.Encode(@ViewBag.MapGPS));
 
+    <div id="mapImage"></div>
+    <script type="text/javascript">
+        var listgps = @Html.Raw(Json.Encode(@ViewBag.MapGPS));
+        var arra = new Array();
+        var linearray = new Array();
 
         function initMap() {
             // Styles a map in night mode.
@@ -371,31 +374,71 @@
             });
             var myCenter = new google.maps.LatLng(42.280200, 42.736320);
             var image = {
-                url: "../image/mapImage/tow.gif", // url
-                size: new google.maps.Size(71, 71),
+                url: "../image/mapImage/antenna.gif", // url
+                size: new google.maps.Size(50,50),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(50, 50)
+                scaledSize: new google.maps.Size(40, 40),
+
             };
             $.each(listgps, function (i, val) {
                 var position = new google.maps.LatLng(val.lattitube, val.longitube);
                 var marker = new google.maps.Marker({
                     position: position,
-                    icon: image,
                     map: map,
+                    //html: towerGps,
+                    icon: image
+
                 });
             });
+            var lineSymbol = {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+            };
+
+            
+            $.each(listgps, function (i, val) {
+
+                if (i == 0) {
+                    var start = new google.maps.LatLng(val.lattitube, val.longitube);
+                }
+                var finish = new google.maps.LatLng(val.lattitube, val.longitube);
+                arra.push(start);
+                arra.push(finish);
+                linearray.push(arra);
+                arra=[];
+            });
+
+            $.each(linearray, function (i, val) {
+                var flightPath = new google.maps.Polyline({
+                    path: [val[0], val[1]],
+                    editable: true,
+                    strokeWeight: 3,
+                    draggable: true,
+                    icon: lineSymbol,
+                    offset: '100%',
+                    map: map,
+                });
+
+            });
+            //layer = new google.maps.FusionTablesLayer({
+            //    query: {
+            //        select: "kml_4326",
+            //        from: 419167,
+            //        where: "sovereignt = 'Georgia'"
+            //    },
+            //    styles: [{
+            //        polygonOptions: {
+            //            strokeWeight: "3",
+            //            strokeColor: "#FFFFFF",
+            //            strokeOpacity: "0.9",
+            //            fillOpacity: "0.0",
+            //            fillColor: "#000000"
+            //        }
+            //    }]
+            //});
+          //  google.maps.event.addDomListener(window, 'load', initMap);
         }
-
- 
-        ////var markers = new google.maps.Marker({
-        ////    draggable: true,
-        ////    //animation: google.maps.Animation.DROP,
-        ////    position: myCenter,
-        ////    icon: image
-        ////});
-        //marker.setMap(map);
-
+      
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOjC5S0IeB6iri-m5G82-PNMu4EfyrqIs&callback=initMap"></script>
 </body>

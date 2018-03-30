@@ -176,6 +176,7 @@
         var stavanger = new google.maps.LatLng(42.280200, 42.706320);
         var amsterdam = new google.maps.LatLng(42.280200, 43.706320);
         var georgia = new google.maps.LatLng(42.315407, 43.356892);
+
         var lineSymbol = {
             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
         };
@@ -196,13 +197,13 @@
         });
         var flightPath = new google.maps.Polyline({
             path: [stavanger, amsterdam],
-            //geodesic: true,
-            //strokeColor: "#0000FF",
-            //strokeOpacity: 0.8,
-            //strokeWeight: 2,
+            map: maps,
+            editable: true,
+            strokeWeight: 3,
+            draggable: true,
             icon: lineSymbol,
             offset: '10%',
-            map:maps
+            geodesic: true,
         });
 
       

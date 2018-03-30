@@ -6,7 +6,7 @@ var liLongitube = new Array();
 var liAltitube = new Array();
 var GpsCoordinate = new Array();
 var gpsInd = 0, GpsID, TowerGpsID;
-var deviceGpsName, lattitube, longitube, altitube, textadd,gpscheckInd=0;
+var deviceGpsName, lattitube, longitube, altitube, textadd,gpscheckInd=0,towerName;
 $(document).on('click touchend', '#GpsSetting', function () { // add device setting open
      TowerGpsID = $(this).closest($(".foo")).attr("id");
      var dv = $('.device_list_name' + TowerGpsID);
@@ -20,6 +20,12 @@ $(document).on('click touchend', '#GpsSetting', function () { // add device sett
         $('#settingsDiv').html(Response);
         devicetype = [];
     }, 'text');
+});
+
+$('body').on('click', '#modal_hiden', function () {
+    gpsInd = 0;
+    $('#tower_ip').val("");
+    $('#description_value_search').val("");
 });
 
 $('body').on('contextmenu touched', '.map_check div', function () { // checked gps right click
@@ -165,6 +171,7 @@ $('body').on('click touchend', '#gps_list_altitude li', function () { // walk li
 $('body').on('click touchend', '#gps_cor_sub', function () {
     lattitube = $('#lattitube_name').val();
     longitube = $('#longitube_name').val();
-    altitube= $('#altitube_name').val();
-    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube }, function () { }, 'json');
+    altitube = $('#altitube_name').val();
+    towerName = $('.header' + TowerGpsID).text();
+    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube, towerName: towerName, gpscheckInd: gpscheckInd}, function () { }, 'json');
 });

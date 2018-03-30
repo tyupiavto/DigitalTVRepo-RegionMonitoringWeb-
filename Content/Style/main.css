@@ -82,7 +82,9 @@ body {
     list-style-type: none;
     overflow: hidden;
 }
-
+/*.towerMap {
+    background: url(/image/mapImage/tow.gif);
+}*/
 #menu li ul li {
     background: url(/image/comment-bg3.jpg) repeat;
     width: 100%;
@@ -132,7 +134,7 @@ body {
 
 .foo {
     min-width: 250px;
-    max-width: 300px;
+    max-width: 250px;
     text-align: center;
     min-height: 30px;
     border: 1px solid #515151;

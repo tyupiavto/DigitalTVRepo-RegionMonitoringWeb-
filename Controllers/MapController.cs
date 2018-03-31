@@ -20,7 +20,7 @@ namespace AdminPanelDevice.Controllers
         {
             public double lattitube { get; set; }
             public double longitube { get; set; }
-            //public string cityname { get; set; }
+            public string cityname { get; set; }
         }
         public List<mapTower> TowerMapCord = new List<mapTower>();
         // GET: Map
@@ -36,15 +36,19 @@ namespace AdminPanelDevice.Controllers
             {
                 towerMap = connection.Query<TowerGps>("Select * From  TowerGps ").ToList();
             }
-            mapTower mapt = new mapTower();
 
             foreach(var item in towerMap)
             {
+                mapTower mapt = new mapTower();
                 item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
                 mapt.lattitube =Convert.ToDouble( item.Lattitube);
                 item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
                 mapt.longitube = Convert.ToDouble(item.Longitube);
+                if (item.PresetName != null) {
+                    mapt.cityname = item.PresetName;
+                }
                 TowerMapCord.Add(mapt);
+
             }
             ViewBag.MapGPS = TowerMapCord;
 

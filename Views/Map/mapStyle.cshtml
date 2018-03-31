@@ -7,12 +7,9 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-         /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
          #map {
              height: 100%;
          }
-         /* Optional: Makes the sample page fill the window. */
          html, body {
              height: 100%;
              margin: 0;
@@ -22,17 +19,21 @@
 </head>
 <body>
     <div id="map"></div>
-
-    <div id="mapImage"></div>
-    <script type="text/javascript">
+    @*<div style="margin-top:-4%; position:absolute">
+        <input type="button" id="edit_line" value="Edit" class="btn" style="height:20px; width:50px;line-height:6px; margin-left:10px;">
+        <input type="button" id="add_line" value="Add" class="btn" style="height:20px; width:50px;line-height:6px;margin-top:-5%; margin-left:10%; position:absolute">
+        <input type="button" id="delete_line" value="delete" class="btn" style="height:20px; width:50px;line-height:6px;margin-top:-5%; margin-left:20%; position:absolute">
+    </div>*@
+        <script type="text/javascript">
         var listgps = @Html.Raw(Json.Encode(@ViewBag.MapGPS));
         var arra = new Array();
         var linearray = new Array();
-
+        var marker = new Array();
+        var startposition, finishposition;
         function initMap() {
             // Styles a map in night mode.
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 42.315407, lng: 43.356892},
+                center: { lat: 42.315407, lng: 43.356892 },
                 zoom: 8,
                 panControl: true,
                 zoomControl: true,
@@ -375,70 +376,139 @@
             var myCenter = new google.maps.LatLng(42.280200, 42.736320);
             var image = {
                 url: "../image/mapImage/antenna.gif", // url
-                size: new google.maps.Size(50,50),
+                size: new google.maps.Size(50, 50),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(17, 34),
                 scaledSize: new google.maps.Size(40, 40),
 
             };
-            $.each(listgps, function (i, val) {
-                var position = new google.maps.LatLng(val.lattitube, val.longitube);
-                var marker = new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    //html: towerGps,
-                    icon: image
+            var img = {
+                url: "../image/mapImage/tow.gif", // url
+                size: new google.maps.Size(50, 50),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(40, 40),
 
-                });
-            });
-            var lineSymbol = {
-                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
             };
 
-            
             $.each(listgps, function (i, val) {
-
-                if (i == 0) {
-                    var start = new google.maps.LatLng(val.lattitube, val.longitube);
-                }
-                var finish = new google.maps.LatLng(val.lattitube, val.longitube);
-                arra.push(start);
-                arra.push(finish);
-                linearray.push(arra);
-                arra=[];
-            });
-
-            $.each(linearray, function (i, val) {
-                var flightPath = new google.maps.Polyline({
-                    path: [val[0], val[1]],
-                    editable: true,
-                    strokeWeight: 3,
-                    draggable: true,
-                    icon: lineSymbol,
-                    offset: '100%',
+              var  marker =new google.maps.Marker({
+                    position: new google.maps.LatLng(val.lattitube, val.longitube),
                     map: map,
+                    icon: image,
+                    title: val.cityname
+
                 });
+              //map.setCenter(marker.getPosition());
+              var infowindow = new google.maps.InfoWindow();
+              google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
+                  return function () {
+                      if (marker.getAnimation() != null) {
+                          marker.setAnimation(null);
+                      } else {
+                          //marker.setUrl("../image/mapImage/tow.gif")
+                          marker.setIcon({ url: img }); 
+                          marker.setAnimation(google.maps.Animation.BOUNCE);
+                          startposition= marker.position;
+                      }
+                  };
+              })(marker, infowindow));
+              google.maps.event.addListener(marker, 'click', (function (marker, infowindow) {
+                  return function () {
+                      var lineSymbol = {
+                          path: 'M 0,-1 0,1',
+                          strokeOpacity: 0.7,
+                          scale: 2
+                      };
+                      var flightPath = new google.maps.Polyline({
+                          path: [startposition, marker.position],
+                    geodesic: true,
+                    strokeColor: '#009900',
+                    strokeOpacity: 0.7,
+                    strokeWeight: 2,
+                    map: map,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%',
+                        repeat: '80px'
+                    }]
+                });
+                  };
+              })(marker, infowindow));
 
             });
-            //layer = new google.maps.FusionTablesLayer({
-            //    query: {
-            //        select: "kml_4326",
-            //        from: 419167,
-            //        where: "sovereignt = 'Georgia'"
-            //    },
-            //    styles: [{
-            //        polygonOptions: {
-            //            strokeWeight: "3",
-            //            strokeColor: "#FFFFFF",
-            //            strokeOpacity: "0.9",
-            //            fillOpacity: "0.0",
-            //            fillColor: "#000000"
-            //        }
+
+            //google.maps.event.addListener(marker, 'click', function () {
+            //    if (lastWindow) lastWindow.close();
+            //    this.infowindow.open(map, this);
+            //    lastWindow = infowindow;
+            //});
+
+            //var startline = new google.maps.LatLng(41.695740, 44.785260);
+            //var allCoordinates = [
+            //    new google.maps.LatLng(41.670090, 44.688240),
+            //    new google.maps.LatLng(42.280110, 42.736320),
+            //    new google.maps.LatLng(41.693580, 41.714820),
+            //    new google.maps.LatLng(42.413310, 41.818140)
+            //];
+            //var lineSymbol = {
+            //    path: 'M 0,-1 0,1',
+            //    strokeOpacity: 0.7,
+            //    scale: 2
+            //};
+            //for (var i = 1; i <= allCoordinates.length; i++) {
+            //    var flightPath = new google.maps.Polyline({
+            //        path: [allCoordinates[0], allCoordinates[i]],
+            //        geodesic: true,
+            //        strokeColor: '#009900',
+            //        strokeOpacity: 1,
+            //        strokeWeight: 2,
+            //        map: map,
+            //        icons: [{
+            //            icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+            //            offset: '100%',
+            //            repeat: '80px'
+            //        }]
+            //    });
+            //    var flightPath = new google.maps.Polyline({
+            //        path: [allCoordinates[0], allCoordinates[i]],
+            //        geodesic: true,
+            //        strokeColor: '#000000',
+            //        strokeOpacity: 0.2,
+            //        strokeWeight: 2,
+            //        map: map,
+            //        animation: google.maps.Animation.DROP,
+            //        icons: [{
+            //            icon: lineSymbol,
+            //            offset: '100%',
+            //            repeat: '20px'
+            //        }],
+            //    });
+            //}
+
+           //google.maps.event.addDomListener(map, 'click', function () {
+           //    window.alert(marker[1].position);
+           //});
+        }
+           // flightPath.setMap(map);
+            //var polyline = new google.maps.Polyline({
+            //    path: allCoordinates,
+            //    strokeColor: color,
+            //    strokeOpacity: 1.0,
+            //    strokeWeight: 2,
+            //    geodesic: true,
+            //    icons: [{
+            //        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+            //        offset: '100%',
+            //        repeat: '20px'
             //    }]
             //});
+            //polyline.setMap(map);
+
           //  google.maps.event.addDomListener(window, 'load', initMap);
-        }
-      
+
+
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOjC5S0IeB6iri-m5G82-PNMu4EfyrqIs&callback=initMap"></script>
 </body>

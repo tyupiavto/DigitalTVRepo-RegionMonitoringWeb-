@@ -137,12 +137,13 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
     jsPlumb.bind("connection", function (connection) {
         setImage();
         setImageOnConnection();
+        $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text($('#' + connection.sourceId).text() + $('#' + connection.targetId).parent().parent().attr("id"));
     });
 
     jsPlumb.bind("connectionDetached", function (connection) {
         connection.sourceEndpoint.removeClass('jtk-endpoint-connected');
         setImage();
-        
+        $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text("Tower" + $('#' + connection.targetId).parent().parent().attr("id"));
         saveDiagram();
 
     });

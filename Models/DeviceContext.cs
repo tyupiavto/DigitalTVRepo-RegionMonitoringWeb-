@@ -16,7 +16,6 @@ namespace AdminPanelDevice.Models
         public DbSet<Tower> towers { get; set; }
         public DbSet<Devices> devices { get; set; }
         public DbSet<DeviceType> devicesTypes { get; set; }
-        public DbSet<Line> lines { get; set; }
         public DbSet<MibTreeInformation> MibTreeInformations { get; set; }
         public DbSet<TreeStructure> TreeStructure { get; set; }
         public DbSet<WalkDevice> WalkDevices { get; set; }
@@ -31,6 +30,7 @@ namespace AdminPanelDevice.Models
         public DbSet<HtmlSave> HtmlSaves { get; set; }
         public DbSet<PointConnection> PointConnections { get; set; }
         public DbSet<TowerGps> towerGps { get; set; }
+        public DbSet <LineConnection> LineConnections { get; set; }
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 
 

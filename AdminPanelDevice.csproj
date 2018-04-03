@@ -251,7 +251,7 @@
     <Compile Include="Models\DeviceType.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\HtmlSave.cs" />
-    <Compile Include="Models\Line.cs" />
+    <Compile Include="Models\LineConnection.cs" />
     <Compile Include="Models\LiveValue.cs" />
     <Compile Include="Models\MibGet.cs" />
     <Compile Include="Models\MibTreeInformation.cs" />

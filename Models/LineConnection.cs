@@ -7,18 +7,12 @@ using System.Web;
 
 namespace AdminPanelDevice.Models
 {
-    [Table("Line")]
-    public class Line
+    [Table("LineConnection")]
+    public class LineConnection
     {
         [Key]
         public int ID { get; set; }
-        public int FromTID { get; set; }
-        public int ToTID { get; set; }
-
-        [ForeignKey("FromTID")]
-        public Tower Tower { get; set; }
-
-        [ForeignKey("ToTID")]
-        public Line Lines { get; set; }
+        public int ParentTowerID { get; set; }
+        public int ChildTowerID { get; set; }
     }
 }

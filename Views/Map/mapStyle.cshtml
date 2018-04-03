@@ -544,11 +544,6 @@
                           }
                       });
                       if (ind == 0) {
-                          var lineSymbol = {
-                              path: 'M 0,-1 0,1',
-                              strokeOpacity: 1,
-                              scale: 2
-                          };
                           removelineInd = 0;
                           $.each(LC, function (i, val) {
                               if (val.toString() == marker.position.toString()) {
@@ -575,11 +570,11 @@
                               LC.push(marker.position);
                               flightPath.push(new google.maps.Polyline({
                                   path: [startposition, marker.position],
+                                  map: map,
                                   geodesic: true,
                                   strokeColor: '#009900',
                                   strokeOpacity: 1,
                                   strokeWeight: 2,
-                                  map: map,
                                   icons: [{
                                       icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
                                       offset: '100%',
@@ -608,10 +603,7 @@
                                   clickInd = 1;
                                   $.post("/Map/RemoveTowerLine", { parentTowerID: parentTowerID, childTowerID: childTowerID }, function () { }, 'json');
                               }
-                          });
-                      
-                        
-                      
+                          });                      
                   };
               })(marker, infowindow));
             });

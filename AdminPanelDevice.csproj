@@ -160,6 +160,7 @@
     <Content Include="Content\ScriptView\pageListClick.js" />
     <Content Include="Content\ScriptView\TowerUpdate.js" />
     <Content Include="Content\ScriptView\TowerPanel.js" />
+    <Content Include="Content\ScriptView\Trapjson.js" />
     <Content Include="Content\ScriptView\WalkSend.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Style\CheckedStyle.css" />
@@ -222,6 +223,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\TowerController.cs" />
+    <Compile Include="Controllers\TrapController.cs" />
     <Compile Include="Controllers\WalkController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -266,6 +268,7 @@
     <Compile Include="Models\TitleTowerName.cs" />
     <Compile Include="Models\Tower.cs" />
     <Compile Include="Models\TowerGps.cs" />
+    <Compile Include="Models\Trap.cs" />
     <Compile Include="Models\TreeStructure.cs" />
     <Compile Include="Models\WalkDevice.cs" />
     <Compile Include="Models\WalkInformation.cs" />
@@ -336,6 +339,7 @@
     <Folder Include="image\mapImage\" />
     <Folder Include="MibFiles\" />
     <Folder Include="Views\GetNext\" />
+    <Folder Include="Views\Trap\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712081256218_device db schema.resx">

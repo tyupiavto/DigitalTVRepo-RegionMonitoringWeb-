@@ -31,6 +31,7 @@ namespace AdminPanelDevice.Models
         public DbSet<PointConnection> PointConnections { get; set; }
         public DbSet<TowerGps> towerGps { get; set; }
         public DbSet <LineConnection> LineConnections { get; set; }
+        public DbSet<Trap> Traps { get; set; }
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 
 

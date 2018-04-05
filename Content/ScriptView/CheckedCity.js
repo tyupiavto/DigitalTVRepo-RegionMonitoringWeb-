@@ -3,7 +3,7 @@ var checkcity;
 var htmls = new Array();
 var connections = new Array();
 var connect = new Array();
-var filedata, towerDeleteID, connectionInd,connectaddremove=0;
+var filedata, towerDeleteID, connectionInd,connectaddremove=0,loadInd=0,UnConnectio=0;
 
     //checkcity = $('.rowCheckbox');
     //checkcity.on("click", "div", function (e) {
@@ -126,7 +126,7 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
                 $(this).css({ 'min-width': '18px', 'min-height': '18px', 'background': 'url(/image/no_connection_radiobutton.png) no-repeat', 'background-size': '100%', 'margin-left': '-9px', 'margin-top': '-9px', 'z-index': '15' });
             }
         });
-        saveDiagram();
+       // saveDiagram();
     }
 
 
@@ -137,7 +137,9 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
     jsPlumb.bind("connection", function (connection) {
         setImage();
         setImageOnConnection();
-        $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text($('#' + connection.sourceId).text() + $('#' + connection.targetId).parent().parent().attr("id"));
+        //saveDiagram();
+        $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text($('#' + connection.sourceId).text() + "_" + "Tower" + $('#' + connection.targetId).parent().parent().attr("id"));
+      
     });
 
     jsPlumb.bind("connectionDetached", function (connection) {
@@ -145,7 +147,12 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
         setImage();
         $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text("Tower" + $('#' + connection.targetId).parent().parent().attr("id"));
         saveDiagram();
+        var sourceID = connection.sourceId;
+        var targetID = connection.targetId;
+        window.alert("unconnect");
+        $.post("/DeviceGroup/UnConnection", { sourceID: sourceID, targetID: targetID }, function () {
 
+        },'json');
     });
 
     function ConnectionPoint() {
@@ -173,7 +180,7 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
         filedata.append("connect[]", connections);
         filedata.append("Html", $('#mainDiv').html());
 
-        $.post("/DeviceGroup/PointConnections", { connections: connections }, function (Response) {
+        $.post("/DeviceGroup/PointConnections", { connections: connections, UnConnectio: UnConnectio }, function (Response) {
 
         }, 'json');
        // $(".tableBody").removeClass("jtk-endpoint-anchor");
@@ -224,7 +231,7 @@ var filedata, towerDeleteID, connectionInd,connectaddremove=0;
 
     }
     $(window).on("beforeunload", function (e) {
-        saveDiagram();
+       // saveDiagram();
     });
 
 

@@ -19,10 +19,10 @@
             <!-- Device name -->
             <li>
                 <span id="DevName">Device </span>
-             
+
                 <div id="deviceNameGroup" style="display:none; margin-top:1px;">
                     <input class="deviceInput inputField gradient" id="add_group_name" placeholder="Add Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white; width:69%;">
-                    <button type="button" class="btn btn-default" id="add_group" style="width:30% ;height: 20px;" >Add Group</button>
+                    <button type="button" class="btn btn-default" id="add_group" style="width:30% ;height: 20px;">Add Group</button>
                     <ul id="deviceName" class="devInfo" style="display:block"></ul>
                 </div>
             </li>
@@ -45,19 +45,20 @@
                 </ul>
             </li>
             <input type="button" id="clear_diagram" name="clear" value="Clear Diagram" class="btn">
+            <input type="button" id="start_log" name="clear" value="Log" class="btn">
             @*<li>
-                <span id="Output">Output</span>
-                <ul id="output" class="devInfo">
-                   
-                </ul>
-            </li>*@
-           
+            <span id="Output">Output</span>
+            <ul id="output" class="devInfo">
+
+            </ul>
+        </li>*@
+
             @*<li>
-                <span id="Stream">Streams</span>
-                <ul id="streams" class="devInfo">
-                   
-                </ul>
-            </li>*@
+            <span id="Stream">Streams</span>
+            <ul id="streams" class="devInfo">
+
+            </ul>
+        </li>*@
 
             <div id="add_device_partial">
             </div>
@@ -413,7 +414,7 @@
                         if ($(this).position().top < 0) {
                             $(this).css({ 'top': '0' });
                         }
-                        saveDiagram();
+                        //saveDiagram();
                     }
                 });
             });
@@ -436,7 +437,7 @@
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                     var title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
+                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();
@@ -446,7 +447,7 @@
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                     var title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                   //  foo();

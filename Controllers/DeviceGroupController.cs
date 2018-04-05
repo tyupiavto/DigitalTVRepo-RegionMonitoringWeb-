@@ -18,6 +18,7 @@ using PagedList;
 using SnmpSharpNet;
 using System.Net;
 using System.Drawing;
+using System.Text;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -396,12 +397,18 @@ namespace AdminPanelDevice.Controllers
         {
             Html = files.Html;
             string text = files.Html;
-            string pointXml = files.Xml;
-            try
-            {
-                System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
-            }
-            catch { }
+          
+          //  string pointXml = files.Xml;
+            if (text == "undefined")
+                text = "";
+            //try
+            //{
+            System.IO.StreamWriter htmlText = new StreamWriter(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt");
+            htmlText.Write(text);
+            htmlText.Close();
+             //   System.IO.File.AppendAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text, Encoding.UTF8);
+            //}
+            //catch { }
             return Json("");
         }
 
@@ -1124,6 +1131,16 @@ namespace AdminPanelDevice.Controllers
                 System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
             }
             catch { }
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult UnConnection (string sourceID, string targetID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<PointConnection>("delete from PointConnection where SourceId='"+sourceID+ "' and TargetId='" + targetID + "'");
+            }
             return Json("");
         }
     }

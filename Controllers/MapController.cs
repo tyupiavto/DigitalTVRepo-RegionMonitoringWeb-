@@ -39,7 +39,14 @@ namespace AdminPanelDevice.Controllers
             return View();
         }
         
+        [HttpPost]
+        public JsonResult style()
+        {
+            //var html = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\style.txt");
+            var html = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\start.txt");
 
+            return Json(html);
+        }
         public ActionResult mapStyle () {
 
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -78,7 +85,10 @@ namespace AdminPanelDevice.Controllers
                 LinesCon.Add(new mapLine());
                 ViewBag.MapGPS = TowerMapCord;
                 ViewBag.TowerLine = LinesCon;
-
+                var start = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\start.txt");
+                var style = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\mapstyle.txt");
+                ViewBag.Style = style;
+                ViewBag.Start = start;
             }
             return View();
         }
@@ -98,15 +108,22 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult RemoveTowerLine (int parentTowerID, int childTowerID)
         {
-            //LineConnection linCon = new LineConnection();
-            //linCon.ParentTowerID = parentTowerID;
-            //linCon.ChildTowerID = childTowerID;
             var linCon = db.LineConnections.Where(l => l.ParentTowerID == parentTowerID && l.ChildTowerID == childTowerID).FirstOrDefault();
             if (linCon != null)
             {
                 db.LineConnections.Remove(linCon);
                 db.SaveChanges();
             }
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult MapStyle ()
+        {
+            string style = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\mapstyle.txt");
+            ViewBag.Style = style;
+
+          
             return Json("");
         }
     }

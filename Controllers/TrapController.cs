@@ -33,9 +33,9 @@ namespace AdminPanelDevice.Controllers
             int inlen = -1;
             while (run)
             {
-                byte[] indata = new byte[16 * 1024];
+                byte[] indata = new byte[16*1024];
 
-                IPEndPoint peer = new IPEndPoint(IPAddress.Any, 162);
+                IPEndPoint peer = new IPEndPoint(IPAddress.Any,0);
                 EndPoint inep = (EndPoint)peer;
                 try
                 {
@@ -43,30 +43,63 @@ namespace AdminPanelDevice.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine("Exception {0}", ex.Message);
                     inlen = -1;
                 }
                 if (inlen > 0)
                 {
                     // Check protocol version int 
                     int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
-                    SnmpV2Packet pkt = new SnmpV2Packet();
-                    pkt.decode(indata, inlen);
-
-                    //MessageBox.Show(" Community: {0}" + " " + pkt.Community.ToString());
-                    //MessageBox.Show(" VarBind count: {0}" + "  " + pkt.Pdu.VbList.Count.ToString());
-
-                    foreach (Vb v in pkt.Pdu.VbList)
+                    if (ver == 0)
                     {
-                        Trap trap = new Trap();
-                        string IP = inep.ToString();
-                        trap.IpAddres = IP.Remove(13, (IP.Length - 13));
-                        trap.CurrentOID = pkt.Pdu.TrapObjectID.ToString();
-                        trap.ReturnedOID = v.Oid.ToString();
-                        trap.Value = v.Value.ToString();
-                        db.Traps.Add(trap);
-                        db.SaveChanges();
-                        
+                        try
+                        {
+                            //SnmpV1Packet pkt = new SnmpV1Packet();
+                            SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
+                            pkt.decode(indata, inlen);
+
+                            foreach (Vb v in pkt.Pdu.VbList)
+                            {
+                                Trap trap = new Trap();
+                                string IP = inep.ToString();
+                                trap.IpAddres = pkt.Pdu.AgentAddress.ToString();
+                                trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
+                                trap.ReturnedOID = v.Oid.ToString();
+                                trap.Value = v.Value.ToString();
+                                trap.dateTimeTrap = DateTime.Now;
+                                db.Traps.Add(trap);
+                                db.SaveChanges();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            int TR = 0;
+                        }
+                    }
+
+                   if (ver==2 || ver==1) { 
+                        try
+                        {
+                    
+                            SnmpV2Packet pkt = new SnmpV2Packet();
+                            pkt.decode(indata, inlen);
+
+                            foreach (Vb v in pkt.Pdu.VbList)
+                            {
+                                Trap trap = new Trap();
+                                string IP = inep.ToString();
+                                trap.IpAddres = IP.Remove(13, (IP.Length - 13));
+                                trap.CurrentOID = pkt.Pdu.TrapObjectID.ToString();
+                                trap.ReturnedOID = v.Oid.ToString();
+                                trap.Value = v.Value.ToString();
+                                trap.dateTimeTrap = DateTime.Now;
+                                db.Traps.Add(trap);
+                                db.SaveChanges();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            int TR =1;
+                        }
                     }
                 }
                 else

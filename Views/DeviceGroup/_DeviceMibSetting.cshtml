@@ -9,8 +9,14 @@
     //AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
     var IntervalNumber = ViewBag.IntervalTime;
     var pageList = ViewBag.pageListNumber;
-    //IntervalNumber = IntervalNumber.OrderBy(o => o.Interval).ToList();
-    //int[] number = { 20, 30, 50, 100, 2000 };
+    <script type="text/javascript">
+    $(document).ready(function () {
+    
+    var towerIP = @Html.Raw(Json.Encode(@ViewBag.TowerIP));
+        $('#tower_ip').val(towerIP);
+    });
+    </script>
+
 }
 
 <link href="~/Content/PagedList.css" rel="stylesheet" />
@@ -21,87 +27,74 @@
 
             @foreach (var item in Model)
             {
-            <tr id="@item.MibID" class="information_walk">
-                <td style="width:60%;">
-                    @if (item.Description == "" || item.Description == null)
-                    {
-            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" style="color:darkred;">Is Not Description</div>
-                    }
-                    else
-                    {
-            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" value="@item.Syntax">@item.Description</div>
-                    }
-            </td>
-            <td style="width:30%">
-                <div class="valueDiv" id="Value@(item.MibID)" value="" style="color: #b8c0c8;"></div>
-                @*<div id="Type@(item.MibID)" style="display:none">@item.value</div>*@
+                <tr id="@item.MibID" class="information_walk">
+                    <td style="width:60%;">
+                        @if (item.Description == "" || item.Description == null)
+                        {
+                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" style="color:darkred;">Is Not Description</div>
+                        }
+                        else
+                        {
+                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" value="@item.Syntax">@item.Description</div>
+                        }
+                    </td>
+                    <td style="width:30%">
+                        <div class="valueDiv" id="Value@(item.MibID)" value="" style="color: #b8c0c8;"></div>
+                        @*<div id="Type@(item.MibID)" style="display:none">@item.value</div>*@
 
-            </td>
-            <td style="width:5%;">
-                <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
-                    <div class="rowCheckbox map_check">
-                        <div class="custom-checkbox" id="@item.MibID">
-                            <input name="map_checked" id="map_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                            <label id="map_checked_add@(item.MibID)" style="background-size:19px;"></label>
+                    </td>
+                    <td style="width:5%;">
+                        <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
+                            <div class="rowCheckbox map_check">
+                                <div class="custom-checkbox" id="@item.MibID">
+                                    <input name="map_checked" id="map_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                    <label id="map_checked_add@(item.MibID)" style="background-size:19px;"></label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </td>
-            <td style="width:5%;">
-                <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
-                    <div class="rowCheckbox log_check">
-                        <div class="custom-checkbox" id="@item.MibID">
+                    </td>
+                    <td style="width:5%;">
+                        <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
+                            <div class="rowCheckbox log_check">
+                                <div class="custom-checkbox" id="@item.MibID">
 
-                            <input name="log_checked" id="log_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                            <label id="log_checked_add@(item.MibID)" value="" class="" style="background-size:19px;"></label>
+                                    <input name="log_checked" id="log_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                    <label id="log_checked_add@(item.MibID)" value="" class="" style="background-size:19px;"></label>
 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </td>
+                    </td>
 
-            <td class="adapterInput" id="select_time" value="@item.MibID" style="text-align: center; width:13%; padding:4px;">
-                <ul class="select_time" id="select_time@(item.MibID)" value="@item.MibID" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
-                    <li>
-                        <span class="type" value="" id="interval@(item.MibID)">60</span><span class="arrow" style=" height:19px;">
-                            <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
-                        </span>
-                    </li>
-                </ul>
-                <ul class="select_time_list" id="select_time_list@(item.MibID)" value="@item.MibID" style="min-width:79px; width:79px; position: relative; display: none;">
-                    <div id="interva_partial@(item.MibID)" class="search_time_interval" style="position:absolute; width:79px;">
-                        @foreach (var time in IntervalNumber)
-            {
-                <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="@time.Interval">@time.Interval</li>
-}
-                    </div>
-                </ul>
-            </td>
+                    <td class="adapterInput" id="select_time" value="@item.MibID" style="text-align: center; width:13%; padding:4px;">
+                        <ul class="select_time" id="select_time@(item.MibID)" value="@item.MibID" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
+                            <li>
+                                <span class="type" value="" id="interval@(item.MibID)">60</span><span class="arrow" style=" height:19px;">
+                                    <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                                </span>
+                            </li>
+                        </ul>
+                        <ul class="select_time_list" id="select_time_list@(item.MibID)" value="@item.MibID" style="min-width:79px; width:79px; position: relative; display: none;">
+                            <div id="interva_partial@(item.MibID)" class="search_time_interval" style="position:absolute; width:79px;">
+                                @foreach (var time in IntervalNumber)
+                                {
+                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="@time.Interval">@time.Interval</li>
+                                }
+                            </div>
+                        </ul>
+                    </td>
 
-            <td style="width:10%;">
-                <ul id="setButtons" value="@item.MibID">
-                    <li><button type="button" id="set@(item.MibID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
-                </ul>
-            </td>
-            <td style="width:10%;">
-                <ul id="getButtons" value="@item.MibID">
-                    <li><button type="button" id="get@(item.MibID)" value="Get" class="btn"style="line-height:9px; font-size:11px;">Get</button></li>
-                </ul>
-            </td>
-            @*<ul class="dyseqList typeDropDownList" id="city_allselect" style="width: 30%; display: block; margin-left: 186px; z-index: 1;">
-      @foreach (var interval in IntervalNumber) {
-        <li id="search_interval" style="display:none" value="@interval.Interval">@interval.Interval</li>
-      }
-    </ul>*@
-
-            @*<td style="width:20%;"></td>*@
-
-
-            @*<td>
-        <button class="btn btn-info" type="button" id="set_click" value="OpenSet@(item.ID)" data-toggle="modal" data-target="#SETModal">Set</button>
-    </td>*@
-
-            </tr>
+                    <td style="width:10%;">
+                        <ul id="setButtons" value="@item.MibID">
+                            <li><button type="button" id="set@(item.MibID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
+                        </ul>
+                    </td>
+                    <td style="width:10%;">
+                        <ul id="getButtons" value="@item.MibID">
+                            <li><button type="button" id="get@(item.MibID)" value="Get" class="btn" style="line-height:9px; font-size:11px;">Get</button></li>
+                        </ul>
+                    </td>
+                </tr>
 
             }
 
@@ -110,17 +103,17 @@
 
 </div>
 <div id="page_list" style="margin-left:25%; margin-top:-34px;">
-    @Html.PagedListPager(Model, page => Url.Action("PageNumber", new { page = page }))
 
-    <ul class="select_list" id="select_list" style=" min-width: 54px; min-height: 18px;padding: 4px; margin-top: -47px; margin-left: 450px; width: 103px;">
+    @Html.PagedListPager(Model, page => Url.Action("PageNumber", new { page = page }))
+    <ul class="select_list" id="select_list" style=" min-width: 54px; min-height: 18px;padding: 4px; margin-top: -47px; margin-left: -150px; width: 103px;">
         <li>
             <span class="type" value="" id="walk_list">@pageList</span><span class="arrow" style=" height:19px;">
                 <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
             </span>
         </li>
     </ul>
-    <ul class="select_list_information" id="select_list_information" style="width:69px; display: none;height:120px; margin-top: -140px; margin-left: 467px;">
-        <div id="interva_partial" class="walk_list_search" style="width:85px;margin-left:-18px;">
+    <ul class="select_list_information" id="select_list_information" style="width:69px; display: none;height:120px; margin-top:-150px; margin-left: -146px;">
+        <div id="interva_partial" class="walk_list_search" style="width:85px;margin-left: -5px;margin-top: 9px;">
             <li id="time_interval_value" style="margin-top:-1px;" value="20">20</li>
             <li id="time_interval_value" style="margin-top:-1px;" value="50">50</li>
             <li id="time_interval_value" style="margin-top:-1px;" value="100">100</li>

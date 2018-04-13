@@ -6,12 +6,13 @@
     @*<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />*@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="~/Scripts/modernizr-2.8.3.js"></script>
+  
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" style="display:none">
@@ -23,7 +24,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Application name", "Index", "DeviceGroup", new { area = "" }, new { @class = "navbar-brand" })
 
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("DeviceInsert", "Index", "Home")</li>
@@ -75,6 +76,7 @@
     <script src="~/Content/ScriptView/GroupShowList.js"></script>
     <script src="~/Content/ScriptView/GPSCheck.js"></script>
     <script src="~/Content/ScriptView/Trapjson.js"></script>
+    <script src="~/Content/ScriptView/style.js"></script>
 
     @*  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
     @* <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@

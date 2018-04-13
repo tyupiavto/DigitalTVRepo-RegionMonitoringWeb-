@@ -16,5 +16,6 @@ namespace AdminPanelDevice.Models
         public string CurrentOID { get; set; }
         public string ReturnedOID { get; set; }
         public string Value { get; set; }
+        public DateTime dateTimeTrap { get; set; }
     }
 }

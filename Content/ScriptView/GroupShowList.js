@@ -1,31 +1,36 @@
 ﻿var deviceGroupList;
 
-var device_list;
-device_list = $('#deviceName');
-device_list.on("click", "li", function () {
-    deviceGroupList=$(this).attr("value");
+//var device_list;
+//device_list = $('#deviceName');
+$('#deviceName').on("click", "li", function () {
+    deviceGroupList = $(this).attr("value");
+    
     $.post("/DeviceGroup/DeviceList", { deviceGroupList: deviceGroupList }, function (Response) {
         $('#deviceGroupName' + deviceGroupList).html("");
         $('#deviceGroupName' + deviceGroupList).html(Response);
+ 
     }, 'text');
-   
 });
-
-$('#group_name2').click(function () {
-    $('#deviceGroupName' + deviceGroupList).animate({ height: 'toggle', opacity: 'toggle' }, 300);
-    $('.devInfo').css("max-height", "500px");
+$('#deviceGroupName' + deviceGroupList + ' li').draggable({
+    helper: 'clone',
+    revert: 'invalid'
 });
+//$('#deviceName').on("click", function () { $('#deviceGroupName' + deviceGroupList).animate({ height: 'toggle', opacity: 'toggle' }, 300); });
+////$('#group_name2').on("click",function () {
+//    $('#deviceGroupName' + deviceGroupList).animate({ height: 'toggle', opacity: 'toggle' }, 300);
+//    $('.devInfo').css("max-height", "500px");
+//});
 //var device_drag; var id;
 //device_drag = $('#deviceName');
 //device_drag.on("click", "ul li", function (e) {
 //    alert($(this).attr("value"));
 //    id = $(this).attr("value");
 //});
-$('#deviceGroupName2 li').draggable({
-    helper: 'clone',
-    revert: 'invalid'
-});
 
+  //$('.device_list').draggable({
+  //      helper: 'clone',
+  //      revert: 'invalid'
+  //  });
 //$('#device_list').draggable({
 //    helper: 'clone',
 //    revert: 'invalid'

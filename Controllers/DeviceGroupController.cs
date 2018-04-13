@@ -83,6 +83,9 @@ namespace AdminPanelDevice.Controllers
         // GET: DeviceGroup
         public ActionResult Index(int ? page)
         {
+            RemoveLog rem = new RemoveLog();
+            JobSheduler.Start();
+            //rem.Execute(null);
             //page = 1;
             ViewBag.Preset = "";
             return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
@@ -354,10 +357,13 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult TowerDelete(int towerDeleteID, int cityid)
         {
-            var deleteTower = db.towers.Where(t => t.CountriesListID == towerDeleteID).Where(c => c.CityCheckedID == cityid).FirstOrDefault();
-
-            db.towers.Remove(deleteTower); 
-            db.SaveChanges();
+            try
+            {
+                var deleteTower = db.towers.Where(t => t.CountriesListID == towerDeleteID).Where(c => c.CityCheckedID == cityid).FirstOrDefault();
+                db.towers.Remove(deleteTower);
+                db.SaveChanges();
+            }
+            catch { }
             return Json("");
         }
 
@@ -398,15 +404,16 @@ namespace AdminPanelDevice.Controllers
             Html = files.Html;
             string text = files.Html;
           
-          //  string pointXml = files.Xml;
             if (text == "undefined")
                 text = "";
             //try
             //{
-            System.IO.StreamWriter htmlText = new StreamWriter(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt");
+            var path = Server.MapPath(@"~/HtmlText/html.txt");
+            System.IO.StreamWriter htmlText = new StreamWriter(path);
+
             htmlText.Write(text);
             htmlText.Close();
-             //   System.IO.File.AppendAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text, Encoding.UTF8);
+          
             //}
             //catch { }
             return Json("");
@@ -469,7 +476,8 @@ namespace AdminPanelDevice.Controllers
             //html.HtmlFile = db.HtmlSaves.Select(s => s.HtmlFile).FirstOrDefault();
             if (Html == null)
             {
-             html = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt");
+               // var path = Server.MapPath(@"~/HtmlText/html.txt");
+                html = System.IO.File.ReadAllText(Server.MapPath("/HtmlText/html.txt"));
          
                 Html = "";
             }
@@ -490,7 +498,7 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                GroupListView = connection.Query<DeviceType>("Select * From DeviceType").ToList();
+                GroupListView = connection.Query<DeviceType>("Select * From DeviceType where DeviceGroupID='"+deviceGroupList+"'").ToList();
                 ////GroupListView = db.devicesTypes.Where(d => d.DeviceGroupID == deviceGroupList).ToList();
                 return PartialView("_DeviceListView", GroupListView);
             }
@@ -509,28 +517,22 @@ namespace AdminPanelDevice.Controllers
 
 
         [HttpPost]
-        public PartialViewResult LoadMib (int? page, string DeviceName)
+        public PartialViewResult LoadMib (int? page, string DeviceName,string towerID)
         {
-            //page = 1;
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                string cmdString = "Select * From DeviceType where Name=N'"+DeviceName+"'";
-                QuerydeviceID = connection.Query<DeviceType>(cmdString).FirstOrDefault().ID;
-            }
 
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                string cmdString = "Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID;
+                QuerydeviceID = connection.Query<DeviceType>("Select * From DeviceType where Name=N'" + DeviceName + "'").FirstOrDefault().ID;
 
-                mibInformation = connection.Query<MibTreeInformation>(cmdString).ToList();
-            }
 
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
+                mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID).ToList();
+
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+
+                ViewBag.IntervalTime = intervalTime;
+                ViewBag.pageListNumber = pageListNumber;
+                ViewBag.TowerIP = connection.Query<TowerDevices>("Select * From  TowerDevices where DeviceID='" + QuerydeviceID+ "' and  TowerID='"+towerID+"'").FirstOrDefault().IP;
             }
-            ViewBag.IntervalTime = intervalTime;
-            ViewBag.pageListNumber = pageListNumber;
             return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -1044,6 +1046,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult Get (string getOid,string Version,string communityRead, string IP , int Port)
         {
+            getOid +=".0";
             OctetString community = new OctetString(communityRead);
 
             AgentParameters param = new AgentParameters(community);
@@ -1124,11 +1127,13 @@ namespace AdminPanelDevice.Controllers
             {
                 connection.Query<Tower>("delete from Tower");
                 connection.Query<PointConnection>("delete from PointConnection");
+                connection.Query<TowerDevices>("delete from TowerDevices");
             }
             string text = "";
             try
             {
-                System.IO.File.WriteAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\HtmlText\html.txt", text);
+                var path = Server.MapPath(@"~/HtmlText/html.txt");
+                System.IO.File.WriteAllText(path, text);
             }
             catch { }
             return Json("");
@@ -1141,6 +1146,28 @@ namespace AdminPanelDevice.Controllers
             {
                 connection.Query<PointConnection>("delete from PointConnection where SourceId='"+sourceID+ "' and TargetId='" + targetID + "'");
             }
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult TowerDeviceInformation(string IPaddress, string towerID, string deviceName, string cityID, string towerName)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+            TowerDevices td = new TowerDevices();
+            td.IP = IPaddress;
+            td.TowerID = towerID;
+            td.DeviceName = deviceName;
+          //  td.CityID = cityID;
+            td.TowerName = towerName;
+               var deviceID = connection.Query<DeviceType>("select * from DeviceType where Name=N'"+deviceName+"'").FirstOrDefault().ID;
+                td.CityID = connection.Query<PointConnection>("select * from PointConnection where TargetId='"+towerID+"'").FirstOrDefault().SourceId;
+                td.DeviceID = deviceID;
+
+                db.TowerDevices.Add(td);
+                db.SaveChanges();
+            }
+
             return Json("");
         }
     }

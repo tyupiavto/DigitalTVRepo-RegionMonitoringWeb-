@@ -1,5 +1,5 @@
 ﻿
-var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID;
+var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID,towerID;
 //var TowerNameID;
 //var CheckArray = new Array();
 //var walkArray = new Array();
@@ -16,10 +16,12 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     dvcID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.device_header' + dvcID).attr("value");
     $('#device_settings_name').text($('.tower_name' + dvcID).attr("title"));
+    towerID = $('.tower_name' + dvcID).attr("title");
     //if (DeviceName.length > 15) {
     //    DeviceName = DeviceName.substr(0, DeviceName.length - (DeviceName.length - 12)) + '...';
     //}
-    $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName }, function (Response) {
+    
+    $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerID: towerID }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
     }, 'text');

@@ -124,17 +124,17 @@ else
 
     </div>
     <div id="page_list" style="margin-left:25%; margin-top:-34px;">
-        @Html.PagedListPager(Model, page => Url.Action("PageNumber", new { page = page }))
 
-        <ul class="select_list" id="select_list" style=" min-width: 54px; min-height: 18px;padding: 4px; margin-top: -47px; margin-left: 450px; width: 103px;">
+        @Html.PagedListPager(Model, page => Url.Action("PageNumber", new { page = page }))
+        <ul class="select_list" id="select_list" style=" min-width: 54px; min-height: 18px;padding: 4px; margin-top: -47px; margin-left: -150px; width: 103px;">
             <li>
                 <span class="type" value="" id="walk_list">@pageList</span><span class="arrow" style=" height:19px;">
                     <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
                 </span>
             </li>
         </ul>
-        <ul class="select_list_information" id="select_list_information" style="width:69px; display: none;height:120px; margin-top: -140px; margin-left: 467px;">
-            <div id="interva_partial" class="walk_list_search" style="width:85px;margin-left:-18px;">
+        <ul class="select_list_information" id="select_list_information" style="width:69px; display: none;height:120px; margin-top: -150px; margin-left: 46px;">
+            <div id="interva_partial" class="walk_list_search" style="width:85px;margin-left: -5px;margin-top: 9px;">
                 <li id="time_interval_value" style="margin-top:-1px;" value="20">20</li>
                 <li id="time_interval_value" style="margin-top:-1px;" value="50">50</li>
                 <li id="time_interval_value" style="margin-top:-1px;" value="100">100</li>
@@ -144,8 +144,4 @@ else
             </div>
         </ul>
     </div>
-
-@*</div>*@
-@*<script src="~/Content/ScriptView/DeviceManage.js"></script>*@
 <script src="~/Content/ScriptView/pageListClick.js"></script>
-@*<link href="~/Content/Style/main.css" rel="stylesheet" />*@

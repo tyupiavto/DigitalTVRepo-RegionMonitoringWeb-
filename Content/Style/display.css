@@ -394,10 +394,11 @@ input::-webkit-input-placeholder {
 }
 
 .scroll_walk {
-    height:545px;
+    height: 545px;
     max-height: 550px;
     overflow-y: auto !important;
     margin-top: -15px;
+    border-bottom: 1px solid #000;
 }
 
     .scroll_walk::-webkit-scrollbar {

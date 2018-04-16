@@ -1,10 +1,7 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
-
-<div id="googleMap"  style="width:100%;height:650px;"></div>
-
+<div id="googleMap" style="width:100%;height:650px;"></div>
 <script>
     function myMap() {
         var mapProp = {
@@ -164,7 +161,7 @@
                 "elementType": "geometry.stroke",
                 "stylers": [
                     {
-                        weight: "3"                      
+                        weight: "3"
                     },
                 ]
             }
@@ -206,17 +203,15 @@
             geodesic: true,
         });
 
-      
+
         markers.setMap(maps);
         marker.setMap(maps);
         //flightPath.setMap(maps);
-//        marker.setMap(googleMap);
-       
+        //        marker.setMap(googleMap);
+
     }
-       // 
-      
+       //
+
 </script>
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOjC5S0IeB6iri-m5G82-PNMu4EfyrqIs&callback=myMap"></script>
-
 <div></div>

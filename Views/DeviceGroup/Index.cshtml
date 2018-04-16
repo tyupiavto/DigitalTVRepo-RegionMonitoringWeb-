@@ -25,7 +25,7 @@
 
                 <div id="deviceNameGroup" style="display:none; margin-top:1px;">
                     <input class="deviceInput inputField gradient" id="add_group_name" placeholder="Add Group Name" value="" type="text" hidefocus="true" style="outline: none; color: white; width:69%;">
-                    <button type="button" class="btn btn-default" id="add_group" style="width:30% ;height: 20px;">Add Group</button>
+                    <button type="button" class="btn btn-default" id="add_group" style="width:29% ;height: 20px;">Add Group</button>
                     <ul id="deviceName" class="devInfo" style="display:block"></ul>
                 </div>
             </li>
@@ -48,20 +48,23 @@
                 </ul>
             </li>
             <input type="button" id="clear_diagram" name="clear" value="Clear Diagram" class="btn">
-            <input type="button" id="start_log" name="clear" value="Log" class="btn">
+            <input type="button" id="start_log" name="log" value="Log" class="btn">
+            @*<a href='@Url.Action("mapStyle", "Map")' onclick='navigate(this.href);'>*@
+                <input type="button" id="open_map" name="map" value="Map" class="btn">
+            @*</a>*@
             @*<li>
-                    <span id="Output">Output</span>
-                    <ul id="output" class="devInfo">
+            <span id="Output">Output</span>
+            <ul id="output" class="devInfo">
 
-                    </ul>
-                </li>*@
+            </ul>
+        </li>*@
 
             @*<li>
-                    <span id="Stream">Streams</span>
-                    <ul id="streams" class="devInfo">
+            <span id="Stream">Streams</span>
+            <ul id="streams" class="devInfo">
 
-                    </ul>
-                </li>*@
+            </ul>
+        </li>*@
 
             <div id="add_device_partial">
             </div>
@@ -471,7 +474,7 @@
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                      title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
+                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft+4) + 'px; top: ' + (droppedTop-1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();
@@ -524,7 +527,8 @@
                                 $('#IPModal').css("opacity", "1");
                                 $('#IPModal').css("margin-top", "" + dPos.top + "px");
                                 $('#IPModal').css("margin-left", "" + dPos.left - 100 + "px");
-                                //diagramLenght++;
+                                diagramLenght++;
+
                                 //foo();
                                 //addPointsTower();
                                 saveDiagram();

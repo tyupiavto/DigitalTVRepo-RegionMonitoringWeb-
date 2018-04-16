@@ -69,9 +69,9 @@ namespace AdminPanelDevice.Controllers
         public static string All;
         public static string SearchNameWalk;
         public bool search = false;
-        public static int QuerydeviceID;
+        public static int QuerydeviceID,WalkTimeOunt=0;
         public static bool MibWalkIndicator =true;
-
+        public static string TowerIP,walkTimeOutOID;
         public SnmpPacket result;
 
         public struct intervalValue
@@ -528,10 +528,10 @@ namespace AdminPanelDevice.Controllers
                 mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID).ToList();
 
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
-
+                TowerIP = connection.Query<TowerDevices>("Select * From  TowerDevices where DeviceID='" + QuerydeviceID + "' and  TowerID='" + towerID + "'").FirstOrDefault().IP;
                 ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
-                ViewBag.TowerIP = connection.Query<TowerDevices>("Select * From  TowerDevices where DeviceID='" + QuerydeviceID+ "' and  TowerID='"+towerID+"'").FirstOrDefault().IP;
+                ViewBag.TowerIP = TowerIP;
             }
             return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
@@ -544,6 +544,7 @@ namespace AdminPanelDevice.Controllers
             //if (presetName == "Preset")
             //{
             PresetIND = 0;
+            WalkTimeOunt = 0;
             walkList.Clear();
             GPSCoordinate.Clear();
             CheckedLog.Clear();
@@ -582,7 +583,21 @@ namespace AdminPanelDevice.Controllers
                         }
                         pdu.VbList.Clear();
                         pdu.VbList.Add(lastOid);
-                 
+                    if (walkTimeOutOID == lastOid.ToString())
+                    {
+                        WalkTimeOunt++;
+                    }
+                    if (WalkTimeOunt<=10)
+                      {
+                        walkTimeOutOID = lastOid.ToString();
+                      }
+                      else
+                    {
+                        return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                    }
+                   
+
+
                     if (Version == "V1")
                     {
                          result = (SnmpV1Packet)target.Request(pdu, param);
@@ -666,6 +681,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.IntervalTime = intervalTime;
             ViewBag.pageListNumber = pageListNumber;
             ViewBag.defaultInterval = DefaultInterval;
+            ViewBag.TowerIP = TowerIP;
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -708,41 +724,47 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedLog = CheckedLog;
             ViewBag.Interval = Interval;
             ViewBag.GPS = GPSCoordinate;
+            ViewBag.TowerIP = TowerIP;
             ViewBag.defaultInterval = DefaultInterval;
-
-            if (MibWalkIndicator == true)
-            {
-                if (SearchName.Length >= 1)
+           
+                if (MibWalkIndicator == true)
                 {
-                    walkSearch.Clear();
-                    walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
+                    if (SearchName.Length >= 1)
+                    {
+                    try
+                    {
+                        walkSearch.Clear();
+                        walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
+                    }
+                    catch (Exception e) { }
+                        return PartialView("_DeviceMibSetting", walkSearch.ToPagedList(page ?? 1, pageListNumber));
+                    }
 
-                    return PartialView("_DeviceMibSetting", walkSearch.ToPagedList(page ?? 1, pageListNumber));
+                    else
+                    {
+                        walkSearch.Clear();
+                        return PartialView("_DeviceMibSetting", walkList.ToPagedList(page ?? 1, pageListNumber));
+                    }
                 }
-
                 else
                 {
-                    walkSearch.Clear();
-                    return PartialView("_DeviceMibSetting", walkList.ToPagedList(page ?? 1, pageListNumber));
-                }
-            }
-            else
-            {
-                if (SearchName.Length >= 1)
-                {
-                    walkSearch.Clear();
-                    walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
-
+                    if (SearchName.Length >= 1)
+                    {
+                    try
+                    {
+                        walkSearch.Clear();
+                        walkSearch = walkList.Where(x => x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName)).ToList();
+                    }
+                    catch (Exception e) { }
                     return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
-                }
+                    }
 
-                else
-                {
-                    walkSearch.Clear();
-                    return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                    else
+                    {
+                        walkSearch.Clear();
+                        return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                    }
                 }
-            }
-
         }
 
         [HttpPost]
@@ -755,6 +777,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.Interval = Interval;
             ViewBag.GPS = GPSCoordinate;
             ViewBag.defaultInterval = DefaultInterval;
+            ViewBag.TowerIP = TowerIP;
             page = 1;
             pageListNumber = pageList;
 
@@ -776,6 +799,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.Interval = Interval;
             ViewBag.GPS = GPSCoordinate;
+            ViewBag.TowerIP = TowerIP;
             ViewBag.defaultInterval = DefaultInterval;
 
             if (MibWalkIndicator==true)
@@ -983,6 +1007,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.CheckedMap = CheckedMap;
             ViewBag.Interval = Interval;
             ViewBag.GPS = GPSCoordinate;
+            ViewBag.TowerIP = TowerIP;
             ViewBag.defaultInterval = DefaultInterval;
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
@@ -997,6 +1022,7 @@ namespace AdminPanelDevice.Controllers
             ViewBag.Interval = Interval;
             ViewBag.GPS = GPSCoordinate;
             DefaultInterval = intervalNumber;
+            ViewBag.TowerIP = TowerIP;
             ViewBag.defaultInterval = DefaultInterval;
 
            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));

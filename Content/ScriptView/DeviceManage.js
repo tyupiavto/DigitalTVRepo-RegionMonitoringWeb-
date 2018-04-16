@@ -89,10 +89,11 @@ $('body').on('click touchend', '#select_list', function (e) {// search number  l
 });
 $('body').on('click touchend', '.walk_list_search li', function () { // walk list add
     var pageList = $(this).attr("value");
-    $('#walk_list').text(pageList);
+   // $('#walk_list').text(pageList);
     $.post("/DeviceGroup/PageList", { pageList: pageList}, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
+        $('#walk_list').text(pageList);
     });
 });
 

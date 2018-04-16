@@ -59,6 +59,10 @@ $('body').on('click touchend', '#clear_diagram', function () {
     },'json');
 });
 
+$('body').on('click touchend', '#open_map', function () {
+    var win = window.open('/Map/mapStyle', 'Map');
+    //$.post('/Map/openMap', {}, function () { });
+});
 
 
 

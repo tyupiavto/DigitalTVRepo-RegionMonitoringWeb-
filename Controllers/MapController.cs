@@ -47,6 +47,14 @@ namespace AdminPanelDevice.Controllers
 
             return Json(html);
         }
+        [HttpPost]
+        public ActionResult openMap ()
+        {
+            var dat = DateTime.Now;
+
+            return Json(Url.Action("mapStyle","Map"));
+        }
+
         public ActionResult mapStyle () {
 
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))

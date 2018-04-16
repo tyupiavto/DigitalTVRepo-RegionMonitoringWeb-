@@ -10,13 +10,14 @@
     //var IntervalNumber = ViewBag.IntervalTime;
     var pageList = ViewBag.pageListNumber;
 
-    <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function () {
     @*var edit = @Html.Raw(Json.Encode(@ViewBag.Edit));*@
     var interval_time = @Html.Raw(Json.Encode(@ViewBag.Interval));
     var click_checked_log = @Html.Raw(Json.Encode(@ViewBag.CheckedLog));
     var click_checked_map = @Html.Raw(Json.Encode(@ViewBag.CheckedMap));
     var GPS =@Html.Raw(Json.Encode(@ViewBag.GPS));
+    var towerIP = @Html.Raw(Json.Encode(@ViewBag.TowerIP));
     var int = 1;
     @*var all=@Html.Raw(Json.Encode(ViewBag.All));
         var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
@@ -36,8 +37,10 @@
         $.each(GPS, function (i, val) {
             $('#map_checked_add' + val).removeClass("").addClass("checkedGps");
         });
+        //});
+        $('#tower_ip').val(towerIP);
     });
-    </script>
+</script>
 
 }
 
@@ -133,8 +136,8 @@ else
                 </span>
             </li>
         </ul>
-        <ul class="select_list_information" id="select_list_information" style="width:69px; display: none;height:120px; margin-top: -150px; margin-left: 46px;">
-            <div id="interva_partial" class="walk_list_search" style="width:85px;margin-left: -5px;margin-top: 9px;">
+        <ul class="select_list_information" id="select_list_information" style="width:69px; display: none;height:120px; margin-top: -150px; margin-left:-150px; border:none">
+            <div id="interva_partial" class="walk_list_search" style="width:85px;margin-top: 9px;">
                 <li id="time_interval_value" style="margin-top:-1px;" value="20">20</li>
                 <li id="time_interval_value" style="margin-top:-1px;" value="50">50</li>
                 <li id="time_interval_value" style="margin-top:-1px;" value="100">100</li>

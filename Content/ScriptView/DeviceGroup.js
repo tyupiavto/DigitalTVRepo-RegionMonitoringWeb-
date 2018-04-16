@@ -1,4 +1,6 @@
-﻿var GroupName, deviceName, Name, ManuFacture, Model, Purpose,CountrieName,StateName,CityName;
+﻿var GroupName, deviceName, Name, ManuFacture, Model, Purpose, CountrieName, StateName, CityName;
+var deviceGroupList;
+var LInd = 0;
 $('#add_group').click(function () {
     GroupName = $('#add_group_name').val();
     $.post("/DeviceGroup/GroupCreate", { 'GroupName': GroupName }, function (Response) {
@@ -12,6 +14,7 @@ $('#DevName').click(function () {
         $('#deviceName').html(Response);
         $('#deviceName').css("display", "block");
         $("#deviceNameGroup").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        LInd = 0;
     }, 'text');
 });
 
@@ -64,5 +67,17 @@ $('body').on('click touchend', '#open_map', function () {
     //$.post('/Map/openMap', {}, function () { });
 });
 
-
+//device_list = $('#deviceName');
+$('#deviceName').on("click touched", "li", function () {
+    deviceGroupList = $(this).attr("value");
+    if (LInd == 0) {
+        $('#deviceGroupName' + deviceGroupList).animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        LInd = 1;
+    }
+    $('#deviceGroupName' + deviceGroupList).animate({ height: 'toggle', opacity: 'toggle' }, 300);
+    $.post("/DeviceGroup/DeviceList", { deviceGroupList: deviceGroupList }, function (Response) {
+        $('#deviceGroupName' + deviceGroupList).html("");
+        $('#deviceGroupName' + deviceGroupList).html(Response);
+    }, 'text');
+});
 

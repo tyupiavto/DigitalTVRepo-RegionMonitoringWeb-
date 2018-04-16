@@ -1,14 +1,19 @@
 ﻿
 @model  IEnumerable<AdminPanelDevice.Models.DeviceType>
 
-
-@foreach (var item in Model)
-{
-    <li class="device_list" id="group_li@(item.NumberID)" value="@(item.NumberID)" style="margin-top:2px;z-index:100;">
-        @item.Name
-    </li>
-}
-
-
-<script src="~/Content/ScriptView/GroupShowList.js"></script>
+<body>
+    @foreach (var item in Model)
+    {
+        <li class="device_list" id="group_li@(item.NumberID)" value="@(item.NumberID)" style="margin-top:2px;z-index:100;">
+            @item.Name
+        </li>
+    }
+</body>
+<script>
+    $('#deviceGroupName' + deviceGroupList + ' li').draggable({
+        helper: 'clone',
+        revert: 'invalid'
+    });
+</script>
+@*<script src="~/Content/ScriptView/GroupShowList.js"></script>*@
 @*<link href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.5.7/css/jsplumbtoolkit-defaults.css" rel="stylesheet" />*@

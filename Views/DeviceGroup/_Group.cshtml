@@ -1,7 +1,5 @@
 ﻿@model  IEnumerable<AdminPanelDevice.Models.Group>
 
-
-<body>
     @foreach (var item in Model)
     {
         <li id="group_li" value="@(item.GroupNameID)" style="margin-top:2px; max-width:100%">
@@ -10,4 +8,3 @@
             <ul id="deviceGroupName@(item.GroupNameID)" class="devInfo"></ul>
         </li>
     }
-</body>

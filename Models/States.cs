@@ -13,6 +13,10 @@ namespace AdminPanelDevice.Models
         [Key]
         public int ID { get; set; }
         public string StateName { get; set; }
+
+        [ForeignKey("CountrieID")]
+        public Countrie Countrie { get; set; }
+
         public int CountrieID { get; set; }
     }
 }

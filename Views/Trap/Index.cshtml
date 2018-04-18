@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "LogSetting";
+}
+@*<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">*@
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+@*<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="http://akottr.github.io/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="http://akottr.github.io/css/akottr.css" />*@
+@*<link rel="stylesheet" type="text/css" href="dragtable.css" />*@
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.js"></script>
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+
+<script src="~/Content/ScriptView/jquery.dragtable.js"></script>
+<br /><br />
+      <table id="one">
+          <thead class="test">
+              <tr>
+                  <th data-header="id"><div class="dragtable-drag-handle"></div> ID</th>
+                  <th data-header="first_name">first name</th>
+                  <th data-header="last_name">last name</th>
+                  <th data-header="phone_number">phone number</th>
+                  <th data-header="color">team color</th>
+                  <th data-header="salary">salary made</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>10234</td>
+                  <td>John</td>
+                  <td>Smith</td>
+                  <td>555-555-5555</td>
+                  <td>orange</td>
+                  <td>$2.00</td>
+              </tr>
+              <tr>
+                  <td>102288</td>
+                  <td>Jane</td>
+                  <td>Smith</td>
+                  <td>555-445-5555</td>
+                  <td>purplue</td>
+                  <td>$1000.00</td>
+              </tr>
+
+          </tbody>
+      </table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#one').dragtable();
+    });
+</script>
+<style>
+    .table-wrapper {
+        display: block;
+        max-height: 300px;
+        overflow-y: auto;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>

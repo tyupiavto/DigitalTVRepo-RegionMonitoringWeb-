@@ -13,6 +13,8 @@ namespace AdminPanelDevice.Models
         [Key]
         public int ID { get; set; }
         public string CityName { get; set; }
+        [ForeignKey("StateID")]
+        public States States { get; set; }
         public int StateID { get; set; }
         [NotMapped]
         public int CheckedID { get; set; }

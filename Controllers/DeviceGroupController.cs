@@ -1149,19 +1149,19 @@ namespace AdminPanelDevice.Controllers
         public JsonResult ClearDiagram() {
 
             Html = "";
-            using(IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                connection.Query<Tower>("delete from Tower");
-                connection.Query<PointConnection>("delete from PointConnection");
-                connection.Query<TowerDevices>("delete from TowerDevices");
-            }
-            string text = "";
-            try
-            {
-                var path = Server.MapPath(@"~/HtmlText/html.txt");
-                System.IO.File.WriteAllText(path, text);
-            }
-            catch { }
+            //using(IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    connection.Query<Tower>("delete from Tower");
+            //    connection.Query<PointConnection>("delete from PointConnection");
+            //    connection.Query<TowerDevices>("delete from TowerDevices");
+            //}
+            //string text = "";
+            //try
+            //{
+            //    var path = Server.MapPath(@"~/HtmlText/html.txt");
+            //    System.IO.File.WriteAllText(path, text);
+            //}
+            //catch { }
             return Json("");
         }
 

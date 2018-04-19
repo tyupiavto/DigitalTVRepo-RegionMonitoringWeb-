@@ -1,117 +1,194 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html>
 <head>
-    @*<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />*@
 
-    <script src="~/Content/ScriptView/dragtable.js"></script>
-    <script src="~/Content/ScriptView/sorttable.js"></script>
-    <link href="~/Content/Style/dataTables.bootstrap.min.css" rel="stylesheet" />
-    <script src="~/Content/ScriptView/jquery.dataTables.min.js"></script>
-  
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    @*<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>*@
+    <script src="~/Content/ScriptView/jquery.datetimepicker.js"></script>
+
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.dropdown-toggle::after').css("display", "none");
-            $('#columnmenu li').click(function () {
-                if ($(this).children().children().is(':checked') == false) {
-                  //  $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child('+ $(this).children().children().attr("value")+')').hide();
-                    var column = "table #" + $(this).attr("id");
-                    $(column).hide();
-                }
-                else {
-                    var column = "table #" + $(this).attr("id");
-                    $(column).show();
-                    //$('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child(' + $(this).children().children().attr("value") + ')').show();
-                }
-            });
-            $('#countrieColumn').click(function () {
-                $('td:nth-child(1),th:nth-child(1)').hide();
-              
-            });
-            //$('#strart').click(function () {
-            //    $('td:nth-child(1),th:nth-child(1)').show();
-            //    $('td:nth-child(3),th:nth-child(3)').show();
-            //}); 
-          //  new TableResize(document.getElementById('example'));
-            //(function () {
-            //    var thElm;
-            //    var startOffset;
+        //$(document).ready(function () {
+        $('.dropdown-toggle::after').css("display", "none");
+        $('#columnmenu li').click(function () {
+            if ($(this).children().children().is(':checked') == false) {
+                //  $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child('+ $(this).children().children().attr("value")+')').hide();
+                var column = "table #" + $(this).attr("id");
+                $(column).hide();
+            }
+            else {
+                var column = "table #" + $(this).attr("id");
+                $(column).show();
+                //$('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child(' + $(this).children().children().attr("value") + ')').show();
+            }
+        });
 
-            //    Array.prototype.forEach.call(
-            //        document.querySelectorAll("table th"),
-            //        function (th) {
-            //            th.style.position = 'relative';
 
-            //            var grip = document.createElement('div');
-            //            grip.innerHTML = "&nbsp;";
-            //            grip.style.top = 0;
-            //            grip.style.right = 0;
-            //            grip.style.bottom = 0;
-            //            grip.style.width = '5px';
-            //            grip.style.position = 'absolute';
-            //            grip.style.cursor = 'col-resize';
-            //            grip.addEventListener('mousedown', function (e) {
-            //                thElm = th;
-            //                startOffset = th.offsetWidth - e.pageX;
-            //            });
+        //$('#strart').click(function () {
+        //    $('td:nth-child(1),th:nth-child(1)').show();
+        //    $('td:nth-child(3),th:nth-child(3)').show();
+        //});
+        //  new TableResize(document.getElementById('example'));
+        //(function () {
+        //    var thElm;
+        //    var startOffset;
 
-            //            th.appendChild(grip);
-            //        });
+        //    Array.prototype.forEach.call(
+        //        document.querySelectorAll("table th"),
+        //        function (th) {
+        //            th.style.position = 'relative';
 
-            //    document.addEventListener('mousemove', function (e) {
-            //        if (thElm) {
-            //            thElm.style.width = startOffset + e.pageX + 'px';
+        //            var grip = document.createElement('div');
+        //            grip.innerHTML = "&nbsp;";
+        //            grip.style.top = 0;
+        //            grip.style.right = 0;
+        //            grip.style.bottom = 0;
+        //            grip.style.width = '5px';
+        //            grip.style.position = 'absolute';
+        //            grip.style.cursor = 'col-resize';
+        //            grip.addEventListener('mousedown', function (e) {
+        //                thElm = th;
+        //                startOffset = th.offsetWidth - e.pageX;
+        //            });
+
+        //            th.appendChild(grip);
+        //        });
+
+        //    document.addEventListener('mousemove', function (e) {
+        //        if (thElm) {
+        //            thElm.style.width = startOffset + e.pageX + 'px';
+        //        }
+        //    });
+
+        //    document.addEventListener('mouseup', function () {
+        //        thElm = undefined;
+        //    });
+        //})();
+        $(function () {
+            //var bindDatePicker = function () {
+            //$.datetimepicker.setLocale('en');
+
+            //    $(".date").datetimepicker();
+            //        format: 'YYYY-MM-DD',
+            //        icons: {
+            //            time: "fa fa-clock-o",
+            //            date: "fa fa-calendar",
+            //            up: "fa fa-arrow-up",
+            //            down: "fa fa-arrow-down"
             //        }
-            //    });
+            //    }).find('input:first').on("blur", function () {
+            //        // check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
+            //        // update the format if it's yyyy-mm-dd
+            //        var date = parseDate($(this).val());
 
-            //    document.addEventListener('mouseup', function () {
-            //        thElm = undefined;
+            //        if (!isValidDate(date)) {
+            //            //create date based on momentjs (we have that)
+            //            date = moment().format('YYYY-MM-DD');
+            //        }
+
+            //        $(this).val(date);
             //    });
-            //})();
+            //}
+
+            //var isValidDate = function (value, format) {
+            //    format = format || false;
+            //    // lets parse the date to the best of our knowledge
+            //    if (format) {
+            //        value = parseDate(value);
+            //    }
+
+            //    var timestamp = Date.parse(value);
+
+            //    return isNaN(timestamp) == false;
+            //}
+
+            //var parseDate = function (value) {
+            //    var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
+            //    if (m)
+            //        value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);
+
+            //    return value;
+            //}
+
+            //bindDatePicker();
         });
     </script>
 
 </head>
 <body>
-    <div class="keep-open btn-group" title="Columns">
-    <button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        <i class="glyphicon glyphicon-th icon-th"></i>
-        <span class="caret"></span></button>
-    @*<div class="dropdown-backdrop"></div>*@
-    <ul class="dropdown-menu" role="menu" id="columnmenu">
-        <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="1" checked="checked">Countrie</label></li>
-        <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="2" checked="checked">State</label></li>
-        <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="3" checked="checked">City</label></li>
-        <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="4" checked="checked">Tower</label></li>
-        <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="5" checked="checked">Device Name</label></li>
-        <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="6" checked="checked">IP</label></li>
-        <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="7" checked="checked">Description</label>
-        <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="8" checked="checked">OID</label>
-        <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="9" checked="checked">Value</label>
-        <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Date/Time</label>
-    </ul>
-    </div>
-    <input type="button" id="buttrap" class="btn-danger" value="Log"/>
-    <table class="table table-striped table-bordered draggable sortable" style="width:100%"data-toggle="table">
-        <thead>
-            <tr>
-                <th id="countrieColumn">Countrie</th>
-                <th id="stateColumn">State</th>
-                <th id="cityColumn">City</th>
-                <th id="towerColumn">Tower</th>
-                <th id="deviceColumn">Device Name</th>
-                <th id="ipColumn">IP</th>
-                <th id="descriptionColumn">Description</th>
-                <th id="oidColumn">OID</th>
-                <th id="valueColumn">Value</th>
-                <th id="datetimeColumn">Date/Time</th>
-            </tr>
-        </thead>
-        <tbody id="trap_log_information">
-        </table>
 
+    <ul class='dropdown-menu log-menu' style="display:none;min-width:70px;cursor:pointer;position:absolute;">
+        <li data-action="Search">
+            <i style="margin-left:5px;" class="fa fa-search"></i>
+            <span style="font-size: 11px;">Search</span>
+        </li>
+        <li data-action="Clear" style="border-top: 1px solid;">
+            <i style="margin-left:5px;color:red" class="fa fa-trash-o"></i>
+            <span style="font-size: 11px;">Clear</span>
+        </li>
+    </ul>
+
+    <div class="keep-open btn-group" title="Columns">
+        <button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-th icon-th"></i>
+            @*<span class="caret"></span>*@
+        </button>
+        @*<div class="dropdown-backdrop"></div>*@
+        <ul class="dropdown-menu" role="menu" id="columnmenu">
+            <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="1" checked="checked">Countrie</label></li>
+            <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="2" checked="checked">State</label></li>
+            <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="3" checked="checked">City</label></li>
+            <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="4" checked="checked">Tower</label></li>
+            <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="5" checked="checked">Device Name</label></li>
+            <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="6" checked="checked">IP</label></li>
+            <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="7" checked="checked">Description</label>
+            <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="8" checked="checked">OID</label>
+            <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="9" checked="checked">Value</label>
+            <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Date/Time</label>
+        </ul>
+        <div class="row">
+            <div class="col-xs-2 col-md-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" id="SearchLogName" />
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="search_log">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <input type="button" id="buttrap" class="btn-danger" value="Log" />
+        </div>
+        @*<div class="row">
+
+        </div>*@
+        @*<div class="container">
+            <div class="row">
+               
+            </div>
+            <br />
+            <div class="row">
+                <div class='col-sm-3'>
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        <div id="loginformation"> </div>
 </body>
 </html>
-
 <style>
     table {
         border-width: 1px;
@@ -132,4 +209,22 @@
             border-color: black;
             background-color: white;
         }
+
+    .custom-menu {
+        display: none;
+        z-index: 1000;
+        width: 80px;
+        height: 25px;
+        position: absolute;
+        overflow: hidden;
+        border: 1px solid #CCC;
+        white-space: nowrap;
+        font-family: sans-serif;
+        background: #FFF;
+        color: black;
+        border-radius: 5px;
+        padding: 0;
+        /*background: url(/image/comment-bg2.png) repeat;*/
+        border: 1px solid rgba(0,0,0,0.3);
+    }
 </style>

@@ -12,11 +12,13 @@ using System.Data.SqlClient;
 using System.Configuration;
 using Dapper;
 using PagedList;
+using AdminPanelDevice.Infrastructure;
 
 namespace AdminPanelDevice.Controllers
 {
     public class TrapController : Controller
     {
+        public static bool trapInd = true;
         public static List<TrapLog> TrapLogList = new List<TrapLog>();
         public static List<TrapLog> TrapLogListSearch = new List<TrapLog>();
 
@@ -30,95 +32,13 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult SendTrap(string FileName)
+        public JsonResult SendTrap()
         {
-
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 162);
-            EndPoint ep = (EndPoint)ipep;
-            socket.Bind(ep);
-            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 0);
-
-            bool run = true;
-            int inlen = -1;
-            while (run)
+          
+            if (trapInd == true)
             {
-                byte[] indata = new byte[16 * 1024];
-
-                IPEndPoint peer = new IPEndPoint(IPAddress.Any, 0);
-                EndPoint inep = (EndPoint)peer;
-                try
-                {
-                    inlen = socket.ReceiveFrom(indata, ref inep);
-                }
-                catch (Exception ex)
-                {
-                    inlen = -1;
-                }
-                if (inlen > 0)
-                {
-                    // Check protocol version int 
-                    int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
-                    if (ver == 0)
-                    {
-                        try
-                        {
-                            //SnmpV1Packet pkt = new SnmpV1Packet();
-                            SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
-                            pkt.decode(indata, inlen);
-
-                            foreach (Vb v in pkt.Pdu.VbList)
-                            {
-                                Trap trap = new Trap();
-                                string IP = inep.ToString();
-                                trap.IpAddres = pkt.Pdu.AgentAddress.ToString();
-                                trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
-                                trap.ReturnedOID = v.Oid.ToString();
-                                trap.Value = v.Value.ToString();
-                                trap.dateTimeTrap = DateTime.Now;
-                                db.Traps.Add(trap);
-                                db.SaveChanges();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            
-                        }
-                    }
-
-                    if (ver == 2 || ver == 1)
-                    {
-                        try
-                        {
-
-                            SnmpV2Packet pkt = new SnmpV2Packet();
-                            pkt.decode(indata, inlen);
-
-                            foreach (Vb v in pkt.Pdu.VbList)
-                            {
-                                Trap trap = new Trap();
-                                string IP = inep.ToString();
-                                trap.IpAddres = IP.Remove(13, (IP.Length - 13));
-                                trap.CurrentOID = pkt.Pdu.TrapObjectID.ToString();
-                                trap.ReturnedOID = v.Oid.ToString();
-                                trap.Value = v.Value.ToString();
-                                trap.dateTimeTrap = DateTime.Now;
-                                db.Traps.Add(trap);
-                                db.SaveChanges();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                          
-                        }
-                    }
-                }
-                //else
-                //{
-                //    if (inlen == 0)
-                //        Console.WriteLine("Zero length packet received.");
-
-                //}
+                trapInd = false;
+                new TrapListen();
             }
             return Json("", JsonRequestBehavior.AllowGet);
         }
@@ -135,7 +55,7 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 DateTime start = DateTime.Now;
-                DateTime end = start.Add(new TimeSpan(-72, 0, 0));
+                DateTime end = start.Add(new TimeSpan(-124, 0, 0));
                 var trap = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'").ToList();
                 var Countrie = connection.Query<Countrie>("select * from Countrie").ToList();
                 var States = connection.Query<States>("select * from States").ToList();
@@ -174,7 +94,6 @@ namespace AdminPanelDevice.Controllers
                     ID++;
 
                     string oid = item.CurrentOID;
-                    //  var OidMibdescription = db.MibTreeInformations.Where(m => m.OID == oid).FirstOrDefault();
                     var OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
                     if (OidMibdescription == null)
                     {
@@ -238,6 +157,14 @@ namespace AdminPanelDevice.Controllers
                 TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description.Contains(SearchName) || s.IP.Contains(SearchName) || s.OID.Contains(SearchName) || s.Value.Contains(SearchName)).ToList();
                 return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, 20));
             }
+        }
+
+        [HttpPost]
+        public PartialViewResult SearchDateTime(int? page,DateTime startTime,DateTime endTime)
+        {
+            TrapLogListSearch.Clear();
+            TrapLogListSearch = TrapLogList.Where(t=>t.DateTime>=startTime && t.DateTime<=endTime).ToList();
+            return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, 20));
         }
     }
 }

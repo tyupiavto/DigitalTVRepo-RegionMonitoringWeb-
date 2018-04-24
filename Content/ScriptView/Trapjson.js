@@ -1,4 +1,4 @@
-﻿var SearchName, searchTxt, searchID, SearchInd;
+﻿var SearchName, searchTxt, searchID, SearchInd,startTime,endTime;
 $('body').on('click touchend', '#start_log', function () {
     window.open('/Trap/LogSetting');
 
@@ -19,6 +19,15 @@ $('#search_log').on('click', function () {
     SearchName = $('#SearchLogName').val();
     SearchInd = 1;
     $.post("/Trap/LogSearch", { SearchName: SearchName, SearchInd:SearchInd}, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+    },'text');
+});
+
+$('#search_time_log').on('click', function () {
+    startTime = $('#startDateTime').val();
+    endTime = $('#endDateTime').val();
+    $.post("/Trap/SearchDateTime", {startTime: startTime, endTime: endTime }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
     },'text');

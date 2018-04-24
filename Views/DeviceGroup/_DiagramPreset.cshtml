@@ -1,0 +1,11 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.PresetDiagramName>
+@foreach (var item in Model)
+{
+    <li class="presethover preset@(item.ID)" id="@item.ID" value="@item.Name" style="line-height: 17px; height:20px;">
+        @item.Name
+    <span class="arrow removePresetDiagram" id="@item.Name" value="@item.Name" style="margin-top: -2px; background: linear-gradient(to bottom, rgba(17,17,17,1) 0%,rgba(84,84,84,1) 32%,rgba(61,61,61,1) 64%,rgba(19,19,19,1) 100%);width:20px;">
+        <img src="/image/remove.png" width="100%" height="100%" alt="remove" title="remove">
+    </span>
+</li>
+}
+

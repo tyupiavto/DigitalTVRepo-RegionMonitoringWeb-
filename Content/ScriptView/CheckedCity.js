@@ -168,6 +168,20 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
 
     //checkcity = $('.rowCheckbox');
     //checkcity.on("click", "div", function (e) {
+
+$(document).on('click touchend', '.minimized', function () { // add device setting open
+    var minimizeID = $(this).closest($(".foo")).attr("id");
+    if ($('.add' + minimizeID).css("display") == "none") {
+        $('.add' + minimizeID).css("display", "block");
+        $('#minimizedImg' + minimizeID).css("transform", "rotate(0deg)");
+    }
+    else {
+        $('.add' + minimizeID).css("display", "none");
+        $('#minimizedImg' + minimizeID).css("transform", "rotate(180deg)");
+    }
+    
+});
+
     $('body').on('click touched', '#city_check div', function () {
         var cityid = $(this).attr("id");
 
@@ -277,7 +291,7 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
             }
         });
         setImage();
-        //saveDiagram();
+       // saveDiagram();
     }
 
     function setImage() { //Setting image to endpoints without connection
@@ -300,9 +314,11 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
         setImageOnConnection();
         towerConnection = 1;
         cityID = connection.sourceId;
-      //  saveDiagram();
+        if (connectaddremove == 0) {
+            SavePoint();
+            saveDiagram();
+        }
         $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text($('#' + connection.sourceId).text() + "_" + "Tower" + $('#' + connection.targetId).parent().parent().attr("id"));
-
     });
 
     jsPlumb.bind("connectionDetached", function (connection) {
@@ -329,23 +345,20 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
         });
     }
 
-    function saveDiagram() {
-
-        $(".tableBody").removeClass("jtk-endpoint-anchor");
-        //  $(".tableBodyTower").removeClass("jtk-endpoint-anchor");
-        //Creating array to save all existing connections
-
+    function SavePoint() {
         ConnectionPoint();
-
-        filedata = new FormData();
-        filedata.append("connect[]", connections);
-        filedata.append("Html", $('#mainDiv').html());
-
         $.post("/DeviceGroup/PointConnections", { connections: connections, UnConnectio: UnConnectio }, function (Response) {
 
         }, 'json');
-        // $(".tableBody").removeClass("jtk-endpoint-anchor");
-        //  $(".tableBodyTower").removeClass("jtk-endpoint-anchor");
+    }
+
+    function saveDiagram() {
+
+        $(".tableBody").removeClass("jtk-endpoint-anchor");
+        connectaddremove = 0;
+        filedata = new FormData();
+        filedata.append("connect[]", connections);
+        filedata.append("Html", $('#mainDiv').html());
 
         $.ajax({
             type: 'post',
@@ -356,7 +369,6 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
             url: '/DeviceGroup/SaveDiagram',
             success: function (Response) {
                 $(".tableBody").addClass("jtk-endpoint-anchor");
-                //    $(".tableBodyTower").addClass("jtk-endpoint-anchor");
             }
         });
     }
@@ -373,6 +385,7 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
     }
 
     function loadDiagram() {
+        //$.post("/Trap/SendTrap", {}, function () { });
         connectaddremove = 1;
         $("#mainDiv").html("");
         $.post("/DeviceGroup/LoadDiagram", {}, function (Response) {
@@ -387,6 +400,7 @@ var filedata, towerDeleteID, connectionInd, connectaddremove = 0, loadInd = 0, U
                     uuids: [pointright.toString(), pointLeft.toString()]
                 });
             });
+            saveDiagram();
         });
-
+        
     }

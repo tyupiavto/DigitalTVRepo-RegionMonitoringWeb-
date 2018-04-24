@@ -34,7 +34,7 @@ namespace AdminPanelDevice.Infrastructure
                 scheduler.RescheduleJob(new TriggerKey("invoice_send_trigger"), TriggerBuilder.Create().WithIdentity("invoice_send_trigger")
                 .WithIdentity("Run Infinitely every 2nd day of the month", "Monthly_Day_2")
                 .StartNow()
-                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-17),14,37))
+                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-10),14,37))
                 .Build());
             }
             else
@@ -42,7 +42,7 @@ namespace AdminPanelDevice.Infrastructure
                 scheduler.ScheduleJob(remove_trap_log, TriggerBuilder.Create().WithIdentity("invoice_send_trigger")
                  .WithIdentity("Run Infinitely every 2nd day of the month", "Monthly_Day_2")
                 .StartNow()
-                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-17),16,25))
+                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-10),19,04))
                 .Build());
             }
 

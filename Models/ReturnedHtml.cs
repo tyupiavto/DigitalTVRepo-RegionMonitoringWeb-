@@ -13,7 +13,7 @@ namespace AdminPanelDevice.Models
         public string Html { get; set; }
         [AllowHtml]
         public string Xml { get; set; }
-       
+        public string PresetName { get; set; }
         public Array[] connect { get; set; } 
     }
 }

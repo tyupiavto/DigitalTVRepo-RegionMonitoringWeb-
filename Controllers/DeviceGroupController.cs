@@ -85,9 +85,9 @@ namespace AdminPanelDevice.Controllers
         {
             RemoveLog rem = new RemoveLog();
             JobSheduler.Start();
-            //rem.Execute(null);
-            //page = 1;
+            rem.Execute(null);
             ViewBag.Preset = "";
+            
             return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
         [HttpPost]
@@ -460,7 +460,10 @@ namespace AdminPanelDevice.Controllers
                         }
               
             }
-            catch (Exception e) { } 
+            catch (Exception e)
+            {
+                int ss;
+            } 
 
             return Json("");
         }
@@ -1149,19 +1152,19 @@ namespace AdminPanelDevice.Controllers
         public JsonResult ClearDiagram() {
 
             Html = "";
-            //using(IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //    connection.Query<Tower>("delete from Tower");
-            //    connection.Query<PointConnection>("delete from PointConnection");
-            //    connection.Query<TowerDevices>("delete from TowerDevices");
-            //}
-            //string text = "";
-            //try
-            //{
-            //    var path = Server.MapPath(@"~/HtmlText/html.txt");
-            //    System.IO.File.WriteAllText(path, text);
-            //}
-            //catch { }
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<Tower>("delete from Tower");
+                connection.Query<PointConnection>("delete from PointConnection");
+                connection.Query<TowerDevices>("delete from TowerDevices");
+            }
+            string text = "";
+            try
+            {
+                var path = Server.MapPath(@"~/HtmlText/html.txt");
+                System.IO.File.WriteAllText(path, text);
+            }
+            catch { }
             return Json("");
         }
 
@@ -1180,12 +1183,22 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-            TowerDevices td = new TowerDevices();
-            td.IP = IPaddress;
-            td.TowerID = towerID;
-            td.DeviceName = deviceName;
-          //  td.CityID = cityID;
-            td.TowerName = towerName;
+                var Countrie = connection.Query<Countrie>("select * from Countrie").ToList();
+                var States = connection.Query<States>("select * from States").ToList();
+                var City = connection.Query<City>("select * from City").ToList();
+                TowerDevices td = new TowerDevices();
+                var cityName = towerName;
+                cityName = cityName.Remove(cityName.IndexOf("\u00AD_"), cityName.Length - cityName.IndexOf("\u00AD_"));
+                var stateID = City.Where(c => c.CityName == cityName).FirstOrDefault().StateID;
+                string StateName = States.Where(s => s.ID == stateID).FirstOrDefault().StateName;
+                var countrieID = States.Where(s => s.StateName == StateName).FirstOrDefault().CountrieID;
+                td.CountrieName = Countrie.Where(c => c.ID == countrieID).FirstOrDefault().CountrieName;
+                td.StateName = StateName;
+                td.CityName = cityName;
+                td.IP = IPaddress;
+                td.TowerID = towerID;
+                td.DeviceName = deviceName;
+                td.TowerName = towerName;
                var deviceID = connection.Query<DeviceType>("select * from DeviceType where Name=N'"+deviceName+"'").FirstOrDefault().ID;
                 td.CityID = connection.Query<PointConnection>("select * from PointConnection where TargetId='"+towerID+"'").FirstOrDefault().SourceId;
                 td.DeviceID = deviceID;
@@ -1196,5 +1209,160 @@ namespace AdminPanelDevice.Controllers
 
             return Json("");
         }
+        [HttpPost]
+        public JsonResult RemoveDevice (string DeviceName, string towerID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+              connection.Query<TowerDevices>("delete from TowerDevices where DeviceName=N'" + DeviceName + "' and TowerID='" + towerID + "'");
+            }
+                return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult PresetDiagramSave (ReturnedHtml files)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                string fileName = Server.MapPath(@"~/HtmlText/" + files.PresetName + ".txt");
+                using (StreamWriter sw = System.IO.File.CreateText(fileName)) { }
+                Html = files.Html;
+                string text = files.Html;
+                PresetDiagramName prname = new PresetDiagramName();
+                prname.Name = files.PresetName;
+                db.PresetDiagramNames.Add(prname);
+                db.SaveChanges();
+
+               var point=connection.Query<PointConnection>("select * from PointConnection").ToList();
+               var towerdevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+
+                List<PointConnectionPreset> pr = new List<PointConnectionPreset>();
+                foreach (var item in point)
+                {
+                    PointConnectionPreset presetpoint = new PointConnectionPreset();
+                    presetpoint.PointLeft = item.PointLeft;
+                    presetpoint.PointRight = item.PointRight;
+                    presetpoint.SourceId = item.SourceId;
+                    presetpoint.TargetId = item.TargetId;
+                    presetpoint.GetUuids = item.GetUuids;
+                    presetpoint.PresetName = files.PresetName;
+                    presetpoint.PresetID= connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='"+files.PresetName+"'").FirstOrDefault().ID;
+                    pr.Add(presetpoint);
+                  
+                }
+
+                List<TowerDevicesPreset> td = new List<TowerDevicesPreset>();
+                foreach (var it in towerdevice)
+                {
+                    TowerDevicesPreset tdp = new TowerDevicesPreset();
+                    tdp.CityID = it.CityID;
+                    tdp.CityName = it.CityName;
+                    tdp.CountrieName = it.CountrieName;
+                    tdp.DeviceID = it.DeviceID;
+                    tdp.DeviceName = it.DeviceName;
+                    tdp.IP = it.IP;
+                    tdp.StateName = it.StateName;
+                    tdp.TowerName = it.TowerName;
+                    tdp.TowerID = it.TowerID;
+                    tdp.PresetName=files.PresetName;
+                    tdp.PresetID = connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='" + files.PresetName + "'").FirstOrDefault().ID;
+                    td.Add(tdp);
+                }
+                db.PointConnectionPresets.AddRange(pr);
+                db.TowerDevicesPresets.AddRange(td);
+                db.SaveChanges();
+                System.IO.StreamWriter htmlText = new StreamWriter(fileName);
+
+                htmlText.Write(text);
+                htmlText.Close();
+            }
+                return Json("");
+        }
+
+        [HttpPost]
+        public PartialViewResult DiagramPresetList ()
+        {
+            List<PresetDiagramName> presetlist = new List<PresetDiagramName>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                 presetlist = connection.Query<PresetDiagramName>("select * from PresetDiagramName").ToList();
+            }
+                return PartialView("_DiagramPreset", presetlist);
+        }
+        [HttpPost]
+        public JsonResult LoadPresetDiagram(string presetSearchName)
+        {
+            List<PointConnectionPreset> pointConnectionPreset = new List<PointConnectionPreset>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var path = Server.MapPath(@"~/HtmlText/html.txt");
+                string html = "";
+                System.IO.File.WriteAllText(path, html);
+                Html = null;
+                if (Html == null)
+                {
+                     
+
+                    html = System.IO.File.ReadAllText(Server.MapPath("/HtmlText/" + presetSearchName + ".txt"));
+                    System.IO.File.WriteAllText(path, html);
+                    Html = "";
+                }
+                else
+                {
+                    html = Html;
+                }
+                connection.Query<PointConnection>("delete From  PointConnection");
+                pointConnectionPreset = connection.Query<PointConnectionPreset>("Select * From  PointConnectionPreset where PresetName='" + presetSearchName + "'").ToList();
+               var towerdevice= connection.Query<TowerDevicesPreset>("Select * From  TowerDevicesPreset where PresetName='" + presetSearchName + "'").ToList();
+
+                List<TowerDevices> td = new List<TowerDevices>();
+                foreach (var it in towerdevice)
+                {
+                    TowerDevices tdp = new TowerDevices();
+                    tdp.CityID = it.CityID;
+                    tdp.CityName = it.CityName;
+                    tdp.CountrieName = it.CountrieName;
+                    tdp.DeviceID = it.DeviceID;
+                    tdp.DeviceName = it.DeviceName;
+                    tdp.IP = it.IP;
+                    tdp.StateName = it.StateName;
+                    tdp.TowerName = it.TowerName;
+                    tdp.TowerID = it.TowerID;
+                    td.Add(tdp);
+                }
+
+                List<PointConnection> poi = new List<PointConnection>();
+                foreach (var item in pointConnectionPreset)
+                {
+                    PointConnection presetpoint = new PointConnection();
+                    presetpoint.PointLeft = item.PointLeft;
+                    presetpoint.PointRight = item.PointRight;
+                    presetpoint.SourceId = item.SourceId;
+                    presetpoint.TargetId = item.TargetId;
+                    presetpoint.GetUuids = item.GetUuids;
+                    poi.Add(presetpoint);
+                   
+                }
+                db.TowerDevices.AddRange(td);
+                db.PointConnections.AddRange(poi);
+                db.SaveChanges();
+                return Json(new { htmlData = html, pointData = pointConnectionPreset });
+            }
+        }
+
+        [HttpPost]
+        public PartialViewResult RemoveDiagramPreset(string presetName)
+        {
+            List<PresetDiagramName> presetlist = new List<PresetDiagramName>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<PresetDiagramName>("delete from PresetDiagramName where Name='" + presetName + "'");
+                presetlist = connection.Query<PresetDiagramName>("select * from PresetDiagramName").ToList();
+            }
+            var path = Server.MapPath(@"~/HtmlText/"+ presetName + ".txt");
+            System.IO.File.Delete(path);
+            return PartialView("_DiagramPreset", presetlist);
+        }
+
     }
 }

@@ -5,13 +5,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     @*<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/Scripts/moment.min.js"></script>
-    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>*@
-    <script src="~/Content/ScriptView/jquery.datetimepicker.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>*@
+    @*<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>*@
+    @*<script src="~/Content/ScriptView/jquery.datetimepicker.full.min.js"></script>*@
+    @*<script src="~/Content/ScriptView/jquery.js"></script>
+        <script src="~/Content/ScriptView/moment.js"></script>*@
+    @*<script src="~/Content/ScriptView/jquery.datetimepicker.js"></script>*@
+    @*<script src="~/Content/ScriptView/jquery.datetimepicker.full.min.js"></script>*@
 
-    <script type="text/javascript">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+
+    @*<script>
         //$(document).ready(function () {
         $('.dropdown-toggle::after').css("display", "none");
         $('#columnmenu li').click(function () {
@@ -68,11 +81,13 @@
         //        thElm = undefined;
         //    });
         //})();
-        $(function () {
+       
             //var bindDatePicker = function () {
-            //$.datetimepicker.setLocale('en');
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
 
-            //    $(".date").datetimepicker();
+          //    $(".date").datetimepicker();
             //        format: 'YYYY-MM-DD',
             //        icons: {
             //            time: "fa fa-clock-o",
@@ -115,8 +130,8 @@
             //}
 
             //bindDatePicker();
-        });
-    </script>
+       
+    </script>*@
 
 </head>
 <body>
@@ -162,14 +177,45 @@
                 </div>
             </div>
 
-            <input type="button" id="buttrap" class="btn-danger" value="Log" />
+            <div class='col-sm-2'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepickerStart'>
+                        <input type='text' class="form-control" id="startDateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='col-sm-2' style="margin-left:-15px;">
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepickerEnd'>
+                        <input type='text' class="form-control" id="endDateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group-btn col-sm-1" style="margin-left:-10px;">
+                <button class="btn btn-primary" type="button" id="search_time_log">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+            <div class='col-sm-3'>
+                <input type="button" id="buttrap" class="btn" value="Log" />
+            </div>
+                 @*</div>
+        </div>*@
+                 @*<input type="button" id="buttrap" class="btn-danger" value="Log" />*@
         </div>
-        @*<div class="row">
+            @*<div class="row">
 
         </div>*@
-        @*<div class="container">
+            @*<div class="container">
             <div class="row">
-               
+
             </div>
             <br />
             <div class="row">
@@ -186,9 +232,16 @@
             </div>
         </div>*@
 
-        <div id="loginformation"> </div>
+            <div id="loginformation"> </div>
 </body>
 </html>
+
+<script>
+    $(function () {
+        $('#datetimepickerStart').datetimepicker();
+        $('#datetimepickerEnd').datetimepicker();
+    });
+</script>
 <style>
     table {
         border-width: 1px;

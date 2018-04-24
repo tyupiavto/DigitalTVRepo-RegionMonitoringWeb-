@@ -49,8 +49,10 @@
             </li>
             <input type="button" id="clear_diagram" name="clear" value="Clear Diagram" class="btn">
             <input type="button" id="start_log" name="log" value="Log" class="btn">
-            @*<a href='@Url.Action("mapStyle", "Map")' onclick='navigate(this.href);'>*@
-                <input type="button" id="open_map" name="map" value="Map" class="btn">
+          
+            <input type="button" id="open_map" name="map" value="Map" class="btn">
+            <input type="button" id="_preset_diagram" name="" value="Preset" class="btn">
+
             @*</a>*@
             @*<li>
             <span id="Output">Output</span>
@@ -66,9 +68,26 @@
             </ul>
         </li>*@
 
-            <div id="add_device_partial">
+            <div id="add_device_partial"></div>
+            <div id="preset_group_name" style="display:none">
+                <ul class="Type typeSelect" id="diagram_list_view" style="height:38px;">
+                    <li style="width:77%;" id="diagramPresetList">
+                        <span class="type" id="Type" style=" background: linear-gradient(to bottom, rgb(17, 17, 17) 0%,rgba(84, 84, 84, 0.25) 32%,rgba(61,61,61,1) 64%,rgba(19, 19, 19, 0.29) 100%);">
+                            <input type="text" name="presetName" class="presetName Text" id="preset_name_txt" placeholder="Preset Name" style="width: 94%; margin-left: -18px;background: linear-gradient(to bottom, rgb(17, 17, 17) 0%,rgba(84, 84, 84, 0.25) 32%,rgba(61,61,61,1) 64%,rgba(19, 19, 19, 0.29) 100%);" autocomplete="off">
+                        </span>
+                        <span class="arrow" style="margin-top: -20px;background: -webkit-linear-gradient(top, rgba(17,17,17,1) 0%,rgba(84,84,84,1) 32%,rgba(61,61,61,1) 64%,rgba(19,19,19,1) 100%);width:20px;">
+                            <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                        </span>
+                    </li>
+                    <input type="button" id="preset_save_diagram" value="Save" class="btn" style="height: 22px; width: 22%; line-height: 6px; margin-top: -34px; margin-left: 79%; background: -webkit-linear-gradient(top, rgba(17,17,17,1) 0%,rgba(84,84,84,1) 32%,rgba(61,61,61,1) 64%,rgba(19,19,19,1) 100%);">
+                </ul>
+                <ul class="preset_group_list_remove" id="preset_group_list_remove" style="width: 14.3%;z-index: 1;display: none; margin-left: 5px; margin-top: -10px; border: none;">
+                    <div id="interva_parti" class="preset_diagram_list_remove">
+                                                    
+                    </div>
+                </ul>
             </div>
-        </ul>
+            
     </div>
     <div id="settingsDiv">
 
@@ -82,7 +101,10 @@
 <div id="load_walk" name="Load">
     <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
 </div>
-
+<ul class='remove-menu' style="display:none;position:absolute">
+    @*<span style="font-size: 11px;margin-left:2px;">GPS Select</span>*@
+    <li data-action="RemoveDevice">Remove</li>
+</ul>
 <!-- Modal -->
 <div id="myModal" class="modal fade col-lg-12" role="dialog">
     <div class="modal-dialog">
@@ -218,7 +240,6 @@
                 <li data-action="Yes">Yes</li>
                 <li data-action="No">No</li>
             </ul>
-
             <div class="titileGroup" style="height:21px;margin-left:1px;">
                 <table style="table-layout: fixed;width: 100%">
                     <tr class="streamsInfo" id="header_device">
@@ -387,19 +408,18 @@
 
 
 <script>
-    //var counter; 
+    //var counter;
     var idTarget, title;
     $(document).ready(function () {
 
         $('.devInfo').hide();
-
+        
         window.onload = loadDiagram();
 
         $(window).on("beforeunload", function (e) {
-            saveDiagram();
+          //  saveDiagram();
         });
-
-
+        
         $('#countrie').click(function () {
             $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
         });
@@ -473,8 +493,8 @@
                 if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('countries')) {
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
-                     title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft+4) + 'px; top: ' + (droppedTop-1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
+                    title = ui.draggable.text().trim();
+                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft + 4) + 'px; top: ' + (droppedTop - 1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();
@@ -483,8 +503,8 @@
                 if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('tower')) {
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
-                     title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="dropDivs" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+                    title = ui.draggable.text().trim();
+                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1)+'" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();
@@ -557,7 +577,6 @@
             IPaddress = $('#ip_address').val();
             towerID = "tower_" + idTarget;
             deviceName = title;
-            //cityID = $('.header' + idTarget).text();
             towerName = $('.header' + idTarget).text();
             $.post("/DeviceGroup/TowerDeviceInformation", { IPaddress: IPaddress, towerID: towerID, deviceName: deviceName, cityID: cityID, towerName: towerName }, function () {
                 $('#ip_address').val("");

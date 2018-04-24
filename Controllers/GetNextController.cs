@@ -56,7 +56,6 @@ namespace AdminPanelDevice.Controllers
                     //live.Time = (time * 1000);
                     //db.LiveValues.Add(live);
                     //db.SaveChanges();
-            
                     OidID = walkdvc.Where(w => w.WalkOID == v.Oid.ToString()).FirstOrDefault().OidID;
 
                         get.MibID = OidID;
@@ -128,7 +127,8 @@ namespace AdminPanelDevice.Controllers
                     }
                 }
             }
-
+            
+           
                 for (int i = 0; i<=pdu.Count-1; i++)
                 {
                 int j = i;

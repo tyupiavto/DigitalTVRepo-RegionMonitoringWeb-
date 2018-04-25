@@ -385,7 +385,7 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
     }
 
     function loadDiagram() {
-        //$.post("/Trap/SendTrap", {}, function () { });
+        $.post("/Trap/SendTrap", {}, function () { });
         connectaddremove = 1;
         $("#mainDiv").html("");
         $.post("/DeviceGroup/LoadDiagram", {}, function (Response) {

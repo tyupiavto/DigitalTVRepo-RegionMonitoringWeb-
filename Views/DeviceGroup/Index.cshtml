@@ -49,24 +49,24 @@
             </li>
             <input type="button" id="clear_diagram" name="clear" value="Clear Diagram" class="btn">
             <input type="button" id="start_log" name="log" value="Log" class="btn">
-          
+
             <input type="button" id="open_map" name="map" value="Map" class="btn">
             <input type="button" id="_preset_diagram" name="" value="Preset" class="btn">
 
             @*</a>*@
             @*<li>
-            <span id="Output">Output</span>
-            <ul id="output" class="devInfo">
+                    <span id="Output">Output</span>
+                    <ul id="output" class="devInfo">
 
-            </ul>
-        </li>*@
+                    </ul>
+                </li>*@
 
             @*<li>
-            <span id="Stream">Streams</span>
-            <ul id="streams" class="devInfo">
+                    <span id="Stream">Streams</span>
+                    <ul id="streams" class="devInfo">
 
-            </ul>
-        </li>*@
+                    </ul>
+                </li>*@
 
             <div id="add_device_partial"></div>
             <div id="preset_group_name" style="display:none">
@@ -83,11 +83,11 @@
                 </ul>
                 <ul class="preset_group_list_remove" id="preset_group_list_remove" style="width: 14.3%;z-index: 1;display: none; margin-left: 5px; margin-top: -10px; border: none;">
                     <div id="interva_parti" class="preset_diagram_list_remove">
-                                                    
+
                     </div>
                 </ul>
             </div>
-            
+
     </div>
     <div id="settingsDiv">
 
@@ -413,13 +413,13 @@
     $(document).ready(function () {
 
         $('.devInfo').hide();
-        
+
         window.onload = loadDiagram();
 
         $(window).on("beforeunload", function (e) {
-          //  saveDiagram();
+            //  saveDiagram();
         });
-        
+
         $('#countrie').click(function () {
             $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
         });
@@ -504,7 +504,7 @@
                     diagramLenght = $('.foo').length;
                     var Class = ui.draggable.attr("class");
                     title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1)+'" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1) + '" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
                     $(this).append(item);
                     diagramLenght++;
                     foo();

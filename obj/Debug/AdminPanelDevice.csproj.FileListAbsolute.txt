@@ -106,3 +106,4 @@ C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanel
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Common.Logging.Core.xml
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Quartz.pdb
 C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\bin\Quartz.xml
+C:\Users\tyupi\documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.csprojResolveAssemblyReference.cache

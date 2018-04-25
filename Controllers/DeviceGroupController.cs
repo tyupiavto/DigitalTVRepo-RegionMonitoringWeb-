@@ -84,12 +84,23 @@ namespace AdminPanelDevice.Controllers
         public ActionResult Index(int ? page)
         {
             RemoveLog rem = new RemoveLog();
-            JobSheduler.Start();
-            rem.Execute(null);
+            //JobSheduler.Start();
+            //rem.Execute(null);
             ViewBag.Preset = "";
-            
+    
             return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
+        //public static string Hexstring(string hex)
+        //{
+        //    string strvalue = "";
+        //    string[] strsplit = hex.Split(' ');
+        //    foreach (String hexa in strsplit)
+        //    {
+        //        strvalue = strvalue+ char.ConvertFromUtf32(Convert.ToInt32(hexa, 16));
+        //    }
+        //    return strvalue;
+        //}
+
         [HttpPost]
         public JsonResult GroupCreate(string GroupName)
         {

@@ -423,8 +423,8 @@
             //styles = JSON.parse(mapStart);
             //map.setOptions({ styles: styles });
 
-            var newst = JSON.parse(mapStart);
-            map.setOptions({ styles: newst });
+          //  var newst = JSON.parse(mapStart);
+            map.setOptions({ styles: newstyle });
             
             var myCenter = new google.maps.LatLng(42.280200, 42.736320);
             var image = {
@@ -443,40 +443,40 @@
                 scaledSize: new google.maps.Size(15, 15),
 
             };
-            if (towerLine.length > 0) {
+            //if (towerLine.length > 0) {
 
-                $.each(towerLine, function (j, value) {
-                    if (cordXP == value.parentlattitube && cordYP == value.parentlongitube) {
-                        startposition = new google.maps.LatLng(value.parentlattitube, value.parentlongitube);
-                        LC.push(new google.maps.LatLng(value.childlattitube, value.childlongitube));
-                    }
-                    else {
-                        if (startposition != null) {
-                            LineConnection.push({ startposition, LC, flightPath });
-                        }
-                        LC = [];
-                        flightPath = [];
-                        LC.push(new google.maps.LatLng(value.childlattitube, value.childlongitube));
-                        startposition = new google.maps.LatLng(value.parentlattitube, value.parentlongitube);
-                        cordXP = value.parentlattitube;
-                        cordYP = value.parentlongitube;
-                    }
-                     childposition = new google.maps.LatLng(value.childlattitube, value.childlongitube);
-                    flightPath.push(new google.maps.Polyline({
-                        path: [startposition, childposition],
-                        geodesic: true,
-                        strokeColor: '#009900',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                        map: map,
-                        icons: [{
-                            icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                            offset: '100%',
-                            repeat: '80px'
-                        }]
-                    }));
-                });
-            }
+            //    $.each(towerLine, function (j, value) {
+            //        if (cordXP == value.parentlattitube && cordYP == value.parentlongitube) {
+            //            startposition = new google.maps.LatLng(value.parentlattitube, value.parentlongitube);
+            //            LC.push(new google.maps.LatLng(value.childlattitube, value.childlongitube));
+            //        }
+            //        else {
+            //            if (startposition != null) {
+            //                LineConnection.push({ startposition, LC, flightPath });
+            //            }
+            //            LC = [];
+            //            flightPath = [];
+            //            LC.push(new google.maps.LatLng(value.childlattitube, value.childlongitube));
+            //            startposition = new google.maps.LatLng(value.parentlattitube, value.parentlongitube);
+            //            cordXP = value.parentlattitube;
+            //            cordYP = value.parentlongitube;
+            //        }
+            //         childposition = new google.maps.LatLng(value.childlattitube, value.childlongitube);
+            //        flightPath.push(new google.maps.Polyline({
+            //            path: [startposition, childposition],
+            //            geodesic: true,
+            //            strokeColor: '#009900',
+            //            strokeOpacity: 1,
+            //            strokeWeight: 2,
+            //            map: map,
+            //            icons: [{
+            //                icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+            //                offset: '100%',
+            //                repeat: '80px'
+            //            }]
+            //        }));
+            //    });
+            //}
             $.each(listgps, function (i, val) {
               var  marker =new google.maps.Marker({
                     position: new google.maps.LatLng(val.lattitube, val.longitube),
@@ -488,149 +488,149 @@
                 });
                             //map.setCenter(marker.getPosition());
               var infowindow = new google.maps.InfoWindow();
-              google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
-                  return function () {
-                      if (marker.getAnimation() != null && manJump == 1) {
-                          marker.setAnimation(null);
-                          marker.setMap(null);
-                          lineLenghtList = 0;
-                          manJump = 0;
-                          $.each(LineConnection, function (i, val) {
-                              if (val.startposition== startposition) {
-                                  lineLenghtList = 1;
-                                  LineConnection[i].startposition = startposition;
-                                  LineConnection[i].LC = LC;
-                                  LineConnection.flightPath = flightPath;
-                              }
-                          });
-                          if (lineLenghtList == 0) {
-                              LineConnection.push({ startposition, LC, flightPath });
-                          }
-                          lineLenght += LC.length;
-                          LC = [];
-                          flightPath = [];
-                          ind = 0;
-                          startposition = null;
-                      } else {
-                          if (manJump == 0) {
-                              manJump = 1;
-                              marker = new google.maps.Marker({
-                                  position: marker.position,
-                                  map: map,
-                                  id: marker.id,
-                                  icon: img,
-                                  animation: google.maps.Animation.BOUNCE
-                              });
-                              startposition = marker.position;
-                              parentTowerID = marker.id;
-                          }
-                      }
-                  };
-              })(marker, infowindow));
+              //google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
+              //    return function () {
+              //        if (marker.getAnimation() != null && manJump == 1) {
+              //            marker.setAnimation(null);
+              //            marker.setMap(null);
+              //            lineLenghtList = 0;
+              //            manJump = 0;
+              //            $.each(LineConnection, function (i, val) {
+              //                if (val.startposition== startposition) {
+              //                    lineLenghtList = 1;
+              //                    LineConnection[i].startposition = startposition;
+              //                    LineConnection[i].LC = LC;
+              //                    LineConnection.flightPath = flightPath;
+              //                }
+              //            });
+              //            if (lineLenghtList == 0) {
+              //                LineConnection.push({ startposition, LC, flightPath });
+              //            }
+              //            lineLenght += LC.length;
+              //            LC = [];
+              //            flightPath = [];
+              //            ind = 0;
+              //            startposition = null;
+              //        } else {
+              //            if (manJump == 0) {
+              //                manJump = 1;
+              //                marker = new google.maps.Marker({
+              //                    position: marker.position,
+              //                    map: map,
+              //                    id: marker.id,
+              //                    icon: img,
+              //                    animation: google.maps.Animation.BOUNCE
+              //                });
+              //                startposition = marker.position;
+              //                parentTowerID = marker.id;
+              //            }
+              //        }
+              //    };
+              //})(marker, infowindow));
 
-              google.maps.event.addListener(marker, 'click', (function (marker, infowindow) {
-                  return function () {
-                      var lineSymbol = {
-                          path: 'M 0,-1 0,1',
-                          strokeOpacity: 1,
-                          scale: 2
-                      };
+              //google.maps.event.addListener(marker, 'click', (function (marker, infowindow) {
+              //    return function () {
+              //        var lineSymbol = {
+              //            path: 'M 0,-1 0,1',
+              //            strokeOpacity: 1,
+              //            scale: 2
+              //        };
 
-                      $.each(LineConnection, function (i, val) {
+              //        $.each(LineConnection, function (i, val) {
 
-                          if (val.startposition.toString() == startposition.toString() /*&& val.startposition.lng() == startposition.lng()*/) {
-                              flightPath = val.flightPath;
-                              LC = val.LC;
-                              ind = 0; clickInd = 0;
-                              childTowerID = marker.id;
-                              $.each(val.LC, function (j, value) {
-                                  if (value.toString() == marker.position.toString() && flightPath[j] != null) {
-                                      ind = 1;
-                                      removePosition = j;
-                                    $('.removeLine').css("display", "block");
-                                      RemoveLine = new google.maps.Polyline({
-                                      path: [startposition, marker.position],
-                                      geodesic: true,
-                                      strokeColor: '#ff0000',
-                                      strokeOpacity: 1,
-                                      strokeWeight: 2,
-                                      map: map,
-                                      icons: [{
-                                          icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                                          offset: '100%',
-                                          repeat: '80px'
-                                      }]
-                                  });
-                                  }
-                              });
+              //            if (val.startposition.toString() == startposition.toString() /*&& val.startposition.lng() == startposition.lng()*/) {
+              //                flightPath = val.flightPath;
+              //                LC = val.LC;
+              //                ind = 0; clickInd = 0;
+              //                childTowerID = marker.id;
+              //                $.each(val.LC, function (j, value) {
+              //                    if (value.toString() == marker.position.toString() && flightPath[j] != null) {
+              //                        ind = 1;
+              //                        removePosition = j;
+              //                      $('.removeLine').css("display", "block");
+              //                        RemoveLine = new google.maps.Polyline({
+              //                        path: [startposition, marker.position],
+              //                        geodesic: true,
+              //                        strokeColor: '#ff0000',
+              //                        strokeOpacity: 1,
+              //                        strokeWeight: 2,
+              //                        map: map,
+              //                        icons: [{
+              //                            icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+              //                            offset: '100%',
+              //                            repeat: '80px'
+              //                        }]
+              //                    });
+              //                    }
+              //                });
 
-                          }
-                      });
-                      if (ind == 0) {
-                          removelineInd = 0;
-                          $.each(LC, function (i, val) {
-                              if (val.toString() == marker.position.toString()) {
-                                  removelineInd = 1;
-                                  clickInd = 0;
-                                  removePosition = i;
-                                  $('.removeLine').css("display", "block");
+              //            }
+              //        });
+              //        if (ind == 0) {
+              //            removelineInd = 0;
+              //            $.each(LC, function (i, val) {
+              //                if (val.toString() == marker.position.toString()) {
+              //                    removelineInd = 1;
+              //                    clickInd = 0;
+              //                    removePosition = i;
+              //                    $('.removeLine').css("display", "block");
 
-                                  RemoveLine = new google.maps.Polyline({
-                                      path: [startposition, marker.position],
-                                      geodesic: true,
-                                      strokeColor: '#ff0000',
-                                      strokeOpacity: 1,
-                                      strokeWeight: 2,
-                                      map: map,
-                                      icons: [{
-                                          icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                                          offset: '100%',
-                                          repeat: '80px'
-                                      }]
-                                  });
-                              }
-                          });
-                          if (removelineInd == 0) {
-                              LC.push(marker.position);
-                              flightPath.push(new google.maps.Polyline({
-                                  path: [startposition, marker.position],
-                                  geodesic: true,
-                                  strokeColor: '#009900',
-                                  strokeOpacity: 1,
-                                  strokeWeight: 2,
-                                  map: map,
-                                  icons: [{
-                                      icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                                      offset: '100%',
-                                      repeat: '80px'
-                                  }]
-                              }));
-                              childTowerID = marker.id;
-                              $.post("/Map/AddTowerLine", { parentTowerID: parentTowerID, childTowerID: childTowerID }, function () { }, 'json');
-                          }
-                      }
-                          $('#close_line').click(function () {
-                              if (clickInd == 0) {
-                                  RemoveLine.setMap(null);
-                                  $('.removeLine').css("display", "none");
-                                  clickInd = 1;
-                              }
-                          });
+              //                    RemoveLine = new google.maps.Polyline({
+              //                        path: [startposition, marker.position],
+              //                        geodesic: true,
+              //                        strokeColor: '#ff0000',
+              //                        strokeOpacity: 1,
+              //                        strokeWeight: 2,
+              //                        map: map,
+              //                        icons: [{
+              //                            icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+              //                            offset: '100%',
+              //                            repeat: '80px'
+              //                        }]
+              //                    });
+              //                }
+              //            });
+              //            if (removelineInd == 0) {
+              //                LC.push(marker.position);
+              //                flightPath.push(new google.maps.Polyline({
+              //                    path: [startposition, marker.position],
+              //                    geodesic: true,
+              //                    strokeColor: '#009900',
+              //                    strokeOpacity: 1,
+              //                    strokeWeight: 2,
+              //                    map: map,
+              //                    icons: [{
+              //                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+              //                        offset: '100%',
+              //                        repeat: '80px'
+              //                    }]
+              //                }));
+              //                childTowerID = marker.id;
+              //                $.post("/Map/AddTowerLine", { parentTowerID: parentTowerID, childTowerID: childTowerID }, function () { }, 'json');
+              //            }
+              //        }
+              //            $('#close_line').click(function () {
+              //                if (clickInd == 0) {
+              //                    RemoveLine.setMap(null);
+              //                    $('.removeLine').css("display", "none");
+              //                    clickInd = 1;
+              //                }
+              //            });
 
-                          $('#remove_line').click(function () {
-                              if (clickInd == 0) {
-                                  RemoveLine.setMap(null); /*RemoveLine.setMap(null); RemoveLine.setMap(null); RemoveLine.setMap(null);*/
-                                  RemoveLine = null;
-                                  flightPath[removePosition].setMap(null);
-                                  flightPath[removePosition] = null;
-                                  $('.removeLine').css("display", "none");
-                                  LC[removePosition] = 0;
-                                  clickInd = 1;
-                                  $.post("/Map/RemoveTowerLine", { parentTowerID: parentTowerID, childTowerID: childTowerID }, function () { }, 'json');
-                              }
-                          });
-                  };
-              })(marker, infowindow));
+              //            $('#remove_line').click(function () {
+              //                if (clickInd == 0) {
+              //                    RemoveLine.setMap(null); /*RemoveLine.setMap(null); RemoveLine.setMap(null); RemoveLine.setMap(null);*/
+              //                    RemoveLine = null;
+              //                    flightPath[removePosition].setMap(null);
+              //                    flightPath[removePosition] = null;
+              //                    $('.removeLine').css("display", "none");
+              //                    LC[removePosition] = 0;
+              //                    clickInd = 1;
+              //                    $.post("/Map/RemoveTowerLine", { parentTowerID: parentTowerID, childTowerID: childTowerID }, function () { }, 'json');
+              //                }
+              //            });
+              //    };
+              //})(marker, infowindow));
             });
         }
           //  google.maps.event.addDomListener(window, 'load', initMap);

@@ -264,10 +264,13 @@
     </Compile>
     <Compile Include="Helpers\PickerHelper.cs" />
     <Compile Include="Infrastructure\BuildMIBTree.cs" />
+    <Compile Include="Infrastructure\Hexstring.cs" />
     <Compile Include="Infrastructure\JobSheduler.cs" />
     <Compile Include="Infrastructure\MibTreeCreate.cs" />
     <Compile Include="Infrastructure\PresetFill.cs" />
     <Compile Include="Infrastructure\RemoveLog.cs" />
+    <Compile Include="Infrastructure\SnmpVersionOne.cs" />
+    <Compile Include="Infrastructure\SnmpVersionTwo.cs" />
     <Compile Include="Infrastructure\TrapListen.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.Designer.cs">

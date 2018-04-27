@@ -1,6 +1,4 @@
 ﻿
-
-
 $('#get_next').click(function () { 
 $.ajax({
         type: 'POST',

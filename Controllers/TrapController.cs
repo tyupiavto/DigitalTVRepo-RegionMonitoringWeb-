@@ -90,11 +90,33 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult SearchDateTime(int? page,DateTime startTime,DateTime endTime)
+        public PartialViewResult SearchDateTime(int? page, DateTime startTime, DateTime endTime)
         {
-            TrapLogListSearch.Clear();
-            TrapLogListSearch = TrapLogList.Where(t=>t.dateTimeTrap>=startTime && t.dateTimeTrap<=endTime).ToList();
-            return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, 20));
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                //TrapLogListSearch.Clear();
+                //TrapLogListSearch = TrapLogList.Where(t => t.dateTimeTrap >= startTime && t.dateTimeTrap <= endTime).ToList();
+                TrapLogList = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + startTime + "'and '" + endTime + "'").ToList();
+                return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, 20));
+            }
+        }
+        [HttpGet]
+        public JsonResult TrapFillNewDevice(string IPaddress)
+        {
+            new TrapUpdateNewDevice(IPaddress);
+                return Json("",JsonRequestBehavior.AllowGet);
+            
+        }
+        [HttpGet]
+        public JsonResult NotTrapFill (string IPaddress)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                DateTime start = DateTime.Now;
+                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+                connection.Query<Trap>("delete from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'");
+            }
+                return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

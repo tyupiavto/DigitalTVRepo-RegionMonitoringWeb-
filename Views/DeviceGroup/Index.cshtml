@@ -53,21 +53,6 @@
             <input type="button" id="open_map" name="map" value="Map" class="btn">
             <input type="button" id="_preset_diagram" name="" value="Preset" class="btn">
 
-            @*</a>*@
-            @*<li>
-                    <span id="Output">Output</span>
-                    <ul id="output" class="devInfo">
-
-                    </ul>
-                </li>*@
-
-            @*<li>
-                    <span id="Stream">Streams</span>
-                    <ul id="streams" class="devInfo">
-
-                    </ul>
-                </li>*@
-
             <div id="add_device_partial"></div>
             <div id="preset_group_name" style="display:none">
                 <ul class="Type typeSelect" id="diagram_list_view" style="height:38px;">
@@ -102,7 +87,6 @@
     <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
 </div>
 <ul class='remove-menu' style="display:none;position:absolute">
-    @*<span style="font-size: 11px;margin-left:2px;">GPS Select</span>*@
     <li data-action="RemoveDevice">Remove</li>
 </ul>
 <!-- Modal -->
@@ -113,9 +97,9 @@
         <div class="modal-content device_setting_style">
             <div class="modal-header" style="height:20px; margin-top:-5px;background: url(/image/comment-bg2.png) repeat;">
                 <span class="header" id="device_settings_name">Tower</span>
-                <div style="margin-top:-8px;margin-left:170px;">
+                <div style="margin-top:-8px;margin-left:160px;">
                     <input class="deviceInput inputField gradient" name="description_value_search" id="description_value_search" placeholder="Search" value="" type="text" hidefocus="true" style="outline: none; color: white;width:155px;">
-                    <button type="button" class="btn btn-default btn-sm" id="walk_search_click" style="width: 30px;height: 20px; margin-left: -3px">
+                    <button type="button" class="btn btn-default btn-sm" id="walk_search_click" style="width: 29px;height: 20px; margin-left: -3px">
                         <span class="glyphicon glyphicon-search" style="margin-top: -3px; margin-left: -2px"></span>
                     </button>
                 </div>
@@ -338,7 +322,7 @@
 
 <!-- Modal  Version -->
 <div class="modal fade" id="VersionModal" role="dialog">
-    <div class="modal-dialog" @*style="margin-left:-20%;"*@>
+    <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content versionModal" style="margin-left:20%; margin-top:20%;">
@@ -363,10 +347,6 @@
                         </tr>
                     </table>
                 </div>
-                @*<div style="margin-left:165px; margin-top:3px;">
-                        <button type="button" class="btn btn-info" id="SendCommunity" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px;margin-left:65px;">Send</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" style="width:50px; height:22px; line-height:9px; font-size:11px;">Close</button>
-                    </div>*@
             </div>
 
         </div>
@@ -375,8 +355,7 @@
 
 
 <div class="modal fade" id="IPModal" role="dialog">
-    <div class="modal-dialog" @*style="margin-left:-20%;"*@>
-
+    <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content setModal" style="width:330px;height:33px;">
             <div class="modal-body">
@@ -391,19 +370,54 @@
                             </td>
                             <td width="10%">
                                 <div style=" margin-top:3px;">
-                                    <button type="button" class="btn btn-info" id="add_device_inf" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px; ">add</button>
+                                    <button type="button" class="btn btn-info" id="add_device_inf" data-dismiss="modal" data-toggle="modal" style="width:50px; height:22px;line-height:9px; font-size:11px; ">add</button>
                                 </div>
                             </td>
                         </tr>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal  DeviceUnknow -->
+<div class="modal fade" id="existingDevice" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content existingDevice" style=" max-height: 100px;max-width: 350px;background: url(/image/comment-bg2.png) repeat;">
+            <div class="modal-body">
+                <div class="titileGroup">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="font-size:18px;">
+                                    These data are available in the database of the data , This requires a lot of time, do you wish to fill in the information?
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div style="margin-left:275px; margin-top:3px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="position: absolute; margin-left: -61px;">
+                                    <button type="button" class="btn btn-info" id="SendFill" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px; ">Yes</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default" id="notTrapFill" data-dismiss="modal" style="width:50px; height:22px; line-height:9px; font-size:11px;">No</button>
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 @*</div>*@
 
 
@@ -429,11 +443,6 @@
             revert: 'invalid'
         });
 
-        //$('#deviceName li').draggable({
-        //    helper: 'clone',
-        //    revert: 'invalid'
-        //});
-
         $('#tower_menu').click(function () {
             $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
         });
@@ -443,193 +452,128 @@
             revert: 'invalid'
         });
 
-        function foo() {
-            $('.foo').each(function () {
-                //Making dropped elements draggable again
-                $(this).draggable({
-                    //containment: $(this).parent(),
-                    stack: '.foo',
-                    grid: [10, 10],
-                    drop: function (event, ui) {
-                        var pos = ui.draggable.offset(), dPos = $(this).offset();
-                    },
-                    drag: function () {
-                        //jsPlumb.addToDragSelection($('.foo'));
-                        var draggedItemId = $(this).attr('id');
-                        $('.contextmenu').hide();
-                        $(this).css({ 'z-index': '11' });
-                        $(".class" + draggedItemId).css({ 'z-index': '15' });
-                        //saveDiagram();
-                    },
-                    stop: function () {
-                        var draggedItemId = $(this).attr('id');
-                        $(this).css({ 'z-index': '0' });
-                        $(".class" + draggedItemId).css({ 'z-index': '10' });
-                        if ($(this).position().left < 0) {
-                            $(this).css({ 'left': '0' });
-                        }
-                        if ($(this).position().top < 0) {
-                            $(this).css({ 'top': '0' });
-                        }
-                        saveDiagram();
-                    }
-                });
-            });
-        }
-
-        var xCoordinate = 0;
-        var yCoordinate = 0;
-        var elem;
-        var diagramLenght = $('.foo').length;
-        $("#mainDiv").droppable({
-            drop: function (ev, ui) {
-
-                //if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
-                var pos = ui.draggable.offset(), dPos = $(this).offset();
-                var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
-                var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
-                var ids = $(this).attr("id");
-
-                if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('countries')) {
-                    diagramLenght = $('.foo').length;
-                    var Class = ui.draggable.attr("class");
-                    title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft + 4) + 'px; top: ' + (droppedTop - 1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
-                    $(this).append(item);
-                    diagramLenght++;
-                    foo();
-                    saveDiagram();
-                }
-                if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('tower')) {
-                    diagramLenght = $('.foo').length;
-                    var Class = ui.draggable.attr("class");
-                    title = ui.draggable.text().trim();
-                    var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1) + '" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
-                    $(this).append(item);
-                    diagramLenght++;
-                    foo();
-                    addPoints();
-                    saveDiagram();
-                }
-
-                $(".tower").droppable({
-                    containment: '.foo',
-                    drop: function (ev, ui) {
-                        //diagramLenght = $('.foo').length;
-                        var con = $('#tower_' + $(this).attr("id")).attr("class");
-                        if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display') && ~con.indexOf("jtk-connected")) {
-                            var pos = ui.draggable.offset(), dPos = $(this).offset();
-                            var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
-                            var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
-
-                            if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('device_list')) {
-                                var Class = ui.draggable.attr("class");
-                                idTarget = ev.target.id;
-                                title = ui.draggable.text().trim(35);
-                                var height = $(".add" + idTarget).height();
-                                var lenght = $('#dropDivs').length;
-                                var id = $('.foo').length;
-
-                                if (title.length > 35) {
-                                    var titleName = title.substr(0, title.length - (title.length - 31)) + '...';
-                                }
-                                else {
-                                    titleName = title;
-                                }
-                                droppedTop = height;
-                                var item = $('<table class="foo elementTable tableBodyTower tower_name' + (id + 1) + '" ' + Class + '" name="' + title + '" id="' + (id + 1) + '" title="tower_' + idTarget + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span value="' + title + '" class="device_header' + (id + 1) + '">' + titleName + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings"data-toggle="modal" data-target="#myModal" /></span></th></tr></table>');
-
-                                $(".add" + idTarget).height(height + 35);
-                                $(".add" + idTarget).append(item);
-
-
-                                $('#IPModal').css("display", "block");
-                                $('#IPModal').css("opacity", "1");
-                                $('#IPModal').css("margin-top", "" + dPos.top + "px");
-                                $('#IPModal').css("margin-left", "" + dPos.left - 100 + "px");
-                                diagramLenght++;
-
-                                //foo();
-                                //addPointsTower();
-                                saveDiagram();
-                                //$("table tbody").sortable({
-                                //    update: function (event, ui) {
-                                //        $(this).children().each(function (index) {
-                                //            $(this).find('td').last().html(index + 1)
-                                //        });
-                                //    }
-                                //});
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
-        //function getElemByCoordinates(x, y) {
-        //    elem = document.elementFromPoint(x, y);
-        //}
-
-
-        $('body').on('click tounched', '#add_device_inf', function () {
-            $('#IPModal').css("display", "none");
-            $('#IPModal').css("opacity", "0");
-            IPaddress = $('#ip_address').val();
-            towerID = "tower_" + idTarget;
-            deviceName = title;
-            towerName = $('.header' + idTarget).text();
-            $.post("/DeviceGroup/TowerDeviceInformation", { IPaddress: IPaddress, towerID: towerID, deviceName: deviceName, cityID: cityID, towerName: towerName }, function () {
-                $('#ip_address').val("");
-            }, 'json');
-
-
-        });
-        //$('.device_list').draggable();
-
-        //$('#mainDiv').mouseup(function (e) {
-        //    alert(e.target);
-        //});
-
-        //$("#mainDiv").on("mouseup", function (e) {
-        //    var target = e.target;
-        //});
-
-        //$(document).on('click touchend', '.tower', function () { // add device setting open
-        //    parentId = $(this).closest($(".foo")).attr("id");
-        //    alert(parentId);
-
-        //});
-        //$("#mainDiv .foo").draggable();
-        //var mouseDown = false;
-        //var prevCoords = { x: 0, y: 0 };
-
-        //$('#AddGroup').click(function () {
-        //    saveDiagram();
-        //    alert("save");
-        //});
-
-        //$("#mainDiv").mousedown(function (e) {
-        //    mouseDown = !$(e.target).closest('.foo').length;
-        //}).mousemove(function (e) {
-        //    var currentScrollX = $('#mainDiv').scrollLeft();
-        //    var currentScrollY = $('#mainDiv').scrollTop();
-        //    if (mouseDown) {
-        //        $('#mainDiv').scrollLeft(currentScrollX + prevCoords.x - e.clientX)
-        //        $('#mainDiv').scrollTop(currentScrollY + prevCoords.y - e.clientY)
-        //    };
-        //    prevCoords.x = e.clientX;
-        //    prevCoords.y = e.clientY;
-        //}).mouseup(function () {
-        //    mouseDown = false;
-        //});
-
-        //$('.foo').on('drag', function () {
-        //    alert("sa");
-        //    if ($(this).left() == 0) {
-        //        return false;
+        //    function foo() {
+        //        $('.foo').each(function () {
+        //            //Making dropped elements draggable again
+        //            $(this).draggable({
+        //                //containment: $(this).parent(),
+        //                stack: '.foo',
+        //                grid: [10, 10],
+        //                drop: function (event, ui) {
+        //                    var pos = ui.draggable.offset(), dPos = $(this).offset();
+        //                },
+        //                drag: function () {
+        //                    //jsPlumb.addToDragSelection($('.foo'));
+        //                    var draggedItemId = $(this).attr('id');
+        //                    $('.contextmenu').hide();
+        //                    $(this).css({ 'z-index': '11' });
+        //                    $(".class" + draggedItemId).css({ 'z-index': '15' });
+        //                    //saveDiagram();
+        //                },
+        //                stop: function () {
+        //                    var draggedItemId = $(this).attr('id');
+        //                    $(this).css({ 'z-index': '0' });
+        //                    $(".class" + draggedItemId).css({ 'z-index': '10' });
+        //                    if ($(this).position().left < 0) {
+        //                        $(this).css({ 'left': '0' });
+        //                    }
+        //                    if ($(this).position().top < 0) {
+        //                        $(this).css({ 'top': '0' });
+        //                    }
+        //                    saveDiagram();
+        //                }
+        //            });
+        //        });
         //    }
-        //});
+
+        //    var xCoordinate = 0;
+        //    var yCoordinate = 0;
+        //    var elem;
+        //    var diagramLenght = $('.foo').length;
+        //    $("#mainDiv").droppable({
+        //        drop: function (ev, ui) {
+
+        //            //if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
+        //            var pos = ui.draggable.offset(), dPos = $(this).offset();
+        //            var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
+        //            var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
+        //            var ids = $(this).attr("id");
+
+        //            if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('countries')) {
+        //                diagramLenght = $('.foo').length;
+        //                var Class = ui.draggable.attr("class");
+        //                title = ui.draggable.text().trim();
+        //                var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft + 4) + 'px; top: ' + (droppedTop - 1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
+        //                $(this).append(item);
+        //                diagramLenght++;
+        //                foo();
+        //                saveDiagram();
+        //            }
+        //            if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('tower')) {
+        //                diagramLenght = $('.foo').length;
+        //                var Class = ui.draggable.attr("class");
+        //                title = ui.draggable.text().trim();
+        //                var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1) + '" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
+        //                $(this).append(item);
+        //                diagramLenght++;
+        //                foo();
+        //                addPoints();
+        //                saveDiagram();
+        //            }
+
+        //            $(".tower").droppable({
+        //                containment: '.foo',
+        //                drop: function (ev, ui) {
+        //                    //diagramLenght = $('.foo').length;
+        //                    var con = $('#tower_' + $(this).attr("id")).attr("class");
+        //                    if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display') && ~con.indexOf("jtk-connected")) {
+        //                        var pos = ui.draggable.offset(), dPos = $(this).offset();
+        //                        var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
+        //                        var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
+
+        //                        if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('device_list')) {
+        //                            var Class = ui.draggable.attr("class");
+        //                            idTarget = ev.target.id;
+        //                            title = ui.draggable.text().trim(35);
+        //                            var height = $(".add" + idTarget).height();
+        //                            var lenght = $('#dropDivs').length;
+        //                            var id = $('.foo').length;
+
+        //                            if (title.length > 35) {
+        //                                var titleName = title.substr(0, title.length - (title.length - 31)) + '...';
+        //                            }
+        //                            else {
+        //                                titleName = title;
+        //                            }
+        //                            droppedTop = height;
+        //                            var item = $('<table class="foo elementTable tableBodyTower tower_name' + (id + 1) + '" ' + Class + '" name="' + title + '" id="' + (id + 1) + '" title="tower_' + idTarget + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span value="' + title + '" class="device_header' + (id + 1) + '">' + titleName + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings"data-toggle="modal" data-target="#myModal" /></span></th></tr></table>');
+        //                            $(".add" + idTarget).height(height + 35);
+        //                            $(".add" + idTarget).append(item);
+        //                            $('#IPModal').css("display", "block");
+        //                            $('#IPModal').css("opacity", "1");
+        //                            $('#IPModal').css("margin-top", "" + dPos.top + "px");
+        //                            $('#IPModal').css("margin-left", "" + dPos.left - 100 + "px");
+        //                            diagramLenght++;
+        //                            saveDiagram();
+        //                        }
+        //                    }
+        //                }
+        //            });
+        //        }
+        //    });
+
+        //    $('body').on('click tounched', '#add_device_inf', function () {
+        //        $('#IPModal').css("display", "none");
+        //        $('#IPModal').css("opacity", "0");
+        //        IPaddress = $('#ip_address').val();
+        //        towerID = "tower_" + idTarget;
+        //        deviceName = title;
+        //        towerName = $('.header' + idTarget).text();
+        //        $.post("/DeviceGroup/TowerDeviceInformation", { IPaddress: IPaddress, towerID: towerID, deviceName: deviceName, cityID: cityID, towerName: towerName }, function () {
+        //            $('#ip_address').val("");
+        //        }, 'json');
+        //    });
+
     });
 
 </script>
-@*<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>*@

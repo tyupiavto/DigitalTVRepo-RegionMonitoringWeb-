@@ -1210,15 +1210,23 @@ namespace AdminPanelDevice.Controllers
                 td.TowerID = towerID;
                 td.DeviceName = deviceName;
                 td.TowerName = towerName;
-               var deviceID = connection.Query<DeviceType>("select * from DeviceType where Name=N'"+deviceName+"'").FirstOrDefault().ID;
-                td.CityID = connection.Query<PointConnection>("select * from PointConnection where TargetId='"+towerID+"'").FirstOrDefault().SourceId;
+                var deviceID = connection.Query<DeviceType>("select * from DeviceType where Name=N'" + deviceName + "'").FirstOrDefault().ID;
+                td.CityID = connection.Query<PointConnection>("select * from PointConnection where TargetId='" + towerID + "'").FirstOrDefault().SourceId;
                 td.DeviceID = deviceID;
-
                 db.TowerDevices.Add(td);
                 db.SaveChanges();
+                DateTime start = DateTime.Now;
+                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+                var trapnewDev = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'").FirstOrDefault();
+                if (trapnewDev != null)
+                {
+                   return Json("1");
+                }
+                else
+                {
+                    return Json("1");
+                }
             }
-
-            return Json("");
         }
         [HttpPost]
         public JsonResult RemoveDevice (string DeviceName, string towerID)

@@ -58,18 +58,18 @@ namespace AdminPanelDevice.Infrastructure
                         trap.TowerName = tDevice.TowerName;
 
                         string oid = pkt.Pdu.Enterprise.ToString();
-                        var OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                        var OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
                         if (OidMibdescription == null)
                         {
                             oid = oid.Remove(oid.Length - 1);
                             oid = oid.Remove(oid.Length - 1);
-                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                            OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
                         }
                         if (OidMibdescription == null)
                         {
                             oid = oid.Remove(oid.Length - 1);
                             oid = oid.Remove(oid.Length - 1);
-                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                            OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
 
                             if (OidMibdescription != null)
                                 trap.Description = OidMibdescription.Description;

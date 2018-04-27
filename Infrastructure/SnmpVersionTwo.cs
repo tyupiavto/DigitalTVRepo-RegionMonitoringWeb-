@@ -50,18 +50,18 @@ namespace AdminPanelDevice.Infrastructure
                         trap.DeviceName = tDevice.DeviceName;
                         trap.TowerName = tDevice.TowerName;
                         string oid = pkt.Pdu.TrapObjectID.ToString();
-                        var OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                        var OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
                         if (OidMibdescription == null)
                         {
                             oid = oid.Remove(oid.Length - 1);
                             oid = oid.Remove(oid.Length - 1);
-                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                            OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
                         }
                         if (OidMibdescription == null)
                         {
                             oid = oid.Remove(oid.Length - 1);
                             oid = oid.Remove(oid.Length - 1);
-                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                            OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
 
                             if (OidMibdescription != null)
                                 trap.Description = OidMibdescription.Description;

@@ -24,201 +24,55 @@ namespace AdminPanelDevice.Infrastructure
             EndPoint ep = (EndPoint)ipep;
             socket.Bind(ep);
             socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 0);
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+
+            bool run = true;
+            int inlen = -1;
+            while (run)
             {
-                //var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
-                bool run = true;
-                int inlen = -1;
-                while (run)
+                byte[] indata = new byte[16 * 1024];
+
+                IPEndPoint peer = new IPEndPoint(IPAddress.Any, 0);
+                EndPoint inep = (EndPoint)peer;
+                try
                 {
-                    byte[] indata = new byte[16 * 1024];
-
-                    IPEndPoint peer = new IPEndPoint(IPAddress.Any, 0);
-                    EndPoint inep = (EndPoint)peer;
-                    try
+                    inlen = socket.ReceiveFrom(indata, ref inep);
+                }
+                catch (Exception ex)
+                {
+                    inlen = -1;
+                }
+                if (inlen > 0)
+                {
+                    int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
+                    if (ver == 0)
                     {
-                        inlen = socket.ReceiveFrom(indata, ref inep);
-                    }
-                    catch (Exception ex)
-                    {
-                        inlen = -1;
-                    }
-                    if (inlen > 0)
-                    {
-                        //var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
-                        // Check protocol version int 
-                        int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
-                        if (ver == 0)
+                        try
                         {
-                            try
-                            {
-                                //SnmpV1Packet pkt = new SnmpV1Packet();
-                                SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
-                                pkt.decode(indata, inlen);
-                                new SnmpVersionOne(pkt, inep);
-                                //foreach (Vb v in pkt.Pdu.VbList)
-                                //{
-                                //    Trap trap = new Trap();
-                                //    string IP = inep.ToString();
-                                //    trap.IpAddres = pkt.Pdu.AgentAddress.ToString();
-                                //    trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
-                                //    trap.ReturnedOID = v.Oid.ToString();
-                                //    trap.dateTimeTrap = DateTime.Now;
-                                //    if (v.Value.GetType().Name == "OctetString")
-                                //    {
-                                //        trap.Value = hex.Hexstrings(v.Value.ToString());
-                                //    }
-                                //    else
-                                //    {
-                                //        trap.Value = v.Value.ToString();
-                                //    }
-                                //    var tDevice = towerDevices.Where(t => t.IP == pkt.Pdu.AgentAddress.ToString()).FirstOrDefault();
-                                //    if (tDevice == null)
-                                //    {
-                                //        trap.Countrie = "Unknown";
-                                //        trap.States = "Unknown";
-                                //        trap.City = "Unknown";
-                                //        trap.DeviceName = "Unknown";
-                                //        trap.TowerName = "Unknown";
-                                //        trap.Description = "Unknown";
-                                //    }
-                                //    else
-                                //    {
-                                //        trap.Countrie = tDevice.CountrieName;
-                                //        trap.States = tDevice.StateName;
-                                //        trap.City = tDevice.CityName;
-                                //        trap.DeviceName = tDevice.DeviceName;
-                                //        trap.TowerName = tDevice.TowerName;
-
-                                //        string oid = pkt.Pdu.Enterprise.ToString();
-                                //        var OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-                                //        if (OidMibdescription == null)
-                                //        {
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-                                //        }
-                                //        if (OidMibdescription == null)
-                                //        {
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-
-                                //            if (OidMibdescription != null)
-                                //                trap.Description = OidMibdescription.Description;
-                                //            else
-                                //            {
-                                //                trap.Description = "Unknown";
-                                //            }
-                                //        }
-                                //        else
-                                //        {
-                                //            if (OidMibdescription.Description != null)
-                                //            {
-                                //                trap.Description = OidMibdescription.Description;
-                                //            }
-                                //        }
-                                //        if (trap.Description == "")
-                                //        {
-                                //            trap.Description = "Unknown";
-                                //        }
-                                //    }
-                                //    db.Traps.Add(trap);
-                                //    db.SaveChanges();
-                                //}
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
+                            SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
+                            pkt.decode(indata, inlen);
+                            new SnmpVersionOne(pkt, inep);
                         }
-
-                        if (ver == 2 || ver == 1)
+                        catch (Exception e)
                         {
-                            try
-                            {
 
-                                SnmpV2Packet pkt = new SnmpV2Packet();
-                                pkt.decode(indata, inlen);
-                                new SnmpVersionTwo(pkt, inep);
-                                //foreach (Vb v in pkt.Pdu.VbList)
-                                //{
-                                //    Trap trap = new Trap();
-                                //    string IP = inep.ToString();
-                                //    trap.IpAddres = IP.Remove(13, (IP.Length - 13));
-                                //    trap.CurrentOID = pkt.Pdu.TrapObjectID.ToString();
-                                //    trap.ReturnedOID = v.Oid.ToString();
-                                //    trap.Value = v.Value.ToString();
-                                //    trap.dateTimeTrap = DateTime.Now;
-                                //    var tDevice = towerDevices.Where(t => t.IP == trap.IpAddres).FirstOrDefault();
-                                //    if (tDevice==null)
-                                //    {
-                                //        trap.Countrie = "Unknown";
-                                //        trap.States = "Unknown";
-                                //        trap.City = "Unknown";
-                                //        trap.DeviceName = "Unknown";
-                                //        trap.TowerName = "Unknown";
-                                //        trap.Description = "Unknown";
-                                //    }
-                                //    else {
-                                //        trap.Countrie = tDevice.CountrieName;
-                                //        trap.States = tDevice.StateName;
-                                //        trap.City = tDevice.CityName;
-                                //        trap.DeviceName = tDevice.DeviceName;
-                                //        trap.TowerName = tDevice.TowerName;
-                                //        string oid = pkt.Pdu.TrapObjectID.ToString();
-                                //        var OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-                                //        if (OidMibdescription == null)
-                                //        {
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-                                //        }
-                                //        if (OidMibdescription == null)
-                                //        {
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            oid = oid.Remove(oid.Length - 1);
-                                //            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-
-                                //            if (OidMibdescription != null)
-                                //                trap.Description = OidMibdescription.Description;
-                                //            else
-                                //            {
-                                //                trap.Description = "Unknown";
-                                //            }
-                                //        }
-                                //        else
-                                //        {
-                                //            if (OidMibdescription.Description != null)
-                                //            {
-                                //                trap.Description = OidMibdescription.Description;
-                                //            }
-                                //        }
-                                //        if (trap.Description == "")
-                                //        {
-                                //            trap.Description = "Unknown";
-                                //        }
-                                //    }
-                                //    db.Traps.Add(trap);
-                                //    db.SaveChanges();
-                                //}
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
                         }
                     }
-                    //else
-                    //{
-                    //    if (inlen == 0)
-                    //        Console.WriteLine("Zero length packet received.");
 
-                    //}
+                    if (ver == 2 || ver == 1)
+                    {
+                        try
+                        {
+                            SnmpV2Packet pkt = new SnmpV2Packet();
+                            pkt.decode(indata, inlen);
+                            new SnmpVersionTwo(pkt, inep);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
                 }
             }
         }
-
-
     }
 }

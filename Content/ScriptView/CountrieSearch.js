@@ -95,33 +95,6 @@ $('#city_select').click(function () {
     }, 'text');
 });
 
-//$('#city_all').click(function () {
-//    $('#name_all').text("All");
-//    $('#city_all').css("display", "none");
-//    $('#city_select').css("display", "none");
-//    var selectallName = "All";
-//    stateName = $('#state').text();
-//    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function () {
-//        alert(Response);
-//        $('#city_partial').html("");
-//        $('#city_partial').html(Response);
-//    },'text');
-
-//});
-
-//$('#city_select').click(function () {
-//    $('#name_all').text("Select");
-//    $('#city_all').css("display", "none");
-//    $('#city_select').css("display", "none");
-//    var selectallName = "Select";
-//    stateName = $('#state').text();
-//    $.post("/DeviceGroup/SelectAll", { selectallName: selectallName, stateName: stateName }, function () {
-//        alert(Response);
-//        $('#city_partial').html("");
-//        $('#city_partial').html(Response);
-//    },'text');
-//});
-
 $('body').on('click touchend','#add_city',function () {
     addcityName = $('#city_name_add').val();
 
@@ -174,8 +147,6 @@ $('body').on('click touchend', '#typeSelectState', function (e) {
         if (e.type == "click" && !handledstate) {
             $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
             CountrieName = $('#typeSelect #countrieName').text();
-            //alert($('#countrie').attr("value"));
-            //alert($('#countrie').text());
             $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
                 $('#state_partial').html("");
                 $('#state_partial').html(Response);
@@ -218,8 +189,3 @@ $('body').on('click touchend', '#typeSelectCity', function (e) {
         }
 
 });
-//$('#group_li' + $('#group_li').attr("value"))
-
-//$('#group_li').click(function () {
-//    $("#group_li").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-//});

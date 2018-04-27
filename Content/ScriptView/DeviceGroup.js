@@ -68,7 +68,6 @@ $('body').on('click touchend', '#open_map', function () {
     //$.post('/Map/openMap', {}, function () { });
 });
 
-//device_list = $('#deviceName');
 $('#deviceName').on("click touched", "li", function () {
     deviceGroupList = $(this).attr("value");
     if (LInd == 0) {

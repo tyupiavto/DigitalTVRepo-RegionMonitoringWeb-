@@ -87,7 +87,8 @@ namespace AdminPanelDevice.Controllers
             //JobSheduler.Start();
             //rem.Execute(null);
             ViewBag.Preset = "";
-    
+            new TrapUpdateNewDevice("");
+
             return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
         //public static string Hexstring(string hex)
@@ -553,7 +554,10 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult WalkSend(int? page, string IP, int Port, string Version , string communityRead)
         {
-            MibWalkIndicator = false;
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+             var mibInf = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
+                MibWalkIndicator = false;
             
             //if (presetName == "Preset")
             //{
@@ -586,7 +590,7 @@ namespace AdminPanelDevice.Controllers
                 Oid lastOid = (Oid)rootOid.Clone();
 
                 Pdu pdu = new Pdu(PduType.GetNext);
-
+            
                 while (lastOid != null)
                 {
                     try
@@ -597,31 +601,31 @@ namespace AdminPanelDevice.Controllers
                         }
                         pdu.VbList.Clear();
                         pdu.VbList.Add(lastOid);
-                    if (walkTimeOutOID == lastOid.ToString())
-                    {
-                        WalkTimeOunt++;
-                    }
-                    if (WalkTimeOunt<=10)
-                      {
-                        walkTimeOutOID = lastOid.ToString();
-                      }
-                      else
-                    {
-                        return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
-                    }
-                   
+                        if (walkTimeOutOID == lastOid.ToString())
+                        {
+                            WalkTimeOunt++;
+                        }
+                        if (WalkTimeOunt <= 10)
+                        {
+                            walkTimeOutOID = lastOid.ToString();
+                        }
+                        else
+                        {
+                            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                        }
 
 
-                    if (Version == "V1")
-                    {
-                         result = (SnmpV1Packet)target.Request(pdu, param);
-                    }
-                    if (Version == "V2")
-                    {
-                         result =(SnmpV2Packet)target.Request(pdu, param);
-                    }
 
-                    if (result != null)
+                        if (Version == "V1")
+                        {
+                            result = (SnmpV1Packet)target.Request(pdu, param);
+                        }
+                        if (Version == "V2")
+                        {
+                            result = (SnmpV2Packet)target.Request(pdu, param);
+                        }
+
+                        if (result != null)
                         {
                             if (result.Pdu.ErrorStatus != 0)
                             {
@@ -633,28 +637,26 @@ namespace AdminPanelDevice.Controllers
                                 foreach (Vb v in result.Pdu.VbList)
                                 {
 
-                                if (rootOid.IsRootOf(v.Oid))
-                                {
-                                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                                    if (rootOid.IsRootOf(v.Oid))
                                     {
                                         WalkDevice walk = new WalkDevice();
                                         ID++;
                                         walk.ID = ID;
                                         walk.WalkID = ID;
                                         string oid = v.Oid.ToString();
-                                        var OidMibdescription = db.MibTreeInformations.Where(m => m.OID == oid).FirstOrDefault();
+                                        var OidMibdescription = mibInf.Where(m => m.OID == oid).FirstOrDefault();
                                         if (OidMibdescription == null)
                                         {
                                             oid = oid.Remove(oid.Length - 1);
                                             oid = oid.Remove(oid.Length - 1);
-                                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
+                                            OidMibdescription = mibInf.Where(o => o.OID == oid).FirstOrDefault();
                                         }
                                         if (OidMibdescription == null)
                                         {
                                             oid = oid.Remove(oid.Length - 1);
                                             oid = oid.Remove(oid.Length - 1);
-                                            OidMibdescription = db.MibTreeInformations.Where(o => o.OID == oid).FirstOrDefault();
-                         
+                                            OidMibdescription = mibInf.Where(o => o.OID == oid).FirstOrDefault();
+
                                             if (OidMibdescription != null)
                                                 walk.WalkDescription = OidMibdescription.Description;
                                         }
@@ -666,25 +668,26 @@ namespace AdminPanelDevice.Controllers
                                             walk.WalkDescription = OidMibdescription.Description;
 
                                         walk.WalkOID = v.Oid.ToString();
+                                        walk.OIDName= mibInf.Where(o => o.OID == oid).FirstOrDefault().Name;
                                         walk.Type = v.Value.ToString();
                                         walk.value = SnmpConstants.GetTypeName(v.Value.Type);
                                         walk.Time = 60;
                                         walkList.Add(walk);
                                         lastOid = v.Oid;
+
                                     }
-                                }
-                                else
-                                {
-                                    lastOid = null;
-                                }
+                                    else
+                                    {
+                                        lastOid = null;
+                                    }
                                 }
                             }
                         }
                     }
                     catch (Exception e) { }
                 }
-
                 target.Close();
+            }
             
             EditInd = 0;
             ViewBag.Edit = EditInd;

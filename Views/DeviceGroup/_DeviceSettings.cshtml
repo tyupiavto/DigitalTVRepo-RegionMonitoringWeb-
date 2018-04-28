@@ -54,7 +54,18 @@
             @foreach (var item in Model)
             {
                 <tr id="@item.WalkID" class="information_walk">
-                    <td style="width:60%;">
+                    <td style="width:25%;">
+                        @if (item.OIDName == "" || item.OIDName == null)
+                        {
+                            <div class="descriptionDiv" title="@item.OIDName" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
+                        }
+                        else
+                        {
+                            <div class="descriptionDiv" title="@item.OIDName" id="description@(item.WalkID)" value="@item.WalkOID">@item.OIDName</div>
+                        }
+                        @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
+                    </td>
+                    <td style="width:40%;">
                         @if (item.WalkDescription == "" || item.WalkDescription == null)
                         {
                             <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
@@ -65,7 +76,7 @@
                         }
                         @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                     </td>
-                    <td style="width:30%">
+                    <td style="width:25%">
                         <div class="valueDiv" title="@item.Type" id="Value@(item.WalkID)" value="@item.value" style="color: #b8c0c8;">@item.Type</div>
                         @*<div id="Type@(item.WalkID)" style="display:none">@item.value</div>*@
 

@@ -271,6 +271,7 @@
     <Compile Include="Infrastructure\RemoveLog.cs" />
     <Compile Include="Infrastructure\SnmpVersionOne.cs" />
     <Compile Include="Infrastructure\SnmpVersionTwo.cs" />
+    <Compile Include="Infrastructure\TrapDelete.cs" />
     <Compile Include="Infrastructure\TrapListen.cs" />
     <Compile Include="Infrastructure\TrapUpdateNewDevice.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.cs" />

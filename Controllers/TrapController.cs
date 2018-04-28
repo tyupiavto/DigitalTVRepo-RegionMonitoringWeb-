@@ -13,6 +13,7 @@ using System.Configuration;
 using Dapper;
 using PagedList;
 using AdminPanelDevice.Infrastructure;
+using System.Threading;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -84,7 +85,7 @@ namespace AdminPanelDevice.Controllers
             {
                 SearchIndicator = 1;
                 TrapLogListSearch.Clear();
-                TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.Value.Contains(SearchName)).ToList();
+                TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description!=null && s.Description.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.Value.Contains(SearchName)).ToList();
                 return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, 20));
             }
         }
@@ -103,20 +104,24 @@ namespace AdminPanelDevice.Controllers
         [HttpGet]
         public JsonResult TrapFillNewDevice(string IPaddress)
         {
-            new TrapUpdateNewDevice(IPaddress);
-                return Json("",JsonRequestBehavior.AllowGet);
+            Thread thread = new Thread(() => new TrapUpdateNewDevice(IPaddress));
+            thread.Start();
+           // new TrapUpdateNewDevice(IPaddress);
+            return Json("",JsonRequestBehavior.AllowGet);
             
         }
         [HttpGet]
         public JsonResult NotTrapFill (string IPaddress)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                DateTime start = DateTime.Now;
-                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                connection.Query<Trap>("delete from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'");
-            }
-                return Json("", JsonRequestBehavior.AllowGet);
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    DateTime start = DateTime.Now;
+            //    DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+            //    connection.Query<Trap>("delete from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'");
+            //}
+            Thread thread = new Thread(() => new TrapDelete(IPaddress));
+            thread.Start();
+            return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

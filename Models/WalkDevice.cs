@@ -25,6 +25,8 @@ namespace AdminPanelDevice.Models
         public int CheckID { get; set; }
         [NotMapped]
         public string value { get; set; }
+        [NotMapped]
+        public string OIDName { get; set; }
 
         [ForeignKey("PresetID")]
         public Preset Preset { get; set; }

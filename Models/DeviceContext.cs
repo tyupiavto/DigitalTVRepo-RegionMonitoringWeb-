@@ -36,6 +36,8 @@ namespace AdminPanelDevice.Models
         public DbSet<PointConnectionPreset> PointConnectionPresets { get; set; }
         public DbSet<PresetDiagramName> PresetDiagramNames { get; set; }
         public DbSet<TowerDevicesPreset> TowerDevicesPresets { get; set; }
+        public DbSet<WalkTowerDevice> WalkTowerDevices { get; set; }
+        public DbSet<WalkPreset> WalkPresets { get; set; }
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 
 

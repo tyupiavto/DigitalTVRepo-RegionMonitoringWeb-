@@ -95,8 +95,6 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                //TrapLogListSearch.Clear();
-                //TrapLogListSearch = TrapLogList.Where(t => t.dateTimeTrap >= startTime && t.dateTimeTrap <= endTime).ToList();
                 TrapLogList = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + startTime + "'and '" + endTime + "'").ToList();
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, 20));
             }
@@ -106,19 +104,13 @@ namespace AdminPanelDevice.Controllers
         {
             Thread thread = new Thread(() => new TrapUpdateNewDevice(IPaddress));
             thread.Start();
-           // new TrapUpdateNewDevice(IPaddress);
+          //  new TrapUpdateNewDevice(IPaddress);
             return Json("",JsonRequestBehavior.AllowGet);
             
         }
         [HttpGet]
         public JsonResult NotTrapFill (string IPaddress)
         {
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //    DateTime start = DateTime.Now;
-            //    DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-            //    connection.Query<Trap>("delete from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'");
-            //}
             Thread thread = new Thread(() => new TrapDelete(IPaddress));
             thread.Start();
             return Json("", JsonRequestBehavior.AllowGet);

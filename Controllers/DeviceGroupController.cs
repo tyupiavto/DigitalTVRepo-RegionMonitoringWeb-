@@ -37,18 +37,18 @@ namespace AdminPanelDevice.Controllers
         public List<DeviceType> GroupListView = new List<DeviceType>();
         public static List<MibTreeInformation> mibInformation = new List<MibTreeInformation>();
         //public ArrayList PointConnect = new ArrayList();
-        public static int countrieIndicator=0;
-        public  List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
+        public static int countrieIndicator = 0;
+        public List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
         public static List<ScanningInterval> intervalTime = new List<ScanningInterval>();
-        public static List<WalkDevice> walkList = new List<WalkDevice>();
-        public static List<WalkDevice> walkSearch = new List<WalkDevice>();
-        public  List<WalkDevice> PresetList = new List<WalkDevice>();
+        public static List<WalkTowerDevice> walkList = new List<WalkTowerDevice>();
+        public static List<WalkTowerDevice> walkSearch = new List<WalkTowerDevice>();
+        public List<WalkDevice> PresetList = new List<WalkDevice>();
         public List<ScanningInterval> intervalList = new List<ScanningInterval>();
         public static List<int> GPSCoordinate = new List<int>();
         string searchName;
         public static string countrieName;
         public static int countrieID;
-        public Tower tower = new Tower();
+        //public Tower tower = new Tower();
         public static int CountriesListID;
         public static string Html;
         public static int DeviceGroupID;
@@ -69,19 +69,22 @@ namespace AdminPanelDevice.Controllers
         public static string All;
         public static string SearchNameWalk;
         public bool search = false;
-        public static int QuerydeviceID,WalkTimeOunt=0;
-        public static bool MibWalkIndicator =true;
-        public static string TowerIP,walkTimeOutOID;
+        public static int QuerydeviceID, WalkTimeOunt = 0;
+        public static bool MibWalkIndicator = true;
+        public static string TowerIP, walkTimeOutOID;
         public SnmpPacket result;
+        public UpdateCheck updateCheck = new UpdateCheck();
+        public static string TowerIDLocal;
+        public static string DeviceNameLocal;
 
         public struct intervalValue
         {
-          public  int intervalID { get; set; }
-          public  int intervalVal { get; set; }
+            public int intervalID { get; set; }
+            public int intervalVal { get; set; }
         }
 
         // GET: DeviceGroup
-        public ActionResult Index(int ? page)
+        public ActionResult Index(int? page)
         {
             RemoveLog rem = new RemoveLog();
             //JobSheduler.Start();
@@ -120,7 +123,6 @@ namespace AdminPanelDevice.Controllers
             {
                 groupList = connection.Query<Group>("Select * From [Group] ").ToList();
             }
-            //groupList = db.Groups.ToList();
             return PartialView("~/Views/DeviceGroup/_Group.cshtml", groupList);
         }
         [HttpPost]
@@ -130,19 +132,17 @@ namespace AdminPanelDevice.Controllers
             DeviceName = deviceName;
             return PartialView("~/Views/DeviceGroup/_AddDevice.cshtml");
         }
-       // var model = new FromData();
-        //model.append("type",$('#x')[0].files[0]);
         [HttpPost]
         public JsonResult DeviceCreate(DeviceType type)
         {
             string pathname = "";
-            
+
             try
             {
                 if (type.mib_file.ContentLength > 0)
                 {
-                     _FileName = Path.GetFileName(type.mib_file.FileName);
-                     _path = Path.Combine(Server.MapPath("~"), _FileName);
+                    _FileName = Path.GetFileName(type.mib_file.FileName);
+                    _path = Path.Combine(Server.MapPath("~"), _FileName);
                     pathname = /*"MibFiles/" +*/ _FileName;
                     type.mib_file.SaveAs(_path);
                 }
@@ -175,9 +175,9 @@ namespace AdminPanelDevice.Controllers
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-              
+
             }
 
             return Json("", JsonRequestBehavior.AllowGet);
@@ -351,38 +351,40 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult TowerInsert(string countrieName,string stateName, string cityName, int cityid)
         {
-            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
-            var stateID = db.States.Where(s => s.StateName == stateName).FirstOrDefault().ID;
+            //var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            //var stateID = db.States.Where(s => s.StateName == stateName).FirstOrDefault().ID;
 
-            tower.Name = cityName;
-            tower.NumberID = db.towers.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
-            tower.CountriesID = countrieID;
-            tower.StateID = stateID;
-            tower.CityCheckedID = cityid;
-            tower.CountriesListID = CountriesListID;
+            //tower.Name = cityName;
+            //tower.NumberID = db.towers.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
+            //tower.CountriesID = countrieID;
+            //tower.StateID = stateID;
+            //tower.CityCheckedID = cityid;
+            //tower.CountriesListID = CountriesListID;
 
-            db.towers.Add(tower);
-            db.SaveChanges();
+            //db.towers.Add(tower);
+            //db.SaveChanges();
+            new CityAddTower(countrieName, stateName, cityName, cityid, CountriesListID);
+
             return Json("");
         }
 
         [HttpPost]
         public JsonResult TowerDelete(int towerDeleteID, int cityid)
         {
-            try
-            {
-                var deleteTower = db.towers.Where(t => t.CountriesListID == towerDeleteID).Where(c => c.CityCheckedID == cityid).FirstOrDefault();
-                db.towers.Remove(deleteTower);
-                db.SaveChanges();
-            }
-            catch { }
+            //try
+            //{
+            //    var deleteTower = db.towers.Where(t => t.CountriesListID == towerDeleteID).Where(c => c.CityCheckedID == cityid).FirstOrDefault();
+            //    db.towers.Remove(deleteTower);
+            //    db.SaveChanges();
+            //}
+            //catch { }
+            new CityDeleteTower(towerDeleteID, cityid);
             return Json("");
         }
 
         [HttpPost]
         public PartialViewResult SelectAll(string selectallName, string StateName)
         {
-            
             Tower tw = new Tower();
             var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
             var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
@@ -438,16 +440,6 @@ namespace AdminPanelDevice.Controllers
             try
             {
                 List<PointConnection> point = new List<PointConnection>();
-           
-
-                //if (connections != null)
-                //{
-                //if (connectionInd == 1)
-                //{
-                //    var points = db.PointConnections.ToList();
-                //db.PointConnections.RemoveRange(points);
-                //db.SaveChanges();
-                //}
 
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
@@ -534,33 +526,40 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult LoadMib (int? page, string DeviceName,string towerID)
         {
-
+            TowerIDLocal = towerID;
+            DeviceNameLocal = DeviceName;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 QuerydeviceID = connection.Query<DeviceType>("Select * From DeviceType where Name=N'" + DeviceName + "'").FirstOrDefault().ID;
-
-
-                mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID).ToList();
-
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
                 TowerIP = connection.Query<TowerDevices>("Select * From  TowerDevices where DeviceID='" + QuerydeviceID + "' and  TowerID='" + towerID + "'").FirstOrDefault().IP;
                 ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
                 ViewBag.TowerIP = TowerIP;
+                ViewBag.defaultInterval = DefaultInterval;
+                walkList = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "'").ToList();
+
+                if (walkList.Count >= 1)
+                {
+                    MibWalkIndicator = false;
+                    ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "' and LogID<>0").ToList();
+                    ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "' and MapID<>0").ToList();
+                    ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "' and ScanInterval<>'60'").ToList();
+                    //ViewBag.GPS = GPSCoordinate;
+                    return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                }
+                else
+                {
+                    mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID).ToList();
+                    return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
+                }
             }
-            return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
+          //  return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
 
         [HttpPost]
-        public PartialViewResult WalkSend(int? page, string IP, int Port, string Version , string communityRead)
+        public PartialViewResult WalkSend(int? page, string IP, int Port, string Version , string communityRead,string towerName,string DeviceName)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-             var mibInf = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
-                MibWalkIndicator = false;
-            
-            //if (presetName == "Preset")
-            //{
             PresetIND = 0;
             WalkTimeOunt = 0;
             walkList.Clear();
@@ -569,136 +568,24 @@ namespace AdminPanelDevice.Controllers
             CheckedMap.Clear();
             IPadrress = IP;
             ViewBag.IP = IPadrress;
-           
-            OctetString community = new OctetString(communityRead);
+            MibWalkIndicator = false;
+            WalkSendReturned walkRequest = new WalkSendReturned();
+            walkList=walkRequest.WalkSendReturn(IP, Port, Version, communityRead, walkList, towerName,DeviceName);
 
-            AgentParameters param = new AgentParameters(community);
-            if (Version == "V1")
-            {
-                param.Version = SnmpVersion.Ver1;
-            }
-            if (Version == "V2")
-            {
-                param.Version = SnmpVersion.Ver2;
-            }
-            IpAddress agent = new IpAddress(IP);
+            new WalkSave(walkList);
 
-                UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
-                Oid rootOid = new Oid(".1.3.6.1.4"); // ifDescr
-                                                       //Oid rootOid = new Oid(".1.3.6.1.4.1.23180.2.1.1.1"); // ifDescr
-
-                Oid lastOid = (Oid)rootOid.Clone();
-
-                Pdu pdu = new Pdu(PduType.GetNext);
-            
-                while (lastOid != null)
-                {
-                    try
-                    {
-                        if (pdu.RequestId != 0)
-                        {
-                            pdu.RequestId += 1;
-                        }
-                        pdu.VbList.Clear();
-                        pdu.VbList.Add(lastOid);
-                        if (walkTimeOutOID == lastOid.ToString())
-                        {
-                            WalkTimeOunt++;
-                        }
-                        if (WalkTimeOunt <= 10)
-                        {
-                            walkTimeOutOID = lastOid.ToString();
-                        }
-                        else
-                        {
-                            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
-                        }
-
-
-
-                        if (Version == "V1")
-                        {
-                            result = (SnmpV1Packet)target.Request(pdu, param);
-                        }
-                        if (Version == "V2")
-                        {
-                            result = (SnmpV2Packet)target.Request(pdu, param);
-                        }
-
-                        if (result != null)
-                        {
-                            if (result.Pdu.ErrorStatus != 0)
-                            {
-                                lastOid = null;
-                                break;
-                            }
-                            else
-                            {
-                                foreach (Vb v in result.Pdu.VbList)
-                                {
-
-                                    if (rootOid.IsRootOf(v.Oid))
-                                    {
-                                        WalkDevice walk = new WalkDevice();
-                                        ID++;
-                                        walk.ID = ID;
-                                        walk.WalkID = ID;
-                                        string oid = v.Oid.ToString();
-                                        var OidMibdescription = mibInf.Where(m => m.OID == oid).FirstOrDefault();
-                                        if (OidMibdescription == null)
-                                        {
-                                            oid = oid.Remove(oid.Length - 1);
-                                            oid = oid.Remove(oid.Length - 1);
-                                            OidMibdescription = mibInf.Where(o => o.OID == oid).FirstOrDefault();
-                                        }
-                                        if (OidMibdescription == null)
-                                        {
-                                            oid = oid.Remove(oid.Length - 1);
-                                            oid = oid.Remove(oid.Length - 1);
-                                            OidMibdescription = mibInf.Where(o => o.OID == oid).FirstOrDefault();
-
-                                            if (OidMibdescription != null)
-                                                walk.WalkDescription = OidMibdescription.Description;
-                                        }
-                                        else
-                                        {
-                                            walk.WalkDescription = OidMibdescription.Description;
-                                        }
-                                        if (OidMibdescription != null)
-                                            walk.WalkDescription = OidMibdescription.Description;
-
-                                        walk.WalkOID = v.Oid.ToString();
-                                        walk.OIDName= mibInf.Where(o => o.OID == oid).FirstOrDefault().Name;
-                                        walk.Type = v.Value.ToString();
-                                        walk.value = SnmpConstants.GetTypeName(v.Value.Type);
-                                        walk.Time = 60;
-                                        walkList.Add(walk);
-                                        lastOid = v.Oid;
-
-                                    }
-                                    else
-                                    {
-                                        lastOid = null;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e) { }
-                }
-                target.Close();
-            }
-            
-            EditInd = 0;
-            ViewBag.Edit = EditInd;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+                ViewBag.IntervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
             }
-            ViewBag.IntervalTime = intervalTime;
-            ViewBag.pageListNumber = pageListNumber;
-            ViewBag.defaultInterval = DefaultInterval;
-            ViewBag.TowerIP = TowerIP;
+                EditInd = 0;
+                ViewBag.Edit = EditInd;
+                //ViewBag.IntervalTime = intervalTime;
+                ViewBag.pageListNumber = pageListNumber;
+                ViewBag.defaultInterval = DefaultInterval;
+                ViewBag.TowerIP = TowerIP;
+
+            
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -787,76 +674,97 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult PageList(int? page, int pageList) // page list number search
         {
-            ViewBag.IntervalTime = intervalTime;
-            ViewBag.pageListNumber = pageListNumber;
-            ViewBag.CheckedLog = CheckedLog;
-            ViewBag.CheckedMap = CheckedMap;
-            ViewBag.Interval = Interval;
-            ViewBag.GPS = GPSCoordinate;
-            ViewBag.defaultInterval = DefaultInterval;
-            ViewBag.TowerIP = TowerIP;
-            page = 1;
-            pageListNumber = pageList;
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                ViewBag.IntervalTime = intervalTime;
+                ViewBag.pageListNumber = pageListNumber;
+                //  ViewBag.CheckedLog = CheckedLog;
+                // ViewBag.CheckedMap = CheckedMap;
+                //  ViewBag.Interval = Interval;
+                ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0").ToList();
+                ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0").ToList();
+                ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>'60'").ToList();
 
-            if (MibWalkIndicator == true)
-            {
-                return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
-            }
-            else
-            {
-                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                ViewBag.GPS = GPSCoordinate;
+                ViewBag.defaultInterval = DefaultInterval;
+                ViewBag.TowerIP = TowerIP;
+                page = 1;
+                pageListNumber = pageList;
+
+                if (MibWalkIndicator == true)
+                {
+                    return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
+                }
+                else
+                {
+                    //var walkExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "'").ToList();
+                    return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                }
             }
         }
 
         public PartialViewResult PageNumber(int? page) // pagelistView number click
         {
-            ViewBag.IntervalTime = intervalTime;
-            ViewBag.pageListNumber = pageListNumber;
-            ViewBag.CheckedLog = CheckedLog;
-            ViewBag.CheckedMap = CheckedMap;
-            ViewBag.Interval = Interval;
-            ViewBag.GPS = GPSCoordinate;
-            ViewBag.TowerIP = TowerIP;
-            ViewBag.defaultInterval = DefaultInterval;
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
 
-            if (MibWalkIndicator==true)
-            {
-                return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
+                ViewBag.IntervalTime = intervalTime;
+                ViewBag.pageListNumber = pageListNumber;
+                //ViewBag.CheckedLog = CheckedLog;
+                //ViewBag.CheckedMap = CheckedMap;
+                //ViewBag.Interval = Interval;
+                ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0").ToList();
+                ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0").ToList();
+                ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>60").ToList();
+                ViewBag.GPS = GPSCoordinate;
+                ViewBag.TowerIP = TowerIP;
+                ViewBag.defaultInterval = DefaultInterval;
+
+                if (MibWalkIndicator == true)
+                {
+                    return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
+                }
+                else
+                {
+                   // var walkExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "'").ToList();
+                    return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                }
             }
-            else
-            {
-                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
-            }
+
         }
         [HttpPost]
         public JsonResult UncheckLog(int unChechkID) // uncheckd log
         {
-            CheckedLog.Remove(unChechkID);
-            ViewBag.CheckedLog = CheckedLog;
+            updateCheck.UpdateChechkLog(0, unChechkID);
+            //CheckedLog.Remove(unChechkID);
+            //ViewBag.CheckedLog = CheckedLog;
             return Json("");
         }
 
         [HttpPost]
         public JsonResult CheckLog(int chechkID) // checked log
         {
-            CheckedLog.Add(chechkID);
-            ViewBag.CheckedLog = CheckedLog;
+            updateCheck.UpdateChechkLog(1, chechkID);
+            //CheckedLog.Add(chechkID);
+            //ViewBag.CheckedLog = CheckedLog;
             return Json("");
         }
 
         [HttpPost] 
         public JsonResult UncheckMap(int unChechkID) // unchecked map
         {
-            CheckedMap.Remove(unChechkID);
-            ViewBag.CheckedMap = CheckedMap;
+            updateCheck.UpdateChechkMap(0, unChechkID);
+            //CheckedMap.Remove(unChechkID);
+            //ViewBag.CheckedMap = CheckedMap;
             return Json("");
         }
 
         [HttpPost]
         public JsonResult CheckMap(int chechkID) // checked map
         {
-            CheckedMap.Add(chechkID);
-            ViewBag.CheckedMap = CheckedMap;
+            updateCheck.UpdateChechkMap(1, chechkID);
+            //CheckedMap.Add(chechkID);
+            //ViewBag.CheckedMap = CheckedMap;
             return Json("");
         }
         
@@ -874,50 +782,55 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult IntervalSearch(int intervalID , int Interval)
         {
-            intervalValue intr=new intervalValue();
-            intr.intervalID = intervalID;
-            intr.intervalVal = Interval;
+            //intervalValue intr=new intervalValue();
+            //intr.intervalID = intervalID;
+            //intr.intervalVal = Interval;
+            updateCheck.UpdateInterval(intervalID, Interval);
+            //DeviceGroupController.Interval.Add(intr);
+            //ViewBag.Interval = DeviceGroupController.Interval;
 
-            DeviceGroupController.Interval.Add(intr);
-            ViewBag.Interval = DeviceGroupController.Interval;
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult PresetSave (string presetName, string IpAddress, string towerNameID)
+        public JsonResult PresetSave(string presetName, string IpAddress, string towerNameID)
         {
-            Preset preset = new Preset();
-            preset.DeviceID = db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
-            preset.PresetName = presetName;
-            preset.DeviceIP = IpAddress;
-            preset.DeviceTypeID = QuerydeviceID;
-            db.Presets.Add(preset);
-          
-
-            TowerGps gps = new TowerGps();
-            gps.Lattitube = walkList[GPSCoordinate[0]-1].Type;
-            gps.Longitube = walkList[GPSCoordinate[1]-1].Type;
-            gps.Altitube = walkList[GPSCoordinate[2]-1].Type;
-            gps.PresetName = presetName;
-            gps.TowerNameID = towerNameID;
-            gps.DeviceID = QuerydeviceID;
-            gps.IP = IpAddress;
-            db.towerGps.Add(gps);
-
-            db.SaveChanges();
-
-            foreach (intervalValue tim in Interval)
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                int id =tim.intervalID;
-                walkList[id - 1].Time = Convert.ToInt32(tim.intervalVal);
+                Preset preset = new Preset();
+                preset.DeviceID = connection.Query<Preset>("select * from Preset").LastOrDefault().DeviceID+1; 
+                    //db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
+                preset.PresetName = presetName;
+                preset.DeviceIP = IpAddress;
+                preset.DeviceTypeID = QuerydeviceID;
+                db.Presets.Add(preset);
+                updateCheck.WalkPresetSave(DeviceNameLocal, TowerIDLocal);
+
+                //TowerGps gps = new TowerGps();
+                //gps.Lattitube = walkList[GPSCoordinate[0] - 1].Type;
+                //gps.Longitube = walkList[GPSCoordinate[1] - 1].Type;
+                //gps.Altitube = walkList[GPSCoordinate[2] - 1].Type;
+                //gps.PresetName = presetName;
+                //gps.TowerNameID = towerNameID;
+                //gps.DeviceID = QuerydeviceID;
+                //gps.IP = IpAddress;
+                //db.towerGps.Add(gps);
+
+                //db.SaveChanges();
+
+                //foreach (intervalValue tim in Interval)
+                //{
+                //    int id = tim.intervalID;
+                //    walkList[id - 1].ScanInterval = Convert.ToInt32(tim.intervalVal);
+                //}
+
+                //PresetFill pre = new PresetFill();
+                //PresetList = pre.presetFillLoad(walkList, PresetList, CheckedLog, CheckedMap, presetName);
+
+                //db.WalkDevices.AddRange(PresetList);
+                //db.SaveChanges();
+                return Json("");
             }
-
-            PresetFill pre = new PresetFill();
-            PresetList = pre.presetFillLoad(walkList, PresetList, CheckedLog, CheckedMap,presetName);
-
-            db.WalkDevices.AddRange(PresetList);
-            db.SaveChanges();
-            return Json("");
         }
 
         [HttpPost]

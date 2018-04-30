@@ -1,26 +1,13 @@
 ﻿
 var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID,towerID;
-//var TowerNameID;
-//var CheckArray = new Array();
-//var walkArray = new Array();
-//var array = new Array();
-//var ChekedList = new Array();
-//var TimeChange = new Array();
-//var tm = new Array();
-//var devicetype = new Array();
-
-//$(document).ready(function () { 
-
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     dvcID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.device_header' + dvcID).attr("value");
     $('#device_settings_name').text($('.tower_name' + dvcID).attr("title"));
+
     towerID = $('.tower_name' + dvcID).attr("title");
-    //if (DeviceName.length > 15) {
-    //    DeviceName = DeviceName.substr(0, DeviceName.length - (DeviceName.length - 12)) + '...';
-    //}
-    
+      
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerID: towerID }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
@@ -31,9 +18,12 @@ $('#walk_send').click(function () { // device walk ip port version
     IP = $('#tower_ip').val();
     Port = $('#tower_port').val();
     Version = $('#walk_version').text();
+    //dvcID = $(this).closest($(".foo")).attr("id");
+    DeviceName = $('.device_header' + dvcID).attr("value");
+    var towerName = $('#device_settings_name').text();
     $('#load_walk').css("display", "block");
     communityRead = $('#read_community').val();
-    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead }, function (Response) {
+    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName:DeviceName}, function (Response) {
         $('#load_walk').css("display", "none");
         $('#walk_checked_add').removeClass("").addClass("checked");
         $("#walk_checked").prop('checked', true);

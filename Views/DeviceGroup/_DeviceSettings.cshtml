@@ -1,4 +1,4 @@
-﻿@model IPagedList<AdminPanelDevice.Models.WalkDevice>
+﻿@model IPagedList<AdminPanelDevice.Models.WalkTowerDevice>
 
 @using PagedList
 @using PagedList.Mvc
@@ -22,21 +22,21 @@
     @*var all=@Html.Raw(Json.Encode(ViewBag.All));
         var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
     $.each(click_checked_log, function (i, val) {
-    $('#log_checked_add' + val).removeClass("").addClass("checked");
-    $('#log_checked' + val).prop('checked', true);
+    $('#log_checked_add' + val.WalkID).removeClass("").addClass("checked");
+        $('#log_checked' + val.WalkID).prop('checked', true);
     });
 
     $.each(click_checked_map, function (i, val) {
-    $('#map_checked_add' + val).removeClass("").addClass("checked");
-    $('#map_checked' + val).prop('checked', true);
+        $('#map_checked_add' + val.WalkID).removeClass("").addClass("checked");
+        $('#map_checked' + val.WalkID).prop('checked', true);
     });
 
-    $.each(interval_time, function (j, val) {
-    $('#interval' + val.intervalID).text(val.intervalVal);
+        $.each(interval_time, function (j, val) {
+            $('#interval' + val.WalkID).text(val.ScanInterval);
      });
-        $.each(GPS, function (i, val) {
-            $('#map_checked_add' + val).removeClass("").addClass("checkedGps");
-        });
+        //$.each(GPS, function (i, val) {
+        //    $('#map_checked_add' + val).removeClass("").addClass("checkedGps");
+        //});
         //});
         $('#tower_ip').val(towerIP);
     });
@@ -77,7 +77,7 @@
                         @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                     </td>
                     <td style="width:25%">
-                        <div class="valueDiv" title="@item.Type" id="Value@(item.WalkID)" value="@item.value" style="color: #b8c0c8;">@item.Type</div>
+                        <div class="valueDiv" title="@item.Type" id="Value@(item.WalkID)" value="@item.Value" style="color: #b8c0c8;">@item.Type</div>
                         @*<div id="Type@(item.WalkID)" style="display:none">@item.value</div>*@
 
                     </td>

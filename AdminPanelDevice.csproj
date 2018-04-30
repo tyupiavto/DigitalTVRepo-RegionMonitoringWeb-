@@ -264,16 +264,24 @@
     </Compile>
     <Compile Include="Helpers\PickerHelper.cs" />
     <Compile Include="Infrastructure\BuildMIBTree.cs" />
+    <Compile Include="Infrastructure\CityAddDiagram.cs" />
+    <Compile Include="Infrastructure\CityAddTower.cs" />
+    <Compile Include="Infrastructure\CityDeleteTower.cs" />
     <Compile Include="Infrastructure\Hexstring.cs" />
     <Compile Include="Infrastructure\JobSheduler.cs" />
     <Compile Include="Infrastructure\MibTreeCreate.cs" />
     <Compile Include="Infrastructure\PresetFill.cs" />
     <Compile Include="Infrastructure\RemoveLog.cs" />
+    <Compile Include="Infrastructure\SelectAllCity.cs" />
     <Compile Include="Infrastructure\SnmpVersionOne.cs" />
     <Compile Include="Infrastructure\SnmpVersionTwo.cs" />
     <Compile Include="Infrastructure\TrapDelete.cs" />
     <Compile Include="Infrastructure\TrapListen.cs" />
     <Compile Include="Infrastructure\TrapUpdateNewDevice.cs" />
+    <Compile Include="Infrastructure\UpdateCheck.cs" />
+    <Compile Include="Infrastructure\UpdateCheckLogMap.cs" />
+    <Compile Include="Infrastructure\WalkSendReturned.cs" />
+    <Compile Include="Infrastructure\WalkSave.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.Designer.cs">
       <DependentUpon>201712081256218_device db schema.cs</DependentUpon>
@@ -319,6 +327,8 @@
     <Compile Include="Models\TreeStructure.cs" />
     <Compile Include="Models\WalkDevice.cs" />
     <Compile Include="Models\WalkInformation.cs" />
+    <Compile Include="Models\WalkPreset.cs" />
+    <Compile Include="Models\WalkTowerDevice.cs" />
     <Compile Include="MonitoringAppStartup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

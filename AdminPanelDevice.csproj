@@ -164,7 +164,7 @@
     <Content Include="Content\ScriptView\CheckedCity.js" />
     <Content Include="Content\ScriptView\CountrieSearch.js" />
     <Content Include="Content\ScriptView\DeviceGroup.js" />
-    <Content Include="Content\ScriptView\DeviceManage.js" />
+    <Content Include="Content\ScriptView\WalkMapLogPreset.js" />
     <Content Include="Content\ScriptView\DevicePanel.js" />
     <Content Include="Content\ScriptView\DeviceUpdate.js" />
     <Content Include="Content\ScriptView\dragtable.js" />
@@ -172,6 +172,7 @@
     <Content Include="Content\ScriptView\GPSCheck.js" />
     <Content Include="Content\ScriptView\AddDiagramDevice.js" />
     <Content Include="Content\ScriptView\jquery.dataTables.min.js" />
+    <Content Include="Content\ScriptView\MapLogCheck.js" />
     <Content Include="Content\ScriptView\pageListClick.js" />
     <Content Include="Content\ScriptView\ResizableTable.js" />
     <Content Include="Content\ScriptView\sorttable.js" />

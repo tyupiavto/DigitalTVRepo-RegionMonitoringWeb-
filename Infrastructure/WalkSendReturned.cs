@@ -141,6 +141,7 @@ namespace AdminPanelDevice.Infrastructure
                                         walk.ScanInterval = 60;
                                         walk.DeviceName = DeviceName;
                                         walk.TowerName = towerName;
+                                        walk.IP = IP;
                                         walkList.Add(walk);
                                         lastOid = v.Oid;
 

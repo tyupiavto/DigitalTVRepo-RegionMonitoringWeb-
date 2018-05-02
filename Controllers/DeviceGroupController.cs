@@ -545,6 +545,7 @@ namespace AdminPanelDevice.Controllers
                     ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "' and LogID<>0").ToList();
                     ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "' and MapID<>0").ToList();
                     ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + towerID + "' and ScanInterval<>'60'").ToList();
+                    ViewBag.PresetInd = 1;
                     //ViewBag.GPS = GPSCoordinate;
                     return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
                 }
@@ -554,7 +555,6 @@ namespace AdminPanelDevice.Controllers
                     return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
                 }
             }
-          //  return PartialView("_DeviceMibSetting",mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
 
         [HttpPost]
@@ -678,16 +678,14 @@ namespace AdminPanelDevice.Controllers
             {
                 ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
-                //  ViewBag.CheckedLog = CheckedLog;
-                // ViewBag.CheckedMap = CheckedMap;
-                //  ViewBag.Interval = Interval;
-                ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0").ToList();
-                ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0").ToList();
-                ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>'60'").ToList();
-
+                ViewBag.PresetInd=1;
                 ViewBag.GPS = GPSCoordinate;
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.TowerIP = TowerIP;
+                ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0").ToList();
+                ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0").ToList();
+                ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>'60'").ToList();
+         
                 page = 1;
                 pageListNumber = pageList;
 
@@ -710,12 +708,8 @@ namespace AdminPanelDevice.Controllers
 
                 ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
-                //ViewBag.CheckedLog = CheckedLog;
-                //ViewBag.CheckedMap = CheckedMap;
-                //ViewBag.Interval = Interval;
-                ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0").ToList();
-                ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0").ToList();
-                ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>60").ToList();
+
+                ViewBag.PresetInd = 1;
                 ViewBag.GPS = GPSCoordinate;
                 ViewBag.TowerIP = TowerIP;
                 ViewBag.defaultInterval = DefaultInterval;
@@ -726,43 +720,46 @@ namespace AdminPanelDevice.Controllers
                 }
                 else
                 {
-                   // var walkExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "'").ToList();
+                    ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0").ToList();
+                    ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0").ToList();
+                    ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>60").ToList();
+                    // var walkExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "'").ToList();
                     return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
                 }
             }
 
         }
         [HttpPost]
-        public JsonResult UncheckLog(int unChechkID) // uncheckd log
+        public JsonResult UncheckLog(int unChechkID,string towerName,string IP) // uncheckd log
         {
-            updateCheck.UpdateChechkLog(0, unChechkID);
+            updateCheck.UpdateChechkLog(0, unChechkID,towerName, IP);
             //CheckedLog.Remove(unChechkID);
             //ViewBag.CheckedLog = CheckedLog;
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult CheckLog(int chechkID) // checked log
+        public JsonResult CheckLog(int chechkID, string towerName, string IP) // checked log
         {
-            updateCheck.UpdateChechkLog(1, chechkID);
+            updateCheck.UpdateChechkLog(1, chechkID, towerName, IP);
             //CheckedLog.Add(chechkID);
             //ViewBag.CheckedLog = CheckedLog;
             return Json("");
         }
 
         [HttpPost] 
-        public JsonResult UncheckMap(int unChechkID) // unchecked map
+        public JsonResult UncheckMap(int unChechkID, string towerName, string IP) // unchecked map
         {
-            updateCheck.UpdateChechkMap(0, unChechkID);
+            updateCheck.UpdateChechkMap(0, unChechkID, towerName,IP);
             //CheckedMap.Remove(unChechkID);
             //ViewBag.CheckedMap = CheckedMap;
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult CheckMap(int chechkID) // checked map
+        public JsonResult CheckMap(int chechkID, string towerName, string IP) // checked map
         {
-            updateCheck.UpdateChechkMap(1, chechkID);
+            updateCheck.UpdateChechkMap(1, chechkID, towerName,IP);
             //CheckedMap.Add(chechkID);
             //ViewBag.CheckedMap = CheckedMap;
             return Json("");
@@ -780,31 +777,27 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult IntervalSearch(int intervalID , int Interval)
+        public JsonResult IntervalSearch(int intervalID , int Interval,string towerName, string IP)
         {
-            //intervalValue intr=new intervalValue();
-            //intr.intervalID = intervalID;
-            //intr.intervalVal = Interval;
-            updateCheck.UpdateInterval(intervalID, Interval);
-            //DeviceGroupController.Interval.Add(intr);
-            //ViewBag.Interval = DeviceGroupController.Interval;
-
+            updateCheck.UpdateInterval(intervalID, Interval, towerName,IP);
+            walkList[intervalID - 1].ScanInterval = Interval;
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult PresetSave(string presetName, string IpAddress, string towerNameID)
+        public JsonResult PresetSave(string presetName, string IpAddress, string towerNameID,string IP)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 Preset preset = new Preset();
-                preset.DeviceID = connection.Query<Preset>("select * from Preset").LastOrDefault().DeviceID+1; 
-                    //db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
+                preset.DeviceID =db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
                 preset.PresetName = presetName;
                 preset.DeviceIP = IpAddress;
                 preset.DeviceTypeID = QuerydeviceID;
                 db.Presets.Add(preset);
-                updateCheck.WalkPresetSave(DeviceNameLocal, TowerIDLocal);
+                db.SaveChanges();
+
+                updateCheck.WalkPresetSave(walkList,preset.DeviceID,DeviceNameLocal, TowerIDLocal,IP);
 
                 //TowerGps gps = new TowerGps();
                 //gps.Lattitube = walkList[GPSCoordinate[0] - 1].Type;
@@ -917,28 +910,26 @@ namespace AdminPanelDevice.Controllers
 
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                string cmdString = "Select * From Preset where PresetName = '" + presetSearchName + "'";
-                presetID = connection.Query<Preset>(cmdString).FirstOrDefault().ID;
-                string log = "Select * From WalkDevice where PresetID = '" + presetID+"'";
-                CheckedLog = connection.Query<WalkDevice>(log).ToList().Select(s=>s.LogID).ToList();
+                presetID = connection.Query<Preset>("Select * From Preset where PresetName = '" + presetSearchName + "'").FirstOrDefault().DeviceID;
 
-                string map = "Select * From WalkDevice where PresetID = '" + presetID + "'";
-                CheckedMap = connection.Query<WalkDevice>(map).ToList().Select(s => s.MapID).ToList();
+                var walkLenght = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice").ToList().LastOrDefault().WalkID;
+                var CheckedLog = connection.Query<WalkTowerDevice>("update WalkTowerDevice set MapID=0,LogID=0,ScanInterval=60  where TowerName='" + TowerIDLocal + "' and LogID<>0 and MapID<>0 and WalkID<='" + walkLenght + "'").ToList();
 
-                string interval = "Select * From WalkDevice where PresetID = '" + presetID + "'";
-                var query = from pro in db.WalkDevices
-                            select new TimList() { intervalID = pro.CheckID, intervalVal = pro.Time };
-                var tm = query.ToList();
-                Interval.AddRange(tm);
+                var LMI = connection.Query<WalkPreset>("select * from WalkPreset where PresetID='" + presetID + "'").ToList();
+                LMI.ForEach(lmi =>
+                {
+                    //updateCheck.UpdateChechkLog(1, lmi.LogID, TowerIDLocal);
+                    //updateCheck.UpdateChechkMap(1, lmi.MapIDID, TowerIDLocal);
+                    //updateCheck.UpdateInterval(lmi.LogID,lmi.Interval, TowerIDLocal);
+                });
+
+                ViewBag.LMI = LMI;
+                ViewBag.PresetInd = 0;
+                ViewBag.IntervalTime = intervalTime;
+                ViewBag.GPS = GPSCoordinate;
+                ViewBag.TowerIP = TowerIP;
+                ViewBag.defaultInterval = DefaultInterval;
             }
-
-            ViewBag.IntervalTime = intervalTime;
-            ViewBag.CheckedLog = CheckedLog;
-            ViewBag.CheckedMap = CheckedMap;
-            ViewBag.Interval = Interval;
-            ViewBag.GPS = GPSCoordinate;
-            ViewBag.TowerIP = TowerIP;
-            ViewBag.defaultInterval = DefaultInterval;
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -993,7 +984,6 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                //var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
                 var gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where TowerNameID='" + deviceGpsName + "'").ToList();
                 return Json(gpsCordinate);
             }

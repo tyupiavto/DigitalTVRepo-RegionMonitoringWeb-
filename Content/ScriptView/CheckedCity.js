@@ -15,6 +15,7 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
         $('.add' + minimizeID).css("display", "none");
         $('#minimizedImg' + minimizeID).css("transform", "rotate(180deg)");
     }
+    saveDiagram();
 });
 
     $('body').on('click touched', '#city_check div', function () {
@@ -43,7 +44,7 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
             jsPlumb.remove($('#' + id));
             towerDeleteID = $(this).parent().attr("value");
             $.post("/DeviceGroup/TowerDelete", { towerDeleteID: towerDeleteID, cityid: cityid }, function () {
-                // saveDiagram();
+                 saveDiagram();
             });
         }
     });
@@ -167,7 +168,8 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
         }, 'json');
     });
 
-    function ConnectionPoint() {
+function ConnectionPoint() {
+    saveDiagram(); ///
         connections = [];
         $.each(jsPlumb.getConnections(), function (idx, connection) {
             connect.push(connection.id);

@@ -23,5 +23,6 @@ namespace AdminPanelDevice.Models
         public int WalkID { get; set; }
         public string WalkOID { get; set; }
         public string Type { get; set; }
+        public string IP { get; set; }
     }
 }

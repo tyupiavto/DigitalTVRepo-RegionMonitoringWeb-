@@ -19,5 +19,6 @@ namespace AdminPanelDevice.Models
         public int Interval { get; set; }
         public int GpsID { get; set; }
         public string DeviceName { get; set; }
+        public string IP { get; set; }
     }
 }

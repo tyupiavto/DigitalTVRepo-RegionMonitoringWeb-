@@ -1,13 +1,11 @@
 ﻿
-var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID,towerID;
+var dvcID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID,towerID,towerName;
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     dvcID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.device_header' + dvcID).attr("value");
     $('#device_settings_name').text($('.tower_name' + dvcID).attr("title"));
-
     towerID = $('.tower_name' + dvcID).attr("title");
-      
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerID: towerID }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
@@ -59,7 +57,9 @@ $('body').on('click touchend', '#select_time', function (e) { // time intervel s
 $('body').on('click touchend', '.search_time_interval li', function () { // time interval add
     var Interval = $(this).attr("value");
     $('#interval' + intervalID).text(Interval);
-    $.post("/DeviceGroup/IntervalSearch", { intervalID: intervalID, Interval: Interval }, function () { }, 'json');
+    IP = $('#tower_ip').val();
+    towerName = $('#device_settings_name').text();
+    $.post("/DeviceGroup/IntervalSearch", { intervalID: intervalID, Interval: Interval, towerName: towerName, IP: IP }, function () { }, 'json');
 });
 
 $('body').on('click touchend', '#select_list', function (e) {// search number  list information
@@ -233,15 +233,17 @@ $('body').on('click touched', '.walk_check div', function () { // walk unchecked
 
 $('body').on('click touched', '.map_check div', function () { // map click checked 
     var mapID = $(this).attr("id");
+    towerName = $('#device_settings_name').text();
+    IP = $('#tower_ip').val();
     if ($('#map_checked' + mapID).is(':checked') == false) {
         $('#map_checked_add' + mapID).removeClass("").addClass("checked");
         $("#map_checked" + mapID).prop('checked', true);
 
         chechkID = mapID;
-        $.post("/DeviceGroup/CheckMap", { chechkID: chechkID }, function () { }, 'json'); // map check 
+        $.post("/DeviceGroup/CheckMap", { chechkID: chechkID, towerName: towerName, IP: IP }, function () { }, 'json'); // map check 
     } else {
         unChechkID = mapID;
-        $.post("/DeviceGroup/UncheckMap", { unChechkID: unChechkID }, function () { }, 'json'); // map uncheck 
+        $.post("/DeviceGroup/UncheckMap", { unChechkID: unChechkID, towerName: towerName, IP: IP }, function () { }, 'json'); // map uncheck 
 
         $('#map_checked_add' + mapID).removeClass("checked").addClass("");
         $("#map_checked" + mapID).prop('checked', false);
@@ -250,15 +252,17 @@ $('body').on('click touched', '.map_check div', function () { // map click check
 
 $('body').on('click touched', '.log_check div', function () { // log checked preset 
     var logID = $(this).attr("id");
+    towerName = $('#device_settings_name').text();
+    IP = $('#tower_ip').val();
     if ($('#log_checked' + logID).is(':checked') == false) {
         chechkID = logID;
-        $.post("/DeviceGroup/CheckLog", { chechkID: chechkID }, function () { }, 'json'); // log check 
+        $.post("/DeviceGroup/CheckLog", { chechkID: chechkID, towerName: towerName, IP: IP}, function () { }, 'json'); // log check 
 
         $('#log_checked_add' + logID).removeClass("").addClass("checked");
         $("#log_checked" + logID).prop('checked', true);
     } else {
         unChechkID = logID;
-        $.post("/DeviceGroup/UncheckLog", { unChechkID: unChechkID }, function () { }, 'json'); // log uncheck 
+        $.post("/DeviceGroup/UncheckLog", { unChechkID: unChechkID, towerName: towerName, IP:IP }, function () { }, 'json'); // log uncheck 
         $('#log_checked_add' + logID).removeClass("checked").addClass("");
         $("#log_checked" + logID).prop('checked', false);
     }
@@ -267,7 +271,8 @@ $('#preset_save').click(function () {
     presetName = $('#preset_name').val();
     IpAddress = $('#tower_ip').val();
     TowerNameID = $('#device_settings_name').text();
-    $.post("/DeviceGroup/PresetSave", { presetName: presetName, IpAddress: IpAddress, TowerNameID: TowerNameID }, function () {
+    IP = $('#tower_ip').val();
+    $.post("/DeviceGroup/PresetSave", { presetName: presetName, IpAddress: IpAddress, TowerNameID: TowerNameID, IP: IP }, function () {
         $('#preset_name').val("");
     }, 'json');
 });

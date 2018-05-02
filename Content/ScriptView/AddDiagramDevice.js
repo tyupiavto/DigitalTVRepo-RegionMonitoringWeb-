@@ -15,7 +15,7 @@ function foo() {
                 $('.contextmenu').hide();
                 $(this).css({ 'z-index': '11' });
                 $(".class" + draggedItemId).css({ 'z-index': '15' });
-                //saveDiagram();
+                saveDiagram();
             },
             stop: function () {
                 var draggedItemId = $(this).attr('id');

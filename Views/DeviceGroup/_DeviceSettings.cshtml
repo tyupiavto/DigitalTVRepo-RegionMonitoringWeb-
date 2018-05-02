@@ -17,23 +17,45 @@
     var click_checked_log = @Html.Raw(Json.Encode(@ViewBag.CheckedLog));
     var click_checked_map = @Html.Raw(Json.Encode(@ViewBag.CheckedMap));
     var GPS =@Html.Raw(Json.Encode(@ViewBag.GPS));
-    var towerIP = @Html.Raw(Json.Encode(@ViewBag.TowerIP));
+        var towerIP = @Html.Raw(Json.Encode(@ViewBag.TowerIP));
+        var presetInd = @Html.Raw(Json.Encode(@ViewBag.PresetInd));
+        var LMI=@Html.Raw(Json.Encode(ViewBag.LMI));
     var int = 1;
     @*var all=@Html.Raw(Json.Encode(ViewBag.All));
         var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
-    $.each(click_checked_log, function (i, val) {
-    $('#log_checked_add' + val.WalkID).removeClass("").addClass("checked");
-        $('#log_checked' + val.WalkID).prop('checked', true);
-    });
+        if (presetInd == 1) {
+            $.each(click_checked_log, function (i, val) {
+                $('#log_checked_add' + val.WalkID).removeClass("").addClass("checked");
+                $('#log_checked' + val.WalkID).prop('checked', true);
+            });
 
-    $.each(click_checked_map, function (i, val) {
-        $('#map_checked_add' + val.WalkID).removeClass("").addClass("checked");
-        $('#map_checked' + val.WalkID).prop('checked', true);
-    });
+            $.each(click_checked_map, function (i, val) {
+                $('#map_checked_add' + val.WalkID).removeClass("").addClass("checked");
+                $('#map_checked' + val.WalkID).prop('checked', true);
+            });
 
-        $.each(interval_time, function (j, val) {
-            $('#interval' + val.WalkID).text(val.ScanInterval);
-     });
+            $.each(interval_time, function (j, val) {
+                $('#interval' + val.WalkID).text(val.ScanInterval);
+            });
+        }
+        else {
+            $.each(LMI, function (i, val) {
+                $('#log_checked_add' + val.LogID).removeClass("").addClass("checked");
+                $('#log_checked' + val.LogID).prop('checked', true);
+                $('#map_checked_add' + val.MapID).removeClass("").addClass("checked");
+                $('#map_checked' + val.MapID).prop('checked', true);
+                $('#interval' + val.IntervalID).text(val.Interval);
+            });
+
+            //$.each(click_checked_map, function (i, val) {
+            //    $('#map_checked_add' + val.MapID).removeClass("").addClass("checked");
+            //    $('#map_checked' + val.MapID).prop('checked', true);
+            //});
+
+            //$.each(interval_time, function (j, val) {
+            //    $('#interval' + val.IntervalID).text(val.Interval);
+            //});
+        }
         //$.each(GPS, function (i, val) {
         //    $('#map_checked_add' + val).removeClass("").addClass("checkedGps");
         //});

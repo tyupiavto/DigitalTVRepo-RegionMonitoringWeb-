@@ -1,4 +1,4 @@
-﻿var idTarget, title;
+﻿var idTarget, title,deviceID;
 function foo() {
     $('.foo').each(function () {
         //Making dropped elements draggable again
@@ -8,6 +8,7 @@ function foo() {
             grid: [10, 10],
             drop: function (event, ui) {
                 var pos = ui.draggable.offset(), dPos = $(this).offset();
+               // saveDiagram();
             },
             drag: function () {
                 //jsPlumb.addToDragSelection($('.foo'));
@@ -15,7 +16,7 @@ function foo() {
                 $('.contextmenu').hide();
                 $(this).css({ 'z-index': '11' });
                 $(".class" + draggedItemId).css({ 'z-index': '15' });
-                saveDiagram();
+              //  saveDiagram();
             },
             stop: function () {
                 var draggedItemId = $(this).attr('id');
@@ -85,7 +86,7 @@ $("#mainDiv").droppable({
                         var height = $(".add" + idTarget).height();
                         var lenght = $('#dropDivs').length;
                         var id = $('.foo').length;
-
+                        deviceID = id + 1;
                         if (title.length > 35) {
                             var titleName = title.substr(0, title.length - (title.length - 31)) + '...';
                         }
@@ -114,8 +115,8 @@ $('body').on('click tounched', '#add_device_inf', function () {
     towerID = "tower_" + idTarget;
     deviceName = title;
     towerName = $('.header' + idTarget).text();
-    $('#existingDevice').modal("show");
-    $.post("/DeviceGroup/TowerDeviceInformation", { IPaddress: IPaddress, towerID: towerID, deviceName: deviceName, cityID: cityID, towerName: towerName }, function (Response) {
+    //$('#existingDevice').modal("show");
+    $.post("/DeviceGroup/TowerDeviceInformation", { IPaddress: IPaddress, towerID: towerID, deviceName: deviceName, cityID: cityID, towerName: towerName, deviceID: deviceID }, function (Response) {
         $('#ip_address').val("");
     }, 'json');
 });

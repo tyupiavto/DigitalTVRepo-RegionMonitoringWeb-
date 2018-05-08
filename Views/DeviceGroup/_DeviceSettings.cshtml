@@ -19,7 +19,9 @@
     var GPS =@Html.Raw(Json.Encode(@ViewBag.GPS));
         var towerIP = @Html.Raw(Json.Encode(@ViewBag.TowerIP));
         var presetInd = @Html.Raw(Json.Encode(@ViewBag.PresetInd));
-        var LMI=@Html.Raw(Json.Encode(ViewBag.LMI));
+        var LMI =@Html.Raw(Json.Encode(ViewBag.LMI));
+        var defineWalk =@Html.Raw(Json.Encode(ViewBag.DefineWalk));
+        var walkCheck =@Html.Raw(Json.Encode (ViewBag.WalkCheck));
     var int = 1;
     @*var all=@Html.Raw(Json.Encode(ViewBag.All));
         var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
@@ -37,6 +39,17 @@
             $.each(interval_time, function (j, val) {
                 $('#interval' + val.WalkID).text(val.ScanInterval);
             });
+            $.each(GPS, function (i, val) {
+                $('#map_checked_add' + val.WalkID).removeClass("").addClass("checkedGps");
+            });
+            if (defineWalk == true) {
+                $('#walk_checked_add').removeClass("").addClass("checked");
+                $("#walk_checked").prop('checked', true);
+            }
+            else {
+                $('#walk_checked_add').removeClass("checked").addClass("");
+                $("#walk_checked").prop('checked', true);
+            }
         }
         else {
             $.each(LMI, function (i, val) {
@@ -45,8 +58,12 @@
                 $('#map_checked_add' + val.MapID).removeClass("").addClass("checked");
                 $('#map_checked' + val.MapID).prop('checked', true);
                 $('#interval' + val.IntervalID).text(val.Interval);
+                $('#map_checked_add' + val.GpsId).removeClass("").addClass("checkedGps");
             });
-
+            //if (walkCheck == true) {
+            //    $('#walk_checked_add').removeClass("").addClass("checked");
+            //    $("#walk_checked").prop('checked', true);
+            //}
             //$.each(click_checked_map, function (i, val) {
             //    $('#map_checked_add' + val.MapID).removeClass("").addClass("checked");
             //    $('#map_checked' + val.MapID).prop('checked', true);
@@ -56,9 +73,7 @@
             //    $('#interval' + val.IntervalID).text(val.Interval);
             //});
         }
-        //$.each(GPS, function (i, val) {
-        //    $('#map_checked_add' + val).removeClass("").addClass("checkedGps");
-        //});
+       
         //});
         $('#tower_ip').val(towerIP);
     });

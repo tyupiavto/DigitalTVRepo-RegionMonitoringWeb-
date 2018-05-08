@@ -22,7 +22,7 @@ namespace AdminPanelDevice.Infrastructure
         {
 
         }
-        public List<WalkTowerDevice> WalkSendReturn(string IP, int Port, string Version, string communityRead, List<WalkTowerDevice> walkList, string towerName, string DeviceName)
+        public List<WalkTowerDevice> WalkSendReturn(string IP, int Port, string Version, string communityRead, List<WalkTowerDevice> walkList, string towerName, string DeviceName,int deviceID)
         {
     
             string walkTimeOutOID = "";
@@ -54,7 +54,7 @@ namespace AdminPanelDevice.Infrastructure
                 IpAddress agent = new IpAddress(IP);
 
                 UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
-                Oid rootOid = new Oid(".1.3.6.1.4");
+                Oid rootOid = new Oid(".1.3.6.1");
 
                 Oid lastOid = (Oid)rootOid.Clone();
 
@@ -135,13 +135,16 @@ namespace AdminPanelDevice.Infrastructure
                                             walk.WalkDescription = OidMibdescription.Description;
 
                                         walk.WalkOID = v.Oid.ToString();
-                                        walk.OIDName = mibInf.Where(o => o.OID == oid).FirstOrDefault().Name;
+                                        var oidname = mibInf.Where(o => o.OID == oid).FirstOrDefault();
+
+                                        if (oidname!=null)
+                                        walk.OIDName = oidname.Name;
                                         walk.Type = v.Value.ToString();
                                         walk.Value = SnmpConstants.GetTypeName(v.Value.Type);
                                         walk.ScanInterval = 60;
                                         walk.DeviceName = DeviceName;
                                         walk.TowerName = towerName;
-                                        walk.IP = IP;
+                                        walk.DeviceID =deviceID;
                                         walkList.Add(walk);
                                         lastOid = v.Oid;
 

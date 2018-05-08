@@ -23,6 +23,7 @@ namespace AdminPanelDevice.Models
         public string CityName { get; set; }
         public string PresetName { get; set; }
         public int PresetID { get; set; }
+        public int MibID { get; set; }
 
         [ForeignKey("PresetID")]
         public PresetDiagramName PresetDiagramName { get; set; }

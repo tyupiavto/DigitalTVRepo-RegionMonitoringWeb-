@@ -18,37 +18,47 @@ namespace AdminPanelDevice.Infrastructure
         {
 
         }
-        public void UpdateChechkLog(int chechkLog, int walkCheckID,string towerName, string IP)
+        public void UpdateChechkLog(int chechkLog, int walkCheckID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set LogID='" + chechkLog + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and IP='" + IP + "'");
+                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set LogID='" + chechkLog + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
             }
         }
-        public void UpdateChechkMap(int checkMap, int walkCheckID, string towerName, string IP)
+        public void UpdateChechkMap(int checkMap, int walkCheckID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set MapID='" + checkMap + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and IP='" + IP + "'");
+                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set MapID='" + checkMap + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
             }
         }
-        public void UpdateInterval(int intervalID, int Interval, string towerName, string IP)
+        public void UpdateInterval(int intervalID, int Interval, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set ScanInterval='" + Interval + "' where WalkID='" + intervalID + "' and TowerName='"+towerName+ "' and IP='" + IP + "'");
+                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set ScanInterval='" + Interval + "' where WalkID='" + intervalID + "' and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
             }
         }
-        public void WalkPresetSave(List<WalkTowerDevice> walkList,int presetID,string DeviceName,string TowerID, string IP)
+
+        public void UpdateChechkGps(int checkGps, int walkCheckID, string towerName, int deviceID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set GpsID='" + checkGps + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
+            }
+        }
+
+        public void WalkPresetSave(List<WalkTowerDevice> walkList, int presetID, string DeviceName, string TowerID, int deviceID)
         {
             List<WalkPreset> walkPresetList = new List<WalkPreset>();
-            
+
             List<Point> p = new List<Point>();
             WalkPreset wP = new WalkPreset();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                List<int> Log= connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and LogID<>0 and IP='"+IP+"'").ToList().Select(s=>s.WalkID).ToList();
-                List<int> Map = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and MapID<>0 and IP='" + IP + "'").ToList().Select(s => s.WalkID).ToList();
+                List<int> Log = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and LogID<>0 and DeviceID='" + deviceID + "'").ToList().Select(s => s.WalkID).ToList();
+                List<int> Map = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and MapID<>0 and DeviceID='" + deviceID + "'").ToList().Select(s => s.WalkID).ToList();
+                List<int> Gps = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and GpsID<>0 and DeviceID='" + deviceID + "'").ToList().Select(s => s.WalkID).ToList();
                 Log.ForEach(l =>
                 {
                     WalkPreset wlk = new WalkPreset();
@@ -62,10 +72,15 @@ namespace AdminPanelDevice.Infrastructure
                     {
                         wlk.LogID = l;
                     }
+                    if (Gps.Contains(l))
+                    {
+                        Gps.Remove(l);
+                        wlk.GpsID = l;
+                    }
                     wlk.PresetID = presetID;
                     wlk.DeviceName = DeviceName;
                     wlk.IntervalID = l;
-                    wlk.IP = IP;
+                    wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[l - 1].ScanInterval;
                     walkPresetList.Add(wlk);
                 });
@@ -73,17 +88,34 @@ namespace AdminPanelDevice.Infrastructure
                 Map.ForEach(m =>
                 {
                     WalkPreset wlk = new WalkPreset();
+                    if (Gps.Contains(m))
+                    {
+                        Gps.Remove(m);
+                        wlk.GpsID = m;
+                    }
+
                     wlk.MapID = m;
                     wlk.PresetID = presetID;
                     wlk.DeviceName = DeviceName;
                     wlk.IntervalID = m;
-                    wlk.IP = IP;
+                    wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[m - 1].ScanInterval;
                     walkPresetList.Add(wlk);
                 });
+                Gps.ForEach(g =>
+                {
+                    WalkPreset wlk = new WalkPreset();
+                    wlk.GpsID = g;
+                    wlk.PresetID = presetID;
+                    wlk.DeviceName = DeviceName;
+                    wlk.IntervalID = g;
+                    wlk.DeviceID = deviceID;
+                    wlk.Interval = walkList[g - 1].ScanInterval;
+                    walkPresetList.Add(wlk);
+                });
+                db.WalkPresets.AddRange(walkPresetList);
+                db.SaveChanges();
             }
-            db.WalkPresets.AddRange(walkPresetList);
-            db.SaveChanges();
         }
     }
 }

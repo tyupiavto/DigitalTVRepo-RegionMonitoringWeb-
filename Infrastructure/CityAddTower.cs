@@ -20,8 +20,8 @@ namespace AdminPanelDevice.Infrastructure
             {
                 connection.Query<PointConnection>("delete From  PointConnection ");
 
-                var countrieID = connection.Query<Countrie>("select * from Countries where CountrieName='" + countrieName + "'").FirstOrDefault().ID;
-                var stateID = connection.Query<States>("select * from States StateName='" + stateName + "'").FirstOrDefault().ID;
+                var countrieID = connection.Query<Countrie>("select * from [Deviceinformation].[dbo].[Countrie] where CountrieName=N'" + countrieName + "'").FirstOrDefault().ID;
+                var stateID = connection.Query<States>("select * from [Deviceinformation].[dbo].[States] where StateName=N'" + stateName + "'").FirstOrDefault().ID;
 
                 tower.Name = cityName;
                 tower.NumberID = db.towers.Select(s => s.NumberID).ToList().LastOrDefault() + 1;

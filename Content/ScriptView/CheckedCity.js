@@ -44,7 +44,7 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
             jsPlumb.remove($('#' + id));
             towerDeleteID = $(this).parent().attr("value");
             $.post("/DeviceGroup/TowerDelete", { towerDeleteID: towerDeleteID, cityid: cityid }, function () {
-                 saveDiagram();
+                // saveDiagram();
             });
         }
     });
@@ -169,7 +169,7 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
     });
 
 function ConnectionPoint() {
-    saveDiagram(); ///
+   // saveDiagram(); ///
         connections = [];
         $.each(jsPlumb.getConnections(), function (idx, connection) {
             connect.push(connection.id);
@@ -237,7 +237,16 @@ function ConnectionPoint() {
                     uuids: [pointright.toString(), pointLeft.toString()]
                 });
             });
+            //$('#countries li').draggable({
+            //    helper: 'clone',
+            //    revert: 'invalid'
+            //});
+            //$('.tower').draggable({
+            //    helper: 'clone',
+            //    revert: 'invalid'
+            //});
             saveDiagram();
+            foo();
         });
         
     }

@@ -445,15 +445,15 @@
             helper: 'clone',
             revert: 'invalid'
         });
-
-        $('#tower_menu').click(function () {
-            $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        });
-
         $('.tower').draggable({
             helper: 'clone',
             revert: 'invalid'
         });
+        $('#tower_menu').click(function () {
+            $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        });
+
+     
 
         //    function foo() {
         //        $('.foo').each(function () {

@@ -36,7 +36,7 @@
                         }
                         else
                         {
-                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" value="@item.Syntax">@item.Name</div>
+                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)">@item.Name</div>
                         }
                         @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                     </td>
@@ -51,27 +51,27 @@
                         }
                     </td>
                     <td style="width:25%">
-                        <div class="valueDiv" id="Value@(item.MibID)" value="" style="color: #b8c0c8;"></div>
+                        <div class="valueDiv" id="Value@(item.MibID)" value="@item.Syntax" style="color: #b8c0c8;">@item.Syntax</div>
                         @*<div id="Type@(item.MibID)" style="display:none">@item.value</div>*@
 
                     </td>
                     <td style="width:5%;">
                         <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
-                            <div class="rowCheckbox map_check">
+                            <div class="rowCheckbox mib_map_check">
                                 <div class="custom-checkbox" id="@item.MibID">
-                                    <input name="map_checked" id="map_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                    <label id="map_checked_add@(item.MibID)" style="background-size:19px;"></label>
+                                    <input name="mib_map_checked" id="mib_map_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                    <label id="mib_map_checked_add@(item.MibID)" style="background-size:19px;"></label>
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td style="width:5%;">
                         <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
-                            <div class="rowCheckbox log_check">
+                            <div class="rowCheckbox mib_log_check">
                                 <div class="custom-checkbox" id="@item.MibID">
 
-                                    <input name="log_checked" id="log_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                    <label id="log_checked_add@(item.MibID)" value="" class="" style="background-size:19px;"></label>
+                                    <input name="mib_log_checked" id="mib_log_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                    <label id="mib_log_checked_add@(item.MibID)" value="" class="" style="background-size:19px;"></label>
 
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                             </li>
                         </ul>
                         <ul class="select_time_list" id="select_time_list@(item.MibID)" value="@item.MibID" style="min-width:79px; width:79px; position: relative; display: none;">
-                            <div id="interva_partial@(item.MibID)" class="search_time_interval" style="position:absolute; width:79px;">
+                            <div id="mib_interva_partial@(item.MibID)" class="mib_search_time_interval" style="position:absolute; width:79px;">
                                 @foreach (var time in IntervalNumber)
                                 {
                                     <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="@time.Interval">@time.Interval</li>

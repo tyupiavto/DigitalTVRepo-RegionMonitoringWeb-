@@ -21,5 +21,6 @@ namespace AdminPanelDevice.Models
         public string CountrieName { get; set; }
         public string StateName { get; set; }
         public string CityName { get; set; }
+        public int MibID { get; set; }
     }
 }

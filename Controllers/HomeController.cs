@@ -7,7 +7,7 @@ using AdminPanelDevice.Models;
 using System.Net;
 using System.IO;
 using AdminPanelDevice.Infrastructure;
-using AxNetwork;
+//using AxNetwork;
 namespace AdminPanelDevice.Controllers
 {
     public class HomeController : Controller

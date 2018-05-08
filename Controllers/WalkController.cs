@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using AxNetwork;
+//using AxNetwork;
 using IToolS.IOServers.Snmp;
 using System.Net;
 using AdminPanelDevice.Models;
@@ -15,9 +15,9 @@ namespace AdminPanelDevice.Controllers
 {
     public class WalkController : Controller
     {
-        AxNetwork.SnmpMibBrowser objSnmpMIB = new AxNetwork.SnmpMibBrowser();
-        AxNetwork.NwConstants objConstants = new AxNetwork.NwConstants();
-        SnmpObject objSnmp;
+        //AxNetwork.SnmpMibBrowser objSnmpMIB = new AxNetwork.SnmpMibBrowser();
+        //AxNetwork.NwConstants objConstants = new AxNetwork.NwConstants();
+        //SnmpObject objSnmp;
         public static List<WalkDevice> walkList = new List<WalkDevice>();
         public static List<WalkDevice> walkListEdit = new List<WalkDevice>();
         public static List<WalkDevice> walkSearch = new List<WalkDevice>();

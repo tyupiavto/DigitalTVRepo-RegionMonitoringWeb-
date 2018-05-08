@@ -13,8 +13,8 @@ namespace AdminPanelDevice
     {
         protected void Application_Start()
         {
-            //Thread thread = new Thread(() => new TrapListen());
-            //thread.Start();
+            Thread thread = new Thread(() => new TrapListen());
+            thread.Start();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

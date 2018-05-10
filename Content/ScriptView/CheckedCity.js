@@ -153,6 +153,7 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
         if (connectaddremove == 0) {
             SavePoint();
             saveDiagram();
+            $('#settingsDiv').html("");
         }
         $('.header' + $('#' + connection.targetId).parent().parent().attr("id")).text($('#' + connection.sourceId).text() + "_" + "Tower" + $('#' + connection.targetId).parent().parent().attr("id"));
     });

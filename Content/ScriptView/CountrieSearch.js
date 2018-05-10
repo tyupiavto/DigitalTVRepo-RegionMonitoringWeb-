@@ -110,12 +110,12 @@ $('body').on('click touchend', '#typeSelect', function (e) {
     width = $(this).width()-5;
     if (e.type == "touchend") {
         handled = true;
-        $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
+        $('#typeDropDownList').css({ 'width': width + 20 }).toggle();
         $('.typeSelect li').css('widht', '93%');
     }
     else
         if (e.type == "click" && !handled) {
-            $('#typeDropDownList').css({ 'width': width + 12 }).toggle();
+            $('#typeDropDownList').css({ 'width': '94%'}).toggle();
             $.post("/DeviceGroup/countrieSearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
                 $('#countrie_partial').html("");
                 $('#countrie_partial').html(Response);
@@ -138,15 +138,15 @@ $('body').on('click touchend', '#typeDropDownList li', function () {
 
 var handledstate = false;                                           // states search and full states
 $('body').on('click touchend', '#typeSelectState', function (e) {
-    var width = $(this).width()-5;
+    var width = $(this).width();
     if (e.type == "touchend") {
         handledstate = true;
-        $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+        $('#typeDropDownListState').css({ 'width': width + 20 }).toggle();
     }
     else
         if (e.type == "click" && !handledstate) {
-            $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
-            CountrieName = $('#typeSelect #countrieName').text();
+            $('#typeDropDownListState').css({ 'width': '94 %' }).toggle();
+               CountrieName = $('#typeSelect #countrieName').text();
             $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
                 $('#state_partial').html("");
                 $('#state_partial').html(Response);
@@ -163,20 +163,20 @@ $('body').on('click touchend', '#typeDropDownListState li', function () {
     StateName = value;
     $('#typeSelectState #state').text(value);
     $('#state' + $('#typeDropDownListState').attr("value")).text(value);
-    $('#typeDropDownListState').css({ 'width': width + 12 }).toggle();
+    $('#typeDropDownListState').css({ 'width': width + 20 }).toggle();
 
 });
 
 var handledcity = false;
 $('body').on('click touchend', '#typeSelectCity', function (e) {
-    var width = $(this).width()-5;
+    var width = $(this).width();
     if (e.type == "touchend") {
         handledcity = true;
-        $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
+        $('#typeDropDownListCity').css({ 'width': '94%' }).toggle();
     }
     else
         if (e.type == "click" && !handledcity) {
-            $('#typeDropDownListCity').css({ 'width': width + 12 }).toggle();
+            $('#typeDropDownListCity').css({ 'width': '94%'}).toggle();
             CountrieName = $('#typeSelect #countrieName').text();
             StateName = $('#state').text();
             $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {

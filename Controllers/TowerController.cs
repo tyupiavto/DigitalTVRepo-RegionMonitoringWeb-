@@ -39,11 +39,11 @@ namespace AdminPanelDevice.Controllers
             Tower Update = new Tower();
             Update.ID = Convert.ToInt32(ID);
             Update.Name = Name;
-            Update.LattiTube = Convert.ToDouble(LattiTube);
-            Update.LongiTube = Convert.ToDouble(LongiTube);
-            Update.IP = IP;
-            Update.Phone = Convert.ToInt32(Phone);
-            Update.Status = Status;
+            //Update.LattiTube = Convert.ToDouble(LattiTube);
+            //Update.LongiTube = Convert.ToDouble(LongiTube);
+            //Update.IP = IP;
+            //Update.Phone = Convert.ToInt32(Phone);
+            //Update.Status = Status;
             db.Entry(Update).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return Json("1", JsonRequestBehavior.AllowGet);
@@ -75,11 +75,11 @@ namespace AdminPanelDevice.Controllers
           
             tower.NumberID = db.towers.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
             tower.Name = TowerType.Name;
-            tower.LattiTube = TowerType.LattiTube;
-            tower.LongiTube = TowerType.LongiTube;
-            tower.IP = TowerType.IP;
-            tower.Phone = TowerType.Phone;
-            tower.Status = TowerType.Status;
+            //tower.LattiTube = TowerType.LattiTube;
+            //tower.LongiTube = TowerType.LongiTube;
+            //tower.IP = TowerType.IP;
+            //tower.Phone = TowerType.Phone;
+            //tower.Status = TowerType.Status;
 
             db.towers.Add(tower);
             db.SaveChanges();

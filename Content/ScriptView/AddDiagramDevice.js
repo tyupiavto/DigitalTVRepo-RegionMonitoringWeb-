@@ -28,6 +28,7 @@ function foo() {
                 if ($(this).position().top < 0) {
                     $(this).css({ 'top': '0' });
                 }
+                $('#settingsDiv').html("");
                 saveDiagram();
             }
         });
@@ -54,6 +55,7 @@ $("#mainDiv").droppable({
             var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft + 4) + 'px; top: ' + (droppedTop - 1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
             $(this).append(item);
             diagramLenght++;
+            $('#settingsDiv').html("");
             foo();
             saveDiagram();
         }
@@ -64,6 +66,7 @@ $("#mainDiv").droppable({
             var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1) + '" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
             $(this).append(item);
             diagramLenght++;
+            $('#settingsDiv').html("");
             foo();
             addPoints();
             saveDiagram();
@@ -101,6 +104,7 @@ $("#mainDiv").droppable({
                         $('#IPModal').css("margin-top", "" + dPos.top + "px");
                         $('#IPModal').css("margin-left", "" + dPos.left - 100 + "px");
                         diagramLenght++;
+                        $('#settingsDiv').html("");
                         foo();
                         saveDiagram();
                     }

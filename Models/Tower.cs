@@ -14,11 +14,6 @@ namespace AdminPanelDevice.Models
         public int ID { get; set; }
         public int NumberID { get; set; }
         public string Name { get; set; }
-        public double LattiTube { get; set; }
-        public double LongiTube { get; set; }
-        public string IP { get; set; }
-        public int Phone { get; set; }
-        public string Status { get; set; }
         public int CountriesID { get; set; }
         public int StateID { get; set; }
         public int CityCheckedID { get; set; }

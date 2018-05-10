@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     var countrieName = ViewBag.countrieName;
 }
@@ -75,7 +74,6 @@
 
     </div>
     <div id="settingsDiv">
-
     </div>
 </div>
 
@@ -437,10 +435,12 @@
             //  saveDiagram();
         });
 
-        $('#countrie').click(function () {
-            $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        });
-
+        //$('#countrie').click(function () {
+        //    $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        //});
+        //$('#tower_menu').click(function () {
+        //    $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
+        //});
         $('#countries li').draggable({
             helper: 'clone',
             revert: 'invalid'
@@ -449,11 +449,7 @@
             helper: 'clone',
             revert: 'invalid'
         });
-        $('#tower_menu').click(function () {
-            $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        });
-
-     
+            
 
         //    function foo() {
         //        $('.foo').each(function () {

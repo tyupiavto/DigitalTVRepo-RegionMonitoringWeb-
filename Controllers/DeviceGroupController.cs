@@ -419,16 +419,16 @@ namespace AdminPanelDevice.Controllers
           
             if (text == "undefined")
                 text = "";
-            //try
-            //{
-            var path = Server.MapPath(@"~/HtmlText/html.txt");
-            System.IO.StreamWriter htmlText = new StreamWriter(path);
+            try
+            {
+                var path = Server.MapPath(@"~/HtmlText/html.txt");
+                System.IO.StreamWriter htmlText = new StreamWriter(path);
 
             htmlText.Write(text);
             htmlText.Close();
-          
-            //}
-            //catch { }
+
+            }
+            catch { }
             return Json("");
         }
 
@@ -1058,7 +1058,7 @@ namespace AdminPanelDevice.Controllers
             DefaultInterval = intervalNumber;
             ViewBag.TowerIP = TowerIP;
             ViewBag.defaultInterval = DefaultInterval;
-
+            
            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
@@ -1066,11 +1066,14 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult TowerGpsSetting(List<string> devicetype)
         {
             List<DeviceType> gpsDevice = new List<DeviceType>();
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            if (devicetype != null)
             {
-                foreach (var item in devicetype)
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
-                    gpsDevice.Add( connection.Query<DeviceType>("Select * from DeviceType where Name like N'"+item+"%'").FirstOrDefault());
+                    foreach (var item in devicetype)
+                    {
+                        gpsDevice.Add(connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + item + "%'").FirstOrDefault());
+                    }
                 }
             }
             return PartialView("_Gps", gpsDevice);
@@ -1276,6 +1279,7 @@ namespace AdminPanelDevice.Controllers
 
                var point=connection.Query<PointConnection>("select * from PointConnection").ToList();
                var towerdevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+               var tower = connection.Query<Tower>("select * from Tower").ToList();
 
                 List<PointConnectionPreset> pr = new List<PointConnectionPreset>();
                 foreach (var item in point)
@@ -1310,9 +1314,26 @@ namespace AdminPanelDevice.Controllers
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
                 }
+
+                List<TowerPreset> towerpreset = new List<TowerPreset>();
+                tower.ForEach(t =>
+                {
+                    TowerPreset tp = new TowerPreset();
+                    tp.CountriesID = t.CountriesID;
+                    tp.CountriesListID = t.CountriesListID;
+                    tp.CityCheckedID = t.CityCheckedID;
+                    tp.StateID = t.StateID;
+                    tp.NumberID = t.NumberID;
+                    tp.PresetName = files.PresetName;
+                    tp.Name = t.Name;
+                    towerpreset.Add(tp);
+                });
+
                 db.PointConnectionPresets.AddRange(pr);
                 db.TowerDevicesPresets.AddRange(td);
+                db.TowerPreset.AddRange(towerpreset);
                 db.SaveChanges();
+
                 System.IO.StreamWriter htmlText = new StreamWriter(fileName);
 
                 htmlText.Write(text);
@@ -1353,9 +1374,11 @@ namespace AdminPanelDevice.Controllers
                 {
                     html = Html;
                 }
+                connection.Query<Tower>("delete from Tower");
                 connection.Query<PointConnection>("delete From  PointConnection");
                 pointConnectionPreset = connection.Query<PointConnectionPreset>("Select * From  PointConnectionPreset where PresetName='" + presetSearchName + "'").ToList();
-               var towerdevice= connection.Query<TowerDevicesPreset>("Select * From  TowerDevicesPreset where PresetName='" + presetSearchName + "'").ToList();
+                 var towerdevice= connection.Query<TowerDevicesPreset>("Select * From  TowerDevicesPreset where PresetName='" + presetSearchName + "'").ToList();
+                 var tower = connection.Query<TowerPreset>("select * from TowerPreset where PresetName='" + presetSearchName + "'").ToList();
 
                 List<TowerDevices> td = new List<TowerDevices>();
                 foreach (var it in towerdevice)
@@ -1386,6 +1409,20 @@ namespace AdminPanelDevice.Controllers
                     poi.Add(presetpoint);
                    
                 }
+
+                List<Tower> tow = new List<Tower>();
+                tower.ForEach(t => {
+                    Tower tw = new Tower();
+                    tw.CityCheckedID = t.CityCheckedID;
+                    tw.CountriesID = t.CountriesID;
+                    tw.CountriesListID = t.CountriesListID;
+                    tw.Name = t.Name;
+                    tw.NumberID = t.NumberID;
+                    tw.StateID = t.StateID;
+                    tow.Add(tw);
+                });
+
+                db.towers.AddRange(tow);
                 db.TowerDevices.AddRange(td);
                 db.PointConnections.AddRange(poi);
                 db.SaveChanges();

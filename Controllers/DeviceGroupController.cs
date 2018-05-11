@@ -297,34 +297,101 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
+                List<City> ct = new List<City>();
+
                 var countrieID = connection.Query<Countrie>("select * from Countrie where CountrieName='" + CountrieName + "'").FirstOrDefault().ID;
-                var stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
-                var cityChecked = connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "' and StateID='" + stateID + "'").ToList().Select(t => t.CityCheckedID).ToList();
-
-                if (citySearchName == null & StateName != null && StateName != "")
+                var cityChecked = connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "'").ToList().Select(t => t.CityCheckedID).ToList();
+                if (StateName != "State")
                 {
-                   stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
-                   city=connection.Query<City>("Select * from City where  StateID='" + stateID + "'").ToList();
+                    var stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
 
-                    ViewBag.city = city;
-                }
-                if (citySearchName != null & StateName != null && StateName != "")
-                {
-                    if (citySearchName.Length >= 1)
+                    if (citySearchName == null & StateName != null && StateName != "")
                     {
-                       
-                        var citys = connection.Query<City>("select * from City where StateID='" + stateID + "' Select * from City where CityName like N'" + citySearchName + "%'").ToList();
+                        stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
+                        city = connection.Query<City>("Select * from City where  StateID='" + stateID + "'").ToList();
+
+                        ViewBag.city = city;
+                    }
+
+                    if (citySearchName != null & StateName != null && StateName != "")
+                    {
+                        if (citySearchName.Length >= 1)
+                        {
+                            var citys = connection.Query<City>("select * from City where StateID='" + stateID + "' Select * from City where CityName like N'" + citySearchName + "%'").ToList();
+                            searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
+                            ViewBag.city = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
+                        }
+                        else
+                        {
+                            city = connection.Query<City>("Select * From City where StateID='" + stateID + "'").ToList();
+                            // ViewBag.city = city;
+                        }
+                    }
+                    ViewBag.DiagramID = CountriesListID;
+                    if (cityChecked.Count != 0)
+                    {
+                        cityChecked.ForEach(check =>
+                        {
+                            city.ForEach(c =>
+                            {
+                                if (c.ID == check)
+                                {
+                                    c.CheckedID = check;
+                                }
+                            });
+                        });
+                    }
+                    ViewBag.city = city;
+                    return PartialView("_City", cityChecked);
+                }
+                else
+                {
+                    var cityID = connection.Query<States>("select ID from States where CountrieID='" + countrieID + "'").ToList();
+                    cityID.ForEach(cit =>
+                    {
+                        var city = connection.Query<City>("Select * from City where StateID='" + cit.ID + "'").ToList();
+                        ct.AddRange(city);
+                    });
+
+                    if (citySearchName != null && citySearchName.Length >= 1)
+                    {
                         searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
-                        ViewBag.city = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
+                        var cit = ct.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
+                        if (cityChecked.Count != 0)
+                        {
+                            cityChecked.ForEach(check =>
+                            {
+                                cit.ForEach(c =>
+                                {
+                                    if (c.ID == check)
+                                    {
+                                        c.CheckedID = check;
+                                    }
+                                });
+                            });
+                        }
+                        ViewBag.city = cit;
                     }
                     else
                     {
-                        city = connection.Query<City>("Select * From City where StateID='" + stateID + "'").ToList();
-                        ViewBag.city = city;
+
+                        if (cityChecked.Count != 0)
+                        {
+                            cityChecked.ForEach(check =>
+                            {
+                                ct.ForEach(c =>
+                                {
+                                    if (c.ID == check)
+                                    {
+                                        c.CheckedID = check;
+                                    }
+                                });
+                            });
+                        }
+                        ViewBag.city = ct;
                     }
+                    return PartialView("_City");
                 }
-                ViewBag.DiagramID = CountriesListID;
-                return PartialView("_City", cityChecked);
             }
         }
 
@@ -362,23 +429,26 @@ namespace AdminPanelDevice.Controllers
 
             //db.towers.Add(tower);
             //db.SaveChanges();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+               var  stateID = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().StateID;
+               stateName = connection.Query<States>("Select * from States where ID='" + stateID + "'").FirstOrDefault().StateName;
+                cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
             new CityAddTower(countrieName, stateName, cityName, cityid, CountriesListID);
-
+            }
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult TowerDelete(int towerDeleteID, int cityid)
+        public JsonResult TowerDelete(int towerDeleteID, int cityid,string cityName)
         {
-            //try
-            //{
-            //    var deleteTower = db.towers.Where(t => t.CountriesListID == towerDeleteID).Where(c => c.CityCheckedID == cityid).FirstOrDefault();
-            //    db.towers.Remove(deleteTower);
-            //    db.SaveChanges();
-            //}
-            //catch { }
-            new CityDeleteTower(towerDeleteID, cityid);
-            return Json("");
+
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
+                new CityDeleteTower(towerDeleteID, cityid);
+                return Json("");
+            }
         }
 
         [HttpPost]
@@ -1240,17 +1310,18 @@ namespace AdminPanelDevice.Controllers
                 db.TowerDevices.Add(td);
                 db.SaveChanges();
 
-                DateTime start = DateTime.Now;
-                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                var trapnewDev = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'").FirstOrDefault();
-                if (trapnewDev != null)
-                {
-                   return Json("1");
-                }
-                else
-                {
+                //DateTime start = DateTime.Now;
+                //DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+                //var trapnewDev = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'and IpAddres='" + IPaddress + "'").FirstOrDefault();
+
+                //if (trapnewDev != null)
+                //{
+                //   return Json("1");
+                //}
+                //else
+                //{
                     return Json("1");
-                }
+                //}
             }
         }
         [HttpPost]
@@ -1280,7 +1351,7 @@ namespace AdminPanelDevice.Controllers
                var point=connection.Query<PointConnection>("select * from PointConnection").ToList();
                var towerdevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
                var tower = connection.Query<Tower>("select * from Tower").ToList();
-
+                var PresetID = connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='" + files.PresetName + "'").FirstOrDefault().ID;
                 List<PointConnectionPreset> pr = new List<PointConnectionPreset>();
                 foreach (var item in point)
                 {
@@ -1291,9 +1362,8 @@ namespace AdminPanelDevice.Controllers
                     presetpoint.TargetId = item.TargetId;
                     presetpoint.GetUuids = item.GetUuids;
                     presetpoint.PresetName = files.PresetName;
-                    presetpoint.PresetID= connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='"+files.PresetName+"'").FirstOrDefault().ID;
+                    presetpoint.PresetID = PresetID;
                     pr.Add(presetpoint);
-                  
                 }
 
                 List<TowerDevicesPreset> td = new List<TowerDevicesPreset>();
@@ -1310,7 +1380,7 @@ namespace AdminPanelDevice.Controllers
                     tdp.TowerName = it.TowerName;
                     tdp.TowerID = it.TowerID;
                     tdp.PresetName=files.PresetName;
-                    tdp.PresetID = connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='" + files.PresetName + "'").FirstOrDefault().ID;
+                    tdp.PresetID = PresetID;
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
                 }
@@ -1326,6 +1396,7 @@ namespace AdminPanelDevice.Controllers
                     tp.NumberID = t.NumberID;
                     tp.PresetName = files.PresetName;
                     tp.Name = t.Name;
+                    tp.PresetID = PresetID;
                     towerpreset.Add(tp);
                 });
 

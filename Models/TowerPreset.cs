@@ -19,5 +19,9 @@ namespace AdminPanelDevice.Models
         public int StateID { get; set; }
         public int CityCheckedID { get; set; }
         public int CountriesListID { get; set; }
+        public int PresetID { get; set; }
+
+        [ForeignKey("PresetID")]
+        public PresetDiagramName PresetDiagramName { get; set; }
     }
 }

@@ -19,9 +19,10 @@ namespace AdminPanelDevice.Infrastructure
             {
                 try
                 {
-                    var deleteTower = connection.Query<Tower>("Select * towers where CountriesListID='" + towerDeleteID + "'").Where(c => c.CityCheckedID == cityID).FirstOrDefault();
-                    db.towers.Remove(deleteTower);
-                    db.SaveChanges();
+                    connection.Query<Tower>("delete from Tower where CountriesListID='" + towerDeleteID + "' and CityCheckedID='" + cityID + "'");
+                    //var deleteTower = connection.Query<Tower>("Select * towers where CountriesListID='" + towerDeleteID + "'").Where(c => c.CityCheckedID == cityID).FirstOrDefault();
+                    //db.towers.Remove(deleteTower);
+                    //db.SaveChanges();
                 }
                 catch { }
             }

@@ -115,7 +115,7 @@ $('body').on('click touchend', '#typeSelect', function (e) {
     }
     else
         if (e.type == "click" && !handled) {
-            $('#typeDropDownList').css({ 'width': '94%'}).toggle();
+            $('#typeDropDownList').css({ 'width': '93%'}).toggle();
             $.post("/DeviceGroup/countrieSearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {
                 $('#countrie_partial').html("");
                 $('#countrie_partial').html(Response);
@@ -145,7 +145,7 @@ $('body').on('click touchend', '#typeSelectState', function (e) {
     }
     else
         if (e.type == "click" && !handledstate) {
-            $('#typeDropDownListState').css({ 'width': '94 %' }).toggle();
+            $('#typeDropDownListState').css({ 'width': '93%' }).toggle();
                CountrieName = $('#typeSelect #countrieName').text();
             $.post("/DeviceGroup/stateSearch", { CountrieName: CountrieName, CityName: CityName }, function (Response) {
                 $('#state_partial').html("");
@@ -172,11 +172,11 @@ $('body').on('click touchend', '#typeSelectCity', function (e) {
     var width = $(this).width();
     if (e.type == "touchend") {
         handledcity = true;
-        $('#typeDropDownListCity').css({ 'width': '94%' }).toggle();
+        $('#typeDropDownListCity').css({ 'width': '93%' }).toggle();
     }
     else
         if (e.type == "click" && !handledcity) {
-            $('#typeDropDownListCity').css({ 'width': '94%'}).toggle();
+            $('#typeDropDownListCity').css({ 'width': '93%'}).toggle();
             CountrieName = $('#typeSelect #countrieName').text();
             StateName = $('#state').text();
             $.post("/DeviceGroup/citySearch", { CountrieName: CountrieName, StateName: StateName, CityName: CityName }, function (Response) {

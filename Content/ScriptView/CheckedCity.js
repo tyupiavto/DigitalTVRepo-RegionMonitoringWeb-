@@ -42,9 +42,10 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
             $("#city_checked" + cityid).prop('checked', false);
             var id = $(".city_remove" + cityid + "_" + $(this).parent().attr("value")).attr("id");
             jsPlumb.remove($('#' + id));
-            towerDeleteID = $(this).parent().attr("value");
-            $.post("/DeviceGroup/TowerDelete", { towerDeleteID: towerDeleteID, cityid: cityid }, function () {
-                // saveDiagram();
+            towerDeleteID = $(this).parent().parent().parent().parent().attr("value");
+            cityName = $('#city_checked' + cityid).val();
+            $.post("/DeviceGroup/TowerDelete", { towerDeleteID: towerDeleteID, cityid: cityid, cityName: cityName }, function () {
+                 saveDiagram();
             });
         }
     });

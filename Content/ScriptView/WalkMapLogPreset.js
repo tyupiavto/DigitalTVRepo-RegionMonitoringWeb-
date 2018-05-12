@@ -278,6 +278,68 @@ $('body').on('click touched', '.log_check div', function () { // log checked pre
         $("#log_checked" + logID).prop('checked', false);
     }
 });
+
+$('body').on('click touched', '.map_check_all div', function () { // Map check select all
+    var mapID = $(this).attr("id");
+
+    if ($('#map_checked_all').is(':checked') == false) {
+
+        if ($('#log_checked_all').is(':checked') == true) { // check log remove
+            $('#log_checked_add_all').removeClass("checked").addClass("");
+            $("#log_checked_all").prop('checked', false);
+        }
+
+        $('#map_checked_add_all').removeClass("").addClass("checked");
+        $("#map_checked_all").prop('checked', true);
+        defineWalk = 1;
+        var check = true;
+        $.post("/DeviceGroup/SelectAllMap", { check:check }, function (Response) {
+            $('#device_settings').html("");
+            $('#device_settings').html(Response);
+        }, 'text');
+    } else {
+        var check = false;
+        $('#map_checked_add_all').removeClass("checked").addClass("");
+        $("#map_checked_all").prop('checked', false);
+        defineWalk = 0;
+        $.post("/DeviceGroup/SelectAllMap", { check: check}, function (Response) {
+            $('#device_settings').html("");
+            $('#device_settings').html(Response);
+        }, 'text');
+    }
+});
+
+$('body').on('click touched', '.log_check_all div', function () { // Log check select all
+    var mapID = $(this).attr("id");
+
+    if ($('#log_checked_all').is(':checked') == false) {
+
+        if ($('#map_checked_all').is(':checked') == true) { // check map remove
+            $('#map_checked_add_all').removeClass("checked").addClass("");
+            $("#map_checked_all").prop('checked', false);
+        }
+
+        $('#log_checked_add_all').removeClass("").addClass("checked");
+        $("#log_checked_all").prop('checked', true);
+        defineWalk = 1;
+        var check = true;
+        $.post("/DeviceGroup/SelectAllLog", { check: check }, function (Response) {
+            $('#device_settings').html("");
+            $('#device_settings').html(Response);
+        }, 'text');
+    } else {
+        var check = false;
+        $('#log_checked_add_all').removeClass("checked").addClass("");
+        $("#log_checked_all").prop('checked', false);
+        defineWalk = 0;
+        $.post("/DeviceGroup/SelectAllLog", { check: check }, function (Response) {
+            $('#device_settings').html("");
+            $('#device_settings').html(Response);
+        }, 'text');
+    }
+});
+
+
 $('#preset_save').click(function () {
     presetName = $('#preset_name').val();
     IpAddress = $('#tower_ip').val();

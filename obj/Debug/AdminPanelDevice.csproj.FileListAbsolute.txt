@@ -217,3 +217,4 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\System.Web.Helpers.xml
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\System.Web.Mvc.xml
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.csproj.CopyComplete
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Collections.Immutable.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.csprojResolveAssemblyReference.cache

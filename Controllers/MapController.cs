@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -67,9 +68,9 @@ namespace AdminPanelDevice.Controllers
                 {
                     mapTower mapt = new mapTower();
                     item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
-                    mapt.lattitube = Convert.ToDouble(item.Lattitube);
+                    mapt.lattitube = Double.Parse(item.Lattitube, CultureInfo.InvariantCulture);
                     item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
-                    mapt.longitube = Convert.ToDouble(item.Longitube);
+                    mapt.longitube = Double.Parse(item.Longitube, CultureInfo.InvariantCulture);
                     if (item.PresetName != null)
                     {
                         mapt.cityname = item.PresetName;
@@ -93,10 +94,10 @@ namespace AdminPanelDevice.Controllers
                 LinesCon.Add(new mapLine());
                 ViewBag.MapGPS = TowerMapCord;
                 ViewBag.TowerLine = LinesCon;
-                var start = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\start.txt");
-                var style = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\mapstyle.txt");
-                ViewBag.Style = style;
-                ViewBag.Start = start;
+                //var start = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\start.txt");
+                //var style = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\mapstyle.txt");
+                //ViewBag.Style = style;
+                //ViewBag.Start = start;
             }
             return View();
         }

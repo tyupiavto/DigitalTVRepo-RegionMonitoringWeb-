@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Web;
 
 namespace AdminPanelDevice.Infrastructure
@@ -17,8 +18,10 @@ namespace AdminPanelDevice.Infrastructure
     {
         DeviceContext db = new DeviceContext();
         Hexstring hex = new Hexstring();
+
         public TrapListen()
         {
+
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 162);
             EndPoint ep = (EndPoint)ipep;
@@ -74,5 +77,6 @@ namespace AdminPanelDevice.Infrastructure
                 }
             }
         }
+
     }
 }

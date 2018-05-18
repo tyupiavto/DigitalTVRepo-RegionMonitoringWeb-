@@ -36,8 +36,8 @@ input::-webkit-input-placeholder {
     border-spacing: 0px;
     /*background-position: 300px;*/
     min-width: 880px;
-    margin-left: -150px;
-    margin-top: -20px;
+    margin-left: -350px;
+    /*margin-top: -20px;*/
 }
 
 .information_walk td {

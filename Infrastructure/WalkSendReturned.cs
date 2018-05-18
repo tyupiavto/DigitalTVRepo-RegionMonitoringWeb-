@@ -29,18 +29,8 @@ namespace AdminPanelDevice.Infrastructure
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var mibInf = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
-                // MibWalkIndicator = false;
 
-                //PresetIND = 0;
-                //WalkTimeOunt = 0;
-                //walkList.Clear();
-                //GPSCoordinate.Clear();
-                //CheckedLog.Clear();
-                //CheckedMap.Clear();
-                //IPadrress = IP;
-                //ViewBag.IP = IPadrress;
-
-                OctetString community = new OctetString(communityRead);
+                OctetString community1 = new OctetString(communityRead);
 
                 AgentParameters param = new AgentParameters(community);
                 if (Version == "V1")
@@ -145,6 +135,8 @@ namespace AdminPanelDevice.Infrastructure
                                         walk.DeviceName = DeviceName;
                                         walk.TowerName = towerName;
                                         walk.DeviceID =deviceID;
+                                        walk.IP = IP;
+                                        walk.Version = Version;
                                         walkList.Add(walk);
                                         lastOid = v.Oid;
 

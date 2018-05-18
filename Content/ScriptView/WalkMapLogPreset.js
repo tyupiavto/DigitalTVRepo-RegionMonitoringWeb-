@@ -1,9 +1,11 @@
 ﻿
-var deviceID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName,defineWalk;;
-
+var deviceID, DeviceName, intervalNumber,intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName,defineWalk;;
+var resolutionWidht = screen.width;
+var resolutionHeight = screen.height;
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     deviceID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.device_header' + deviceID).attr("value");
+
     $('#device_settings_name').text($('.tower_name' + deviceID).attr("title"));
     towerID = $('.tower_name' + deviceID).attr("title");
     $('#preset_name').val("");
@@ -11,6 +13,13 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerID: towerID, deviceID: deviceID, defineWalk: defineWalk }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
+
+        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        $('.scroll_walk').css('max-height', resolutionHeight -340 + 'px');
+
     }, 'text');
     });
 
@@ -23,7 +32,7 @@ $('#walk_send').click(function () { // device walk ip port version
     var towerName = $('#device_settings_name').text();
     $('#load_walk').css("display", "block");
     communityRead = $('#read_community').val();
-    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName: DeviceName, deviceID: deviceID}, function (Response) {
+    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName: DeviceName, deviceID: deviceID, Version:Version}, function (Response) {
         $('#load_walk').css("display", "none");
 
         $('#walk_checked_add').removeClass("").addClass("checked");
@@ -31,6 +40,12 @@ $('#walk_send').click(function () { // device walk ip port version
 
         $('#device_settings').html("");
         $('#device_settings').html(Response);
+
+        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     });
 });
 
@@ -87,6 +102,12 @@ $('body').on('click touchend', '.walk_list_search li', function () { // walk lis
         $('#device_settings').html("");
         $('#device_settings').html(Response);
         $('#walk_list').text(pageList);
+
+        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     });
 });
 
@@ -144,8 +165,13 @@ $('body').on('click touchend', '.preset_list_remove li', function () { // select
     $('#preset_name').val($(this).children().attr("value"));
     $.post("/DeviceGroup/PresetSearch", { presetSearchName: presetSearchName}, function (Response) {
         $('#device_settings').html("");
-        $('#device_settings').html("");
         $('#device_settings').html(Response);
+
+        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     },'text');
 });
 

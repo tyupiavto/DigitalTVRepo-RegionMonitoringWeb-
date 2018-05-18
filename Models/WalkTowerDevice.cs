@@ -25,5 +25,7 @@ namespace AdminPanelDevice.Models
         public string Type { get; set; }
         public int DeviceID { get; set; }
         public int GpsID { get; set; }
+        public string IP { get; set; }
+        public string Version { get; set; }
     }
 }

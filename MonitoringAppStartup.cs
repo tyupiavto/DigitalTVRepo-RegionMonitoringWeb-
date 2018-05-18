@@ -13,8 +13,7 @@ namespace AdminPanelDevice
         {
             try
             {
-                //Thread thread = new Thread(() => new TrapListen());
-                //thread.Start();
+                //HangfireBootstrapper.Instance.Start();
             }
             catch
             {

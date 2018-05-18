@@ -1,4 +1,5 @@
 ﻿using AdminPanelDevice.Infrastructure;
+using Hangfire;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,11 @@ namespace AdminPanelDevice
     {
         protected void Application_Start()
         {
-            Thread thread = new Thread(() => new TrapListen());
-            thread.Start();
+            //Thread thread = new Thread(() => new TrapListen());
+            //thread.Start();
+            //HangfireBootstrapper.Instance.Start();
+           // GlobalConfiguration.Configuration.UseSqlServerStorage("DeviceConnection");
+
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

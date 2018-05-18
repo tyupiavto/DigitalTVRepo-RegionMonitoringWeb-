@@ -265,17 +265,33 @@ body {
 .GpsSetting {
     float: right;
     margin-top: 3px;
-    margin-right: 13px;
+    margin-right: 5px;
     max-height: 20px;
     cursor: pointer;
 }
 .minimized {
     float: right;
     margin-top: 3px;
+    margin-right: 10px;
+    max-height: 20px;
+    cursor: pointer;
+}
+.paly_stop_tower{
+    float: right;
+    margin-top: 3px;
     margin-right: 5px;
     max-height: 20px;
     cursor: pointer;
 }
+
+.paly_stop_device {
+    float: right;
+    margin-top: 3px;
+    margin-right: 5px;
+    max-height: 20px;
+    cursor: pointer;
+}
+
 .version_settings {
     float: right;
     margin-top: 3px;

@@ -83,42 +83,38 @@ $(".remove-menu li").click(function (event) {
 });
 
 
-//$('body').on('contextmenu touched', '.tower', function () { // remove tower
-//    deviceRemoveID = $(this).attr("id");
-//    DeviceName = $(this).attr("name");
-//    towerID = $(this).attr("title");
-//    $(document).bind("contextmenu", function (event, ui) {
-//        event.preventDefault();
-//        $(this).unbind(event);
-//        $(".remove-menu").finish().toggle(100).css({
-//            top: (event.pageY) + "px",
-//            left: (event.pageX) + "px"
-//        });
-//        event.stopPropagation();
-//    });
-//});
+$('body').on('contextmenu touched', '#towe-remove', function () { // remove tower
+    towerRemoveID = $(this).parent().parent().parent().attr("id");
+    //DeviceName = $(this).attr("name");
+    //towerID = $(this).attr("title");
+    $(document).bind("contextmenu", function (event, ui) {
+        event.preventDefault();
+        $(this).unbind(event);
+        $(".remove-tower-menu").finish().toggle(100).css({
+            top: (event.pageY) + "px",
+            left: (event.pageX) + "px"
+        });
+        event.stopPropagation();
+    });
+});
 
 
 
-//$(".remove-menu li").click(function (event) {
+$(".remove-tower-menu li").click(function (event) {
 
-//    switch ($(this).attr("data-action")) {
-//        case "RemoveDevice":
-//            deviceTopMinimizeID = 0;
-//            var towID = $('#' + towerID).parent().parent().attr("id");
-//            $('.add' + towID + '  table').each(function () {
-//                if (deviceTopMinimizeID == 1) {
-//                    $('.tower_name' + $(this).attr("id")).css("top", "" + ($('.tower_name' + $(this).attr("id")).position().top - 35) + "px");
-//                }
-//                if (deviceRemoveID == $(this).attr("id")) {
-//                    $('.tower_name' + deviceRemoveID).remove();
-//                    var height = $(".add" + $('#' + towerID).parent().parent().attr("id")).height();
-//                    $('.add' + towID).height(height - 35);
-//                    deviceTopMinimizeID = 1;
-//                    $.post("/DeviceGroup/RemoveDevice", { DeviceName: DeviceName, towerID: towerID }, function () { }, 'json');
-//                }
-//            });
-//            break;
-//    }
-//    $(".remove-menu").hide(100);
-//});
+    switch ($(this).attr("data-action")) {
+        case "RemoveTower":
+            deviceTopMinimizeID = 0;
+            var towID = $('#' + towerID).parent().parent().attr("id");
+            $('.add' + towerRemoveID + '  table').each(function () {   
+                var deviceName = "tower_" + towerRemoveID;
+                   deviceRemoveID = $(this).attr("id");
+                $.post("/DeviceGroup/RemoveTower", { deviceName: deviceName, deviceRemoveID: deviceRemoveID }, function () { }, 'json');
+            });
+            jsPlumb.remove($('.device_list_name' + towerRemoveID));
+            foo();
+            saveDiagram();
+            break;
+    }
+    $(".remove-tower-menu").hide(100);
+});

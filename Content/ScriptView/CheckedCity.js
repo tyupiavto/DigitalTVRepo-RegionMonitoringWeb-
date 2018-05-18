@@ -49,7 +49,6 @@ $(document).on('click touchend', '.minimized', function () { // add device setti
             });
         }
     });
-
     function addPoints() {
         jsPlumb.setContainer("mainDiv");
         jsPlumb.draggable($('.foo'), {

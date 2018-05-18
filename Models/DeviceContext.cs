@@ -39,6 +39,7 @@ namespace AdminPanelDevice.Models
         public DbSet<WalkTowerDevice> WalkTowerDevices { get; set; }
         public DbSet<WalkPreset> WalkPresets { get; set; }
         public DbSet<TowerPreset> TowerPreset { get; set; }
+        public DbSet<DeviceThreadOnOff> DeviceThreadOnOff { get; set; }
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 
 

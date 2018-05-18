@@ -50,7 +50,7 @@ namespace AdminPanelDevice.Controllers
         public static int CountriesListID;
         public static string Html;
         public static int DeviceGroupID;
-        public static int pageListNumber = 20;
+        public static int pageListNumber = 50;
         public static int DefaultInterval = 60;
         public static List<int> CheckedLog = new List<int>();
         public static List<int> CheckedMap = new List<int>();
@@ -93,16 +93,6 @@ namespace AdminPanelDevice.Controllers
 
             return View(mibInformation.ToPagedList(page ?? 1, pageListNumber));
         }
-        //public static string Hexstring(string hex)
-        //{
-        //    string strvalue = "";
-        //    string[] strsplit = hex.Split(' ');
-        //    foreach (String hexa in strsplit)
-        //    {
-        //        strvalue = strvalue+ char.ConvertFromUtf32(Convert.ToInt32(hexa, 16));
-        //    }
-        //    return strvalue;
-        //}
 
         [HttpPost]
         public JsonResult GroupCreate(string GroupName)
@@ -1403,12 +1393,14 @@ namespace AdminPanelDevice.Controllers
                 db.PresetDiagramNames.Add(prname);
                 db.SaveChanges();
 
-               var point=connection.Query<PointConnection>("select * from PointConnection").ToList();
-               var towerdevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
-               var tower = connection.Query<Tower>("select * from Tower").ToList();
+                var point = connection.Query<PointConnection>("select * from PointConnection").ToList();
+                var towerdevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+                var tower = connection.Query<Tower>("select * from Tower").ToList();
                 var PresetID = connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='" + files.PresetName + "'").FirstOrDefault().ID;
                 List<PointConnectionPreset> pr = new List<PointConnectionPreset>();
-                foreach (var item in point)
+                //foreach (var item in point)
+                //{
+                point.ForEach(item =>
                 {
                     PointConnectionPreset presetpoint = new PointConnectionPreset();
                     presetpoint.PointLeft = item.PointLeft;
@@ -1419,10 +1411,13 @@ namespace AdminPanelDevice.Controllers
                     presetpoint.PresetName = files.PresetName;
                     presetpoint.PresetID = PresetID;
                     pr.Add(presetpoint);
-                }
+                });
+                //}
 
                 List<TowerDevicesPreset> td = new List<TowerDevicesPreset>();
-                foreach (var it in towerdevice)
+                //foreach (var it in towerdevice)
+                //{
+                towerdevice.ForEach(it =>
                 {
                     TowerDevicesPreset tdp = new TowerDevicesPreset();
                     tdp.CityID = it.CityID;
@@ -1434,12 +1429,12 @@ namespace AdminPanelDevice.Controllers
                     tdp.StateName = it.StateName;
                     tdp.TowerName = it.TowerName;
                     tdp.TowerID = it.TowerID;
-                    tdp.PresetName=files.PresetName;
+                    tdp.PresetName = files.PresetName;
                     tdp.PresetID = PresetID;
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
-                }
-
+                });
+            //}
                 List<TowerPreset> towerpreset = new List<TowerPreset>();
                 tower.ForEach(t =>
                 {
@@ -1490,8 +1485,6 @@ namespace AdminPanelDevice.Controllers
                 Html = null;
                 if (Html == null)
                 {
-                     
-
                     html = System.IO.File.ReadAllText(Server.MapPath("/HtmlText/" + presetSearchName + ".txt"));
                     System.IO.File.WriteAllText(path, html);
                     Html = "";
@@ -1507,8 +1500,9 @@ namespace AdminPanelDevice.Controllers
                  var tower = connection.Query<TowerPreset>("select * from TowerPreset where PresetName='" + presetSearchName + "'").ToList();
 
                 List<TowerDevices> td = new List<TowerDevices>();
-                foreach (var it in towerdevice)
-                {
+                //foreach (var it in towerdevice)
+                //{
+                    towerdevice.ForEach(it=>{ 
                     TowerDevices tdp = new TowerDevices();
                     tdp.CityID = it.CityID;
                     tdp.CityName = it.CityName;
@@ -1521,11 +1515,13 @@ namespace AdminPanelDevice.Controllers
                     tdp.TowerID = it.TowerID;
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
-                }
+                    });
+                //}
 
                 List<PointConnection> poi = new List<PointConnection>();
-                foreach (var item in pointConnectionPreset)
-                {
+                pointConnectionPreset.ForEach(item=> { 
+                //foreach (var item in pointConnectionPreset)
+                //{
                     PointConnection presetpoint = new PointConnection();
                     presetpoint.PointLeft = item.PointLeft;
                     presetpoint.PointRight = item.PointRight;
@@ -1533,8 +1529,8 @@ namespace AdminPanelDevice.Controllers
                     presetpoint.TargetId = item.TargetId;
                     presetpoint.GetUuids = item.GetUuids;
                     poi.Add(presetpoint);
-                   
-                }
+                  });
+                //}
 
                 List<Tower> tow = new List<Tower>();
                 tower.ForEach(t => {
@@ -1568,6 +1564,20 @@ namespace AdminPanelDevice.Controllers
             var path = Server.MapPath(@"~/HtmlText/"+ presetName + ".txt");
             System.IO.File.Delete(path);
             return PartialView("_DiagramPreset", presetlist);
+        }
+
+        [HttpPost]
+
+        public JsonResult RemoveTower(string deviceName, int deviceRemoveID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where TowerName='" + deviceName + "' and DeviceID='"+ deviceRemoveID + "'");
+                connection.Query<DeviceThreadOnOff>("delete from DeviceThreadOnOff where TowerName='" + deviceName + "' and DeviceID='" + deviceRemoveID + "'");
+                connection.Query<PointConnection>("delete from PointConnection where TargetId='" + deviceName + "'");
+                connection.Query<TowerDevices>("delete from TowerDevices where TowerID='" + deviceName + "' and DeviceID='" + deviceRemoveID + "'");
+            }
+                return Json("");
         }
 
     }

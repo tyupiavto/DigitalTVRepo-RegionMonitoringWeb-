@@ -13,7 +13,7 @@ namespace AdminPanelDevice
         {
             try
             {
-                //HangfireBootstrapper.Instance.Start();
+                HangfireBootstrapper.Instance.Start();
             }
             catch
             {

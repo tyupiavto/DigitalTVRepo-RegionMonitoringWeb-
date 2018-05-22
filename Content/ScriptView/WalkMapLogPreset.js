@@ -1,5 +1,5 @@
 ﻿
-var deviceID, DeviceName, intervalNumber,intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName,defineWalk;;
+var deviceID, DeviceName, intervalNumber,intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName,defineWalk,dataType;
 var resolutionWidht = screen.width;
 var resolutionHeight = screen.height;
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
@@ -52,7 +52,7 @@ $('#walk_send').click(function () { // device walk ip port version
 
 var handled = false; var width;                
 $('body').on('click touchend', '#select_time', function (e) { // time intervel search
-    width = 0;
+    //width = 0;
     intervalID = $(this).attr("value");
     if (e.type == "touchend") {
         handled = true;
@@ -64,7 +64,7 @@ $('body').on('click touchend', '#select_time', function (e) { // time intervel s
             $.post("/DeviceGroup/ViewAddInterval", {}, function (Response) {
                 $('.search_time_interval').html("");
                 $('.search_time_interval').html(Response);
-                $('#select_time_list' + intervalID).css({ 'width': width + 0 }).toggle();
+                $('#select_time_list' + intervalID).css('width', '100%').toggle();
             }, 'text');           
         }
         else {
@@ -229,13 +229,22 @@ $('body').on('click touchend', '.removeInterval', function () {
         $('#set_datatype').text($('#Value' + setID).attr("value"));
     });
 
-    $('#SendSet').click(function () { // set send value
+$('#SendSet').click(function () { // set send value
+    var setID = $(this).attr("value");
         SetOID = $('#set_oid').text();
         SetValue = $('#set_send_value').val();
         communityWrite = $('#write_community').val();
         IP = $('#tower_ip').val();
-        $.post("/DeviceGroup/SetSend", { IP: IP, SetOID: SetOID, SetValue: SetValue, communityWrite: communityWrite }, function () {
-        },'json');
+        dataType = $('#set_datatype').text();
+        Version = $('#walk_version').text();
+        Port = $('#tower_port').val();
+        $.post("/DeviceGroup/SetSend", { IP: IP, Port: Port, SetOID: SetOID, SetValue: SetValue, communityWrite: communityWrite, dataType: dataType, Version: Version }, function (Response) {
+            $('#set_send_value').val("");
+            $('#Value' + setID).text(Response);
+            $('#Value' + setID).css("color", "#9dff75");
+            $('#description' + setID).css("color", "#9dff75");
+            $('#oidname' + setID).css("color", "#9dff75");
+        },, 'json');
     });
 
     $('#walk_search_click').click(function () { // search description value
@@ -399,6 +408,7 @@ $('body').on('click touchend', '#getButtons', function () { // open modal set an
             $('#Value' + getID).text(Response);
             $('#Value' + getID).css("color", "#9dff75");
             $('#description' + getID).css("color", "#9dff75");
+            $('#oidname' + getID).css("color", "#9dff75");
         });
     }
     else {

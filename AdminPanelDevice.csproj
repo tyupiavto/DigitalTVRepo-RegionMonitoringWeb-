@@ -367,7 +367,9 @@
     <Compile Include="Infrastructure\MibTreeCreate.cs" />
     <Compile Include="Infrastructure\PresetFill.cs" />
     <Compile Include="Infrastructure\RemoveLog.cs" />
+    <Compile Include="Infrastructure\ReturnedGetSend.cs" />
     <Compile Include="Infrastructure\SelectAllCity.cs" />
+    <Compile Include="Infrastructure\SleepInformation.cs" />
     <Compile Include="Infrastructure\SnmpVersionOne.cs" />
     <Compile Include="Infrastructure\SnmpVersionTwo.cs" />
     <Compile Include="Infrastructure\TrapDelete.cs" />
@@ -397,7 +399,7 @@
     <Compile Include="Models\Devices.cs" />
     <Compile Include="Models\DeviceThreadOnOff.cs" />
     <Compile Include="Models\DeviceType.cs" />
-    <Compile Include="Models\GetThreadListen.cs" />
+    <Compile Include="Models\GetSleepThread.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\HtmlSave.cs" />
     <Compile Include="Models\LineConnection.cs" />
@@ -547,6 +549,20 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data.Services\Data.Services.csproj">
+      <Project>{f17aa555-6990-410e-8682-7f36bbcfe8db}</Project>
+      <Name>Data.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Devices.Services\Devices.Services.csproj">
+      <Project>{c8b52d49-bd54-4cbd-afb2-452a95ff7101}</Project>
+      <Name>Devices.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service.Models\Service.Models.csproj">
+      <Project>{6a67211a-8b2b-4e5e-83a1-613af4e5d1bc}</Project>
+      <Name>Service.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

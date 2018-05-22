@@ -94,11 +94,11 @@
                     <td style="width:25%;">
                         @if (item.OIDName == "" || item.OIDName == null)
                         {
-                            <div class="descriptionDiv" title="@item.OIDName" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
+                            <div class="descriptionDiv" title="@item.OIDName" id="oidname@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Name</div>
                         }
                         else
                         {
-                            <div class="descriptionDiv" title="@item.OIDName" id="description@(item.WalkID)" value="@item.WalkOID">@item.OIDName</div>
+                            <div class="descriptionDiv" title="@item.OIDName" id="oidname@(item.WalkID)" value="@item.WalkOID">@item.OIDName</div>
                         }
                         @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                     </td>
@@ -149,8 +149,8 @@
                                 </span>
                             </li>
                         </ul>
-                        <ul class="select_time_list" id="select_time_list@(item.WalkID)" value="@item.WalkID" style="min-width:79px; width:79px; position: relative; display: none;">
-                            <div id="interva_partial@(item.WalkID)" class="search_time_interval" style="position:absolute; width:79px;">
+                        <ul class="select_time_list" id="select_time_list@(item.WalkID)" value="@item.WalkID" style="position: relative; display: none;">
+                            <div id="interva_partial@(item.WalkID)" class="search_time_interval" style="position:absolute; width:100%;">
 
                             </div>
                         </ul>

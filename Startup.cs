@@ -33,7 +33,7 @@ namespace AdminPanelDevice
             //};
 
             //app.UseHangfireDashboard("/hangfire", options);
-            //app.UseHangfireServer();
+           // app.UseHangfireServer();
         }
     }
 }

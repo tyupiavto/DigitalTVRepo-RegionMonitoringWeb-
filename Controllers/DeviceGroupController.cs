@@ -19,6 +19,9 @@ using SnmpSharpNet;
 using System.Net;
 using System.Drawing;
 using System.Text;
+using Devices.Services;
+using Service.Models;
+using Data.Services;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -612,7 +615,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult WalkSend(int? page, string IP, int Port, string Version , string communityRead,string towerName,string DeviceName,int deviceID)
+        public PartialViewResult WalkSend(int? page, _WalkSendModel walkModel)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -622,20 +625,27 @@ namespace AdminPanelDevice.Controllers
                 GPSCoordinate.Clear();
                 CheckedLog.Clear();
                 CheckedMap.Clear();
-                IPadrress = IP;
+                IPadrress = walkModel.IP;
                 ViewBag.IP = IPadrress;
                 MibWalkIndicator = false;
-                var walkHappend = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceID='" + deviceID + "'").FirstOrDefault();
+                var walkHappend = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceID='{ walkModel.deviceID}'").FirstOrDefault();
                 if (walkHappend != null)
                 {
-                    connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where DeviceID='" + deviceID + "'");
+                    connection.Query<WalkTowerDevice>($"delete from WalkTowerDevice where DeviceID='{ walkModel.deviceID}'");
                 }
                 WalkSendReturned walkRequest = new WalkSendReturned();
-                walkList = walkRequest.WalkSendReturn(IP, Port, Version, communityRead, walkList, towerName, DeviceName, deviceID);
-
+                walkList = walkRequest.WalkSendReturn(walkModel.IP, walkModel.Port, walkModel.Version, walkModel.communityRead, walkList, walkModel.towerName, walkModel.DeviceName, walkModel.deviceID);
                 new WalkSave(walkList);
-
                 ViewBag.IntervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+
+                //WalkServices walkSend = new WalkServices();
+                //List<_WalkTowerDevice> walkLi = new List<_WalkTowerDevice>();
+                //DataWalkService dataWalk = new DataWalkService();
+                //dataWalk.checkd(walkModel.deviceID);
+                //walkLi = walkSend.WalkSendReturn(walkModel);
+                //dataWalk.SavedWalk(walkLi);
+                // ViewBag.IntervalTime = dataWalk.ReturnedIntervalTime();
+
                 EditInd = 0;
                 ViewBag.Edit = EditInd;
                 //ViewBag.IntervalTime = intervalTime;
@@ -647,16 +657,31 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetSend(string IP,string SetOID, int SetValue,string communityWrite)
+        public JsonResult SetSend(string IP,int Port,string SetOID, string SetValue,string communityWrite,string dataType, string Version)
         {
-
-
+            
             IpAddress agent = new IpAddress(IP);
 
-            UdpTarget target = new UdpTarget((IPAddress)agent, 161, 4000, 1);
+            UdpTarget target = new UdpTarget((IPAddress)agent, Port, 4000, 1);
             Pdu.SetPdu();
             Pdu pdu = new Pdu(PduType.Set);
-            pdu.VbList.Add(new Oid(SetOID), new Integer32(SetValue));
+
+            if (dataType=="Integer32")
+            {
+                pdu.VbList.Add(new Oid(SetOID), new Integer32(SetValue));
+            }
+            if (dataType == "IPAddress")
+            {
+                pdu.VbList.Add(new Oid(SetOID), new IpAddress(SetValue));
+            }
+            if (dataType == "OctetString")
+            {
+                pdu.VbList.Add(new Oid(SetOID), new OctetString(SetValue));
+            }
+            if (dataType == "TimeTicks")
+            {
+                pdu.VbList.Add(new Oid(SetOID), new TimeTicks(SetValue));
+            }
 
             AgentParameters aparam = new AgentParameters(SnmpVersion.Ver2, new OctetString(communityWrite), true);
             SnmpV2Packet response;
@@ -667,10 +692,58 @@ namespace AdminPanelDevice.Controllers
             catch (Exception ex)
             {
             }
+            ReturnedGetSend get = new ReturnedGetSend();
 
-            return Json("", JsonRequestBehavior.AllowGet);
+            var resultGet = get.GetSend(SetOID, Version, communityWrite, IP, Port);
+            return Json(resultGet);
         }
 
+        [HttpPost]
+        public JsonResult Get(string getOid, string Version, string communityRead, string IP, int Port)
+        {
+
+            ReturnedGetSend get = new ReturnedGetSend();
+
+            var resultGet = get.GetSend(getOid, Version, communityRead, IP, Port);
+            //OctetString community = new OctetString(communityRead);
+
+            //AgentParameters param = new AgentParameters(community);
+            //if (Version == "V1")
+            //{
+            //    param.Version = SnmpVersion.Ver1;
+            //}
+            //if (Version == "V2")
+            //{
+            //    param.Version = SnmpVersion.Ver2;
+            //}
+            //IpAddress agent = new IpAddress(IP);
+
+            //UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
+
+            //Pdu pdu = new Pdu(PduType.Get);
+            //    try
+            //    {
+            //        if (pdu.RequestId != 0)
+            //        {
+            //            pdu.RequestId += 1;
+            //        }
+            //        pdu.VbList.Clear();
+            //        pdu.VbList.Add(getOid);
+
+            //        if (Version == "V1")
+            //        {
+            //            result = (SnmpV1Packet)target.Request(pdu, param);
+            //        }
+            //        if (Version == "V2")
+            //        {
+            //            result = (SnmpV2Packet)target.Request(pdu, param);
+            //        }
+            //    }
+            //    catch (Exception e) { }
+
+            //target.Close();
+            return Json(resultGet);
+        }
 
         [HttpPost]
         public PartialViewResult WalkSearchList(int? page, string SearchName)
@@ -712,7 +785,7 @@ namespace AdminPanelDevice.Controllers
                     if (SearchName.Length >= 1)
                     {
                         ViewBag.PresetInd = 1;
-                        ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                        ViewBag.CheckedLog = connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N' { DeviceNameLocal} ' and TowerName='{TowerIDLocal}' and LogID<>0 and DeviceID='{deviceIDLocal}'").ToList();
                         ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                         ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>'60' and DeviceID='" + deviceIDLocal + "'").ToList();
                         ViewBag.GPS = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and GpsID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
@@ -1219,49 +1292,7 @@ namespace AdminPanelDevice.Controllers
             }
         }
 
-        [HttpPost]
-        public JsonResult Get (string getOid,string Version,string communityRead, string IP , int Port)
-        {
-            //getOid +=".0";
-            OctetString community = new OctetString(communityRead);
 
-            AgentParameters param = new AgentParameters(community);
-            if (Version == "V1")
-            {
-                param.Version = SnmpVersion.Ver1;
-            }
-            if (Version == "V2")
-            {
-                param.Version = SnmpVersion.Ver2;
-            }
-            IpAddress agent = new IpAddress(IP);
-
-            UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
-       
-            Pdu pdu = new Pdu(PduType.Get);
-                try
-                {
-                    if (pdu.RequestId != 0)
-                    {
-                        pdu.RequestId += 1;
-                    }
-                    pdu.VbList.Clear();
-                    pdu.VbList.Add(getOid);
-
-                    if (Version == "V1")
-                    {
-                        result = (SnmpV1Packet)target.Request(pdu, param);
-                    }
-                    if (Version == "V2")
-                    {
-                        result = (SnmpV2Packet)target.Request(pdu, param);
-                    }
-                }
-                catch (Exception e) { }
-
-            target.Close();
-            return Json(result.Pdu.VbList[0].Value.ToString());
-        }
         [HttpPost]
         public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd)
         {
@@ -1305,6 +1336,7 @@ namespace AdminPanelDevice.Controllers
                 connection.Query<PointConnection>("delete from PointConnection");
                 connection.Query<TowerDevices>("delete from TowerDevices");
                 connection.Query<WalkTowerDevice>("delete from WalkTowerDevice");
+                connection.Query<GetSleepThread>("delete from GetSleepThread");
             }
             string text = "";
             try

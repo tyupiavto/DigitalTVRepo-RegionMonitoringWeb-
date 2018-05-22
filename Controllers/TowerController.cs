@@ -10,7 +10,7 @@ namespace AdminPanelDevice.Controllers
     {
         DeviceContext db = new DeviceContext();
         List<Tower> TowerInf = new List<Tower>();
-        Devices devices = new Devices();
+        AdminPanelDevice.Models.Devices devices = new AdminPanelDevice.Models.Devices();
         Tower tower = new Tower();
         public static int k;
         // GET: Tower
@@ -95,7 +95,7 @@ namespace AdminPanelDevice.Controllers
             }
                 int id = Convert.ToInt32(TowerID);
                 var tower = db.towers.Where(t => t.NumberID == id).FirstOrDefault();
-                List<Devices> device = db.devices.Where(d => d.TowerID == tower.ID).ToList();
+                List<AdminPanelDevice.Models.Devices> device = db.devices.Where(d => d.TowerID == tower.ID).ToList();
                 ViewBag.devicetype = db.devicesTypes.ToList();
                 return PartialView("DeviceTower", device);
             //}
@@ -110,7 +110,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult DevicePanelUpdate(int TowerID , string TowerName , string DeviceName , string DeviceIP ,int DevSerialNumber,string presetName)
         {
-            Devices device = new Devices();
+            AdminPanelDevice.Models.Devices device = new AdminPanelDevice.Models.Devices();
             var dvn = db.devicesTypes.Where(d => d.Name == DeviceName).FirstOrDefault();
             device = db.devices.Where(dv => dv.NumberID == TowerID).FirstOrDefault();
             device.Tower = db.towers.Where(t => t.ID == device.TowerID).FirstOrDefault();
@@ -142,7 +142,7 @@ namespace AdminPanelDevice.Controllers
             catch (Exception e) { }
             DeviceContext dbd = new DeviceContext();
             var tower = dbd.towers.Where(t => t.NumberID == tower_state_id).FirstOrDefault();
-            List<Devices> devices = dbd.devices.Where(d => d.TowerID == tower.ID).ToList();
+            List<AdminPanelDevice.Models.Devices> devices = dbd.devices.Where(d => d.TowerID == tower.ID).ToList();
             ViewBag.devicetype = dbd.devicesTypes.ToList();
             return PartialView("DeviceTower", devices);
 

@@ -33,97 +33,35 @@ namespace AdminPanelDevice.Controllers
         public static DeviceContext db = new DeviceContext();
         public LiveValue live = new LiveValue();
 
-        public static List<GetThreadListen> getThread = new List<GetThreadListen>();
+        public List<GetSleepThread> getThread = new List<GetSleepThread>();
         public SnmpPacket result;
         public static int thbool = 0;
+        public static bool treadListInd = true;
         public GetThread getThreadPreset=new GetThread();
+        SleepInformation returnedThreadList = new SleepInformation();
         // GET: GetNext 
         public ActionResult Index()
         {
             return View();
         }
 
-        //public void ThreadPreset(string IP, int time, int Deviceid,string getOid)
-        //{
-        //    string Version = "V2";
-        //    string communityRead = "public";
-        //    int Port = 161;
-        //    while (Thr == true)
-        //    {
-        //        OctetString community = new OctetString(communityRead);
-
-        //        AgentParameters param = new AgentParameters(community);
-        //        if (Version == "V1")
-        //        {
-        //            param.Version = SnmpVersion.Ver1;
-        //        }
-        //        if (Version == "V2")
-        //        {
-        //            param.Version = SnmpVersion.Ver2;
-        //        }
-        //        IpAddress agent = new IpAddress(IP);
-
-        //        UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
-
-        //        Pdu pdu = new Pdu(PduType.Get);
-        //        try
-        //        {
-        //            if (pdu.RequestId != 0)
-        //            {
-        //                pdu.RequestId += 1;
-        //            }
-        //            pdu.VbList.Clear();
-        //            pdu.VbList.Add(getOid);
-
-        //            if (Version == "V1")
-        //            {
-        //                result = (SnmpV1Packet)target.Request(pdu, param);
-        //            }
-        //            if (Version == "V2")
-        //            {
-        //                result = (SnmpV2Packet)target.Request(pdu, param);
-        //            }
-
-        //            foreach (Vb v in result.Pdu.VbList)
-        //            {
-                       
-        //                MibGet get = new MibGet();
-        //                get.Value = v.Value.ToString();
-        //                get.DeviceID = Deviceid;
-        //                get.dateTime = DateTime.Now;
-        //                get.WalkOID = v.Oid.ToString();
-
-        //                db.MibGets.Add(get);
-        //                db.SaveChanges();
-        //            }
-        //            }
-        //        catch (Exception e) { }
-
-        //        target.Close();
-        //        Thread.Sleep((time * 1000));
-        //    }
-        //}
-
+        
         [HttpPost]
         public JsonResult Get(string towerName ,int towerID, int deviceID)
         {
+            getThread = returnedThreadList.SleepGetInformation(false);
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                DeviceContext db = new DeviceContext();
-                walkdvc = db.WalkDevices.ToList();
-                Oid rootOid = new Oid(); // ifDescr
-                Oid lastOid = new Oid();
-
-                var oofDevice = connection.Query<DeviceThreadOnOff>("select * from DeviceThreadOnOff where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList();
+                var oofDevice = connection.Query<GetSleepThread>($"select * from GetSleepThread where TowerName='{ towerName }' and DeviceID='{deviceID}'").ToList();
                 if (oofDevice.Count != 0)
                 {
-                    connection.Query<DeviceThreadOnOff>("delete from DeviceThreadOnOff where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
-                    var thb = getThread.Where(t => t.towerName == towerName && t.deviceID == deviceID).ToList();
+                    connection.Query<GetSleepThread>($"delete from GetSleepThread where TowerName='{towerName}' and DeviceID='{ deviceID }'");
+                    var thb = getThread.Where(t => t.TowerName == towerName && t.DeviceID == deviceID).ToList();
                     thb.ForEach(t =>
                     {
                         t.thread.Abort();
                     });
-                    var toweroff = connection.Query<DeviceThreadOnOff>("select * from  DeviceThreadOnOff where TowerID='" + towerID + "'").FirstOrDefault();
+                    var toweroff = connection.Query<GetSleepThread>("select * from  GetSleepThread where TowerID='" + towerID + "'").FirstOrDefault();
                     if (toweroff != null)
                     {
                         return Json("", JsonRequestBehavior.AllowGet);
@@ -136,26 +74,23 @@ namespace AdminPanelDevice.Controllers
                 else
                 {
                     var Log = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where LogID<>0 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList();
-                    if (Log != null)
-                    {
-                        DeviceThreadOnOff on = new DeviceThreadOnOff();
-                        on.DeviceID = deviceID;
-                        on.TowerName = towerName;
-                        on.TowerID = towerID;
-
-                        db.DeviceThreadOnOff.Add(on);
-                        db.SaveChanges();
-                    }
-
+                   
                     Log.ForEach(l =>
                     {
-                        GetThreadListen gtl = new GetThreadListen();
-                        gtl.deviceID = l.DeviceID;
-                        gtl.towerName = l.TowerName;
-                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID,l.Version));
+                        GetSleepThread gtl = new GetSleepThread();
+                        gtl.DeviceID = l.DeviceID;
+                        gtl.TowerName = l.TowerName;
+                        gtl.IP = l.IP;
+                        gtl.ScanInterval = l.ScanInterval;
+                        gtl.WalkOid = l.WalkOID;
+                        gtl.Version = l.Version;
+                        gtl.TowerID = towerID;
+                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version));
                         gtl.thread.Start();
                         getThread.Add(gtl);
                     });
+                    db.GetSleepThread.AddRange(getThread);
+                    db.SaveChanges();
                     return Json("", JsonRequestBehavior.AllowGet);
                 }
             }
@@ -165,15 +100,16 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult GetStop (string towerName, List<int> stopGet)
         {
+            getThread = returnedThreadList.SleepGetInformation(false);
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 stopGet.ForEach(deviceID =>
                 {
-                    var oofDevice = connection.Query<DeviceThreadOnOff>("select * from DeviceThreadOnOff where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList();
+                    var oofDevice = connection.Query<GetSleepThread>($"select * from GetSleepThread where TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
                     if (oofDevice.Count != 0)
                     {
-                        connection.Query<DeviceThreadOnOff>("delete from DeviceThreadOnOff where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
-                        var thb = getThread.Where(t => t.towerName == towerName && t.deviceID == deviceID).ToList();
+                        connection.Query<GetSleepThread>("delete from GetSleepThread where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
+                        var thb = getThread.Where(t => t.TowerName == towerName && t.DeviceID == deviceID).ToList();
                         thb.ForEach(t =>
                         {
                             t.thread.Abort();
@@ -187,35 +123,40 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult GetPlay(string towerName,int towerID, List<int> playGet)
         {
+
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 playGet.ForEach(deviceID =>
                 {
-                    var Log = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where LogID<>0 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList();
-                if (Log != null)
-                {
-                    DeviceThreadOnOff on = new DeviceThreadOnOff();
-                    on.DeviceID = deviceID;
-                    on.TowerName = towerName;
-                    on.TowerID = towerID;
+                    var Log = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where LogID<>0 and TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
 
-                    db.DeviceThreadOnOff.Add(on);
-                    db.SaveChanges();
-                }
+                    Log.ForEach(l =>
+                    {
+                        GetSleepThread gtl = new GetSleepThread();
+                        gtl.DeviceID = l.DeviceID;
+                        gtl.TowerName = l.TowerName;
+                        gtl.IP = l.IP;
+                        gtl.ScanInterval = l.ScanInterval;
+                        gtl.WalkOid = l.WalkOID;
+                        gtl.Version = l.Version;
+                        gtl.TowerID = towerID;
+                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version));
+                        gtl.thread.Start();
+                        getThread.Add(gtl);
+                    });
 
-                Log.ForEach(l =>
-                {
-                    GetThreadListen gtl = new GetThreadListen();
-                    gtl.deviceID = l.DeviceID;
-                    gtl.towerName = l.TowerName;
-                    gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID,l.Version));
-                    gtl.thread.Start();
-                    getThread.Add(gtl);
                 });
-                });
+                db.GetSleepThread.AddRange(getThread);
+                db.SaveChanges();
             }
-                
-                return Json("");
+
+            if (treadListInd == true)
+            {
+                getThread.AddRange( returnedThreadList.SleepGetInformation(false));
+                treadListInd = false;
+            }
+
+            return Json("");
         }
     }
 }

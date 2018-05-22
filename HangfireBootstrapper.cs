@@ -36,7 +36,10 @@ namespace AdminPanelDevice
                 Thread thread = new Thread(() => new TrapListen());
                 thread.Start();
 
-                _backgroundJobServer = new BackgroundJobServer();
+                SleepInformation sleepget = new SleepInformation();
+                sleepget.SleepGetInformation(true);
+
+                 _backgroundJobServer = new BackgroundJobServer();
             }
         }
 

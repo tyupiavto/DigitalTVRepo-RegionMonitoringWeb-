@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AdminPanelDevice.Models;
 using System.IO;
 using AdminPanelDevice.Infrastructure;
+
 namespace AdminPanelDevice.Controllers
 {
     public class DeviceController : Controller
@@ -31,8 +32,6 @@ namespace AdminPanelDevice.Controllers
                     pathname = "MibFiles/" + _FileName;
                     type.mib_file.SaveAs(_path);
                 }
-
-                
 
                 devicetype.Name = type.Name;
                 devicetype.Model = type.Model;
@@ -149,18 +148,18 @@ namespace AdminPanelDevice.Controllers
         {
             try
             {
-                Devices dv = new Devices();
-                var tw = db.towers.Where(t => t.Name == Tower).FirstOrDefault();
-                var dvc = db.devicesTypes.Where(d => d.Name == Device).FirstOrDefault();
-                dv.DeviceTID = dvc.ID;
-                dv.TowerID = tw.ID;
-                dv.IP = IP;
-                dv.DevSerialNumber = Convert.ToInt32(DevSerialNumber);
-                dv.PresetName = presetName;
-                dv.NumberID = db.devices.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
+                //Devices dv = new Devices();
+                //var tw = db.towers.Where(t => t.Name == Tower).FirstOrDefault();
+                //var dvc = db.devicesTypes.Where(d => d.Name == Device).FirstOrDefault();
+                //dv.DeviceTID = dvc.ID;
+                //dv.TowerID = tw.ID;
+                //dv.IP = IP;
+                //dv.DevSerialNumber = Convert.ToInt32(DevSerialNumber);
+                //dv.PresetName = presetName;
+                //dv.NumberID = db.devices.Select(s => s.NumberID).ToList().LastOrDefault() + 1;
 
-                db.devices.Add(dv);
-                db.SaveChanges();
+                //db.devices.Add(dv);
+                //db.SaveChanges();
             }
             catch (Exception e) { }
             return Json("",JsonRequestBehavior.AllowGet);

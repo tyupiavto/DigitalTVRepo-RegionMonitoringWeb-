@@ -30,7 +30,7 @@ namespace AdminPanelDevice.Infrastructure
             {
                 var mibInf = connection.Query<MibTreeInformation>("Select * From  [TreeInformation]").ToList();
 
-                OctetString community1 = new OctetString(communityRead);
+                OctetString community = new OctetString(communityRead);
 
                 AgentParameters param = new AgentParameters(community);
                 if (Version == "V1")

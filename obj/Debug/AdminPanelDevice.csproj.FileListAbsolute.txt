@@ -232,3 +232,10 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.p
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.FileSystem.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Collections.Immutable.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.csprojAssemblyReference.cache
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Data.Services.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Devices.Services.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Service.Models.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Data.Services.pdb
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Data.Services.dll.config
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Devices.Services.pdb
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Service.Models.pdb

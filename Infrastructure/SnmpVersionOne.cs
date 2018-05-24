@@ -30,7 +30,7 @@ namespace AdminPanelDevice.Infrastructure
                     trap.IpAddres = pkt.Pdu.AgentAddress.ToString();
                     trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
                     trap.ReturnedOID = v.Oid.ToString();
-                    trap.dateTimeTrap = DateTime.Now;
+                    trap.dateTimeTrap = DateTime.Now.ToString();
                     if (v.Value.GetType().Name == "OctetString")
                     {
                         trap.Value = hex.Hexstrings(v.Value.ToString());

@@ -22,6 +22,6 @@ namespace AdminPanelDevice.Models
         public string TowerName { get; set; }
         public string DeviceName { get; set; }
         public string Description { get; set; }
-        public DateTime dateTimeTrap { get; set; }
+        public string dateTimeTrap { get; set; }
     }
 }

@@ -69,6 +69,7 @@ namespace AdminPanelDevice.Infrastructure
                         get.DeviceID = Deviceid;
                         get.dateTime = DateTime.Now;
                         get.WalkOID = v.Oid.ToString();
+                        get.IP = IP;
 
                         db.MibGets.Add(get);
                         db.SaveChanges();

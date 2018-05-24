@@ -20,6 +20,9 @@ namespace AdminPanelDevice.Models
         public string WalkOid { get; set; }
         public string Version { get; set; }
         public int TowerID { get; set; }
+        public int CheckID { get; set; }
+        public int LogID { get; set; }
+        public int MapID { get; set; }
 
         [NotMapped]
         public Thread thread { get; set; }

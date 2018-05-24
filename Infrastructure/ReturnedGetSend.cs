@@ -1,9 +1,14 @@
-﻿using IToolS.IOServers.Snmp;
+﻿using Dapper;
+using IToolS.IOServers.Snmp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
+using AdminPanelDevice.Models;
 
 namespace AdminPanelDevice.Infrastructure
 {
@@ -54,7 +59,12 @@ namespace AdminPanelDevice.Infrastructure
             catch (Exception e) { }
 
             target.Close();
-            return result.Pdu.VbList[0].Value.ToString();
+
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>($"update WalkTowerDevice set Type='{result.Pdu.VbList[0].Value.ToString()}' where WalkOID='{getOid}' and IP='{IP}'");
+            }
+                return result.Pdu.VbList[0].Value.ToString();
         }
     }
 }

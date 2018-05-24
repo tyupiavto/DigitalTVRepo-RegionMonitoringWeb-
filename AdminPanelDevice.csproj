@@ -358,10 +358,12 @@
     <Compile Include="HangfireBootstrapper.cs" />
     <Compile Include="Helpers\PickerHelper.cs" />
     <Compile Include="Infrastructure\BuildMIBTree.cs" />
+    <Compile Include="Infrastructure\CheckUncheckGetThread.cs" />
     <Compile Include="Infrastructure\CityAddDiagram.cs" />
     <Compile Include="Infrastructure\CityAddTower.cs" />
     <Compile Include="Infrastructure\CityDeleteTower.cs" />
     <Compile Include="Infrastructure\GetThread.cs" />
+    <Compile Include="Infrastructure\GetThreadPlayStop.cs" />
     <Compile Include="Infrastructure\Hexstring.cs" />
     <Compile Include="Infrastructure\JobSheduler.cs" />
     <Compile Include="Infrastructure\MibTreeCreate.cs" />

@@ -4,134 +4,13 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    @*<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-        <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-        <script src="~/Scripts/moment.min.js"></script>*@
-    @*<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>*@
-    @*<script src="~/Content/ScriptView/jquery.datetimepicker.full.min.js"></script>*@
-    @*<script src="~/Content/ScriptView/jquery.js"></script>
-        <script src="~/Content/ScriptView/moment.js"></script>*@
-    @*<script src="~/Content/ScriptView/jquery.datetimepicker.js"></script>*@
-    @*<script src="~/Content/ScriptView/jquery.datetimepicker.full.min.js"></script>*@
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
-
-    @*<script>
-        //$(document).ready(function () {
-        $('.dropdown-toggle::after').css("display", "none");
-        $('#columnmenu li').click(function () {
-            if ($(this).children().children().is(':checked') == false) {
-                //  $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child('+ $(this).children().children().attr("value")+')').hide();
-                var column = "table #" + $(this).attr("id");
-                $(column).hide();
-            }
-            else {
-                var column = "table #" + $(this).attr("id");
-                $(column).show();
-                //$('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child(' + $(this).children().children().attr("value") + ')').show();
-            }
-        });
-
-
-        //$('#strart').click(function () {
-        //    $('td:nth-child(1),th:nth-child(1)').show();
-        //    $('td:nth-child(3),th:nth-child(3)').show();
-        //});
-        //  new TableResize(document.getElementById('example'));
-        //(function () {
-        //    var thElm;
-        //    var startOffset;
-
-        //    Array.prototype.forEach.call(
-        //        document.querySelectorAll("table th"),
-        //        function (th) {
-        //            th.style.position = 'relative';
-
-        //            var grip = document.createElement('div');
-        //            grip.innerHTML = "&nbsp;";
-        //            grip.style.top = 0;
-        //            grip.style.right = 0;
-        //            grip.style.bottom = 0;
-        //            grip.style.width = '5px';
-        //            grip.style.position = 'absolute';
-        //            grip.style.cursor = 'col-resize';
-        //            grip.addEventListener('mousedown', function (e) {
-        //                thElm = th;
-        //                startOffset = th.offsetWidth - e.pageX;
-        //            });
-
-        //            th.appendChild(grip);
-        //        });
-
-        //    document.addEventListener('mousemove', function (e) {
-        //        if (thElm) {
-        //            thElm.style.width = startOffset + e.pageX + 'px';
-        //        }
-        //    });
-
-        //    document.addEventListener('mouseup', function () {
-        //        thElm = undefined;
-        //    });
-        //})();
-       
-            //var bindDatePicker = function () {
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-
-          //    $(".date").datetimepicker();
-            //        format: 'YYYY-MM-DD',
-            //        icons: {
-            //            time: "fa fa-clock-o",
-            //            date: "fa fa-calendar",
-            //            up: "fa fa-arrow-up",
-            //            down: "fa fa-arrow-down"
-            //        }
-            //    }).find('input:first').on("blur", function () {
-            //        // check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
-            //        // update the format if it's yyyy-mm-dd
-            //        var date = parseDate($(this).val());
-
-            //        if (!isValidDate(date)) {
-            //            //create date based on momentjs (we have that)
-            //            date = moment().format('YYYY-MM-DD');
-            //        }
-
-            //        $(this).val(date);
-            //    });
-            //}
-
-            //var isValidDate = function (value, format) {
-            //    format = format || false;
-            //    // lets parse the date to the best of our knowledge
-            //    if (format) {
-            //        value = parseDate(value);
-            //    }
-
-            //    var timestamp = Date.parse(value);
-
-            //    return isNaN(timestamp) == false;
-            //}
-
-            //var parseDate = function (value) {
-            //    var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
-            //    if (m)
-            //        value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);
-
-            //    return value;
-            //}
-
-            //bindDatePicker();
-       
-    </script>*@
 
 </head>
 <body>
@@ -150,10 +29,9 @@
     <div class="keep-open btn-group" title="Columns">
         <button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-th icon-th"></i>
-            @*<span class="caret"></span>*@
         </button>
-        @*<div class="dropdown-backdrop"></div>*@
-        <ul class="dropdown-menu" role="menu" id="columnmenu">
+ 
+        <ul class="dropdown-menu" role="menu" id="dropdown" style="position:absolute; top:35px;">
             <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="1" checked="checked">Countrie</label></li>
             <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="2" checked="checked">State</label></li>
             <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="3" checked="checked">City</label></li>
@@ -166,17 +44,6 @@
             <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Date/Time</label>
         </ul>
         <div class="row">
-            <div class="col-xs-2 col-md-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" id="SearchLogName" />
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary" type="button" id="search_log">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
             <div class='col-sm-2'>
                 <div class="form-group">
                     <div class='input-group date' id='datetimepickerStart'>
@@ -198,40 +65,29 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xs-2 col-md-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" id="SearchLogName" />
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="search_log">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="input-group-btn col-sm-1" style="margin-left:-10px;">
                 <button class="btn btn-primary" type="button" id="search_time_log">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
             </div>
-            <div class='col-sm-3'>
+
+            @*<div class='col-sm-3'>
                 <input type="button" id="buttrap" class="btn" value="Log" />
-            </div>
-                 @*</div>
-        </div>*@
-                 @*<input type="button" id="buttrap" class="btn-danger" value="Log" />*@
+            </div>*@
+
         </div>
-            @*<div class="row">
-
-        </div>*@
-            @*<div class="container">
-            <div class="row">
-
-            </div>
-            <br />
-            <div class="row">
-                <div class='col-sm-3'>
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
             <div id="loginformation"> </div>
 </body>
 </html>
@@ -240,6 +96,20 @@
     $(function () {
         $('#datetimepickerStart').datetimepicker();
         $('#datetimepickerEnd').datetimepicker();
+
+        $('.dropdown-toggle::after').css("display", "none");
+        $('#dropdown li').click(function () {
+            if ($(this).children().children().is(':checked') == false) {
+                  $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child('+ $(this).children().children().attr("value")+')').hide();
+                var column = "table #" + $(this).attr("id");
+                $(column).hide();
+            }
+            else {
+                var column = "table #" + $(this).attr("id");
+                $(column).show();
+                $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child(' + $(this).children().children().attr("value") + ')').show();
+            }
+        });
     });
 </script>
 <style>

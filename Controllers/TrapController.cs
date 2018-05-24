@@ -57,7 +57,8 @@ namespace AdminPanelDevice.Controllers
             {
                 DateTime start = DateTime.Now;
                 DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                TrapLogList = connection.Query<Trap>("select * from Trap where dateTimeTrap BETWEEN '" + end + "'and '" + start + "'").ToList();
+                TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{ end }' and '{ start}'").ToList();
+                TrapLogList= TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1,20));
             }
         }
@@ -74,8 +75,17 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult LogSearch(int? page, string SearchName,int SearchInd)
+        public PartialViewResult LogSearch(int? page, string SearchName,int SearchInd, DateTime startTime, DateTime endTime)
         {
+            if (SearchName=="")
+            {
+                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+                {
+                    TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{startTime.ToString("yyyy-MM-ddTHH:mm:ss.fff")}' and '{endTime.ToString("yyyy-MM-ddTHH:mm:ss.fff")}'").ToList();
+                    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, 20));
+                }
+            }
+
             if (SearchInd == 0)
             {
                 SearchIndicator = 0;

@@ -1,5 +1,5 @@
 ﻿
-var deviceID, DeviceName, intervalNumber,intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName,defineWalk,dataType;
+var deviceID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName, defineWalk, dataType, setID;
 var resolutionWidht = screen.width;
 var resolutionHeight = screen.height;
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
@@ -7,10 +7,11 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     DeviceName = $('.device_header' + deviceID).attr("value");
 
     $('#device_settings_name').text($('.tower_name' + deviceID).attr("title"));
-    towerID = $('.tower_name' + deviceID).attr("title");
+    towerName = $('.tower_name' + deviceID).attr("title");
+    towerID = $('.tower_name' + deviceID).parent().parent().parent().parent().attr("id");
     $('#preset_name').val("");
     defineWalk = 1;
-    $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerID: towerID, deviceID: deviceID, defineWalk: defineWalk }, function (Response) {
+    $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerName: towerName, deviceID: deviceID, defineWalk: defineWalk }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
 
@@ -78,6 +79,7 @@ $('body').on('click touchend', '.search_time_interval li', function () { // time
     IP = $('#tower_ip').val();
     towerName = $('#device_settings_name').text();
     $.post("/DeviceGroup/IntervalSearch", { intervalID: intervalID, Interval: Interval, towerName: towerName, deviceID: deviceID }, function () { }, 'json');
+    $.post("/GetNext/IntervalSearch", { intervalID: intervalID, Interval: Interval, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { }, 'json');
 });
 
 $('body').on('click touchend', '#select_list', function (e) {// search number  list information
@@ -209,6 +211,12 @@ $('body').on('click touchend', '.interval_list_remove li', function () { //inter
     $.post("/DeviceGroup/DefaultIntervalSearch", { intervalNumber: intervalNumber}, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
+
+        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     }, 'text');
 });
 
@@ -222,7 +230,7 @@ $('body').on('click touchend', '.removeInterval', function () {
 });
 
     $('body').on('click touchend', '#setButtons', function () { // open modal set and send set 
-        var setID = $(this).attr("value");
+        setID = $(this).attr("value");
         $('#set_description').text($('#description' + setID).text());
         $('#set_oid').text($('#description' + setID).attr("value"));
         $('#set_value').text($('#Value' + setID).text());
@@ -230,7 +238,6 @@ $('body').on('click touchend', '.removeInterval', function () {
     });
 
 $('#SendSet').click(function () { // set send value
-    var setID = $(this).attr("value");
         SetOID = $('#set_oid').text();
         SetValue = $('#set_send_value').val();
         communityWrite = $('#write_community').val();
@@ -238,20 +245,26 @@ $('#SendSet').click(function () { // set send value
         dataType = $('#set_datatype').text();
         Version = $('#walk_version').text();
         Port = $('#tower_port').val();
-        $.post("/DeviceGroup/SetSend", { IP: IP, Port: Port, SetOID: SetOID, SetValue: SetValue, communityWrite: communityWrite, dataType: dataType, Version: Version }, function (Response) {
-            $('#set_send_value').val("");
+    $.post("/DeviceGroup/SetSend", { IP: IP, Port: Port, SetOID: SetOID, SetValue: SetValue, communityWrite: communityWrite, dataType: dataType, Version: Version }, function (Response) {
             $('#Value' + setID).text(Response);
             $('#Value' + setID).css("color", "#9dff75");
             $('#description' + setID).css("color", "#9dff75");
             $('#oidname' + setID).css("color", "#9dff75");
-        },, 'json');
-    });
+            $('#set_send_value').val("");
+        },'json');
+});
 
     $('#walk_search_click').click(function () { // search description value
         SearchName = $('#description_value_search').val();
-        $.post("/DeviceGroup/WalkSearchList", { SearchName: SearchName}, function (Response) {
+        $.post("/DeviceGroup/WalkSearchList", { SearchName: SearchName }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
+ 
+        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         },'text');
 
 });
@@ -287,10 +300,10 @@ $('body').on('click touched', '.map_check div', function () { // map click check
         $("#map_checked" + mapID).prop('checked', true);
 
         chechkID = mapID;
-        $.post("/DeviceGroup/CheckMap", { chechkID: chechkID, towerName: towerName, deviceID: deviceID }, function () { }, 'json'); // map check 
+        $.post("/GetNext/CheckMap", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { }, 'json'); // map check 
     } else {
         unChechkID = mapID;
-        $.post("/DeviceGroup/UncheckMap", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID }, function () { }, 'json'); // map uncheck 
+        $.post("/GetNext/UncheckMap", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, towerID: towerID}, function () { }, 'json'); // map uncheck 
 
         $('#map_checked_add' + mapID).removeClass("checked").addClass("");
         $("#map_checked" + mapID).prop('checked', false);
@@ -302,13 +315,13 @@ $('body').on('click touched', '.log_check div', function () { // log checked pre
     towerName = $('#device_settings_name').text();
     if ($('#log_checked' + logID).is(':checked') == false) {
         chechkID = logID;
-        $.post("/DeviceGroup/CheckLog", { chechkID: chechkID, towerName: towerName, deviceID: deviceID }, function () { }, 'json'); // log check 
+        $.post("/GetNext/CheckLog", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID}, function () { }, 'json'); // log check 
 
         $('#log_checked_add' + logID).removeClass("").addClass("checked");
         $("#log_checked" + logID).prop('checked', true);
     } else {
         unChechkID = logID;
-        $.post("/DeviceGroup/UncheckLog", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID }, function () { }, 'json'); // log uncheck 
+        $.post("/GetNext/UncheckLog", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, towerID: towerID}, function () { }, 'json'); // log uncheck 
         $('#log_checked_add' + logID).removeClass("checked").addClass("");
         $("#log_checked" + logID).prop('checked', false);
     }
@@ -331,6 +344,13 @@ $('body').on('click touched', '.map_check_all div', function () { // Map check s
         $.post("/DeviceGroup/SelectAllMap", { check:check }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
+
+            $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+            $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+            $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+            $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+            $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+
         }, 'text');
     } else {
         var check = false;
@@ -340,6 +360,13 @@ $('body').on('click touched', '.map_check_all div', function () { // Map check s
         $.post("/DeviceGroup/SelectAllMap", { check: check}, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
+
+            $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+            $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+            $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+            $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+            $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+
         }, 'text');
     }
 });

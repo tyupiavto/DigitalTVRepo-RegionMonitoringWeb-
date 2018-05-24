@@ -18,15 +18,16 @@ $("#buttrap").click(function () {
 $('#search_log').on('click', function () {
     SearchName = $('#SearchLogName').val();
     SearchInd = 1;
-    $.post("/Trap/LogSearch", { SearchName: SearchName, SearchInd:SearchInd}, function (Response) {
+    startTime = $('#startDateTime').val();
+    endTime = $('#endDateTime').val();
+    $.post("/Trap/LogSearch", { SearchName: SearchName, SearchInd: SearchInd, startTime: startTime, endTime: endTime }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
     },'text');
 });
 
 $('#search_time_log').on('click', function () {
-    startTime = $('#startDateTime').val();
-    endTime = $('#endDateTime').val();
+  
     $.post("/Trap/SearchDateTime", {startTime: startTime, endTime: endTime }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);

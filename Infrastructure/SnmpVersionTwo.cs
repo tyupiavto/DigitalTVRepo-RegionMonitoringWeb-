@@ -31,7 +31,7 @@ namespace AdminPanelDevice.Infrastructure
                     trap.CurrentOID = pkt.Pdu.TrapObjectID.ToString();
                     trap.ReturnedOID = v.Oid.ToString();
                     trap.Value = v.Value.ToString();
-                    trap.dateTimeTrap = DateTime.Now;
+                    trap.dateTimeTrap = DateTime.Now.ToString();
                     var tDevice = towerDevices.Where(t => t.IP == trap.IpAddres).FirstOrDefault();
                     if (tDevice == null)
                     {
@@ -72,10 +72,10 @@ namespace AdminPanelDevice.Infrastructure
                         }
                         else
                         {
-                            if (OidMibdescription.Description != null)
-                            {
+                            //if (OidMibdescription.Description != null)
+                            //{
                                 trap.Description = OidMibdescription.Description;
-                            }
+                            //}
                         }
                         if (trap.Description == "")
                         {

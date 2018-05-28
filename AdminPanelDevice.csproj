@@ -182,6 +182,7 @@
     <Content Include="Content\ScriptView\CheckedCity.js" />
     <Content Include="Content\ScriptView\CountrieSearch.js" />
     <Content Include="Content\ScriptView\DeviceGroup.js" />
+    <Content Include="Content\ScriptView\LogSearch.js" />
     <Content Include="Content\ScriptView\MenuDevice.js" />
     <Content Include="Content\ScriptView\WalkMapLogPreset.js" />
     <Content Include="Content\ScriptView\DevicePanel.js" />

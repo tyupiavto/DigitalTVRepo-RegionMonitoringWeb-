@@ -152,7 +152,7 @@ $('body').on('click touchend', '#preset_add_remove', function (e) { //preset add
     else
         if (e.type == "click" && !handled) {
             $('#preset_list_remove').css({ 'width': width + 0 }).toggle();
-            $.post("/DeviceGroup/PresetListName", {}, function (Response) {
+            $.post("/DeviceGroup/PresetListName", { DeviceName: DeviceName }, function (Response) {
                 $('.preset_list_remove').html("");
                 $('.preset_list_remove').html(Response);
             },'text');

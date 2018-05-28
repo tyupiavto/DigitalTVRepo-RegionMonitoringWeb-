@@ -26,13 +26,14 @@ $('#search_log').on('click', function () {
     },'text');
 });
 
-$('#search_time_log').on('click', function () {
-  
-    $.post("/Trap/SearchDateTime", {startTime: startTime, endTime: endTime }, function (Response) {
-        $('#loginformation').html("");
-        $('#loginformation').html(Response);
-    },'text');
-});
+//$('#search_time_log').on('click', function () {
+//    startTime = $('#startDateTime').val();
+//    endTime = $('#endDateTime').val();
+//    $.post("/Trap/SearchDateTime", { startTime: startTime, endTime: endTime }, function (Response) {
+//        $('#loginformation').html("");
+//        $('#loginformation').html(Response);
+//    }, 'text');
+//});
 
 $('body').on('contextmenu touched', '#trap_log_information tr td', function () { // checked gps right click
     searchID = $(this).attr("id");

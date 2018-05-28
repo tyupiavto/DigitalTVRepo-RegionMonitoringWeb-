@@ -1124,12 +1124,13 @@ namespace AdminPanelDevice.Controllers
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
         [HttpPost]
-        public PartialViewResult PresetListName()
+        public PartialViewResult PresetListName(string DeviceName)
         {
             List<Preset> presetList = new List<Preset>();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                presetList = connection.Query<Preset>("Select * From  Preset ").ToList();
+                var deviceID = connection.Query<DeviceType>($"select * from DeviceType where Name=N'{DeviceName}'").FirstOrDefault();
+                presetList = connection.Query<Preset>($"Select * From  Preset where DeviceTypeID='{deviceID.ID}'").ToList();
             }
             return PartialView("_Preset",presetList);
         }

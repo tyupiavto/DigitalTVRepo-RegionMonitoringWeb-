@@ -36,7 +36,9 @@ input::-webkit-input-placeholder {
     border-spacing: 0px;
     /*background-position: 300px;*/
     min-width: 880px;
-    margin-left: -350px;
+    margin-left: -600px;
+    height: 90vh;
+    width: 90vw;
     /*margin-top: -20px;*/
 }
 
@@ -394,8 +396,9 @@ input::-webkit-input-placeholder {
 }
 
 .scroll_walk {
-    height: 545px;
-    max-height: 550px;
+    height: 100vh;
+    width: 89.7vw;
+    max-height: 770px;
     overflow-y: auto !important;
     margin-top: -15px;
     border-bottom: 1px solid #000;

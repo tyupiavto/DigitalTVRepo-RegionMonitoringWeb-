@@ -15,11 +15,11 @@ $(document).on('click touchend', '.device_settings', function () { // add device
         $('#device_settings').html("");
         $('#device_settings').html(Response);
 
-        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        $('.scroll_walk').css('max-height', resolutionHeight -340 + 'px');
+        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        //$('.scroll_walk').css('max-height', resolutionHeight -340 + 'px');
 
     }, 'text');
     });
@@ -42,11 +42,11 @@ $('#walk_send').click(function () { // device walk ip port version
         $('#device_settings').html("");
         $('#device_settings').html(Response);
 
-        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     });
 });
 
@@ -105,11 +105,11 @@ $('body').on('click touchend', '.walk_list_search li', function () { // walk lis
         $('#device_settings').html(Response);
         $('#walk_list').text(pageList);
 
-        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     });
 });
 
@@ -169,11 +169,11 @@ $('body').on('click touchend', '.preset_list_remove li', function () { // select
         $('#device_settings').html("");
         $('#device_settings').html(Response);
 
-        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     },'text');
 });
 
@@ -212,11 +212,11 @@ $('body').on('click touchend', '.interval_list_remove li', function () { //inter
         $('#device_settings').html("");
         $('#device_settings').html(Response);
 
-        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     }, 'text');
 });
 
@@ -260,11 +260,11 @@ $('#SendSet').click(function () { // set send value
             $('#device_settings').html("");
             $('#device_settings').html(Response);
  
-        $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         },'text');
 
 });
@@ -345,11 +345,11 @@ $('body').on('click touched', '.map_check_all div', function () { // Map check s
             $('#device_settings').html("");
             $('#device_settings').html(Response);
 
-            $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-            $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-            $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-            $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-            $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+            //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
 
         }, 'text');
     } else {
@@ -361,11 +361,11 @@ $('body').on('click touched', '.map_check_all div', function () { // Map check s
             $('#device_settings').html("");
             $('#device_settings').html(Response);
 
-            $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-            $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-            $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-            $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-            $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+            //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
 
         }, 'text');
     }
@@ -388,6 +388,12 @@ $('body').on('click touched', '.log_check_all div', function () { // Log check s
         $.post("/DeviceGroup/SelectAllLog", { check: check }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
+
+            // $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         }, 'text');
     } else {
         var check = false;
@@ -397,6 +403,12 @@ $('body').on('click touched', '.log_check_all div', function () { // Log check s
         $.post("/DeviceGroup/SelectAllLog", { check: check }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
+
+            //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         }, 'text');
     }
 });

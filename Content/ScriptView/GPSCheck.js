@@ -36,8 +36,8 @@ $('body').on('contextmenu touched', '.map_check div', function () { // checked g
         event.preventDefault();
         $(this).unbind(event);
         $(".custom-menu").finish().toggle(100).css({
-            top: (event.pageY-6) + "px",
-            left: (event.pageX - 360) + "px"
+            top: (event.pageY) + "px",
+            left: (event.pageX - 100) + "px"
         });
         event.stopPropagation();
     });

@@ -12,11 +12,11 @@ $(document).ready(function () {
                     $('#device_settings').html("");
                     $('#device_settings').html(Response);
 
-                    $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-                    $('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-                    $('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-                    $('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-                    $('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
+                    //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
+                    //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
+                    //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
+                    //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
+                    //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
                 }
             }, 'text');
         }

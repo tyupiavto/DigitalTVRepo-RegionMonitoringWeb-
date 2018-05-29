@@ -72,7 +72,7 @@
                 </ul>
             </div>
 
-</div>
+    </div>
     <div id="settingsDiv">
     </div>
 </div>
@@ -325,6 +325,77 @@
     </div>
 </div>
 
+<!-- Modal  LogMap Setting -->
+
+<div class="modal fade" id="LogMapSetting" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content setModal">
+            <div class="modal-body">
+                <div class="titileGroup" style="margin-left: -13px; margin-top: -13px; width:106%;">
+                    <table>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">Damage</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="range-slider styled" id="slider-one">
+                                    <input id="price-range-one" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">Minor flaw</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="range-slider styled" id="slider-two">
+                                    <input id="price-range-two" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">OK</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="range-slider styled" id="slider-tree">
+                                    <input id="price-range-tree" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td width="10%;">
+                                <div class="descriptionDiv">Minor flaw</div>
+                            </td>
+                            <td width="90%;">
+                                <div class="range-slider styled" id="slider-four">
+                                    <input id="price-range-four" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="streamsInfo" id="header_device">
+                            <td style="width:10%;">
+                                <div class="descriptionDiv">Damage</div>
+                            </td>
+                            <td style="width:90%;">
+                                <div class="range-slider styled" id="slider-five">
+                                    <input id="price-range-five" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-left:325px; margin-top:3px;">
+                    <button type="button" class="btn btn-info" id="sendLogMapSetting" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px; ">Applay</button>
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal" style="width:50px; height:22px; line-height:9px; font-size:11px;">Close</button>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!-- Modal  Version -->
 <div class="modal fade" id="VersionModal" role="dialog">
     <div class="modal-dialog">
@@ -423,8 +494,102 @@
         </div>
     </div>
 </div>
-@*</div>*@
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="~/Content/ScriptView/jquery.slider.bundle.js"></script>
+<script src="~/Content/ScriptView/jquery.slider.js"></script>
+<script type="text/javascript">
+   
+    jQuery(document).ready(function ($) {
+        // Price Range Input
+        
+        $("#price-range-two").rangeslider({
+            from: 0,
+            to: 1000,
+            limits: true,
+            scale: ['0', '1000'],
+            heterogeneity: ['50/500'],
+            step: 1,
+            smooth: true
+        });
+        $("#price-range-one").rangeslider({
+            from: 0,
+            to: 1000,
+            limits: true,
+            scale: ['0', '1000'],
+            heterogeneity: ['50/500'],
+            step: 1,
+            smooth: true
+        });
+        $("#price-range-tree").rangeslider({
+            from: 0,
+            to: 1000,
+            limits: true,
+            scale: ['0', '1000'],
+            heterogeneity: ['50/500'],
+            step: 1,
+            smooth: true
+        });
+        $("#price-range-four").rangeslider({
+            from: 0,
+            to: 1000,
+            limits: true,
+            scale: ['0', '1000'],
+            heterogeneity: ['50/500'],
+            step: 1,
+            smooth: true
+        });
+        $("#price-range-five").rangeslider({
+            from: 0,
+            to: 1000,
+            limits: true,
+            scale: ['0', '1000'],
+            heterogeneity: ['50/500'],
+            step: 1,
+            smooth: true
+        });
+
+        $('#slider-one .end-logmap-pointer').mouseup(function (event) {
+            $('#slider-two .start-logmap-pointer').css('left', event.target.style.left);
+            $('#slider-two .start-pointer-value').css('left', event.target.style.left);
+            $('#slider-two .line-logmap-size').css('left', event.target.style.left);
+            $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-one .end-logmap-pointer').css('left')) + "px");
+            $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
+        });
+
+        $('#slider-two .end-logmap-pointer').mouseup(function (event) {
+            $('#slider-tree .start-logmap-pointer').css('left', event.target.style.left);
+            $('#slider-tree .start-pointer-value').css('left', event.target.style.left);
+            $('#slider-tree .line-logmap-size').css('left', event.target.style.left);
+            $('#slider-tree .line-logmap-size').css('width', parseInt($('#slider-tree .end-logmap-pointer').css('left')) - parseInt($('#slider-two .end-logmap-pointer').css('left')) + "px");
+            $('#slider-tree .start-pointer-value span').text($('#slider-two .end-pointer-value span').text());
+        });
+
+        $('#slider-tree .end-logmap-pointer').mouseup(function (event) {
+            $('#slider-four .start-logmap-pointer').css('left', event.target.style.left);
+            $('#slider-four .start-pointer-value').css('left', event.target.style.left);
+            $('#slider-four .line-logmap-size').css('left', event.target.style.left);
+            $('#slider-four .line-logmap-size').css('width', parseInt($('#slider-four .end-logmap-pointer').css('left')) - parseInt($('#slider-tree .end-logmap-pointer').css('left')) + "px");
+            $('#slider-four .start-pointer-value span').text($('#slider-tree .end-pointer-value span').text());
+        });
+        $('#slider-four .end-logmap-pointer').mouseup(function (event) {
+            $('#slider-five .start-logmap-pointer').css('left', event.target.style.left);
+            $('#slider-five .start-pointer-value').css('left', event.target.style.left);
+            $('#slider-five .line-logmap-size').css('left', event.target.style.left);
+            $('#slider-five .line-logmap-size').css('width', parseInt($('#slider-five .end-logmap-pointer').css('left')) - parseInt($('#slider-four .end-logmap-pointer').css('left')) + "px");
+            $('#slider-five .start-pointer-value span').text($('#slider-four .end-pointer-value span').text());
+        });
+
+        $('.log_map_settings').click(function () {
+            $('#slider-one .line-logmap-size').css('background', 'rgb(255, 0, 0)');
+            $('#slider-two .line-logmap-size').css('background', 'rgb(255, 255, 0)');
+            $('#slider-tree .line-logmap-size').css('background', 'rgb(38, 249, 0)');
+            $('#slider-four .line-logmap-size').css('background', 'rgb(255, 255, 0)');
+            $('#slider-five .line-logmap-size').css('background', 'rgb(255, 0, 0)');
+        });
+
+    });
+</script>
 
 <script>
     //var counter;
@@ -453,7 +618,7 @@
             helper: 'clone',
             revert: 'invalid'
         });
-            
+
 
         //    function foo() {
         //        $('.foo').each(function () {

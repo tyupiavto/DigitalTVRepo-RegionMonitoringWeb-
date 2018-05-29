@@ -182,6 +182,9 @@
     <Content Include="Content\ScriptView\CheckedCity.js" />
     <Content Include="Content\ScriptView\CountrieSearch.js" />
     <Content Include="Content\ScriptView\DeviceGroup.js" />
+    <Content Include="Content\ScriptView\jquery-ui-slider-pips.js" />
+    <Content Include="Content\ScriptView\jquery.slider.bundle.js" />
+    <Content Include="Content\ScriptView\jquery.slider.js" />
     <Content Include="Content\ScriptView\LogSearch.js" />
     <Content Include="Content\ScriptView\MenuDevice.js" />
     <Content Include="Content\ScriptView\WalkMapLogPreset.js" />
@@ -208,6 +211,7 @@
     <Content Include="Content\Style\DeviceInput.css" />
     <Content Include="Content\Style\display.css" />
     <Content Include="Content\Style\dragtable.css" />
+    <Content Include="Content\Style\jslider.css" />
     <Content Include="Content\Style\light.css" />
     <Content Include="Content\Style\main.css" />
     <Content Include="Content\Style\style.css" />

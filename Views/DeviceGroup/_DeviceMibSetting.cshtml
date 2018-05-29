@@ -5,8 +5,6 @@
 @using AdminPanelDevice.Helpers
 
 @{
-    //ViewBag.Title = "Index";
-    //AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
     var IntervalNumber = ViewBag.IntervalTime;
     var pageList = ViewBag.pageListNumber;
     <script type="text/javascript">
@@ -18,7 +16,7 @@
     </script>
 
 }
-
+ <link href="~/Content/Style/jslider.css" rel="stylesheet" />
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <div class="form-group scroll_walk">
     <table class="table" style="table-layout:fixed; width:100%;">
@@ -28,85 +26,86 @@
             @foreach (var item in Model)
             {
 
-                <tr id="@item.MibID" class="information_walk">
-                    <td style="width:25%;">
-                        @if (item.Name == "" || item.Name == null)
-                        {
-                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" style="color:darkred;">Is Not Description</div>
-                        }
-                        else
-                        {
-                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)">@item.Name</div>
-                        }
-                        @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
-                    </td>
-                    <td style="width:40%;">
-                        @if (item.Description == "" || item.Description == null)
-                        {
-                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" style="color:darkred;">Is Not Description</div>
-                        }
-                        else
-                        {
-                            <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" value="@item.Syntax">@item.Description</div>
-                        }
-                    </td>
-                    <td style="width:25%">
-                        <div class="valueDiv" id="Value@(item.MibID)" value="@item.Syntax" style="color: #b8c0c8;">@item.Syntax</div>
-                        @*<div id="Type@(item.MibID)" style="display:none">@item.value</div>*@
-
-                    </td>
-                    <td style="width:5%;">
-                        <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:0px;z-index:0; height:20px;">
-                            <div class="rowCheckbox mib_map_check">
-                                <div class="custom-checkbox" id="@item.MibID">
-                                    <input name="mib_map_checked" id="mib_map_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                    <label id="mib_map_checked_add@(item.MibID)" style="background-size:19px;"></label>
-                                </div>
+            <tr id="@item.MibID" class="information_walk">
+                <td style="width:25%;">
+                    @if (item.Name == "" || item.Name == null)
+                    {
+                        <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" style="color:darkred;">Is Not Description</div>
+                    }
+                    else
+                    {
+                        <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)">@item.Name</div>
+                    }
+                    @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
+                </td>
+                <td style="width:40%;">
+                    @if (item.Description == "" || item.Description == null)
+                    {
+                        <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" style="color:darkred;">Is Not Description</div>
+                    }
+                    else
+                    {
+                        <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)" value="@item.Syntax">@item.Description</div>
+                    }
+                </td>
+                <td style="width:25%">
+                    <div class="valueDiv" id="Value@(item.MibID)" value="@item.Syntax" style="color: #b8c0c8;">@item.Syntax</div>
+                </td>
+                <td style="width:3%">
+                    <span class="log_map_settings" id="log_map_settings@(item.MibID)" value="@(item.MibID)"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" data-toggle="modal" data-target="#LogMapSetting" style="margin-top: 7px; margin-left: -19px; position: absolute;"></span>
+                </td>
+                <td style="width:5%;">
+                    <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:25%;z-index:0; height:20px;">
+                        <div class="rowCheckbox mib_map_check">
+                            <div class="custom-checkbox" id="@item.MibID">
+                                <input name="mib_map_checked" id="mib_map_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                <label id="mib_map_checked_add@(item.MibID)" style="background-size:19px;"></label>
                             </div>
                         </div>
-                    </td>
-                    <td style="width:5%;">
-                        <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:0px;z-index:0; height:20px;">
-                            <div class="rowCheckbox mib_log_check">
-                                <div class="custom-checkbox" id="@item.MibID">
+                    </div>
+                </td>
+                <td style="width:5%;">
+                    <div class="input_styled checklist pull-left" style="margin-top:-6px; margin-left:25%;z-index:0; height:20px;">
+                        <div class="rowCheckbox mib_log_check">
+                            <div class="custom-checkbox" id="@item.MibID">
 
-                                    <input name="mib_log_checked" id="mib_log_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
-                                    <label id="mib_log_checked_add@(item.MibID)" value="" class="" style="background-size:19px;"></label>
+                                <input name="mib_log_checked" id="mib_log_checked@(item.MibID)" type="checkbox" value="" hidefocus="true" style="outline: none;" class="gradient">
+                                <label id="mib_log_checked_add@(item.MibID)" value="" class="" style="background-size:19px;"></label>
 
-                                </div>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td class="adapterInput" id="select_time" value="@item.MibID" style="text-align: center; width:13%; padding:4px;">
-                        <ul class="select_time" id="select_time@(item.MibID)" value="@item.MibID" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
-                            <li>
-                                <span class="type" value="" id="interval@(item.MibID)">60</span><span class="arrow" style=" height:19px;">
-                                    <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
-                                </span>
-                            </li>
-                        </ul>
-                        <ul class="select_time_list" id="select_time_list@(item.MibID)" value="@item.MibID" style="min-width:79px; width:79px; position: relative; display: none;">
-                            <div id="mib_interva_partial@(item.MibID)" class="mib_search_time_interval" style="position:absolute; width:79px;">
-                                @foreach (var time in IntervalNumber)
-                                {
-                                    <li id="time_interval_value" style="width:79px; margin-top:-1px;" value="@time.Interval">@time.Interval</li>
-                                }
-                            </div>
-                        </ul>
-                    </td>
+                <td class="adapterInput" id="select_time" value="@item.MibID" style="text-align: center; width:12%; padding:4px;">
+                    <ul class="select_time" id="select_time@(item.MibID)" value="@item.MibID" style="min-width:45px; min-height:18px; padding:4px; margin-top:1px;">
+                        <li>
+                            <span class="type" value="" id="interval@(item.MibID)">60</span><span class="arrow" style=" height:19px;">
+                                <img src="/image/arrow_drop_down_white.png" width="100%" height="100%" alt="arrow" title="arrow">
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="select_time_list" id="select_time_list@(item.MibID)" value="@item.MibID" style="min-width:79px; width:100%; position: relative; display: none;">
+                        <div id="mib_interva_partial@(item.MibID)" class="mib_search_time_interval" style="position:absolute; width:100%">
+                            @foreach (var time in IntervalNumber)
+                            {
+                                <li id="time_interval_value" style="width:100%; margin-top:-1px;" value="@time.Interval">@time.Interval</li>
+                            }
+                        </div>
+                    </ul>
+                </td>
 
-                    <td style="width:10%;">
-                        <ul id="setButtons" value="@item.MibID">
-                            <li><button type="button" id="set@(item.MibID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
-                        </ul>
-                    </td>
-                    <td style="width:10%;">
-                        <ul id="getButtons" value="@item.MibID">
-                            <li><button type="button" id="get@(item.MibID)" value="Get" class="btn" style="line-height:9px; font-size:11px;">Get</button></li>
-                        </ul>
-                    </td>
-                </tr>
+                <td style="width:8%;">
+                    <ul id="setButtons" value="@item.MibID">
+                        <li><button type="button" id="set@(item.MibID)" value="Set" class="btn" data-toggle="modal" data-target="#SetModal" style="line-height:9px; font-size:11px;">Set</button></li>
+                    </ul>
+                </td>
+                <td style="width:8%;">
+                    <ul id="getButtons" value="@item.MibID">
+                        <li><button type="button" id="get@(item.MibID)" value="Get" class="btn" style="line-height:9px; font-size:11px;">Get</button></li>
+                    </ul>
+                </td>
+            </tr>
 
             }
 
@@ -136,11 +135,5 @@
     </ul>
 </div>
 
-
-
-
-
-@*</div>*@
-@*<script src="~/Content/ScriptView/DeviceManage.js"></script>*@
 <script src="~/Content/ScriptView/pageListClick.js"></script>
-@*<link href="~/Content/Style/main.css" rel="stylesheet" />*@
+

@@ -503,3 +503,4 @@ $('body').on('click touchend', '.mib_search_time_interval li', function () { // 
     $.post("/DeviceGroup/IntervalSearchMib", { intervalID: intervalID, Interval: Interval, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json');
 });
 
+

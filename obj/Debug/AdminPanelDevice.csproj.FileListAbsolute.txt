@@ -239,3 +239,5 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Data.Services.pdb
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Data.Services.dll.config
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Devices.Services.pdb
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Service.Models.pdb
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.Pipes.AccessControl.dll

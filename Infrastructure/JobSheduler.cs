@@ -11,44 +11,44 @@ namespace AdminPanelDevice.Infrastructure
     public class JobSheduler
     {
 
-        private static IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+        //private static IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
      
        
 
-        public static void Start()
-        {
+        //public static void Start()
+        //{
 
-            IJobDetail remove_trap_log = JobBuilder.Create<RemoveLog>()
-               .WithIdentity("RemoveLog", "group6")
-               .Build();
-
-
-            //int charge_min = 0, charge_hour = 0;
-            //int message_min = 0, message_hour = 0;
+        //    IJobDetail remove_trap_log = JobBuilder.Create<RemoveLog>()
+        //       .WithIdentity("RemoveLog", "group6")
+        //       .Build();
 
 
-
-            //// invoisi
-            if (scheduler.CheckExists(remove_trap_log.Key))
-            {
-                scheduler.RescheduleJob(new TriggerKey("invoice_send_trigger"), TriggerBuilder.Create().WithIdentity("invoice_send_trigger")
-                .WithIdentity("Run Infinitely every 2nd day of the month", "Monthly_Day_2")
-                .StartNow()
-                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-10),14,37))
-                .Build());
-            }
-            else
-            {
-                scheduler.ScheduleJob(remove_trap_log, TriggerBuilder.Create().WithIdentity("invoice_send_trigger")
-                 .WithIdentity("Run Infinitely every 2nd day of the month", "Monthly_Day_2")
-                .StartNow()
-                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-10),19,04))
-                .Build());
-            }
+        //    //int charge_min = 0, charge_hour = 0;
+        //    //int message_min = 0, message_hour = 0;
 
 
-            scheduler.Start();
-        }
+
+        //    //// invoisi
+        //    if (scheduler.CheckExists(remove_trap_log.Key))
+        //    {
+        //        scheduler.RescheduleJob(new TriggerKey("invoice_send_trigger"), TriggerBuilder.Create().WithIdentity("invoice_send_trigger")
+        //        .WithIdentity("Run Infinitely every 2nd day of the month", "Monthly_Day_2")
+        //        .StartNow()
+        //        .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-10),14,37))
+        //        .Build());
+        //    }
+        //    else
+        //    {
+        //        scheduler.ScheduleJob(remove_trap_log, TriggerBuilder.Create().WithIdentity("invoice_send_trigger")
+        //         .WithIdentity("Run Infinitely every 2nd day of the month", "Monthly_Day_2")
+        //        .StartNow()
+        //        .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute((DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)-10),19,04))
+        //        .Build());
+        //    }
+
+
+        //    scheduler.Start();
+        //}
 
         //public static void RemoveTrigger(string trigger_key)
         //{

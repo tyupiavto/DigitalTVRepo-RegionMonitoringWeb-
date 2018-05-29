@@ -19,23 +19,25 @@
             <th id="oidColumn">OID</th>
             <th id="valueColumn">Value</th>
             <th id="datetimeColumn">Date/Time</th>
+            <th id="errorMapColumn" style="display:none">CorrectErrorMap</th>
         </tr>
     </thead>
     <tbody id="trap_log_information">
         @foreach (var item in Model)
         {
-            <tr>
-                <td id="countrieColumn@(item.ID)" value="@item.ID">@item.Countrie</td>
-                <td id="stateColumn@(item.ID)" value="@item.ID">@item.States</td>
-                <td id="cityColumn@(item.ID)" value="@item.ID">@item.City</td>
-                <td id="towerColumn@(item.ID)" value="@item.ID">@item.TowerName</td>
-                <td id="deviceColumn@(item.ID)" value="@item.ID">@item.DeviceName</td>
-                <td id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)">@item.IpAddres</a></td>
-                <td id="descriptionColumn@(item.ID)" value="@item.ID">@item.Description</td>
-                <td id="oidColumn@(item.ID)" value="@item.ID">@item.CurrentOID</td>
-                <td id="valueColumn@(item.ID)" value="@item.ID">@item.Value</td>
-                <td id="datetimeColumn@(item.ID)" value="@item.ID">@item.dateTimeTrap</td>
-            </tr>
+        <tr>
+            <td id="countrieColumn@(item.ID)" value="@item.ID">@item.Countrie</td>
+            <td id="stateColumn@(item.ID)" value="@item.ID">@item.States</td>
+            <td id="cityColumn@(item.ID)" value="@item.ID">@item.City</td>
+            <td id="towerColumn@(item.ID)" value="@item.ID">@item.TowerName</td>
+            <td id="deviceColumn@(item.ID)" value="@item.ID">@item.DeviceName</td>
+            <td id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)">@item.IpAddres</a></td>
+            <td id="descriptionColumn@(item.ID)" value="@item.ID">@item.Description</td>
+            <td id="oidColumn@(item.ID)" value="@item.ID">@item.CurrentOID</td>
+            <td id="valueColumn@(item.ID)" value="@item.ID">@item.Value</td>
+            <td id="datetimeColumn@(item.ID)" value="@item.ID">@item.dateTimeTrap</td>
+            <td id="errorMapColumn@(item.ID)" value="@item.ID" style="display:none"><input type="checkbox"  style="margin-left:50%"/></td>
+        </tr>
         }
     </tbody>
 </table>

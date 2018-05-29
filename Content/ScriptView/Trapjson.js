@@ -1,4 +1,4 @@
-﻿var SearchName, searchTxt, searchID, SearchInd,startTime,endTime;
+﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime;
 $('body').on('click touchend', '#start_log', function () {
     window.open('/Trap/LogSetting');
 
@@ -17,10 +17,10 @@ $("#buttrap").click(function () {
 
 $('#search_log').on('click', function () {
     SearchName = $('#SearchLogName').val();
-    SearchInd = 1;
+    SearchClear = 1;
     startTime = $('#startDateTime').val();
     endTime = $('#endDateTime').val();
-    $.post("/Trap/LogSearch", { SearchName: SearchName, SearchInd: SearchInd, startTime: startTime, endTime: endTime }, function (Response) {
+    $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear, startTime: startTime, endTime: endTime }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
     },'text');
@@ -53,16 +53,16 @@ $(".log-menu li").click(function (event) {
     switch ($(this).attr("data-action")) {
         case "Search":
             SearchName = $('#' + searchID).text();
-            SearchInd = 1;
-            $.post("/Trap/LogSearch", { SearchName: SearchName, SearchInd: SearchInd }, function (Response) {
+            SearchClear = 1;
+            $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear }, function (Response) {
                 $('#loginformation').html("");
                 $('#loginformation').html(Response);
             },'text');
             break;
         case "Clear":
 
-            SearchInd = 0;
-            $.post("/Trap/LogSearch", { SearchName: SearchName, SearchInd: SearchInd }, function (Response) {
+            SearchClear = 0;
+            $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear }, function (Response) {
                 $('#loginformation').html("");
                 $('#loginformation').html(Response);
             }, 'text');

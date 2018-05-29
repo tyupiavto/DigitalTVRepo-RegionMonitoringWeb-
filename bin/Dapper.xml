@@ -715,6 +715,16 @@
             <param name="cnn">The connection to query on.</param>
             <param name="command">The command used to query on this connection.</param>
         </member>
+        <member name="M:Dapper.SqlMapper.TryOpenAsync(System.Data.IDbConnection,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to open a connection asynchronously, with a better error message for unsupported usages.
+            </summary>
+        </member>
+        <member name="M:Dapper.SqlMapper.TrySetupAsyncCommand(Dapper.CommandDefinition,System.Data.IDbConnection,System.Action{System.Data.IDbCommand,System.Object})">
+            <summary>
+            Attempts setup a <see cref="T:System.Data.Common.DbCommand"/> on a <see cref="T:System.Data.Common.DbConnection"/>, with a better error message for unsupported usages.
+            </summary>
+        </member>
         <member name="M:Dapper.SqlMapper.ExecuteAsync(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable{System.Int32},System.Nullable{System.Data.CommandType})">
             <summary>
             Execute a command asynchronously using .NET 4.5 Task.

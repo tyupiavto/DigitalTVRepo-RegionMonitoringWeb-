@@ -76,32 +76,35 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult LogSearch(int? page, string SearchName,int SearchInd, string startTime, string endTime)
+        public PartialViewResult LogSearch(int? page, string SearchName,int SearchClear, string startTime, string endTime)
         {
-            if (SearchName=="" && startTime!="" && endTime!="")
+            if (SearchName == "" && startTime != "" && endTime != "")
             {
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
-                  var startTm= DateTime.ParseExact(startTime, "M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
+                    var startTm = DateTime.ParseExact(startTime, "M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
                     var EndTm = DateTime.ParseExact(endTime, "M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
                     TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{startTm}' and '{EndTm}'").ToList();
                     TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
                     return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, 20));
                 }
             }
-
-            //if (SearchInd == 0)
-            //{
-            //    SearchIndicator = 0;
-            //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, 20));
-            //}
             else
             {
-                SearchIndicator = 1;
-                TrapLogListSearch.Clear();
-                TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description!=null && s.Description.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.Value.Contains(SearchName)).ToList();
-                TrapLogListSearch = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
-                return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, 20));
+
+                if (SearchClear == 0)
+                {
+                    SearchIndicator = 0;
+                    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, 20));
+                }
+                else
+                {
+                    SearchIndicator = 1;
+                    TrapLogListSearch.Clear();
+                    TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.Value.Contains(SearchName)).ToList();
+                    TrapLogListSearch = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
+                    return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, 20));
+                }
             }
         }
 

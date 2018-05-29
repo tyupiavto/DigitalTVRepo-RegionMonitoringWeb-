@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AdminPanelDevice.Infrastructure
 {
-    public class RemoveLog : IJob
+    public class RemoveLog/* : IJob*/
     {
         DeviceContext db = new DeviceContext();
         public void Execute(IJobExecutionContext context)

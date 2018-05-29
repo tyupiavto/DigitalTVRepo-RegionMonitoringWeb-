@@ -638,6 +638,13 @@ namespace AdminPanelDevice.Controllers
                 new WalkSave(walkList);
                 ViewBag.IntervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
 
+                EditInd = 0;
+                ViewBag.Edit = EditInd;
+                //ViewBag.IntervalTime = intervalTime;
+                ViewBag.pageListNumber = pageListNumber;
+                ViewBag.defaultInterval = DefaultInterval;
+                ViewBag.TowerIP = TowerIP;
+
                 //WalkServices walkSend = new WalkServices();
                 //List<_WalkTowerDevice> walkLi = new List<_WalkTowerDevice>();
                 //DataWalkService dataWalk = new DataWalkService();
@@ -645,13 +652,6 @@ namespace AdminPanelDevice.Controllers
                 //walkLi = walkSend.WalkSendReturn(walkModel);
                 //dataWalk.SavedWalk(walkLi);
                 // ViewBag.IntervalTime = dataWalk.ReturnedIntervalTime();
-
-                EditInd = 0;
-                ViewBag.Edit = EditInd;
-                //ViewBag.IntervalTime = intervalTime;
-                ViewBag.pageListNumber = pageListNumber;
-                ViewBag.defaultInterval = DefaultInterval;
-                ViewBag.TowerIP = TowerIP;
             }
             return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }

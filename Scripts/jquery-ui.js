@@ -14490,11 +14490,11 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 		animate: false,
 		classes: {
 			"ui-slider": "ui-corner-all",
-			"ui-slider-handle": "ui-corner-all",
+            "ui-slider-handle": "ui-corner-all",
 
 			// Note: ui-widget-header isn't the most fittingly semantic framework class for this
 			// element, but worked best visually with a variety of themes
-			"ui-slider-range": "ui-corner-all ui-widget-header"
+            "ui-slider-range": "ui-corner-all ui-widget-header",
 		},
 		distance: 0,
 		max: 100,
@@ -14526,7 +14526,7 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 		this._calculateNewMax();
 
 		this._addClass( "ui-slider ui-slider-" + this.orientation,
-			"ui-widget ui-widget-content" );
+            "ui-widget ui-widget-content");
 
 		this._refresh();
 
@@ -14544,7 +14544,7 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 		var i, handleCount,
 			options = this.options,
 			existingHandles = this.element.find( ".ui-slider-handle" ),
-			handle = "<span tabindex='0'></span>",
+			handle = "<span tabindex='0' ></span>",
 			handles = [];
 
 		handleCount = ( options.values && options.values.length ) || 1;
@@ -14560,7 +14560,7 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 
 		this.handles = existingHandles.add( $( handles.join( "" ) ).appendTo( this.element ) );
 
-		this._addClass( this.handles, "ui-slider-handle", "ui-state-default" );
+		this._addClass( this.handles, "ui-slider-handle", "ui-state-default" ,"slider-logmap");
 
 		this.handle = this.handles.eq( 0 );
 

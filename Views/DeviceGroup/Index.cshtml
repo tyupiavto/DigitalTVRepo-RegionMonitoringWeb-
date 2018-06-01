@@ -331,7 +331,7 @@
     <div class="modal-dialog">
 
         <!-- Modal content-->
-        <div class="modal-content setModal">
+        <div class="modal-content logmapModal">
             <div class="modal-body">
                 <div class="titileGroup" style="margin-left: -13px; margin-top: -13px; width:106%;">
                     <table>
@@ -341,8 +341,9 @@
                             </td>
                             <td width="90%;">
                                 <div class="range-slider styled" id="slider-one">
-                                    <input id="price-range-one" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
-                                </div>
+            <input id="price-range-one" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
+        </div>
+                                @*<div id="slider-range-one" class="slider-two"></div>*@
                             </td>
                         </tr>
                         <tr class="streamsInfo" id="header_device">
@@ -351,8 +352,10 @@
                             </td>
                             <td width="90%;">
                                 <div class="range-slider styled" id="slider-two">
-                                    <input id="price-range-two" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
-                                </div>
+            <input id="price-range-two" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
+        </div>
+
+                                <div id="slider-range-two" class="slider-two"></div>
                             </td>
                         </tr>
                         <tr class="streamsInfo" id="header_device">
@@ -361,7 +364,7 @@
                             </td>
                             <td width="90%;">
                                 <div class="range-slider styled" id="slider-tree">
-                                    <input id="price-range-tree" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                    <input id="price-range-tree" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
                                 </div>
                             </td>
                         </tr>
@@ -371,7 +374,7 @@
                             </td>
                             <td width="90%;">
                                 <div class="range-slider styled" id="slider-four">
-                                    <input id="price-range-four" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                    <input id="price-range-four" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
                                 </div>
                             </td>
                         </tr>
@@ -381,7 +384,7 @@
                             </td>
                             <td style="width:90%;">
                                 <div class="range-slider styled" id="slider-five">
-                                    <input id="price-range-five" type="text" name="price-range" value="240;760" hidefocus="true" style="outline: none; display: none;">
+                                    <input id="price-range-five" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
                                 </div>
                             </td>
                         </tr>
@@ -496,100 +499,219 @@
 </div>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="~/Content/ScriptView/jquery.slider.bundle.js"></script>
-<script src="~/Content/ScriptView/jquery.slider.js"></script>
-<script type="text/javascript">
-   
-    jQuery(document).ready(function ($) {
-        // Price Range Input
-        
-        $("#price-range-two").rangeslider({
-            from: 0,
-            to: 1000,
-            limits: true,
-            scale: ['0', '1000'],
-            heterogeneity: ['50/500'],
-            step: 1,
-            smooth: true
+    <script src="~/Content/ScriptView/jquery.slider.bundle.js"></script>
+    <script src="~/Content/ScriptView/jquery.slider.js"></script>
+    <script type="text/javascript">
+        var twoleft, twowidth;
+        jQuery(document).ready(function ($) {
+            // Price Range Input
+            $("#price-range-one").rangeslider({
+                from: 0,
+                to: 1000,
+                limits: true,
+                //scale: ['0', '1000'],
+                heterogeneity: ['50/500'],
+                step: 1,
+                smooth: true
+            });
+            $("#price-range-two").rangeslider({
+                from: 0,
+                to: 1000,
+                limits: true,
+                //scale: ['0', '1000'],
+                heterogeneity: ['50/500'],
+                step: 1,
+                smooth: true
+            });
+
+            $("#price-range-tree").rangeslider({
+                from: 0,
+                to: 1000,
+                limits: true,
+                scale: ['0', '1000'],
+                heterogeneity: ['50/500'],
+                step: 1,
+                smooth: true
+            });
+            $("#price-range-four").rangeslider({
+                from: 0,
+                to: 1000,
+                limits: true,
+                scale: ['0', '1000'],
+                heterogeneity: ['50/500'],
+                step: 1,
+                smooth: true
+            });
+            $("#price-range-five").rangeslider({
+                from: 0,
+                to: 1000,
+                limits: true,
+                scale: ['0', '1000'],
+                heterogeneity: ['50/500'],
+                step: 1,
+                smooth: true
+            });
+
+            $('#slider-one .end-logmap-pointer').mouseup(function (event) {
+                twoleft = event.target.style.left;
+                twowidth = parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-one .end-logmap-pointer').css('left'));
+
+                var x = parseFloat(twoleft) * 10;
+                var y = parseInt($('#slider-two .end-pointer-value').text())*1000;
+                $('#price-range-two').attr("value", x + ";" + y);
+
+                $('#slider-two .start-logmap-pointer').css('left', event.target.style.left);
+                $('#slider-two .start-pointer-value').css('left', twoleft);
+                $('#slider-two .line-logmap-size').css('left', event.target.style.left);
+                $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-one .end-logmap-pointer').css('left')) + "px");
+                $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
+            });
+
+            //$('#slider-two .end-logmap-pointer').mousedown(function () {
+            //    $('#slider-two .start-logmap-pointer').css('left', twoleft);
+            //    $('#slider-two .start-pointer-value').css('left', twoleft);
+            //    $('#slider-two .line-logmap-size').css('left', twoleft);
+            //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
+            //    $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
+            //});
+
+
+            $('#slider-two .end-logmap-pointer').slider({
+                change: function () {
+
+                    var x = parseFloat(twoleft) * 10;
+                    var y = parseInt($('#slider-two .end-pointer-value').text());
+                    $('#price-range-two').attr("value", x + ";" + y);
+                    //$('#slider-two .start-logmap-pointer').css('left', twoleft);
+                    //$('#slider-two .start-pointer-value').css('left', twoleft);
+                    $('#slider-two .line-logmap-size').css('left', twoleft);
+                    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
+                    $('#slider-tree .start-pointer-value span').text($('#price-range-two').attr("value"));
+                },
+                //start: function (e, ui) {
+                //    var x = parseFloat(twoleft) * 10;
+                //    var y = parseInt($('#slider-two .end-pointer-value').text());
+                //    $('#price-range-two').attr("value", x + ";" + y);
+
+                //    $('#slider-two .start-logmap-pointer').css('left', twoleft);
+                //    $('#slider-two .start-pointer-value').css('left', twoleft);
+                //    $('#slider-two .line-logmap-size').css('left', twoleft);
+                //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px")
+                //},
+                slide: function (e, ui) {
+
+                    var x = parseFloat(twoleft) * 10;
+                    var y = parseInt($('#slider-two .end-pointer-value').text());
+                    $('#price-range-two').attr("value", x + ";" + y);
+
+                    $('#slider-two .start-logmap-pointer').css('left', twoleft);
+                    $('#slider-two .start-pointer-value').css('left', twoleft);
+                    $('#slider-two .line-logmap-size').css('left', twoleft);
+                    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
+                    $('#slider-tree .start-pointer-value span').text($('#price-range-two').attr("value"));
+                },
+                stop: function (e, ui) {
+                    var x = parseFloat(twoleft) * 10;
+                    var y = parseInt($('#slider-two .end-pointer-value').text());
+                    $('#price-range-two').attr("value", x + ";" + y);
+                    $('#slider-two .start-logmap-pointer').css('left', twoleft);
+                    $('#slider-two .start-pointer-value').css('left', twoleft);
+                    $('#slider-two .line-logmap-size').css('left', twoleft);
+                    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
+                    //$('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
+                }
+            });
+
+            //$('#slider-two .end-logmap-pointer').mousemove(function (event) {
+            //    var x = parseFloat($('#slider-two .start-logmap-pointer').css('left')) * 10;
+            //    var y = parseFloat($('#slider-two .end-logmap-pointer').css('left')) * 10;
+            //    $('#price-range-two').attr("value", x + ";" + y);
+
+            //    $('#slider-tree .start-pointer-value span').text(parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')));
+            //    $('#slider-two .start-logmap-pointer').css('left', parseInt($('#slider-one .end-logmap-pointer').css('left')));
+            //    $('#slider-two .start-pointer-value').css('left', parseInt($('#slider-one .end-pointer-value').css('left')));
+            //    $('#slider-two .line-logmap-size').css('left', parseInt($('#slider-two .start-logmap-pointer').css('left')));
+            //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
+            //});
+
+            //$('#slider-two .end-logmap-pointer').mouseup(function () {
+            //    $('#slider-two .start-logmap-pointer').css('left', twoleft);
+            //    $('#slider-two .start-pointer-value').css('left', twoleft);
+            //    $('#slider-two .line-logmap-size').css('left', twoleft);
+            //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
+            //    $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
+            //});
+
+            //$('#slider-two .end-logmap-pointer').mouseup(function (event) {
+            //    $('#slider-tree .start-logmap-pointer').css('left', event.target.style.left);
+            //    $('#slider-tree .start-pointer-value').css('left', event.target.style.left);
+            //    $('#slider-tree .line-logmap-size').css('left', event.target.style.left);
+            //    $('#slider-tree .line-logmap-size').css('width', parseInt($('#slider-tree .end-logmap-pointer').css('left')) - parseInt($('#slider-two .end-logmap-pointer').css('left')) + "px");
+            //    $('#slider-tree .start-pointer-value span').text($('#slider-two .end-pointer-value span').text());
+            //});
+
+            //$('#slider-tree .end-logmap-pointer').mouseup(function (event) {
+            //    $('#slider-four .start-logmap-pointer').css('left', event.target.style.left);
+            //    $('#slider-four .start-pointer-value').css('left', event.target.style.left);
+            //    $('#slider-four .line-logmap-size').css('left', event.target.style.left);
+            //    $('#slider-four .line-logmap-size').css('width', parseInt($('#slider-four .end-logmap-pointer').css('left')) - parseInt($('#slider-tree .end-logmap-pointer').css('left')) + "px");
+            //    $('#slider-four .start-pointer-value span').text($('#slider-tree .end-pointer-value span').text());
+            //});
+            //$('#slider-four .end-logmap-pointer').mouseup(function (event) {
+            //    $('#slider-five .start-logmap-pointer').css('left', event.target.style.left);
+            //    $('#slider-five .start-pointer-value').css('left', event.target.style.left);
+            //    $('#slider-five .line-logmap-size').css('left', event.target.style.left);
+            //    $('#slider-five .line-logmap-size').css('width', parseInt($('#slider-five .end-logmap-pointer').css('left')) - parseInt($('#slider-four .end-logmap-pointer').css('left')) + "px");
+            //    $('#slider-five .start-pointer-value span').text($('#slider-four .end-pointer-value span').text());
+            //});
+
+            //$('.log_map_settings').click(function () {
+            //    $('#slider-one .line-logmap-size').css('background', 'rgb(255, 0, 0)');
+            //    $('#slider-two .line-logmap-size').css('background', 'rgb(255, 255, 0)');
+            //    $('#slider-tree .line-logmap-size').css('background', 'rgb(38, 249, 0)');
+            //    $('#slider-four .line-logmap-size').css('background', 'rgb(255, 255, 0)');
+            //    $('#slider-five .line-logmap-size').css('background', 'rgb(255, 0, 0)');
+            //});
+
         });
-        $("#price-range-one").rangeslider({
-            from: 0,
-            to: 1000,
-            limits: true,
-            scale: ['0', '1000'],
-            heterogeneity: ['50/500'],
+    </script>
+@*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
+@*<link rel="stylesheet" href="//resources/demos/style.css">*@
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+@*<script type="text/javascript">
+    $(function () {
+        $("#slider-range-one").slider({
+            range: true,
+            min: 0,
+            max: 1000,
             step: 1,
-            smooth: true
-        });
-        $("#price-range-tree").rangeslider({
-            from: 0,
-            to: 1000,
-            limits: true,
-            scale: ['0', '1000'],
-            heterogeneity: ['50/500'],
-            step: 1,
-            smooth: true
-        });
-        $("#price-range-four").rangeslider({
-            from: 0,
-            to: 1000,
-            limits: true,
-            scale: ['0', '1000'],
-            heterogeneity: ['50/500'],
-            step: 1,
-            smooth: true
-        });
-        $("#price-range-five").rangeslider({
-            from: 0,
-            to: 1000,
-            limits: true,
-            scale: ['0', '1000'],
-            heterogeneity: ['50/500'],
-            step: 1,
-            smooth: true
+            values: [0, 1000],
+            slide: function (event, ui) {
+                $("#slider-range-two span:first").css("left", $("#slider-range-one span:nth-child(3)").css("left"));
+              //  $("#slider-range-two").slider('value', "" + ui.value + "," + $("#slider-range-two").slider('values')[1]+"");
+            },
+            stop: function (event, ui) {
+                
+                $("#slider-range-two span:first").css("left", $("#slider-range-one span:nth-child(3)").css("left"));
+               // $("#slider-range-two").slider('value', "" + ui.value + "," + $("#slider-range-two").slider('values')[1] + "");
+            }
         });
 
-        $('#slider-one .end-logmap-pointer').mouseup(function (event) {
-            $('#slider-two .start-logmap-pointer').css('left', event.target.style.left);
-            $('#slider-two .start-pointer-value').css('left', event.target.style.left);
-            $('#slider-two .line-logmap-size').css('left', event.target.style.left);
-            $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-one .end-logmap-pointer').css('left')) + "px");
-            $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
+        $("#slider-range-two").slider({
+            range: true,
+            min: 0,
+            max: 1000,
+            step: 1,
+            values: [0, 1000],
+            slide: function (event, ui) {
+                
+            }
         });
-
-        $('#slider-two .end-logmap-pointer').mouseup(function (event) {
-            $('#slider-tree .start-logmap-pointer').css('left', event.target.style.left);
-            $('#slider-tree .start-pointer-value').css('left', event.target.style.left);
-            $('#slider-tree .line-logmap-size').css('left', event.target.style.left);
-            $('#slider-tree .line-logmap-size').css('width', parseInt($('#slider-tree .end-logmap-pointer').css('left')) - parseInt($('#slider-two .end-logmap-pointer').css('left')) + "px");
-            $('#slider-tree .start-pointer-value span').text($('#slider-two .end-pointer-value span').text());
-        });
-
-        $('#slider-tree .end-logmap-pointer').mouseup(function (event) {
-            $('#slider-four .start-logmap-pointer').css('left', event.target.style.left);
-            $('#slider-four .start-pointer-value').css('left', event.target.style.left);
-            $('#slider-four .line-logmap-size').css('left', event.target.style.left);
-            $('#slider-four .line-logmap-size').css('width', parseInt($('#slider-four .end-logmap-pointer').css('left')) - parseInt($('#slider-tree .end-logmap-pointer').css('left')) + "px");
-            $('#slider-four .start-pointer-value span').text($('#slider-tree .end-pointer-value span').text());
-        });
-        $('#slider-four .end-logmap-pointer').mouseup(function (event) {
-            $('#slider-five .start-logmap-pointer').css('left', event.target.style.left);
-            $('#slider-five .start-pointer-value').css('left', event.target.style.left);
-            $('#slider-five .line-logmap-size').css('left', event.target.style.left);
-            $('#slider-five .line-logmap-size').css('width', parseInt($('#slider-five .end-logmap-pointer').css('left')) - parseInt($('#slider-four .end-logmap-pointer').css('left')) + "px");
-            $('#slider-five .start-pointer-value span').text($('#slider-four .end-pointer-value span').text());
-        });
-
-        $('.log_map_settings').click(function () {
-            $('#slider-one .line-logmap-size').css('background', 'rgb(255, 0, 0)');
-            $('#slider-two .line-logmap-size').css('background', 'rgb(255, 255, 0)');
-            $('#slider-tree .line-logmap-size').css('background', 'rgb(38, 249, 0)');
-            $('#slider-four .line-logmap-size').css('background', 'rgb(255, 255, 0)');
-            $('#slider-five .line-logmap-size').css('background', 'rgb(255, 0, 0)');
-        });
-
+        //$("#amount").val("$" + $("#slider-range").slider("values", 0) +
+        //    " - $" + $("#slider-range").slider("values", 1));
     });
-</script>
+</script>*@
 
 <script>
     //var counter;

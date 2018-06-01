@@ -14,7 +14,7 @@
     <div class="row">
         <button type="button" class="btn btn-primary" id="live_diagram">Live Diagram</button>
         <button type="button" class="btn btn-primary" id="static_diagram">Static Diagram</button>
-        <div id="chartContainer" style="height:300px; width: 100%;"></div>
+        <div id="chartContainer" style="height:300px; width: 95%; margin-left:25px;"></div>
         <div id="chartContainerstatic" style="height: 300px; width: 100%;"></div>
     </div>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -50,14 +50,14 @@
                 }]
             });
 
-            var updateInterval = 1000;
+            var updateInterval =1000;
             var updateChart = function () {
                 chart.render();
                 $.post("/Diagram/ChartLive", {}, function (res) {
                     for (var i = 0; i <= res.LiveDiagram.length - 1; i++) {
                         dataPointLive.push({ x: res.LiveDiagram[i].X, y: res.LiveDiagram[i].Y });
                     }
-                    if (dataPointLive.length - 1 == 40) {
+                    if (dataPointLive.length - 1 == 4000) {
                         dataPointLive.shift();
                     }
 

@@ -1140,6 +1140,14 @@ body {
     border-collapse: collapse;
 }
 
+.logmapModal {
+    height: 100%;
+    width: 461px;
+    border-top: 1px solid rgba(0,0,0,0.3);
+    background: url(/image/comment-bg2.png) repeat;
+    border-collapse: collapse;
+}
+
 .removeLine {
     height: 140px;
     width: 461px;

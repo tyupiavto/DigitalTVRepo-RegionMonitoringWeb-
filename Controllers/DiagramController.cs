@@ -7,6 +7,11 @@ using AdminPanelDevice.Models;
 using PagedList;
 using PagedList.Mvc;
 using System.Drawing;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using Dapper;
+using System.Globalization;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -16,7 +21,8 @@ namespace AdminPanelDevice.Controllers
        public static List<WalkDevice> wlk = new List<WalkDevice>();
         public static string device_tower_IP;
         public static int IDX = 0;
-        public static int device;
+        public static MibGet device;
+        public static int indicator = 0;
         public struct DiagramPoint
         {
             public int X;
@@ -26,9 +32,13 @@ namespace AdminPanelDevice.Controllers
         // GET: Diagram
         public ActionResult Index()
         {
-            //device_tower_IP = device_IP;
-            device_tower_IP = "192.168.36.13";
-            device = db.devices.Where(d => d.IP == device_tower_IP).FirstOrDefault().ID;
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                device_tower_IP = "192.168.24.12";
+                device = connection.Query<MibGet>($"select * from MibGet where IP='{device_tower_IP}'").FirstOrDefault();
+            }
+            //    
+            //device = db.MibGets.Where(d => d.IP =='192.168.24.12').FirstOrDefault().ID;
             //page = 1;
             return View();
         }
@@ -48,34 +58,65 @@ namespace AdminPanelDevice.Controllers
         }
 
         public JsonResult ChartLive()
-        {            
-            var mibget = db.MibGets.Where(m => m.DeviceID == device).ToList().LastOrDefault();
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
                 List<DiagramPoint> LiveDiagram = new List<DiagramPoint>();
+                if (indicator == 0)
+                {
+                    indicator = 1;
+                    var livetime = DateTime.Now;
+                    var end = livetime.Add(new TimeSpan(-1, 0, 0));
+                    var mibgets = connection.Query<MibGet>($"select * from MibGet where DeviceID='{device.DeviceID}'and WalkOID='1.3.6.1.4.1.23180.2.1.1.1.3.8.2.1.14.1.2'").ToList();
+                    //List<DiagramPoint> StaticDiagram = new List<DiagramPoint>();
+                    DiagramPoint cordinate = new DiagramPoint();
+                    foreach (var item in mibgets)
+                    {
+                        cordinate.X = IDX;
+                        string mibvalues = item.Value.Substring(0, item.Value.Length - 5);
+                        cordinate.Y = double.Parse(mibvalues, CultureInfo.InvariantCulture);
+                        //cordinate.Y = Convert.ToDouble(item.Value);
+                        //cordinate.Y = cordinate.Y/* - 898000.0*/;
+                        LiveDiagram.Add(cordinate);
+                        IDX++;
+                    }
+
+                }
+                //var mibget = db.MibGets.Where(m => m.DeviceID == device.ID).ToList().LastOrDefault();
+                var mibget = connection.Query<MibGet>($"select * from MibGet where DeviceID='{device.DeviceID}'and WalkOID='1.3.6.1.4.1.23180.2.1.1.1.3.8.2.1.14.1.2'").LastOrDefault();
+                //List<DiagramPoint> LiveDiagram = new List<DiagramPoint>();
                 DiagramPoint cordinat = new DiagramPoint();
                 cordinat.X = IDX;
-                cordinat.Y = Convert.ToDouble(mibget.Value);
-                cordinat.Y = cordinat.Y - 898000.0;
+                string mibvalue = mibget.Value.Substring(0, mibget.Value.Length - 5);
+                cordinat.Y = double.Parse(mibvalue, CultureInfo.InvariantCulture);
+                //cordinat.Y = cordinat.Y;
                 LiveDiagram.Add(cordinat);
-            IDX++;
-          
-            return Json(new { LiveDiagram }, JsonRequestBehavior.AllowGet);
+                IDX++;
+
+                return Json(new { LiveDiagram }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 
         public JsonResult ChartStatic()
         {
-            var mibget = db.MibGets.Where(m => m.DeviceID == device).ToList();
-            List<DiagramPoint> StaticDiagram = new List<DiagramPoint>();
-            DiagramPoint cordinat = new DiagramPoint();
-            foreach (var item in mibget)
+            //var mibget = db.MibGets.Where(m => m.DeviceID == device.ID).ToList();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                cordinat.X = IDX;
-                cordinat.Y = Convert.ToDouble(item.Value);
-                cordinat.Y = cordinat.Y - 898000.0;
-                StaticDiagram.Add(cordinat);
-                IDX++;
+                //var mibget = db.MibGets.Where(m => m.DeviceID == device.ID).ToList().LastOrDefault();
+                var mibget = connection.Query<MibGet>($"select * from MibGet where DeviceID='{device.DeviceID}'and WalkOID='1.3.6.1.4.1.23180.2.1.1.1.3.8.2.1.14.1.2'").ToList();
+                List<DiagramPoint> StaticDiagram = new List<DiagramPoint>();
+                DiagramPoint cordinat = new DiagramPoint();
+                foreach (var item in mibget)
+                {
+                    cordinat.X = IDX;
+                    cordinat.Y = Convert.ToDouble(item.Value);
+                    cordinat.Y = cordinat.Y - 898000.0;
+                    StaticDiagram.Add(cordinat);
+                    IDX++;
+                }
+                return Json(new { StaticDiagram }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { StaticDiagram }, JsonRequestBehavior.AllowGet);
         }
     }
 }

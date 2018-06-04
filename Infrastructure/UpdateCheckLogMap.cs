@@ -13,6 +13,7 @@ namespace AdminPanelDevice.Infrastructure
         void UpdateChechkMap(int checkMap, int walkCheckID,string towerName, int deviceID);
         void UpdateChechkGps(int checkGps, int walkCheckID, string towerName, int deviceID);
         void UpdateInterval(int intervalID, int Interval,string towerName, int deviceID);
+        void UpdateLogMapSetting(LogMapSettingValue value, string towerName, int deviceID);
         void WalkPresetSave(List<WalkTowerDevice> walkList,int presetID,string DeviceName, string TowerID, int deviceID);
     }
 }

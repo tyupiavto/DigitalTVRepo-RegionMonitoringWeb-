@@ -332,7 +332,37 @@
 
         <!-- Modal content-->
         <div class="modal-content logmapModal">
-            <div class="modal-body">
+            <div class="modal-body" id="logMapSetting">
+                <div class="value-setting">
+                    <div class="valueIndicator indicatorOne">
+                        <span class="numberIndicator" id="valueOne">0</span>
+                        <span class="bottomArrow"></span>
+                    </div>
+                    <div class="valueIndicator indicatorTwo" style="left:0%">
+                        <span class="topArrow"></span>
+                        <span class="numberIndicator" id="valueTwo">200</span>
+                        <span class="bottomArrow"></span>
+                    </div>
+                    <div class="valueIndicator indicatorThree">
+                        <span class="topArrow"></span>
+                        <span class="numberIndicator" id="valueThree">400</span>
+                        <span class="bottomArrow"></span>
+                    </div>
+                    <div class="valueIndicator indicatorFour">
+                        <span class="topArrow"></span>
+                        <span class="numberIndicator" id="valueFour">600</span>
+                        <span class="bottomArrow"></span>
+                    </div>
+                    <div class="valueIndicator indicatorFive">
+                        <span class="topArrow"></span>
+                        <span class="numberIndicator" id="valueFive">800</span>
+                        <span class="bottomArrow"></span>
+                    </div>
+                    <div class="valueIndicator indicatorSix">
+                        <span class="topArrow"></span>
+                        <span class="numberIndicator" id="valueSix">1000</span>
+                    </div>
+                </div>
                 <div class="titileGroup" style="margin-left: -13px; margin-top: -13px; width:106%;">
                     <table>
                         <tr class="streamsInfo" id="header_device">
@@ -340,10 +370,7 @@
                                 <div class="descriptionDiv">Damage</div>
                             </td>
                             <td width="90%;">
-                                <div class="range-slider styled" id="slider-one">
-            <input id="price-range-one" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
-        </div>
-                                @*<div id="slider-range-one" class="slider-two"></div>*@
+                                <div id="slider-range-one" class="slider-two"></div>
                             </td>
                         </tr>
                         <tr class="streamsInfo" id="header_device">
@@ -351,10 +378,6 @@
                                 <div class="descriptionDiv">Minor flaw</div>
                             </td>
                             <td width="90%;">
-                                <div class="range-slider styled" id="slider-two">
-            <input id="price-range-two" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
-        </div>
-
                                 <div id="slider-range-two" class="slider-two"></div>
                             </td>
                         </tr>
@@ -363,9 +386,7 @@
                                 <div class="descriptionDiv">OK</div>
                             </td>
                             <td width="90%;">
-                                <div class="range-slider styled" id="slider-tree">
-                                    <input id="price-range-tree" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
-                                </div>
+                                <div id="slider-range-three" class="slider-Three"></div>
                             </td>
                         </tr>
                         <tr class="streamsInfo" id="header_device">
@@ -373,9 +394,7 @@
                                 <div class="descriptionDiv">Minor flaw</div>
                             </td>
                             <td width="90%;">
-                                <div class="range-slider styled" id="slider-four">
-                                    <input id="price-range-four" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
-                                </div>
+                                <div id="slider-range-four" class="slider-Four"></div>
                             </td>
                         </tr>
                         <tr class="streamsInfo" id="header_device">
@@ -383,16 +402,17 @@
                                 <div class="descriptionDiv">Damage</div>
                             </td>
                             <td style="width:90%;">
-                                <div class="range-slider styled" id="slider-five">
-                                    <input id="price-range-five" type="text" name="price-range" value="0;1000" hidefocus="true" style="outline: none; display: none;">
-                                </div>
+                                <div id="slider-range-five" class="slider-Five"></div>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div style="margin-left:325px; margin-top:3px;">
-                    <button type="button" class="btn btn-info" id="sendLogMapSetting" data-dismiss="modal" style="width:50px; height:22px;line-height:9px; font-size:11px; ">Applay</button>
-                    @*<button type="button" class="btn btn-default" data-dismiss="modal" style="width:50px; height:22px; line-height:9px; font-size:11px;">Close</button>*@
+                <div >
+                    <div style="margin-top: -45px;">
+                        <input class="deviceInput inputField gradient" id="value_logmap_error" placeholder="Value" value="" type="text" hidefocus="true" style="outline: none; color: white;width:70px;">
+                        <button type="button" class="btn btn-default btn-sm" id="value_logmap_button" style="width:50px;height: 20px; margin-left: -3px">Value</button>
+                    </div>
+                    <button type="button" class="btn btn-info" id="sendLogMapSetting" data-dismiss="modal">Save</button>
                 </div>
             </div>
 
@@ -498,220 +518,137 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="~/Content/ScriptView/jquery.slider.bundle.js"></script>
-    <script src="~/Content/ScriptView/jquery.slider.js"></script>
-    <script type="text/javascript">
-        var twoleft, twowidth;
-        jQuery(document).ready(function ($) {
-            // Price Range Input
-            $("#price-range-one").rangeslider({
-                from: 0,
-                to: 1000,
-                limits: true,
-                //scale: ['0', '1000'],
-                heterogeneity: ['50/500'],
-                step: 1,
-                smooth: true
-            });
-            $("#price-range-two").rangeslider({
-                from: 0,
-                to: 1000,
-                limits: true,
-                //scale: ['0', '1000'],
-                heterogeneity: ['50/500'],
-                step: 1,
-                smooth: true
-            });
-
-            $("#price-range-tree").rangeslider({
-                from: 0,
-                to: 1000,
-                limits: true,
-                scale: ['0', '1000'],
-                heterogeneity: ['50/500'],
-                step: 1,
-                smooth: true
-            });
-            $("#price-range-four").rangeslider({
-                from: 0,
-                to: 1000,
-                limits: true,
-                scale: ['0', '1000'],
-                heterogeneity: ['50/500'],
-                step: 1,
-                smooth: true
-            });
-            $("#price-range-five").rangeslider({
-                from: 0,
-                to: 1000,
-                limits: true,
-                scale: ['0', '1000'],
-                heterogeneity: ['50/500'],
-                step: 1,
-                smooth: true
-            });
-
-            $('#slider-one .end-logmap-pointer').mouseup(function (event) {
-                twoleft = event.target.style.left;
-                twowidth = parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-one .end-logmap-pointer').css('left'));
-
-                var x = parseFloat(twoleft) * 10;
-                var y = parseInt($('#slider-two .end-pointer-value').text())*1000;
-                $('#price-range-two').attr("value", x + ";" + y);
-
-                $('#slider-two .start-logmap-pointer').css('left', event.target.style.left);
-                $('#slider-two .start-pointer-value').css('left', twoleft);
-                $('#slider-two .line-logmap-size').css('left', event.target.style.left);
-                $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-one .end-logmap-pointer').css('left')) + "px");
-                $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
-            });
-
-            //$('#slider-two .end-logmap-pointer').mousedown(function () {
-            //    $('#slider-two .start-logmap-pointer').css('left', twoleft);
-            //    $('#slider-two .start-pointer-value').css('left', twoleft);
-            //    $('#slider-two .line-logmap-size').css('left', twoleft);
-            //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
-            //    $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
-            //});
-
-
-            $('#slider-two .end-logmap-pointer').slider({
-                change: function () {
-
-                    var x = parseFloat(twoleft) * 10;
-                    var y = parseInt($('#slider-two .end-pointer-value').text());
-                    $('#price-range-two').attr("value", x + ";" + y);
-                    //$('#slider-two .start-logmap-pointer').css('left', twoleft);
-                    //$('#slider-two .start-pointer-value').css('left', twoleft);
-                    $('#slider-two .line-logmap-size').css('left', twoleft);
-                    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
-                    $('#slider-tree .start-pointer-value span').text($('#price-range-two').attr("value"));
-                },
-                //start: function (e, ui) {
-                //    var x = parseFloat(twoleft) * 10;
-                //    var y = parseInt($('#slider-two .end-pointer-value').text());
-                //    $('#price-range-two').attr("value", x + ";" + y);
-
-                //    $('#slider-two .start-logmap-pointer').css('left', twoleft);
-                //    $('#slider-two .start-pointer-value').css('left', twoleft);
-                //    $('#slider-two .line-logmap-size').css('left', twoleft);
-                //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px")
-                //},
-                slide: function (e, ui) {
-
-                    var x = parseFloat(twoleft) * 10;
-                    var y = parseInt($('#slider-two .end-pointer-value').text());
-                    $('#price-range-two').attr("value", x + ";" + y);
-
-                    $('#slider-two .start-logmap-pointer').css('left', twoleft);
-                    $('#slider-two .start-pointer-value').css('left', twoleft);
-                    $('#slider-two .line-logmap-size').css('left', twoleft);
-                    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
-                    $('#slider-tree .start-pointer-value span').text($('#price-range-two').attr("value"));
-                },
-                stop: function (e, ui) {
-                    var x = parseFloat(twoleft) * 10;
-                    var y = parseInt($('#slider-two .end-pointer-value').text());
-                    $('#price-range-two').attr("value", x + ";" + y);
-                    $('#slider-two .start-logmap-pointer').css('left', twoleft);
-                    $('#slider-two .start-pointer-value').css('left', twoleft);
-                    $('#slider-two .line-logmap-size').css('left', twoleft);
-                    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
-                    //$('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
-                }
-            });
-
-            //$('#slider-two .end-logmap-pointer').mousemove(function (event) {
-            //    var x = parseFloat($('#slider-two .start-logmap-pointer').css('left')) * 10;
-            //    var y = parseFloat($('#slider-two .end-logmap-pointer').css('left')) * 10;
-            //    $('#price-range-two').attr("value", x + ";" + y);
-
-            //    $('#slider-tree .start-pointer-value span').text(parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')));
-            //    $('#slider-two .start-logmap-pointer').css('left', parseInt($('#slider-one .end-logmap-pointer').css('left')));
-            //    $('#slider-two .start-pointer-value').css('left', parseInt($('#slider-one .end-pointer-value').css('left')));
-            //    $('#slider-two .line-logmap-size').css('left', parseInt($('#slider-two .start-logmap-pointer').css('left')));
-            //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
-            //});
-
-            //$('#slider-two .end-logmap-pointer').mouseup(function () {
-            //    $('#slider-two .start-logmap-pointer').css('left', twoleft);
-            //    $('#slider-two .start-pointer-value').css('left', twoleft);
-            //    $('#slider-two .line-logmap-size').css('left', twoleft);
-            //    $('#slider-two .line-logmap-size').css('width', parseInt($('#slider-two .end-logmap-pointer').css('left')) - parseInt($('#slider-two .start-logmap-pointer').css('left')) + "px");
-            //    $('#slider-two .start-pointer-value span').text($('#slider-one .end-pointer-value span').text());
-            //});
-
-            //$('#slider-two .end-logmap-pointer').mouseup(function (event) {
-            //    $('#slider-tree .start-logmap-pointer').css('left', event.target.style.left);
-            //    $('#slider-tree .start-pointer-value').css('left', event.target.style.left);
-            //    $('#slider-tree .line-logmap-size').css('left', event.target.style.left);
-            //    $('#slider-tree .line-logmap-size').css('width', parseInt($('#slider-tree .end-logmap-pointer').css('left')) - parseInt($('#slider-two .end-logmap-pointer').css('left')) + "px");
-            //    $('#slider-tree .start-pointer-value span').text($('#slider-two .end-pointer-value span').text());
-            //});
-
-            //$('#slider-tree .end-logmap-pointer').mouseup(function (event) {
-            //    $('#slider-four .start-logmap-pointer').css('left', event.target.style.left);
-            //    $('#slider-four .start-pointer-value').css('left', event.target.style.left);
-            //    $('#slider-four .line-logmap-size').css('left', event.target.style.left);
-            //    $('#slider-four .line-logmap-size').css('width', parseInt($('#slider-four .end-logmap-pointer').css('left')) - parseInt($('#slider-tree .end-logmap-pointer').css('left')) + "px");
-            //    $('#slider-four .start-pointer-value span').text($('#slider-tree .end-pointer-value span').text());
-            //});
-            //$('#slider-four .end-logmap-pointer').mouseup(function (event) {
-            //    $('#slider-five .start-logmap-pointer').css('left', event.target.style.left);
-            //    $('#slider-five .start-pointer-value').css('left', event.target.style.left);
-            //    $('#slider-five .line-logmap-size').css('left', event.target.style.left);
-            //    $('#slider-five .line-logmap-size').css('width', parseInt($('#slider-five .end-logmap-pointer').css('left')) - parseInt($('#slider-four .end-logmap-pointer').css('left')) + "px");
-            //    $('#slider-five .start-pointer-value span').text($('#slider-four .end-pointer-value span').text());
-            //});
-
-            //$('.log_map_settings').click(function () {
-            //    $('#slider-one .line-logmap-size').css('background', 'rgb(255, 0, 0)');
-            //    $('#slider-two .line-logmap-size').css('background', 'rgb(255, 255, 0)');
-            //    $('#slider-tree .line-logmap-size').css('background', 'rgb(38, 249, 0)');
-            //    $('#slider-four .line-logmap-size').css('background', 'rgb(255, 255, 0)');
-            //    $('#slider-five .line-logmap-size').css('background', 'rgb(255, 0, 0)');
-            //});
-
-        });
-    </script>
-@*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
-@*<link rel="stylesheet" href="//resources/demos/style.css">*@
-@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
-@*<script type="text/javascript">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<link href="~/Content/Style/jquery-ui-slider-pips.css" rel="stylesheet" />
+<script src="~/Content/ScriptView/jquery-ui-slider-pips.js"></script>*@
+<script type="text/javascript">
     $(function () {
-        $("#slider-range-one").slider({
-            range: true,
-            min: 0,
-            max: 1000,
-            step: 1,
-            values: [0, 1000],
-            slide: function (event, ui) {
-                $("#slider-range-two span:first").css("left", $("#slider-range-one span:nth-child(3)").css("left"));
-              //  $("#slider-range-two").slider('value', "" + ui.value + "," + $("#slider-range-two").slider('values')[1]+"");
-            },
-            stop: function (event, ui) {
-                
-                $("#slider-range-two span:first").css("left", $("#slider-range-one span:nth-child(3)").css("left"));
-               // $("#slider-range-two").slider('value', "" + ui.value + "," + $("#slider-range-two").slider('values')[1] + "");
-            }
-        });
+        //var handleOne = $("#slider-range-one");
+        //var handleTwo = $("#slider-range-two");
+        //var handleThree = $("#slider-range-three");
+        //var handleFour = $("#slider-range-four");
+        //var handleFive = $("#slider-range-five");
 
-        $("#slider-range-two").slider({
-            range: true,
-            min: 0,
-            max: 1000,
-            step: 1,
-            values: [0, 1000],
-            slide: function (event, ui) {
-                
-            }
-        });
-        //$("#amount").val("$" + $("#slider-range").slider("values", 0) +
-        //    " - $" + $("#slider-range").slider("values", 1));
+        //var valueLenght =10;
+        //var leftvalue;
+
+        //handleOne.slider({
+        //    range: true,
+        //    min: 0,
+        //    max: valueLenght,
+        //    step: 1,
+        //    values: [0, valueLenght / 5],
+        //    slide: function (event, ui) {
+        //        $('div').hasClass('mydivclass')
+        //        if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorOne').css('left', l + "%");
+        //            $('#valueOne').text(ui.value);
+        //        }
+        //        else {
+        //            $('#valueTwo').text(ui.value);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorTwo').css('left', l + "%");
+        //            handleTwo.slider('values', 0, ui.values[1]);
+        //        }
+        //    },
+        //});
+    
+        //handleTwo.slider({
+        //    range: true,
+        //    min: 0,
+        //    max: valueLenght,
+        //    step: 1,
+        //    values: [valueLenght / 5, valueLenght / 2.5],
+        //    slide: function (event, ui) {
+        //        if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
+        //            handleThree.slider('values', 0, ui.values[1]);
+        //            handleOne.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorTwo').css('left', l + "%");
+        //            $('#valueTwo').text(ui.value);
+        //        }
+        //        else {
+        //            handleThree.slider('values', 0, ui.values[1]);
+        //            handleOne.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorThree').css('left', l + "%");
+        //            $('#valueThree').text(ui.value);
+        //        }
+        //    }
+        //});
+
+
+        //handleThree.slider({
+        //    range: true,
+        //    min: 0,
+        //    max: valueLenght,
+        //    step: 1,
+        //    values: [valueLenght / 2.5, valueLenght /1.6],
+        //    slide: function (event, ui) {
+        //        if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
+        //            handleFour.slider('values', 0, ui.values[1]);
+        //            handleTwo.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorThree').css('left', l + "%");
+        //            $('#valueThree').text(ui.value);
+        //        }
+        //        else {
+        //            handleFour.slider('values', 0, ui.values[1]);
+        //            handleTwo.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorFour').css('left', l + "%");
+        //            $('#valueFour').text(ui.value);
+        //        }
+        //    }
+        //});
+
+        //handleFour.slider({
+        //    range: true,
+        //    min: 0,
+        //    max: valueLenght,
+        //    step: 1,
+        //    values: [valueLenght / 1.6, valueLenght / 1.25],
+        //    slide: function (event, ui) {
+        //        if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
+        //            handleFive.slider('values', 0, ui.values[1]);
+        //            handleThree.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorFour').css('left', l + "%");
+        //            $('#valueFour').text(ui.value);
+        //        }
+        //        else {
+        //            handleFive.slider('values', 0, ui.values[1]);
+        //            handleThree.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorFive').css('left', l + "%");
+        //            $('#valueFive').text(ui.value);
+        //        }
+        //    }
+        //});
+
+        //handleFive.slider({
+        //    range: true,
+        //    min: 0,
+        //    max: valueLenght,
+        //    step: 1,
+        //    values: [valueLenght / 1.25, valueLenght],
+        //    slide: function (event, ui) {
+        //        if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {
+        //            handleFour.slider('values', 1, ui.values[0]);
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorFive').css('left', l + "%");
+        //            $('#valueFive').text(ui.value);
+        //        }
+        //        else {
+        //            var l = ui.value / valueLenght * 100;
+        //            $('.indicatorSix').css('left', l + "%");
+        //            $('#valueSix').text(ui.value);
+        //        }
+        //    }
+        //});
     });
-</script>*@
+</script>
 
 <script>
     //var counter;

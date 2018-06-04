@@ -1162,3 +1162,24 @@ body {
     border-top: 1px solid rgba(0,0,0,0.3);
     background: url(/image/comment-bg2.png) repeat;
     border-collapse: collapse
+}
+
+#slider-range-one .ui-slider-range {
+    background: red;
+}
+
+#slider-range-two .ui-slider-range {
+    background: yellow;
+}
+
+#slider-range-three .ui-slider-range {
+    background: green;
+}
+
+#slider-range-four .ui-slider-range {
+    background: yellow;
+}
+
+#slider-range-five .ui-slider-range {
+    background: red;
+}

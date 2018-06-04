@@ -211,6 +211,7 @@
     <Content Include="Content\Style\DeviceInput.css" />
     <Content Include="Content\Style\display.css" />
     <Content Include="Content\Style\dragtable.css" />
+    <Content Include="Content\Style\jquery-ui-slider-pips.css" />
     <Content Include="Content\Style\jslider.css" />
     <Content Include="Content\Style\light.css" />
     <Content Include="Content\Style\main.css" />
@@ -337,6 +338,7 @@
     <Compile Include="Models\HtmlSave.cs" />
     <Compile Include="Models\LineConnection.cs" />
     <Compile Include="Models\LiveValue.cs" />
+    <Compile Include="Models\LogMapSettingValue.cs" />
     <Compile Include="Models\MibGet.cs" />
     <Compile Include="Models\MibTreeInformation.cs" />
     <Compile Include="Models\PointConnection.cs" />

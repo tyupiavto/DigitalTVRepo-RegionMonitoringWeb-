@@ -27,5 +27,16 @@ namespace AdminPanelDevice.Models
         public int GpsID { get; set; }
         public string IP { get; set; }
         public string Version { get; set; }
+        public string OneStartError { get; set; }
+        public string OneEndError { get; set; }
+        public string OneStartCrash { get; set; }
+        public string OneEndCrash { get; set; }
+        public string StartCorrect { get; set; }
+        public string EndCorrect { get; set; }
+        public string TwoStartError { get; set; }
+        public string TwoEndError { get; set; }
+        public string TwoStartCrash { get; set; }
+        public string TwoEndCrash { get; set; }
+
     }
 }

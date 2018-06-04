@@ -2,6 +2,14 @@
 var deviceID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName, defineWalk, dataType, setID;
 var resolutionWidht = screen.width;
 var resolutionHeight = screen.height;
+var handleOne = $("#slider-range-one");
+var handleTwo = $("#slider-range-two");
+var handleThree = $("#slider-range-three");
+var handleFour = $("#slider-range-four");
+var handleFive = $("#slider-range-five");
+
+var leftvalue;
+
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     deviceID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.device_header' + deviceID).attr("value");
@@ -494,7 +502,7 @@ $('body').on('click touched', '.mib_log_check div', function () { // log checked
     }
 });
 
-$('body').on('click touchend', '.mib_search_time_interval li', function () { // time interval add
+$('body').on('click touched', '.mib_search_time_interval li', function () { // time interval add
     var Interval = $(this).attr("value");
     $('#interval' + intervalID).text(Interval);
     IP = $('#tower_ip').val();
@@ -503,4 +511,179 @@ $('body').on('click touchend', '.mib_search_time_interval li', function () { // 
     $.post("/DeviceGroup/IntervalSearchMib", { intervalID: intervalID, Interval: Interval, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json');
 });
 
+var valueLenght = 100;
+var settingID;
+
+$('body').on('click touched', '.logmapsetting', function () {
+    $('#value_logmap_error').val("");
+
+    settingID = $(this).attr("value");
+
+    slideLogMapSetting();
+    $('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
+    $('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
+    $('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
+    $('.indicatorFour').css('left', parseFloat($('#slider-range-four span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+    $('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+    $('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+
+    $('#valueTwo').text(valueLenght / 5);
+    $('#valueThree').text(valueLenght / 2.5);
+    $('#valueFour').text(parseInt(valueLenght / 1.66));
+    $('#valueFive').text(valueLenght / 1.25);
+    $('#valueSix').text(valueLenght);
+});
+
+$('body').on('click touched', '#value_logmap_button', function () {
+    if (parseFloat($('#value_logmap_error').val()) >= 5) {
+        valueLenght = parseFloat($('#value_logmap_error').val());
+        $('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
+        $('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
+        $('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
+        $('.indicatorFour').css('left', parseFloat($('#slider-range-three span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+        $('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+        $('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+
+        $('#valueTwo').text(valueLenght / 5);
+        $('#valueThree').text(valueLenght / 2.5);
+        $('#valueFour').text(parseInt(valueLenght / 1.66));
+        $('#valueFive').text(valueLenght / 1.25);
+        $('#valueSix').text(valueLenght);
+
+        slideLogMapSetting();
+    }
+    else {
+        alert("Enter a value of more than 5");
+    }
+
+});
+function slideLogMapSetting() {
+    handleOne.slider({
+        range: true,
+        min: 0,
+        max: valueLenght,
+        step: 1,
+        values: [0, valueLenght / 5],
+        slide: function (event, ui) {
+            $('div').hasClass('mydivclass')
+            if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
+                $('.indicatorOne').css('left', ui.value / valueLenght * 100 + "%");
+                $('#valueOne').text(ui.value);
+            }
+            else {
+                $('#valueTwo').text(ui.value);
+                $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
+                handleTwo.slider('values', 0, ui.values[1]);
+            }
+        },
+    });
+
+    handleTwo.slider({
+        range: true,
+        min: 0,
+        max: valueLenght,
+        step: 1,
+        values: [valueLenght / 5, valueLenght / 2.5],
+        slide: function (event, ui) {
+            if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
+                handleThree.slider('values', 0, ui.values[1]);
+                handleOne.slider('values', 1, ui.values[0]);
+                $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
+                $('#valueTwo').text(ui.value);
+            }
+            else {
+                handleThree.slider('values', 0, ui.values[1]);
+                handleOne.slider('values', 1, ui.values[0]);
+                $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
+                $('#valueThree').text(ui.value);
+            }
+        }
+    });
+
+
+    handleThree.slider({
+        range: true,
+        min: 0,
+        max: valueLenght,
+        step: 1,
+        values: [valueLenght / 2.5, valueLenght / 1.6],
+        slide: function (event, ui) {
+            if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
+                handleFour.slider('values', 0, ui.values[1]);
+                handleTwo.slider('values', 1, ui.values[0]);
+                $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
+                $('#valueThree').text(ui.value);
+            }
+            else {
+                handleFour.slider('values', 0, ui.values[1]);
+                handleTwo.slider('values', 1, ui.values[0]);
+                $('.indicatorFour').css('left', ui.value / valueLenght * 100-1 + "%");
+                $('#valueFour').text(ui.value);
+            }
+        }
+    });
+
+    handleFour.slider({
+        range: true,
+        min: 0,
+        max: valueLenght,
+        step: 1,
+        values: [valueLenght / 1.6, valueLenght / 1.25],
+        slide: function (event, ui) {
+            if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
+                handleFive.slider('values', 0, ui.values[1]);
+                handleThree.slider('values', 1, ui.values[0]);
+                $('.indicatorFour').css('left', ui.value / valueLenght * 100 - 1 + "%");
+                $('#valueFour').text(ui.value);
+            }
+            else {
+                handleFive.slider('values', 0, ui.values[1]);
+                handleThree.slider('values', 1, ui.values[0]);
+                $('.indicatorFive').css('left', ui.value / valueLenght * 100 - 1 + "%");
+                $('#valueFive').text(ui.value);
+            }
+        }
+    });
+
+    handleFive.slider({
+        range: true,
+        min: 0,
+        max: valueLenght,
+        step: 1,
+        values: [valueLenght / 1.25, valueLenght],
+        slide: function (event, ui) {
+            if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {
+                handleFour.slider('values', 1, ui.values[0]);
+                $('.indicatorFive').css('left', ui.value / valueLenght * 100 - 1 + "%");
+                $('#valueFive').text(ui.value);
+            }
+            else {
+                $('.indicatorSix').css('left', ui.value / valueLenght * 100 - 1 + "%");
+                $('#valueSix').text(ui.value);
+            }
+        }
+    });
+    var oneStartError, oneEndError, startCorrect, endCorrect, oneStartCrash, oneEndCrash, twoStartError, twoEndError, twoStartCorrect, twoEndCorrect, twoStartCrash, twoEndCrash;
+
+    $('body').on('click touched', '#sendLogMapSetting', function () {
+        
+        oneStartError = $('#valueOne').text();
+        oneEndError = $('#valueTwo').text();
+        oneStartCrash = $('#valueTwo').text();
+        oneEndCrash = $('#valueThree').text();
+        startCorrect = $('#valueThree').text();
+        endCorrect = $('#valueFour').text();
+        twoStartError = $('#valueFour').text();
+        twoEndError = $('#valueFive').text();
+        twoStartCrash = $('#valueFive').text();
+        twoEndCrash = $('#valueSix').text();
+        $.post("/DeviceGroup/LogMapSetting", {
+            towerName: towerName,settingID:settingID,oneStartError: oneStartError, oneEndError: oneEndError,
+            oneStartCrash: oneStartCrash, oneEndCrash: oneEndCrash,
+            startCorrect: startCorrect, endCorrect: endCorrect,
+            twoStartError: twoStartError, twoEndError: twoEndError,
+            twoStartCrash: twoStartCrash, twoEndCrash: twoEndCrash
+        }, function () {}, 'post');
+    });
+}
 

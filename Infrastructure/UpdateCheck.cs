@@ -48,6 +48,14 @@ namespace AdminPanelDevice.Infrastructure
             }
         }
 
+        public void UpdateLogMapSetting (LogMapSettingValue value,string towerName, int deviceID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set StartCorrect='{value.startCorrect}',EndCorrect='{value.endCorrect}', OneStartError='{value.oneStartError}', OneEndError='{value.oneEndError}', OneStartCrash='{value.oneStartCrash}', OneEndCrash='{value.oneEndCrash}', TwoStartError='{value.twoStartError}', TwoEndError='{value.twoEndError}', TwoStartCrash='{value.twoStartCrash}', TwoEndCrash='{value.twoEndCrash}' where WalkID='{value.settingID}'and TowerName='{value.towerName}' and DeviceID='{deviceID}'");
+            }
+        }
+
         public void WalkPresetSave(List<WalkTowerDevice> walkList, int presetID, string DeviceName, string TowerID, int deviceID)
         {
             List<WalkPreset> walkPresetList = new List<WalkPreset>();

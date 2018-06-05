@@ -41,12 +41,22 @@ namespace AdminPanelDevice.Infrastructure
                         gtl.Version = l.Version;
                         gtl.TowerID = towerID;
                         gtl.CheckID = l.WalkID;
+                        gtl.StartCorrect = l.StartCorrect;
+                        gtl.EndCorrect = l.EndCorrect;
+                        gtl.OneStartError = l.OneStartError;
+                        gtl.OneEndError = l.OneEndError;
+                        gtl.OneStartCrash = l.OneStartCrash;
+                        gtl.OneEndCrash = l.OneEndCrash;
+                        gtl.TwoStartError = l.TwoStartError;
+                        gtl.TwoEndError = l.TwoEndError;
+                        gtl.TwoStartCrash = l.TwoStartCrash;
+                        gtl.TwoEndCrash = l.TwoEndCrash;
                         if (l.MapID == 1)
                         {
                             gtl.MapID = 1;
                         }
                         gtl.LogID = 1;
-                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version));
+                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version,l.StartCorrect,l.EndCorrect,l.OneStartError,l.OneEndError,l.OneStartCrash,l.OneEndCrash,l.TwoStartError,l.TwoEndError,l.TwoStartCrash,l.TwoEndCrash));
                         gtl.thread.Start();
                         getThread.Add(gtl);
 
@@ -68,8 +78,18 @@ namespace AdminPanelDevice.Infrastructure
                             gtl.Version = l.Version;
                             gtl.TowerID = towerID;
                             gtl.CheckID = l.WalkID;
+                            gtl.StartCorrect = l.StartCorrect;
+                            gtl.EndCorrect = l.EndCorrect;
+                            gtl.OneStartError = l.OneStartError;
+                            gtl.OneEndError = l.OneEndError;
+                            gtl.OneStartCrash = l.OneStartCrash;
+                            gtl.OneEndCrash = l.OneEndCrash;
+                            gtl.TwoStartError = l.TwoStartError;
+                            gtl.TwoEndError = l.TwoEndError;
+                            gtl.TwoStartCrash = l.TwoStartCrash;
+                            gtl.TwoEndCrash = l.TwoEndCrash;
                             gtl.MapID = 1;
-                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version));
+                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version, l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
                             gtl.thread.Start();
                             getThread.Add(gtl);
 
@@ -153,12 +173,22 @@ namespace AdminPanelDevice.Infrastructure
                         gtl.Version = l.Version;
                         gtl.TowerID = towerID;
                         gtl.CheckID = l.WalkID;
+                        gtl.StartCorrect = l.StartCorrect;
+                        gtl.EndCorrect = l.EndCorrect;
+                        gtl.OneStartError = l.OneStartError;
+                        gtl.OneEndError = l.OneEndError;
+                        gtl.OneStartCrash = l.OneStartCrash;
+                        gtl.OneEndCrash = l.OneEndCrash;
+                        gtl.TwoStartError = l.TwoStartError;
+                        gtl.TwoEndError = l.TwoEndError;
+                        gtl.TwoStartCrash = l.TwoStartCrash;
+                        gtl.TwoEndCrash = l.TwoEndCrash;
                         if (l.MapID == 1)
                         {
                             gtl.MapID = 1;
                         }
                         gtl.LogID = 1;
-                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version));
+                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version, l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
                         gtl.thread.Start();
                         getThread.Add(gtl);
                         db.GetSleepThread.Add(gtl);
@@ -179,8 +209,18 @@ namespace AdminPanelDevice.Infrastructure
                             gtl.Version = l.Version;
                             gtl.TowerID = towerID;
                             gtl.CheckID = l.WalkID;
+                            gtl.StartCorrect = l.StartCorrect;
+                            gtl.EndCorrect = l.EndCorrect;
+                            gtl.OneStartError = l.OneStartError;
+                            gtl.OneEndError = l.OneEndError;
+                            gtl.OneStartCrash = l.OneStartCrash;
+                            gtl.OneEndCrash = l.OneEndCrash;
+                            gtl.TwoStartError = l.TwoStartError;
+                            gtl.TwoEndError = l.TwoEndError;
+                            gtl.TwoStartCrash = l.TwoStartCrash;
+                            gtl.TwoEndCrash = l.TwoEndCrash;
                             gtl.MapID = 1;
-                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version));
+                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version , l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
                             gtl.thread.Start();
                             getThread.Add(gtl);
 

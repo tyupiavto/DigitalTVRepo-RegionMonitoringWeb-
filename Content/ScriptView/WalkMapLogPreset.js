@@ -262,17 +262,12 @@ $('#SendSet').click(function () { // set send value
         },'json');
 });
 
-    $('#walk_search_click').click(function () { // search description value
+// $('#walk_search_click').click(function () { // search description value
+$('body').on('keyup', '#description_value_search', function () {
         SearchName = $('#description_value_search').val();
         $.post("/DeviceGroup/WalkSearchList", { SearchName: SearchName }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
- 
-        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         },'text');
 
 });
@@ -562,7 +557,7 @@ function slideLogMapSetting() {
         range: true,
         min: 0,
         max: valueLenght,
-        step: 1,
+        step:0.1,
         values: [0, valueLenght / 5],
         slide: function (event, ui) {
             $('div').hasClass('mydivclass')
@@ -582,7 +577,7 @@ function slideLogMapSetting() {
         range: true,
         min: 0,
         max: valueLenght,
-        step: 1,
+        step: 0.1,
         values: [valueLenght / 5, valueLenght / 2.5],
         slide: function (event, ui) {
             if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
@@ -605,7 +600,7 @@ function slideLogMapSetting() {
         range: true,
         min: 0,
         max: valueLenght,
-        step: 1,
+        step: 0.1,
         values: [valueLenght / 2.5, valueLenght / 1.6],
         slide: function (event, ui) {
             if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
@@ -627,7 +622,7 @@ function slideLogMapSetting() {
         range: true,
         min: 0,
         max: valueLenght,
-        step: 1,
+        step: 0.1,
         values: [valueLenght / 1.6, valueLenght / 1.25],
         slide: function (event, ui) {
             if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
@@ -649,7 +644,7 @@ function slideLogMapSetting() {
         range: true,
         min: 0,
         max: valueLenght,
-        step: 1,
+        step: 0.1,
         values: [valueLenght / 1.25, valueLenght],
         slide: function (event, ui) {
             if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {

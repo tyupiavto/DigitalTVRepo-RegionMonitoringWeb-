@@ -64,6 +64,14 @@ input::-webkit-input-placeholder {
     height: 250px;
 }
 
+
+.titileGroupSet {
+    background: url(/image/comment-bg2.png) repeat;
+    margin-left: -13px;
+    margin-top: -13px;
+    width: 106%;
+}
+
 #logMapSetting table {
     margin-top: 20px;
     height: 200px;

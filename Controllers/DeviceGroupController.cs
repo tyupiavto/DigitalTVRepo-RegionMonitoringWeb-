@@ -747,7 +747,7 @@ namespace AdminPanelDevice.Controllers
                     if (SearchName.Length >= 1)
                     {
                         ViewBag.PresetInd = 1;
-                        ViewBag.CheckedLog = connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N' { DeviceNameLocal} ' and TowerName='{TowerIDLocal}' and LogID<>0 and DeviceID='{deviceIDLocal}'").ToList();
+                        ViewBag.CheckedLog = connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N'{ DeviceNameLocal}' and TowerName='{TowerIDLocal}' and LogID<>0 and DeviceID='{deviceIDLocal}'").ToList();
                         ViewBag.CheckedMap = connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and MapID<>0 and DeviceID='{deviceIDLocal}'").ToList();
                         ViewBag.Interval = connection.Query<WalkTowerDevice>($"select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and ScanInterval<>'60' and DeviceID='{deviceIDLocal}'").ToList();
                         ViewBag.GPS = connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and GpsID<>0 and DeviceID='{deviceIDLocal}'").ToList();

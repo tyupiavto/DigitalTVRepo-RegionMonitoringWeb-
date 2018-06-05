@@ -18,5 +18,6 @@ namespace AdminPanelDevice.Models
         public int DeviceID { get; set; }
         public string IP { get; set; }
         public DateTime dateTime { get; set; }
+        public string ResultCorrectError { get; set; }
     }
 }

@@ -36,7 +36,6 @@
                     {
                         <div class="descriptionDiv" value="@item.OID" title="@item.Description" id="description@(item.MibID)">@item.Name</div>
                     }
-                    @*<div id="device_ip" value="@ViewBag.IP" style="display:none">@ViewBag.IP</div>*@
                 </td>
                 <td style="width:40%;">
                     @if (item.Description == "" || item.Description == null)
@@ -52,7 +51,7 @@
                     <div class="valueDiv" id="Value@(item.MibID)" value="@item.Syntax" style="color: #b8c0c8;">@item.Syntax</div>
                 </td>
                 <td style="width:3%">
-                    <span class="log_map_settings" id="log_map_settings@(item.MibID)" value="@(item.MibID)"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" class="logmapsetting"  value="@(item.MibID)" id="log_map_setting@(item.MibID)" data-toggle="modal" data-target="#LogMapSetting" style="margin-top: 7px; margin-left: -19px; position: absolute;"></span>
+                    <span class="log_map_settings" id="log_map_settings@(item.MibID)" value="@(item.MibID)"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" class="logmapsetting"  value="@(item.MibID)" id="log_map_setting@(item.MibID)" @*data-toggle="modal" data-target="#LogMapSetting"*@ style="margin-top: 7px; margin-left: -19px; position: absolute;"></span>
                 </td>
                 <td style="width:5%;">
                     <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:25%;z-index:0; height:20px;">

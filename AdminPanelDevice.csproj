@@ -294,6 +294,7 @@
     <Compile Include="Infrastructure\CityAddDiagram.cs" />
     <Compile Include="Infrastructure\CityAddTower.cs" />
     <Compile Include="Infrastructure\CityDeleteTower.cs" />
+    <Compile Include="Infrastructure\GetCorrectError.cs" />
     <Compile Include="Infrastructure\GetThread.cs" />
     <Compile Include="Infrastructure\GetThreadPlayStop.cs" />
     <Compile Include="Infrastructure\Hexstring.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="Models\DeviceThreadOnOff.cs" />
     <Compile Include="Models\DeviceType.cs" />
     <Compile Include="Models\GetSleepThread.cs" />
+    <Compile Include="Models\GetValueCorrectError.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\HtmlSave.cs" />
     <Compile Include="Models\LineConnection.cs" />

@@ -409,8 +409,8 @@
                 </div>
                 <div >
                     <div style="margin-top: -45px;">
-                        <input class="deviceInput inputField gradient" id="value_logmap_min" placeholder="min" value="" type="text" hidefocus="true" style="outline: none; color: white;width:50px;">
-                        <input class="deviceInput inputField gradient" id="value_logmap_max" placeholder="max" value="" type="text" hidefocus="true" style="outline: none; color: white;width:50px;">
+                        <input class="deviceInput inputField gradient" id="value_logmap_min" placeholder="min" value="" type="text" hidefocus="true" style="outline: none; color: white;width:45px;">
+                        <input class="deviceInput inputField gradient" id="value_logmap_max" placeholder="max" value="" type="text" hidefocus="true" style="outline: none; color: white;width:45px;">
                         <button type="button" class="btn btn-default btn-sm" id="value_logmap_button" style="width:50px;height: 20px; margin-left: -3px">Add</button>
                     </div>
                     <button type="button" class="btn btn-info" id="sendLogMapSetting" data-dismiss="modal">Save</button>
@@ -520,136 +520,6 @@
 </div>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-@*<link href="~/Content/Style/jquery-ui-slider-pips.css" rel="stylesheet" />
-<script src="~/Content/ScriptView/jquery-ui-slider-pips.js"></script>*@
-<script type="text/javascript">
-    $(function () {
-        //var handleOne = $("#slider-range-one");
-        //var handleTwo = $("#slider-range-two");
-        //var handleThree = $("#slider-range-three");
-        //var handleFour = $("#slider-range-four");
-        //var handleFive = $("#slider-range-five");
-
-        //var valueLenght =10;
-        //var leftvalue;
-
-        //handleOne.slider({
-        //    range: true,
-        //    min: 0,
-        //    max: valueLenght,
-        //    step: 1,
-        //    values: [0, valueLenght / 5],
-        //    slide: function (event, ui) {
-        //        $('div').hasClass('mydivclass')
-        //        if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorOne').css('left', l + "%");
-        //            $('#valueOne').text(ui.value);
-        //        }
-        //        else {
-        //            $('#valueTwo').text(ui.value);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorTwo').css('left', l + "%");
-        //            handleTwo.slider('values', 0, ui.values[1]);
-        //        }
-        //    },
-        //});
-    
-        //handleTwo.slider({
-        //    range: true,
-        //    min: 0,
-        //    max: valueLenght,
-        //    step: 1,
-        //    values: [valueLenght / 5, valueLenght / 2.5],
-        //    slide: function (event, ui) {
-        //        if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
-        //            handleThree.slider('values', 0, ui.values[1]);
-        //            handleOne.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorTwo').css('left', l + "%");
-        //            $('#valueTwo').text(ui.value);
-        //        }
-        //        else {
-        //            handleThree.slider('values', 0, ui.values[1]);
-        //            handleOne.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorThree').css('left', l + "%");
-        //            $('#valueThree').text(ui.value);
-        //        }
-        //    }
-        //});
-
-
-        //handleThree.slider({
-        //    range: true,
-        //    min: 0,
-        //    max: valueLenght,
-        //    step: 1,
-        //    values: [valueLenght / 2.5, valueLenght /1.6],
-        //    slide: function (event, ui) {
-        //        if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
-        //            handleFour.slider('values', 0, ui.values[1]);
-        //            handleTwo.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorThree').css('left', l + "%");
-        //            $('#valueThree').text(ui.value);
-        //        }
-        //        else {
-        //            handleFour.slider('values', 0, ui.values[1]);
-        //            handleTwo.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorFour').css('left', l + "%");
-        //            $('#valueFour').text(ui.value);
-        //        }
-        //    }
-        //});
-
-        //handleFour.slider({
-        //    range: true,
-        //    min: 0,
-        //    max: valueLenght,
-        //    step: 1,
-        //    values: [valueLenght / 1.6, valueLenght / 1.25],
-        //    slide: function (event, ui) {
-        //        if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
-        //            handleFive.slider('values', 0, ui.values[1]);
-        //            handleThree.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorFour').css('left', l + "%");
-        //            $('#valueFour').text(ui.value);
-        //        }
-        //        else {
-        //            handleFive.slider('values', 0, ui.values[1]);
-        //            handleThree.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorFive').css('left', l + "%");
-        //            $('#valueFive').text(ui.value);
-        //        }
-        //    }
-        //});
-
-        //handleFive.slider({
-        //    range: true,
-        //    min: 0,
-        //    max: valueLenght,
-        //    step: 1,
-        //    values: [valueLenght / 1.25, valueLenght],
-        //    slide: function (event, ui) {
-        //        if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {
-        //            handleFour.slider('values', 1, ui.values[0]);
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorFive').css('left', l + "%");
-        //            $('#valueFive').text(ui.value);
-        //        }
-        //        else {
-        //            var l = ui.value / valueLenght * 100;
-        //            $('.indicatorSix').css('left', l + "%");
-        //            $('#valueSix').text(ui.value);
-        //        }
-        //    }
-        //});
-    });
-</script>
 
 <script>
     //var counter;
@@ -664,12 +534,6 @@
             //  saveDiagram();
         });
 
-        //$('#countrie').click(function () {
-        //    $("#countries").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        //});
-        //$('#tower_menu').click(function () {
-        //    $("#tower_drag").animate({ height: 'toggle', opacity: 'toggle' }, 300);
-        //});
         $('#countries li').draggable({
             helper: 'clone',
             revert: 'invalid'
@@ -680,129 +544,6 @@
         });
 
         $('#LogMapSetting').draggable();
-
-        //    function foo() {
-        //        $('.foo').each(function () {
-        //            //Making dropped elements draggable again
-        //            $(this).draggable({
-        //                //containment: $(this).parent(),
-        //                stack: '.foo',
-        //                grid: [10, 10],
-        //                drop: function (event, ui) {
-        //                    var pos = ui.draggable.offset(), dPos = $(this).offset();
-        //                },
-        //                drag: function () {
-        //                    //jsPlumb.addToDragSelection($('.foo'));
-        //                    var draggedItemId = $(this).attr('id');
-        //                    $('.contextmenu').hide();
-        //                    $(this).css({ 'z-index': '11' });
-        //                    $(".class" + draggedItemId).css({ 'z-index': '15' });
-        //                    //saveDiagram();
-        //                },
-        //                stop: function () {
-        //                    var draggedItemId = $(this).attr('id');
-        //                    $(this).css({ 'z-index': '0' });
-        //                    $(".class" + draggedItemId).css({ 'z-index': '10' });
-        //                    if ($(this).position().left < 0) {
-        //                        $(this).css({ 'left': '0' });
-        //                    }
-        //                    if ($(this).position().top < 0) {
-        //                        $(this).css({ 'top': '0' });
-        //                    }
-        //                    saveDiagram();
-        //                }
-        //            });
-        //        });
-        //    }
-
-        //    var xCoordinate = 0;
-        //    var yCoordinate = 0;
-        //    var elem;
-        //    var diagramLenght = $('.foo').length;
-        //    $("#mainDiv").droppable({
-        //        drop: function (ev, ui) {
-
-        //            //if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display')) {
-        //            var pos = ui.draggable.offset(), dPos = $(this).offset();
-        //            var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
-        //            var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
-        //            var ids = $(this).attr("id");
-
-        //            if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('countries')) {
-        //                diagramLenght = $('.foo').length;
-        //                var Class = ui.draggable.attr("class");
-        //                title = ui.draggable.text().trim();
-        //                var item = $('<table class="foo elementTable ' + Class + '" name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + (droppedLeft + 4) + 'px; top: ' + (droppedTop - 1) + 'px;"><tr class="tableHeader"><th class="thClass"><span style="margin-left:25px;" class="header' + (diagramLenght + 1) + '">' + title + '</span><span class="settings"><span id="state' + (diagramLenght + 1) + '"style="display:none">State</span><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><span class="addList' + (diagramLenght + 1) + '"></span></td></tr></table>');
-        //                $(this).append(item);
-        //                diagramLenght++;
-        //                foo();
-        //                saveDiagram();
-        //            }
-        //            if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('tower')) {
-        //                diagramLenght = $('.foo').length;
-        //                var Class = ui.draggable.attr("class");
-        //                title = ui.draggable.text().trim();
-        //                var item = $('<table class="foo elementTable device_list_name' + (diagramLenght + 1) + ' ' + Class + ' name="' + title + '" id="' + (diagramLenght + 1) + '" style="left: ' + droppedLeft + 'px; top: ' + droppedTop + 'px;"><tr class="tableBody tableHeader"  id="tower_' + (diagramLenght + 1) + '"><th class="thClass"><span style="margin-left:22px;" class="header' + (diagramLenght + 1) + '">' + title + (diagramLenght + 1) + '</span><span class="GpsSetting" id="GpsSetting"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" /></span><span class="minimized" id="minimized"><img src="/image/arrow_drop_down_white.png" width="17px" height="17px" alt="Settings" title="Minimize" id="minimizedImg' + (diagramLenght + 1) + '"/></span></th></tr><tr><td class="add' + (diagramLenght + 1) + '"><ul id="deviceAdd' + (diagramLenght + 1) + '" name="dropDivs"class="ui-droppable"></ul></td></tr></table>');
-        //                $(this).append(item);
-        //                diagramLenght++;
-        //                foo();
-        //                addPoints();
-        //                saveDiagram();
-        //            }
-
-        //            $(".tower").droppable({
-        //                containment: '.foo',
-        //                drop: function (ev, ui) {
-        //                    //diagramLenght = $('.foo').length;
-        //                    var con = $('#tower_' + $(this).attr("id")).attr("class");
-        //                    if (!ui.draggable.hasClass('foo') && !ui.draggable.hasClass('display') && ~con.indexOf("jtk-connected")) {
-        //                        var pos = ui.draggable.offset(), dPos = $(this).offset();
-        //                        var droppedTop = ui.position.top - $(this).offset().top + $('#mainDiv').scrollTop();
-        //                        var droppedLeft = ui.position.left - $(this).offset().left + $('#mainDiv').scrollLeft();
-
-        //                        if (!ui.draggable.hasClass('foo') && ui.draggable.hasClass('device_list')) {
-        //                            var Class = ui.draggable.attr("class");
-        //                            idTarget = ev.target.id;
-        //                            title = ui.draggable.text().trim(35);
-        //                            var height = $(".add" + idTarget).height();
-        //                            var lenght = $('#dropDivs').length;
-        //                            var id = $('.foo').length;
-
-        //                            if (title.length > 35) {
-        //                                var titleName = title.substr(0, title.length - (title.length - 31)) + '...';
-        //                            }
-        //                            else {
-        //                                titleName = title;
-        //                            }
-        //                            droppedTop = height;
-        //                            var item = $('<table class="foo elementTable tableBodyTower tower_name' + (id + 1) + '" ' + Class + '" name="' + title + '" id="' + (id + 1) + '" title="tower_' + idTarget + '" style="left: ' + 3 + 'px; top: ' + droppedTop + 'px;min-width: 245px;"><tr class="tableBodyTowers tableHeader" style="display:inline-table" id="towerDevice' + (idTarget) + '_' + (id + 1) + '"><th class="thClass"><span value="' + title + '" class="device_header' + (id + 1) + '">' + titleName + '</span><span class="device_settings"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings"data-toggle="modal" data-target="#myModal" /></span></th></tr></table>');
-        //                            $(".add" + idTarget).height(height + 35);
-        //                            $(".add" + idTarget).append(item);
-        //                            $('#IPModal').css("display", "block");
-        //                            $('#IPModal').css("opacity", "1");
-        //                            $('#IPModal').css("margin-top", "" + dPos.top + "px");
-        //                            $('#IPModal').css("margin-left", "" + dPos.left - 100 + "px");
-        //                            diagramLenght++;
-        //                            saveDiagram();
-        //                        }
-        //                    }
-        //                }
-        //            });
-        //        }
-        //    });
-
-        //    $('body').on('click tounched', '#add_device_inf', function () {
-        //        $('#IPModal').css("display", "none");
-        //        $('#IPModal').css("opacity", "0");
-        //        IPaddress = $('#ip_address').val();
-        //        towerID = "tower_" + idTarget;
-        //        deviceName = title;
-        //        towerName = $('.header' + idTarget).text();
-        //        $.post("/DeviceGroup/TowerDeviceInformation", { IPaddress: IPaddress, towerID: towerID, deviceName: deviceName, cityID: cityID, towerName: towerName }, function () {
-        //            $('#ip_address').val("");
-        //        }, 'json');
-        //    });
-
     });
 
 </script>

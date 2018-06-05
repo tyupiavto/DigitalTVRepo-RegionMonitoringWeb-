@@ -124,10 +124,10 @@ $('body').on('click touchend','.walk_list_version li', function () { // time int
     //var timeID = $(this).attr("id");
     $('#walk_version').text($(this).attr("value"));
 
-    tm.push($(this).attr("id"));
-    tm.push($(this).attr("value"));
-    TimeChange.push(tm);
-    tm = [];
+    //tm.push($(this).attr("id"));
+    //tm.push($(this).attr("value"));
+    //TimeChange.push(tm);
+    //tm = [];
 
 });
 
@@ -450,8 +450,15 @@ $('body').on('click touched', '.mib_search_time_interval li', function () { // t
 });
 
 var maxlenght = 100;
-var minlenght = 0;
+var minlenght =0;
 var settingID;
+function getPercentageChange(oldNumber, newNumber,precent) {
+    var decreaseValue = oldNumber * newNumber;
+   
+    return (precent / decreaseValue) * 100;
+}
+var lenght = maxlenght + Math.abs(minlenght);
+var precent = getPercentageChange(maxlenght, minlenght,20);
 
 $('body').on('click touched', '.logmapsetting', function () {
     $('#value_logmap_min').val("");
@@ -539,11 +546,11 @@ function slideLogMapSetting() {
         range: true,
         min: minlenght,
         max: maxlenght,
-        step:0.1,
-        values: [minlenght, maxlenght / 5],
+        step: 0.1,
+        values: [minlenght, maxlenght/5],
         slide: function (event, ui) {
           
-            $('div').hasClass('mydivclass')
+          //  $('div').hasClass('mydivclass')
             //if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
             //    $('.indicatorOne').css('left', ui.value / valueLenght * 100 + "%");
             //    $('#valueOne').text(ui.value);
@@ -555,13 +562,11 @@ function slideLogMapSetting() {
             //}
         },
     }).slider("float", {
-
         handle: true,
         pips: true,
         labels: false,
         prefix: "",
         suffix: ""
-
     });
 
     handleTwo.slider({
@@ -569,7 +574,7 @@ function slideLogMapSetting() {
         min: minlenght,
         max: maxlenght,
         step: 0.1,
-        values: [maxlenght / 5, maxlenght / 2.5],
+        values: [maxlenght/5, maxlenght / 2.5],
         slide: function (event, ui) {
            
             //if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
@@ -579,8 +584,8 @@ function slideLogMapSetting() {
             //    $('#valueTwo').text(ui.value);
             //}
             //else {
-                handleThree.slider('values', 0, ui.values[1]);
-                handleOne.slider('values', 1, ui.values[0]);
+                //handleThree.slider('values', 0, ui.values[1]);
+                //handleOne.slider('values', 1, ui.values[0]);
             //    $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
             //    $('#valueThree').text(ui.value);
             //}
@@ -591,7 +596,6 @@ function slideLogMapSetting() {
         labels: false,
         prefix: "",
         suffix: ""
-
     });
 
 
@@ -609,8 +613,8 @@ function slideLogMapSetting() {
             //    $('#valueThree').text(ui.value);
             //}
             //else {
-                handleFour.slider('values', 0, ui.values[1]);
-                handleTwo.slider('values', 1, ui.values[0]);
+                //handleFour.slider('values', 0, ui.values[1]);
+                //handleTwo.slider('values', 1, ui.values[0]);
             //    $('.indicatorFour').css('left', ui.value / maxlenght * 100-1 + "%");
             //    $('#valueFour').text(ui.value);
             //}
@@ -621,7 +625,6 @@ function slideLogMapSetting() {
         labels: false,
         prefix: "",
         suffix: ""
-
     });
 
     handleFour.slider({
@@ -638,8 +641,8 @@ function slideLogMapSetting() {
             //    $('#valueFour').text(ui.value);
             //}
             //else {
-                handleFive.slider('values', 0, ui.values[1]);
-                handleThree.slider('values', 1, ui.values[0]);
+                //handleFive.slider('values', 0, ui.values[1]);
+                //handleThree.slider('values', 1, ui.values[0]);
             //    $('.indicatorFive').css('left', ui.value / maxlenght * 100 - 1 + "%");
             //    $('#valueFive').text(ui.value);
             //}
@@ -650,7 +653,6 @@ function slideLogMapSetting() {
         labels: false,
         prefix: "",
         suffix: ""
-
     });
 
     handleFive.slider({
@@ -676,7 +678,6 @@ function slideLogMapSetting() {
         labels: false,
         prefix: "",
         suffix: ""
-
     });
     var oneStartError, oneEndError, startCorrect, endCorrect, oneStartCrash, oneEndCrash, twoStartError, twoEndError, twoStartCorrect, twoEndCorrect, twoStartCrash, twoEndCrash;
 

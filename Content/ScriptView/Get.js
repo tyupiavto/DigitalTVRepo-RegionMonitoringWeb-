@@ -23,6 +23,7 @@ $('body').on('click touched', '.paly_stop_device', function () {
     $.post("/GetNext/Get", { towerName: towerName, towerID: towerID, deviceID: deviceID }, function (Response) {
         if (Response == "1") {
             $('#paly_stop_tower' + towerID).attr("src", "/Icons/play.png");
+            $('#paly_stop_device' + deviceID).attr("src", "/Icons/play.png");
         }
         //else {
         //    $('#paly_stop_device' + deviceID).attr("src", "/Icons/play.png");
@@ -41,7 +42,12 @@ $('body').on('click touched', '.paly_stop_tower', function () {
             $('#paly_stop_device' + deviceID).attr("src", "/Icons/stop.png");
             playGet.push(deviceID);
         });
-        $.post("/GetNext/GetPlay", { towerName: towerName, towerID: towerID, playGet: playGet }, function (Response) { playGet = []; saveDiagram(); }, 'json');
+        $.post("/GetNext/GetPlay", { towerName: towerName, towerID: towerID, playGet: playGet }, function (Response) {
+            $.each(Response,function (e,index) {
+                $('#paly_stop_device' + index).attr("src", "/Icons/play.png");
+            });
+            playGet = []; saveDiagram();
+        }, 'json');
     }
     else {
         $('#paly_stop_tower' + towerID).attr("src", "/Icons/play.png");

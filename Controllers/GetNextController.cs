@@ -57,8 +57,8 @@ namespace AdminPanelDevice.Controllers
         public JsonResult GetPlay(string towerName,int towerID, List<int> playGet)
         {
             GetThreadPlayStop play = new GetThreadPlayStop();
-            play.PlayThread(treadListInd,getThread,returnedThreadList,playGet,towerName,towerID,db,getThreadPreset);
-            return Json("");
+            var playstoplist=play.PlayThread(treadListInd,getThread,returnedThreadList,playGet,towerName,towerID,db,getThreadPreset);
+            return Json(playstoplist);
         }
 
 

@@ -15,16 +15,11 @@ namespace AdminPanelDevice.Infrastructure
     {
         public GetThreadPlayStop() { }
 
-        public void PlayThread(bool treadListInd, List<GetSleepThread> getThread, SleepInformation returnedThreadList, List<int> playGet, string towerName, int towerID, DeviceContext db, GetThread getThreadPreset)
+        public List<int> PlayThread(bool treadListInd, List<GetSleepThread> getThread, SleepInformation returnedThreadList, List<int> playGet, string towerName, int towerID, DeviceContext db, GetThread getThreadPreset)
         {
-            //if (treadListInd == true)
-            //{
-            //    getThread.AddRange(returnedThreadList.SleepGetInformation(false));
-            //    treadListInd = false;
-            //}
-
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
+                List<int> palayStop = new List<int>();
                 playGet.ForEach(deviceID =>
                 {
                     var Log = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where LogID<>0 and TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
@@ -97,7 +92,12 @@ namespace AdminPanelDevice.Infrastructure
                             db.SaveChanges();
                         }
                     });
+                    if (Log.Count==0 && Map.Count==0)
+                    {
+                        palayStop.Add(deviceID);
+                    }
                 });
+                return palayStop;
             }
         }
 
@@ -137,7 +137,7 @@ namespace AdminPanelDevice.Infrastructure
             }
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                var oofDevice = connection.Query<GetSleepThread>($"select * from GetSleepThread where TowerName='{ towerName }' and DeviceID='{deviceID}'").ToList();
+                var oofDevice = connection.Query<GetSleepThread>($"select * from GetSleepThread where TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
                 if (oofDevice.Count != 0)
                 {
                     connection.Query<GetSleepThread>($"delete from GetSleepThread where TowerName='{towerName}' and DeviceID='{ deviceID }'");
@@ -228,7 +228,10 @@ namespace AdminPanelDevice.Infrastructure
                             db.SaveChanges();
                         }
                     });
-
+                    if (Log.Count==0 && Map.Count==0)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;

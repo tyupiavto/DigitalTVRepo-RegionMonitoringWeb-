@@ -333,7 +333,7 @@
         <!-- Modal content-->
         <div class="modal-content logmapModal">
             <div class="modal-body" id="logMapSetting">
-                <div class="value-setting">
+                <div class="value-setting" style="display:none">
                     <div class="valueIndicator indicatorOne">
                         <span class="numberIndicator" id="valueOne">0</span>
                         <span class="bottomArrow"></span>
@@ -409,8 +409,9 @@
                 </div>
                 <div >
                     <div style="margin-top: -45px;">
-                        <input class="deviceInput inputField gradient" id="value_logmap_error" placeholder="Value" value="" type="text" hidefocus="true" style="outline: none; color: white;width:70px;">
-                        <button type="button" class="btn btn-default btn-sm" id="value_logmap_button" style="width:50px;height: 20px; margin-left: -3px">Value</button>
+                        <input class="deviceInput inputField gradient" id="value_logmap_min" placeholder="min" value="" type="text" hidefocus="true" style="outline: none; color: white;width:50px;">
+                        <input class="deviceInput inputField gradient" id="value_logmap_max" placeholder="max" value="" type="text" hidefocus="true" style="outline: none; color: white;width:50px;">
+                        <button type="button" class="btn btn-default btn-sm" id="value_logmap_button" style="width:50px;height: 20px; margin-left: -3px">Add</button>
                     </div>
                     <button type="button" class="btn btn-info" id="sendLogMapSetting" data-dismiss="modal">Save</button>
                 </div>
@@ -678,6 +679,7 @@
             revert: 'invalid'
         });
 
+        $('#LogMapSetting').draggable();
 
         //    function foo() {
         //        $('.foo').each(function () {

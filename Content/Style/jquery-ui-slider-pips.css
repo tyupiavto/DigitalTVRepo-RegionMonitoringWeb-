@@ -120,30 +120,30 @@
 /* also has a nice transition */
 .ui-slider-float .ui-slider-tip,
 .ui-slider-float .ui-slider-tip-label {
-  position: absolute;
-  visibility: hidden;
-  top: -40px;
-  display: block;
-  width: 34px;
-  margin-left: -18px;
-  left: 50%;
-  height: 20px;
-  line-height: 20px;
-  background: white;
-  border-radius: 3px;
-  border: 1px solid #888;
-  text-align: center;
-  font-size: 12px;
-  opacity: 0;
-  color: #333;
-  -webkit-transition-property: opacity, top, visibility;
-  transition-property: opacity, top, visibility;
-  -webkit-transition-timing-function: ease-in;
-  transition-timing-function: ease-in;
-  -webkit-transition-duration: 200ms, 200ms, 0ms;
-  transition-duration: 200ms, 200ms, 0ms;
-  -webkit-transition-delay: 0ms, 0ms, 200ms;
-  transition-delay: 0ms, 0ms, 200ms;
+    position: absolute;
+    visibility: visible;
+    top: -25px;
+    display: block;
+    width: 34px;
+    margin-left: -18px;
+    left: 50%;
+    height: 20px;
+    line-height: 20px;
+    background: #636b75;
+    border-radius: 3px;
+    border: 1px solid #888;
+    text-align: center;
+    font-size: 12px;
+    opacity: 1;
+    color: white;
+    -webkit-transition-property: opacity, top, visibility;
+    transition-property: opacity, top, visibility;
+    -webkit-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
+    -webkit-transition-duration: 200ms, 200ms, 0ms;
+    transition-duration: 200ms, 200ms, 0ms;
+    -webkit-transition-delay: 0ms, 0ms, 200ms;
+    transition-delay: 0ms, 0ms, 200ms;
 }
 
 /* show the tooltip on hover or focus */

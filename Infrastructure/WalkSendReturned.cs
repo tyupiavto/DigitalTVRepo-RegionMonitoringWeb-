@@ -137,6 +137,18 @@ namespace AdminPanelDevice.Infrastructure
                                         walk.DeviceID =deviceID;
                                         walk.IP = IP;
                                         walk.Version = Version;
+
+                                        //walk.StartCorrect = "0";
+                                        //walk.EndCorrect = "0";
+                                        //walk.OneStartError = "0";
+                                        //walk.OneEndError = "0";
+                                        //walk.OneStartCrash = "0";
+                                        //walk.OneEndCrash = "0";
+                                        //walk.TwoStartError = "0";
+                                        //walk.TwoEndError = "0";
+                                        //walk.TwoStartCrash = "0";
+                                        //walk.TwoEndCrash = "0";
+
                                         walkList.Add(walk);
                                         lastOid = v.Oid;
 

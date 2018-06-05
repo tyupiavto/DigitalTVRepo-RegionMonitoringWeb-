@@ -22,13 +22,6 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerName: towerName, deviceID: deviceID, defineWalk: defineWalk }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
-
-        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        //$('.scroll_walk').css('max-height', resolutionHeight -340 + 'px');
-
     }, 'text');
     });
 
@@ -49,12 +42,6 @@ $('#walk_send').click(function () { // device walk ip port version
 
         $('#device_settings').html("");
         $('#device_settings').html(Response);
-
-        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     });
 });
 
@@ -112,12 +99,6 @@ $('body').on('click touchend', '.walk_list_search li', function () { // walk lis
         $('#device_settings').html("");
         $('#device_settings').html(Response);
         $('#walk_list').text(pageList);
-
-        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     });
 });
 
@@ -176,12 +157,6 @@ $('body').on('click touchend', '.preset_list_remove li', function () { // select
     $.post("/DeviceGroup/PresetSearch", { presetSearchName: presetSearchName}, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
-
-        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     },'text');
 });
 
@@ -219,12 +194,6 @@ $('body').on('click touchend', '.interval_list_remove li', function () { //inter
     $.post("/DeviceGroup/DefaultIntervalSearch", { intervalNumber: intervalNumber}, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
-
-        //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-        //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-        //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-        //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-        //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
     }, 'text');
 });
 
@@ -347,13 +316,6 @@ $('body').on('click touched', '.map_check_all div', function () { // Map check s
         $.post("/DeviceGroup/SelectAllMap", { check:check }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
-
-            //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
-
         }, 'text');
     } else {
         var check = false;
@@ -363,13 +325,6 @@ $('body').on('click touched', '.map_check_all div', function () { // Map check s
         $.post("/DeviceGroup/SelectAllMap", { check: check}, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
-
-            //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
-
         }, 'text');
     }
 });
@@ -391,12 +346,6 @@ $('body').on('click touched', '.log_check_all div', function () { // Log check s
         $.post("/DeviceGroup/SelectAllLog", { check: check }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
-
-            // $('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         }, 'text');
     } else {
         var check = false;
@@ -406,12 +355,6 @@ $('body').on('click touched', '.log_check_all div', function () { // Log check s
         $.post("/DeviceGroup/SelectAllLog", { check: check }, function (Response) {
             $('#device_settings').html("");
             $('#device_settings').html(Response);
-
-            //$('.device_setting_style').css('min-width', resolutionWidht - 600 + 'px');
-            //$('.device_setting_style').css('height', resolutionHeight - 240 + 'px');
-            //$('.scroll_walk').css('width', resolutionWidht - 607 + 'px');
-            //$('.scroll_walk').css('height', resolutionHeight - 340 + 'px');
-            //$('.scroll_walk').css('max-height', resolutionHeight - 340 + 'px');
         }, 'text');
     }
 });
@@ -506,172 +449,250 @@ $('body').on('click touched', '.mib_search_time_interval li', function () { // t
     $.post("/DeviceGroup/IntervalSearchMib", { intervalID: intervalID, Interval: Interval, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json');
 });
 
-var valueLenght = 100;
+var maxlenght = 100;
+var minlenght = 0;
 var settingID;
 
 $('body').on('click touched', '.logmapsetting', function () {
-    $('#value_logmap_error').val("");
+    $('#value_logmap_min').val("");
+    $('#value_logmap_max').val("");
 
     settingID = $(this).attr("value");
 
-    slideLogMapSetting();
-    $('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
-    $('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
-    $('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
-    $('.indicatorFour').css('left', parseFloat($('#slider-range-four span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-    $('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-    $('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, settingID: settingID }, function (Response) {
+        if (Response != '') {
+            slideLogMapSetting();
 
-    $('#valueTwo').text(valueLenght / 5);
-    $('#valueThree').text(valueLenght / 2.5);
-    $('#valueFour').text(parseInt(valueLenght / 1.66));
-    $('#valueFive').text(valueLenght / 1.25);
-    $('#valueSix').text(valueLenght);
+            handleOne.slider('values', 0, Response.OneStartError);
+            handleOne.slider('values', 1, Response.OneEndError);
+            handleTwo.slider('values', 0, Response.OneEndError);
+            handleTwo.slider('values', 1, Response.StartCorrect);
+            handleThree.slider('values', 0, Response.StartCorrect);
+            handleThree.slider('values', 1, Response.EndCorrect);
+            handleFour.slider('values', 0, Response.EndCorrect);
+            handleFour.slider('values', 1, Response.TwoEndCrash);
+            handleFive.slider('values', 0, Response.TwoStartError);
+            handleFive.slider('values', 1, Response.TwoEndError);
+
+            //$('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
+            //$('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
+            //$('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
+            //$('.indicatorFour').css('left', parseFloat($('#slider-range-four span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+            //$('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+            //$('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+
+            //$('#valueOne').text(Response.OneStartError);
+            //$('#valueTwo').text(Response.OneEndError);
+            //$('#valueThree').text(Response.StartCorrect);
+            //$('#valueFour').text(Response.EndCorrect);
+            //$('#valueFive').text(Response.TwoStartError);
+            //$('#valueSix').text(Response.TwoEndError);
+        }
+        else {
+            slideLogMapSetting();
+            //$('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
+            //$('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
+            //$('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
+            //$('.indicatorFour').css('left', parseFloat($('#slider-range-four span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+            //$('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+            //$('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+
+            //$('#valueOne').text(minlenght);
+            //$('#valueTwo').text(valueLenght / 5);
+            //$('#valueThree').text(valueLenght / 2.5);
+            //$('#valueFour').text(parseInt(valueLenght / 1.66));
+            //$('#valueFive').text(valueLenght / 1.25);
+            //$('#valueSix').text(valueLenght);
+        }
+    });
 });
 
 $('body').on('click touched', '#value_logmap_button', function () {
-    if (parseFloat($('#value_logmap_error').val()) >= 5) {
-        valueLenght = parseFloat($('#value_logmap_error').val());
-        $('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
-        $('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
-        $('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
-        $('.indicatorFour').css('left', parseFloat($('#slider-range-three span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
-        $('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-        $('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
-
-        $('#valueTwo').text(valueLenght / 5);
-        $('#valueThree').text(valueLenght / 2.5);
-        $('#valueFour').text(parseInt(valueLenght / 1.66));
-        $('#valueFive').text(valueLenght / 1.25);
-        $('#valueSix').text(valueLenght);
+    //if (parseFloat($('#value_logmap_max').val()) >= 5) {
+        maxlenght = parseFloat($('#value_logmap_max').val());
+        minlenght = parseFloat($('#value_logmap_min').val());
 
         slideLogMapSetting();
-    }
-    else {
-        alert("Enter a value of more than 5");
-    }
+
+        //$('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
+        //$('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
+        //$('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
+        //$('.indicatorFour').css('left', parseFloat($('#slider-range-three span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+        //$('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
+        //$('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
+
+        //$('#valueOne').text(minlenght);
+        //$('#valueTwo').text(valueLenght / 5);
+        //$('#valueThree').text(valueLenght / 2.5);
+        //$('#valueFour').text(parseInt(valueLenght / 1.66));
+        //$('#valueFive').text(valueLenght / 1.25);
+        //$('#valueSix').text(valueLenght);
+
+    //}
+    //else {
+    //    alert("Enter a value of more than 5");
+    //}
 
 });
 function slideLogMapSetting() {
     handleOne.slider({
         range: true,
-        min: 0,
-        max: valueLenght,
+        min: minlenght,
+        max: maxlenght,
         step:0.1,
-        values: [0, valueLenght / 5],
+        values: [minlenght, maxlenght / 5],
         slide: function (event, ui) {
+          
             $('div').hasClass('mydivclass')
-            if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
-                $('.indicatorOne').css('left', ui.value / valueLenght * 100 + "%");
-                $('#valueOne').text(ui.value);
-            }
-            else {
-                $('#valueTwo').text(ui.value);
-                $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
+            //if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
+            //    $('.indicatorOne').css('left', ui.value / valueLenght * 100 + "%");
+            //    $('#valueOne').text(ui.value);
+            //}
+            //else {
+            //    $('#valueTwo').text(ui.value);
+            //    $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
                 handleTwo.slider('values', 0, ui.values[1]);
-            }
+            //}
         },
+    }).slider("float", {
+
+        handle: true,
+        pips: true,
+        labels: false,
+        prefix: "",
+        suffix: ""
+
     });
 
     handleTwo.slider({
         range: true,
-        min: 0,
-        max: valueLenght,
+        min: minlenght,
+        max: maxlenght,
         step: 0.1,
-        values: [valueLenght / 5, valueLenght / 2.5],
+        values: [maxlenght / 5, maxlenght / 2.5],
         slide: function (event, ui) {
-            if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
+           
+            //if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
                 handleThree.slider('values', 0, ui.values[1]);
                 handleOne.slider('values', 1, ui.values[0]);
-                $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
-                $('#valueTwo').text(ui.value);
-            }
-            else {
+            //    $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
+            //    $('#valueTwo').text(ui.value);
+            //}
+            //else {
                 handleThree.slider('values', 0, ui.values[1]);
                 handleOne.slider('values', 1, ui.values[0]);
-                $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
-                $('#valueThree').text(ui.value);
-            }
+            //    $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
+            //    $('#valueThree').text(ui.value);
+            //}
         }
+    }).slider("float", {
+        handle: true,
+        pips: true,
+        labels: false,
+        prefix: "",
+        suffix: ""
+
     });
 
 
     handleThree.slider({
         range: true,
-        min: 0,
-        max: valueLenght,
+        min: minlenght,
+        max: maxlenght,
         step: 0.1,
-        values: [valueLenght / 2.5, valueLenght / 1.6],
+        values: [maxlenght / 2.5, maxlenght / 1.6],
         slide: function (event, ui) {
-            if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
+            //if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
                 handleFour.slider('values', 0, ui.values[1]);
                 handleTwo.slider('values', 1, ui.values[0]);
-                $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
-                $('#valueThree').text(ui.value);
-            }
-            else {
+            //    $('.indicatorThree').css('left', ui.value / maxlenght * 100 + "%");
+            //    $('#valueThree').text(ui.value);
+            //}
+            //else {
                 handleFour.slider('values', 0, ui.values[1]);
                 handleTwo.slider('values', 1, ui.values[0]);
-                $('.indicatorFour').css('left', ui.value / valueLenght * 100-1 + "%");
-                $('#valueFour').text(ui.value);
-            }
+            //    $('.indicatorFour').css('left', ui.value / maxlenght * 100-1 + "%");
+            //    $('#valueFour').text(ui.value);
+            //}
         }
+    }).slider("float", {
+        handle: true,
+        pips: true,
+        labels: false,
+        prefix: "",
+        suffix: ""
+
     });
 
     handleFour.slider({
         range: true,
-        min: 0,
-        max: valueLenght,
+        min: minlenght,
+        max: maxlenght,
         step: 0.1,
-        values: [valueLenght / 1.6, valueLenght / 1.25],
+        values: [maxlenght / 1.6, maxlenght / 1.25],
         slide: function (event, ui) {
-            if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
+            //if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
                 handleFive.slider('values', 0, ui.values[1]);
                 handleThree.slider('values', 1, ui.values[0]);
-                $('.indicatorFour').css('left', ui.value / valueLenght * 100 - 1 + "%");
-                $('#valueFour').text(ui.value);
-            }
-            else {
+            //    $('.indicatorFour').css('left', ui.value / maxlenght * 100 - 1 + "%");
+            //    $('#valueFour').text(ui.value);
+            //}
+            //else {
                 handleFive.slider('values', 0, ui.values[1]);
                 handleThree.slider('values', 1, ui.values[0]);
-                $('.indicatorFive').css('left', ui.value / valueLenght * 100 - 1 + "%");
-                $('#valueFive').text(ui.value);
-            }
+            //    $('.indicatorFive').css('left', ui.value / maxlenght * 100 - 1 + "%");
+            //    $('#valueFive').text(ui.value);
+            //}
         }
+    }).slider("float", {
+        handle: true,
+        pips: true,
+        labels: false,
+        prefix: "",
+        suffix: ""
+
     });
 
     handleFive.slider({
         range: true,
-        min: 0,
-        max: valueLenght,
+        min: minlenght,
+        max: maxlenght,
         step: 0.1,
-        values: [valueLenght / 1.25, valueLenght],
+        values: [maxlenght / 1.25, maxlenght],
         slide: function (event, ui) {
-            if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {
+            //if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {
                 handleFour.slider('values', 1, ui.values[0]);
-                $('.indicatorFive').css('left', ui.value / valueLenght * 100 - 1 + "%");
-                $('#valueFive').text(ui.value);
-            }
-            else {
-                $('.indicatorSix').css('left', ui.value / valueLenght * 100 - 1 + "%");
-                $('#valueSix').text(ui.value);
-            }
+            //    $('.indicatorFive').css('left', ui.value / maxlenght * 100 - 1 + "%");
+            //    $('#valueFive').text(ui.value);
+            //}
+            //else {
+            //    $('.indicatorSix').css('left', ui.value / maxlenght * 100 - 1 + "%");
+            //    $('#valueSix').text(ui.value);
+            //}
         }
+    }).slider("float", {
+        handle: true,
+        pips: true,
+        labels: false,
+        prefix: "",
+        suffix: ""
+
     });
     var oneStartError, oneEndError, startCorrect, endCorrect, oneStartCrash, oneEndCrash, twoStartError, twoEndError, twoStartCorrect, twoEndCorrect, twoStartCrash, twoEndCrash;
 
     $('body').on('click touched', '#sendLogMapSetting', function () {
         
-        oneStartError = $('#valueOne').text();
-        oneEndError = $('#valueTwo').text();
-        oneStartCrash = $('#valueTwo').text();
-        oneEndCrash = $('#valueThree').text();
-        startCorrect = $('#valueThree').text();
-        endCorrect = $('#valueFour').text();
-        twoStartError = $('#valueFour').text();
-        twoEndError = $('#valueFive').text();
-        twoStartCrash = $('#valueFive').text();
-        twoEndCrash = $('#valueSix').text();
+        oneStartError = $('#slider-range-one span:nth-child(2) .ui-slider-tip').text();
+        oneEndError = $('#slider-range-one span:nth-child(3) .ui-slider-tip').text();
+        oneStartCrash = $('#slider-range-one span:nth-child(3) .ui-slider-tip').text();
+        oneEndCrash = $('#slider-range-two span:nth-child(3) .ui-slider-tip').text();
+        startCorrect = $('#slider-range-three span:nth-child(2) .ui-slider-tip').text();
+        endCorrect = $('#slider-range-three span:nth-child(3) .ui-slider-tip').text();
+        twoStartError = $('#slider-range-five span:nth-child(2) .ui-slider-tip').text();
+        twoEndError = $('#slider-range-five span:nth-child(3) .ui-slider-tip').text();
+        twoStartCrash = $('#slider-range-three span:nth-child(3) .ui-slider-tip').text(); 
+        twoEndCrash = $('#slider-range-four span:nth-child(3) .ui-slider-tip').text(); 
+
         $.post("/DeviceGroup/LogMapSetting", {
             towerName: towerName,settingID:settingID,oneStartError: oneStartError, oneEndError: oneEndError,
             oneStartCrash: oneStartCrash, oneEndCrash: oneEndCrash,

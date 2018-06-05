@@ -1541,5 +1541,22 @@ namespace AdminPanelDevice.Controllers
             return Json("");
         }
 
+        [HttpPost]
+        public JsonResult LogMapExistingValue (string towerName,int settingID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var value = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{towerName}' and WalkID='{settingID}'").FirstOrDefault();
+                if (value.StartCorrect != null && value.EndCorrect != null)
+                {
+                    return Json(value);
+                }
+                else
+                {
+                    return Json("");
+                }
+                
+            }
+        }
     }
 }

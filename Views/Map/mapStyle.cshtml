@@ -474,7 +474,12 @@
                     }));
                 });
             }
-            $.each(listgps, function (i, val) {
+                $.each(listgps, function (i, val) {
+                    var contentString = '<div class="towerInfoContainer" style="width:50px; height:50px;"><table style="width: 50px; text-align: center" class="towerInfo"><tr><td style="background-color: rgb(51, 51, 51); color: white; font-weight: normal;" class="towerWrapper">წალკა</td></tr></table></div>';
+                    var infowindows = new google.maps.InfoWindow({
+                        content: '<p style="background-color: rgb(51, 51, 51); color: white; font-weight: normal; width:50px; height:20px; text-align:center;" id="towerColor">წალკა</p>'
+                    });
+                   // $('#towerColor').css('background-color', 'Yellow');
               var  marker =new google.maps.Marker({
                     position: new google.maps.LatLng(val.lattitube, val.longitube),
                     map: map,
@@ -483,7 +488,10 @@
                     type: 'point',
                     title: val.cityname
                 });
-                            //map.setCenter(marker.getPosition());
+                //marker.addListener('click', function () {
+                    infowindows.open(map, marker);
+                //});
+                //map.setCenter(marker.getPosition());
               var infowindow = new google.maps.InfoWindow();
               google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
                   return function () {
@@ -631,8 +639,6 @@
             });
         }
           //  google.maps.event.addDomListener(window, 'load', initMap);
-
-
 
     </script>
     <script src="~/Content/ScriptView/style.js"></script>

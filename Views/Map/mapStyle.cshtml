@@ -66,10 +66,7 @@
             var startposition, finishposition, startparent, cordXP, cordYP, cordXC, cordYC,manJump=0;
             var markerAnimation, removelineInd = 0, addline = 0, ind = 0, removePosition, lineLenght = 0, clickInd = 0, lineLenghtList = 0, parentTowerID, childTowerID, parentposition, childposition;
             var RemoveLine, flightPath = new Array();
-           // var styles = [];
-          
-          
-             var newstyle = [
+            var newstyle = [
                  {
                      "elementType": "geometry",
                      "stylers": [
@@ -210,7 +207,7 @@
                          }
                      ]
                  },
-                 { //feris dizaini
+                 { 
                      "featureType": "landscape.man_made",
                      "elementType": "geometry.stroke",
                      "stylers": [
@@ -404,8 +401,8 @@
             function initMap() {
             // Styles a map in night mode.
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 42.315407, lng: 43.356892 },
-                zoom: 8,
+                center: { lat: 42.215407, lng: 43.656892 },
+                zoom: 8.7,
                 panControl: true,
                 zoomControl: true,
                 mapTypeControl: false,

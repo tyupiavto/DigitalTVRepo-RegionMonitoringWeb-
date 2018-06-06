@@ -336,6 +336,7 @@
     <Compile Include="Models\DeviceType.cs" />
     <Compile Include="Models\GetSleepThread.cs" />
     <Compile Include="Models\GetValueCorrectError.cs" />
+    <Compile Include="Models\GpsCoordinate.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\HtmlSave.cs" />
     <Compile Include="Models\LineConnection.cs" />

@@ -6,9 +6,11 @@ var liLongitube = new Array();
 var liAltitube = new Array();
 var GpsCoordinate = new Array();
 var gpsInd = 0, GpsID, TowerGpsID,towerGpsName;
-var deviceGpsName, lattitube, longitube, altitube, textadd,gpscheckInd=0,towerName;
+var deviceGpsName, lattitube, longitube, altitube, textadd,gpscheckInd=0,towerName,IP;
 $(document).on('click touchend', '#GpsSetting', function () { // add device setting open
     TowerGpsID = $(this).closest($(".foo")).attr("id");
+    towerName = $('.header' + TowerGpsID).text();
+
     towerGpsName = $(this).parent().parent().attr("id");
      var dv = $('.device_list_name' + TowerGpsID);
     gpscheckInd = 0;
@@ -16,7 +18,7 @@ $(document).on('click touchend', '#GpsSetting', function () { // add device sett
         devicetype.push($(this).attr("name"));
     });
 
-    $.post("/DeviceGroup/TowerGpsSetting", { devicetype: devicetype }, function (Response) {
+    $.post("/DeviceGroup/TowerGpsSetting", { devicetype: devicetype, towerName:towerName }, function (Response) {
         $('#settingsDiv').html("");
         $('#settingsDiv').html(Response);
         devicetype = [];
@@ -36,8 +38,8 @@ $('body').on('contextmenu touched', '.map_check div', function () { // checked g
         event.preventDefault();
         $(this).unbind(event);
         $(".custom-menu").finish().toggle(100).css({
-            top: (event.pageY) + "px",
-            left: (event.pageX - 100) + "px"
+            top: (event.pageY-20) + "px",
+            left: (event.pageX-110) + "px"
         });
         event.stopPropagation();
     });
@@ -80,25 +82,24 @@ $('body').on('click touched', '#gps_check div', function () { // map click check
             $('#gps_checked_add' + gpscheckID).removeClass("").addClass("checked");
             $("#gps_checked" + gpscheckID).prop('checked', true);
           var  deviceName = $('#gpsDevice_name' + gpscheckID).attr("value");
-            //deviceGpsName = $('.header' + TowerGpsID).text();
+
             $.post("/DeviceGroup/CheckGps", { towerGpsName: towerGpsName, deviceName: deviceName }, function (Response) {
-                $.each(Response, function (i, value) {
-                    GpsCoordinate.push("<li id='lattibute'>" + value.Longitube + "</li>");
-                    GpsCoordinate.push("<li id='lattibute'>" + value.Lattitube + "</li>");
-                    GpsCoordinate.push("<li id='lattibute'>" + value.Altitube + "</li>");
-                });
+                GpsCoordinate.push("<li id='lattibute'>" + Response[0].Type + "</li>");
+                GpsCoordinate.push("<li id='lattibute'>" + Response[1].Type + "</li>");
+                GpsCoordinate.push("<li id='lattibute'>" + Response[2].Type+ "</li>");
+                IP = Response[0].IP;
+
                 $('#lattitube_list').html(GpsCoordinate);
                 $('#longitube_list').html(GpsCoordinate);
                 $('#altitube_list').html(GpsCoordinate);
                 GpsCoordinate = [];
-                //liLattitube = [];
-                //liAltitube = [];
             }, 'json');
         }
     } else {
         $('#lattitube_list').html("");
         $('#longitube_list').html("");
         $('#altitube_list').html("");
+
         $('#gps_checked_add' + gpscheckID).removeClass("checked").addClass("");
         $("#gps_checked" + gpscheckID).prop('checked', false);
         gpscheckInd = 0;
@@ -118,7 +119,6 @@ $('body').on('click touchend', '#lattitube_select', function (e) { // Lattitube 
     if (e.type == "touchend") {
         handled = true;
         $('#gps_list_lattitube').css({ 'width': width }).toggle();
-        //$('#lattitube_select li').css('widht', '93%');
     }
     else
         if (e.type == "click" && !handled && !textadd) {
@@ -175,5 +175,7 @@ $('body').on('click touchend', '#gps_cor_sub', function () {
     longitube = $('#longitube_name').val();
     altitube = $('#altitube_name').val();
     towerName = $('.header' + TowerGpsID).text();
-    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube, towerName: towerName, gpscheckInd: gpscheckInd}, function () { }, 'json');
+    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube, towerName: towerName, gpscheckInd: gpscheckInd, IP: IP }, function () {
+        $('#settingsDiv').html("");
+    }, 'json');
 });

@@ -1185,21 +1185,29 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult TowerGpsSetting(List<string> devicetype)
+        public PartialViewResult TowerGpsSetting(List<string> devicetype, string towerName)
         {
-            List<DeviceType> gpsDevice = new List<DeviceType>();
+            GpsCoordinate gpsDevice = new GpsCoordinate();
             if (devicetype != null)
             {
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
                     foreach (var item in devicetype)
                     {
-                        gpsDevice.Add(connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + item + "%'").FirstOrDefault());
+                        var devicename = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + item + "%'").FirstOrDefault();
+                        gpsDevice.DeviceName.Add(devicename.Name);
+                    }
+                    var gpscordinate = connection.Query<TowerGps>($"select * from TowerGps where TowerNameID='{towerName}'").FirstOrDefault();
+                    if (gpscordinate != null)
+                    {
+                        gpsDevice.Lattitube = gpscordinate.Lattitube;
+                        gpsDevice.Longitube = gpscordinate.Longitube;
+                        gpsDevice.Altitube = gpscordinate.Altitube;
                     }
                 }
             }
-            return PartialView("_Gps", gpsDevice);
-        }
+                return PartialView("_Gps",gpsDevice);
+          }
 
         [HttpPost]
         public JsonResult GpsSelect(int GpsID,string towerName, int deviceID)
@@ -1220,28 +1228,31 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                var deviceID = connection.Query<DeviceType>("select * from DeviceType where Name=N'" + deviceName + "'").FirstOrDefault().ID;
-                var gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where TowerNameID='" + towerGpsName + "' and DeviceID='"+ deviceID + "'").ToList();
+               // var deviceID = connection.Query<DeviceType>($"select * from DeviceType where Name=N'{deviceName}'").FirstOrDefault().ID;
+                var gpsCordinate = connection.Query<WalkTowerDevice>($"Select * from WalkTowerDevice where GpsID<>0 and TowerName='{towerGpsName}' and DeviceName='{deviceName} '").ToList();
                 return Json(gpsCordinate);
             }
         }
 
 
         [HttpPost]
-        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd)
+        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd,string IP)
         {
             if (gpscheckInd != 0)
             {
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
-                    var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
-                    TowerGps gpsCordinate = connection.Query<TowerGps>("Select * from TowerGps where DeviceID='" + deviceID + "'").FirstOrDefault();
-                    connection.Query<TowerGps>("delete from TowerGps where ID='" + gpsCordinate.ID + "'");
+                  //  var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
+                   // TowerGps gpsCordinate = connection.Query<TowerGps>($"Select * from TowerGps where TowerNameID='{towerName}'").FirstOrDefault();
+                    connection.Query<TowerGps>($"delete from TowerGps where TowerNameID='{towerName}'");
+
+                    TowerGps gpsCordinate = new TowerGps();
 
                     gpsCordinate.Lattitube = lattitube;
                     gpsCordinate.Longitube = longitube;
                     gpsCordinate.Altitube = altitube;
-
+                    gpsCordinate.TowerNameID = towerName;
+                    gpsCordinate.IP = IP;
                     db.towerGps.Add(gpsCordinate);
                     db.SaveChanges();
                 }

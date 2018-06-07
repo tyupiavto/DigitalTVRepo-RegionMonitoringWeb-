@@ -357,6 +357,7 @@
     <Compile Include="Models\LineConnection.cs" />
     <Compile Include="Models\LiveValue.cs" />
     <Compile Include="Models\LogMapSettingValue.cs" />
+    <Compile Include="Models\MapViewInformation.cs" />
     <Compile Include="Models\MibGet.cs" />
     <Compile Include="Models\MibTreeInformation.cs" />
     <Compile Include="Models\PointConnection.cs" />

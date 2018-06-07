@@ -11,6 +11,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using Dapper;
+using Microsoft.AspNet.SignalR;
 
 namespace AdminPanelDevice.Infrastructure
 {
@@ -21,9 +22,11 @@ namespace AdminPanelDevice.Infrastructure
         public SnmpPacket result;
         public DeviceContext db = new DeviceContext();
         public GetCorrectError correctError = new GetCorrectError();
+        MapViewInformation mapinformation = new MapViewInformation();
         public void ThreadPreset(string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
         {
-           // string Version = "V2";
+            var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
+            // string Version = "V2";
             string communityRead = "public";
             int Port = 161;
             while (true)
@@ -71,7 +74,13 @@ namespace AdminPanelDevice.Infrastructure
                         get.dateTime = DateTime.Now;
                         get.WalkOID = v.Oid.ToString();
                         get.IP = IP;
+                       
                         get.ResultCorrectError = correctError.CompareCorrectError(v.Value.ToString(), StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
+
+                        //mapinformation.MapColor = get.ResultCorrectError;
+                        //mapinformation.IP = IP;
+                        //context.Clients.All.onHitRecorded(mapinformation);
+
                         db.MibGets.Add(get);
                         db.SaveChanges();
                     }

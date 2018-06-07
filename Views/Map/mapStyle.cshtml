@@ -29,6 +29,7 @@
             margin-left: 40%;
             z-index: 1;
         }
+     
     </style>
 </head>
 <body>
@@ -49,9 +50,32 @@
             </div>
         </div>
     </div>
-   @* <button type="button" class="btn btn-info" id="remove_line" style="width: 65px;height: 22px;line-height: 8px; font-size: 11px; margin-left: 172px; margin-top: 50px;position:absolute">style</button>*@
+    @* <button type="button" class="btn btn-info" id="remove_line" style="width: 65px;height: 22px;line-height: 8px; font-size: 11px; margin-left: 172px; margin-top: 50px;position:absolute">style</button>*@
     @*<button type="button" class="btn btn-default" id="close_line" style="width: 65px;height: 22px;line-height: 9px;font-size: 11px; margin-top: 50px;position:absolute"></button>*@
     <div id="map"></div>
+    <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
+    <script src="~/signalr/Hubs"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var con = $.hubConnection();
+            var hub = con.createHubProxy('hubMessage');
+            hub.on('onHitRecorded', function (i) {
+                $("#towerColor").css('background-color', i);
+                $("#towerColor").css('color', 'black');
+            });
+            con.start(function () {
+                hub.invoke('Send');
+            });
+
+            jQuery('.gm-style-iw').prev('div').remove();
+            jQuery('.gm-style-iw').next().remove();
+            $('.gm-style-iw').parent().parent().css('top', '30px');
+            $('.gm-style-iw').parent().parent().css('left', '10px');
+        });
+    </script>
+
     <script type="text/javascript">
         var listgps = @Html.Raw(Json.Encode(ViewBag.MapGPS));
         var towerLine = @Html.Raw(Json.Encode(ViewBag.TowerLine));
@@ -207,7 +231,7 @@
                          }
                      ]
                  },
-                 { 
+                 {
                      "featureType": "landscape.man_made",
                      "elementType": "geometry.stroke",
                      "stylers": [
@@ -422,7 +446,7 @@
 
           //  var newst = JSON.parse(mapStart);
             map.setOptions({ styles: newstyle });
-            
+
             var myCenter = new google.maps.LatLng(42.280200, 42.736320);
             var image = {
                 url: "../image/mapImage/antenna.gif", // url
@@ -473,28 +497,32 @@
                         }]
                     }));
                 });
-            }
+                }
+
+                var contentString = '<div style="background-color: rgb(51, 51, 51); color: rgb(0, 0, 0);font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor">წალკა</div>';
+
                 $.each(listgps, function (i, val) {
-                    var contentString = '<div class="towerInfoContainer" style="width:50px; height:50px;"><table style="width: 50px; text-align: center" class="towerInfo"><tr><td style="background-color: rgb(51, 51, 51); color: white; font-weight: normal;" class="towerWrapper">წალკა</td></tr></table></div>';
+                  
                     var infowindows = new google.maps.InfoWindow({
-                        content: '<p style="background-color: rgb(51, 51, 51); color: white; font-weight: normal; width:50px; height:20px; text-align:center;" id="towerColor">წალკა</p>'
+                        content: contentString
                     });
-                   // $('#towerColor').css('background-color', 'Yellow');
-              var  marker =new google.maps.Marker({
+                   
+                   var  marker =new google.maps.Marker({
                     position: new google.maps.LatLng(val.lattitube, val.longitube),
                     map: map,
                     id: val.towerID,
                     icon: image,
                     type: 'point',
                     title: val.cityname
-                });
-                //marker.addListener('click', function () {
+                    });
+               
                     infowindows.open(map, marker);
-                //});
-                //map.setCenter(marker.getPosition());
-              var infowindow = new google.maps.InfoWindow();
+                   
+                    
+              var infowindow = new google.maps.InfoWindow();                                             // marjvena gilakit monishvna da xazis gavlebis dawyeba
               google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
                   return function () {
+                 
                       if (marker.getAnimation() != null && manJump == 1) {
                           marker.setAnimation(null);
                           marker.setMap(null);

@@ -241,3 +241,11 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Devices.Services.pdb
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Service.Models.pdb
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.Managed.Core.targets
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.Client.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.Owin.Security.dll
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.Client.xml
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.Owin.Security.xml

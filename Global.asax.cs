@@ -16,11 +16,13 @@ namespace AdminPanelDevice
         {
             //Thread thread = new Thread(() => new TrapListen());
             //thread.Start();
+          
             HangfireBootstrapper.Instance.Start();
-           // GlobalConfiguration.Configuration.UseSqlServerStorage("DeviceConnection");
+            // GlobalConfiguration.Configuration.UseSqlServerStorage("DeviceConnection");
 
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
+
     }
 }

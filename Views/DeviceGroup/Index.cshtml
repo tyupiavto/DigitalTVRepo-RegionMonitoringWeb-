@@ -407,7 +407,7 @@
                         </tr>
                     </table>
                 </div>
-                <div >
+                <div>
                     <div style="margin-top: -45px;">
                         <input class="deviceInput inputField gradient" id="value_logmap_min" placeholder="min" value="" type="text" hidefocus="true" style="outline: none; color: white;width:45px;">
                         <input class="deviceInput inputField gradient" id="value_logmap_max" placeholder="max" value="" type="text" hidefocus="true" style="outline: none; color: white;width:45px;">
@@ -520,11 +520,27 @@
 </div>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+@*<script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
+<script src="~/signalr/Hubs"></script>*@
 <script>
     //var counter;
     var idTarget, title;
     $(document).ready(function () {
+
+        //var con = $.hubConnection();
+        //var hub = con.createHubProxy('hubMessage');
+        //hub.on('onHitRecorded', function (i) {
+        //    $("#start_log").css('color',i);
+        //});
+        //con.start(function () {
+        //    hub.invoke('Send');
+        //});
+
+        //hub.client.addGame = function (game) {
+        //    $("#start_log").css('background-color', game);
+        //};
+        //$.connection.hub.start();
 
         $('.devInfo').hide();
 

@@ -19,7 +19,7 @@ namespace AdminPanelDevice
             //ConfigureAuth(app);
 
             //GlobalConfiguration.Configuration.UseSqlServerStorage("DeviceConnection");
-
+            app.MapSignalR();
             //app.UseHangfireDashboard();
             //// var jobId = BackgroundJob.Enqueue(() => Console.WriteLine("Fire-and-forget!"));
             ////  var jobId = BackgroundJob.Schedule(() => Console.WriteLine("Delayed!"),TimeSpan.FromDays(1));
@@ -33,7 +33,7 @@ namespace AdminPanelDevice
             //};
 
             //app.UseHangfireDashboard("/hangfire", options);
-           // app.UseHangfireServer();
+            // app.UseHangfireServer();
         }
     }
 }

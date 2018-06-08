@@ -64,40 +64,38 @@ namespace AdminPanelDevice.Controllers
                 TowerLine = connection.Query<LineConnection>("Select * From LineConnection").ToList();
                 TowerLine= TowerLine.OrderBy(o => o.ParentTowerID).ToList();
 
-                foreach (var item in towerMap)
-                {
-                    mapTower mapt = new mapTower();
-                    item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
-                    mapt.lattitube = Double.Parse(item.Lattitube, CultureInfo.InvariantCulture);
-                    item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
-                    mapt.longitube = Double.Parse(item.Longitube, CultureInfo.InvariantCulture);
-                    if (item.PresetName != null)
+                    towerMap.ForEach(item =>
                     {
-                        mapt.cityname = item.PresetName;
-                    }
-                    mapt.towerID = item.ID;
+                        mapTower mapt = new mapTower();
+                        item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
+                        mapt.lattitube = Double.Parse(item.Lattitube, CultureInfo.InvariantCulture);
+                        item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
+                        mapt.longitube = Double.Parse(item.Longitube, CultureInfo.InvariantCulture);
+                        if (item.PresetName != null)
+                        {
+                            mapt.cityname = item.PresetName;
+                        }
+                        mapt.towerID = item.TowerID;
 
-                    TowerMapCord.Add(mapt);
-                }
+                        TowerMapCord.Add(mapt);
+                    });
 
-                foreach (var line in TowerLine)
-                {
-                    mapLine ml = new mapLine();
-                    var latlon = TowerMapCord.Where(t => t.towerID == line.ParentTowerID).FirstOrDefault();
-                    ml.parentlattitube = latlon.lattitube;
-                    ml.parentlongitube = latlon.longitube;
-                    latlon= TowerMapCord.Where(t => t.towerID == line.ChildTowerID).FirstOrDefault();
-                    ml.childlattitube = latlon.lattitube;
-                    ml.childlongitube = latlon.longitube;
-                    LinesCon.Add(ml);
-                }
+                    TowerLine.ForEach(line =>
+                    {
+                        mapLine ml = new mapLine();
+                        var latlon = TowerMapCord.Where(t => t.towerID == line.ParentTowerID).FirstOrDefault();
+                        ml.parentlattitube = latlon.lattitube;
+                        ml.parentlongitube = latlon.longitube;
+                        latlon = TowerMapCord.Where(t => t.towerID == line.ChildTowerID).FirstOrDefault();
+                        ml.childlattitube = latlon.lattitube;
+                        ml.childlongitube = latlon.longitube;
+                        LinesCon.Add(ml);
+                    });
+
                 LinesCon.Add(new mapLine());
                 ViewBag.MapGPS = TowerMapCord;
                 ViewBag.TowerLine = LinesCon;
-                //var start = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\start.txt");
-                //var style = System.IO.File.ReadAllText(@"C:\Users\tyupi\Documents\visual studio 2017\Projects\AdminPanelDevice\AdminPanelDevice\MapStyle\mapstyle.txt");
-                //ViewBag.Style = style;
-                //ViewBag.Start = start;
+          
             }
             return View();
         }

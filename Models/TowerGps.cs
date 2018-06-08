@@ -15,9 +15,10 @@ namespace AdminPanelDevice.Models
         public string Lattitube { get; set; }
         public string Longitube { get; set; }
         public string Altitube { get; set; }
-        public string TowerNameID { get; set; }
+        public string TowerName { get; set; }
         public int DeviceID { get; set; }
         public string PresetName { get; set; }
         public string IP { get; set; }
+        public int TowerID { get; set; }
     }
 }

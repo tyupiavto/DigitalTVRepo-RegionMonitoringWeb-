@@ -62,9 +62,9 @@
             var con = $.hubConnection();
             var hub = con.createHubProxy('hubMessage');
             hub.on('onHitRecorded', function (i) {
-                $("#towerColor").css('background-color', i.MapColor);
-                $("#mmsid").text(i.Value/10);
-                $("#towerColor").css('color', 'black');
+                $("#towerColor" + i.TowerID).css('background-color', i.MapColor);
+                $("#mmsid" + i.TowerID).text(i.Value/10);
+                $("#towerColor" + i.TowerID).css('color', i.TextColor);
             });
             con.start();
             //con.start(function () {
@@ -502,7 +502,7 @@
                 }
 
                 $.each(listgps, function (i, val) {
-                    var contentString = '<tbody><table><tr><td><div style="background-color: rgb(51, 51, 51); color: rgb(0, 0, 0);font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor' + val.towerID + '">წალკა</div></td><td><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
+                    var contentString = '<tbody><table><tr><td><div style="background-color: rgb(51, 51, 51); color: rgb(0, 0, 0); opacity:0.8; font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor' + val.towerID + '">წალკა</div></td><td><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
   
                     var infowindows = new google.maps.InfoWindow({
                         content: contentString

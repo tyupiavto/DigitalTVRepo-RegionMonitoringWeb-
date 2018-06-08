@@ -120,15 +120,7 @@ $('body').on('click touchend', '#select_version', function (e) { //version
 });
 
 $('body').on('click touchend','.walk_list_version li', function () { // time interval add
-    //var value = $(this).attr("value");
-    //var timeID = $(this).attr("id");
     $('#walk_version').text($(this).attr("value"));
-
-    //tm.push($(this).attr("id"));
-    //tm.push($(this).attr("value"));
-    //TimeChange.push(tm);
-    //tm = [];
-
 });
 
 $('body').on('click touchend', '#preset_add_remove', function (e) { //preset add remove list
@@ -480,66 +472,17 @@ $('body').on('click touched', '.logmapsetting', function () {
             handleFour.slider('values', 1, Response.TwoEndCrash);
             handleFive.slider('values', 0, Response.TwoStartError);
             handleFive.slider('values', 1, Response.TwoEndError);
-
-            //$('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
-            //$('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
-            //$('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
-            //$('.indicatorFour').css('left', parseFloat($('#slider-range-four span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-            //$('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-            //$('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
-
-            //$('#valueOne').text(Response.OneStartError);
-            //$('#valueTwo').text(Response.OneEndError);
-            //$('#valueThree').text(Response.StartCorrect);
-            //$('#valueFour').text(Response.EndCorrect);
-            //$('#valueFive').text(Response.TwoStartError);
-            //$('#valueSix').text(Response.TwoEndError);
         }
         else {
             slideLogMapSetting();
-            //$('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
-            //$('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
-            //$('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
-            //$('.indicatorFour').css('left', parseFloat($('#slider-range-four span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-            //$('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-            //$('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
-
-            //$('#valueOne').text(minlenght);
-            //$('#valueTwo').text(valueLenght / 5);
-            //$('#valueThree').text(valueLenght / 2.5);
-            //$('#valueFour').text(parseInt(valueLenght / 1.66));
-            //$('#valueFive').text(valueLenght / 1.25);
-            //$('#valueSix').text(valueLenght);
         }
     });
 });
 
 $('body').on('click touched', '#value_logmap_button', function () {
-    //if (parseFloat($('#value_logmap_max').val()) >= 5) {
         maxlenght = parseFloat($('#value_logmap_max').val());
         minlenght = parseFloat($('#value_logmap_min').val());
-
         slideLogMapSetting();
-
-        //$('.indicatorOne').css('left', $('#slider-range-one span:nth-child(2)')[0].style.left);
-        //$('.indicatorTwo').css('left', $('#slider-range-two span:nth-child(2)')[0].style.left);
-        //$('.indicatorThree').css('left', $('#slider-range-three span:nth-child(2)')[0].style.left);
-        //$('.indicatorFour').css('left', parseFloat($('#slider-range-three span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
-        //$('.indicatorFive').css('left', parseFloat($('#slider-range-five span:nth-child(2)')[0].style.left.slice(0, -1)) - 1 + "%");
-        //$('.indicatorSix').css('left', parseFloat($('#slider-range-five span:nth-child(3)')[0].style.left.slice(0, -1)) - 1 + "%");
-
-        //$('#valueOne').text(minlenght);
-        //$('#valueTwo').text(valueLenght / 5);
-        //$('#valueThree').text(valueLenght / 2.5);
-        //$('#valueFour').text(parseInt(valueLenght / 1.66));
-        //$('#valueFive').text(valueLenght / 1.25);
-        //$('#valueSix').text(valueLenght);
-
-    //}
-    //else {
-    //    alert("Enter a value of more than 5");
-    //}
-
 });
 function slideLogMapSetting() {
     handleOne.slider({
@@ -549,17 +492,7 @@ function slideLogMapSetting() {
         step: 0.1,
         values: [minlenght, maxlenght/5],
         slide: function (event, ui) {
-          
-          //  $('div').hasClass('mydivclass')
-            //if ($('#slider-range-one span:nth-child(2)').hasClass('ui-state-active')) {
-            //    $('.indicatorOne').css('left', ui.value / valueLenght * 100 + "%");
-            //    $('#valueOne').text(ui.value);
-            //}
-            //else {
-            //    $('#valueTwo').text(ui.value);
-            //    $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
-                handleTwo.slider('values', 0, ui.values[1]);
-            //}
+             handleTwo.slider('values', 0, ui.values[1]);
         },
     }).slider("float", {
         handle: true,
@@ -576,19 +509,8 @@ function slideLogMapSetting() {
         step: 0.1,
         values: [maxlenght/5, maxlenght / 2.5],
         slide: function (event, ui) {
-           
-            //if ($('#slider-range-two span:nth-child(2)').hasClass('ui-state-active')) {
-                handleThree.slider('values', 0, ui.values[1]);
-                handleOne.slider('values', 1, ui.values[0]);
-            //    $('.indicatorTwo').css('left', ui.value / valueLenght * 100 + "%");
-            //    $('#valueTwo').text(ui.value);
-            //}
-            //else {
-                //handleThree.slider('values', 0, ui.values[1]);
-                //handleOne.slider('values', 1, ui.values[0]);
-            //    $('.indicatorThree').css('left', ui.value / valueLenght * 100 + "%");
-            //    $('#valueThree').text(ui.value);
-            //}
+           handleThree.slider('values', 0, ui.values[1]);
+           handleOne.slider('values', 1, ui.values[0]);
         }
     }).slider("float", {
         handle: true,
@@ -606,18 +528,8 @@ function slideLogMapSetting() {
         step: 0.1,
         values: [maxlenght / 2.5, maxlenght / 1.6],
         slide: function (event, ui) {
-            //if ($('#slider-range-three span:nth-child(2)').hasClass('ui-state-active')) {
-                handleFour.slider('values', 0, ui.values[1]);
-                handleTwo.slider('values', 1, ui.values[0]);
-            //    $('.indicatorThree').css('left', ui.value / maxlenght * 100 + "%");
-            //    $('#valueThree').text(ui.value);
-            //}
-            //else {
-                //handleFour.slider('values', 0, ui.values[1]);
-                //handleTwo.slider('values', 1, ui.values[0]);
-            //    $('.indicatorFour').css('left', ui.value / maxlenght * 100-1 + "%");
-            //    $('#valueFour').text(ui.value);
-            //}
+            handleFour.slider('values', 0, ui.values[1]);
+            handleTwo.slider('values', 1, ui.values[0]);
         }
     }).slider("float", {
         handle: true,
@@ -634,18 +546,8 @@ function slideLogMapSetting() {
         step: 0.1,
         values: [maxlenght / 1.6, maxlenght / 1.25],
         slide: function (event, ui) {
-            //if ($('#slider-range-four span:nth-child(2)').hasClass('ui-state-active')) {
-                handleFive.slider('values', 0, ui.values[1]);
-                handleThree.slider('values', 1, ui.values[0]);
-            //    $('.indicatorFour').css('left', ui.value / maxlenght * 100 - 1 + "%");
-            //    $('#valueFour').text(ui.value);
-            //}
-            //else {
-                //handleFive.slider('values', 0, ui.values[1]);
-                //handleThree.slider('values', 1, ui.values[0]);
-            //    $('.indicatorFive').css('left', ui.value / maxlenght * 100 - 1 + "%");
-            //    $('#valueFive').text(ui.value);
-            //}
+           handleFive.slider('values', 0, ui.values[1]);
+           handleThree.slider('values', 1, ui.values[0]);
         }
     }).slider("float", {
         handle: true,
@@ -662,15 +564,7 @@ function slideLogMapSetting() {
         step: 0.1,
         values: [maxlenght / 1.25, maxlenght],
         slide: function (event, ui) {
-            //if ($('#slider-range-five span:nth-child(2)').hasClass('ui-state-active')) {
-                handleFour.slider('values', 1, ui.values[0]);
-            //    $('.indicatorFive').css('left', ui.value / maxlenght * 100 - 1 + "%");
-            //    $('#valueFive').text(ui.value);
-            //}
-            //else {
-            //    $('.indicatorSix').css('left', ui.value / maxlenght * 100 - 1 + "%");
-            //    $('#valueSix').text(ui.value);
-            //}
+            handleFour.slider('values', 1, ui.values[0]);
         }
     }).slider("float", {
         handle: true,

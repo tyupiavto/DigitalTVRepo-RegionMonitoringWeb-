@@ -11,5 +11,7 @@ namespace AdminPanelDevice.Models
         public string Value { get; set; }
         public string IP { get; set; }
         public string Name { get; set; }
+        public int TowerID { get; set; }
+        public string TextColor { get; set; }
     }
 }

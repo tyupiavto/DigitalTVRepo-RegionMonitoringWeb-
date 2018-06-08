@@ -175,7 +175,7 @@ $('body').on('click touchend', '#gps_cor_sub', function () {
     longitube = $('#longitube_name').val();
     altitube = $('#altitube_name').val();
     towerName = $('.header' + TowerGpsID).text();
-    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube, towerName: towerName, gpscheckInd: gpscheckInd, IP: IP }, function () {
+    $.post("/DeviceGroup/TowerGpsSubmit", { deviceGpsName: deviceGpsName, lattitube: lattitube, longitube: longitube, altitube: altitube, towerName: towerName, gpscheckInd: gpscheckInd, IP: IP, TowerGpsID:TowerGpsID }, function () {
         $('#settingsDiv').html("");
     }, 'json');
 });

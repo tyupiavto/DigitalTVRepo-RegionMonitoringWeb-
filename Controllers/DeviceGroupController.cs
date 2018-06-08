@@ -1054,7 +1054,7 @@ namespace AdminPanelDevice.Controllers
                     gps.Longitube = gpscoordinate[1].Type;
                     gps.Altitube = gpscoordinate[2].Type;
                     gps.PresetName = presetName;
-                    gps.TowerNameID = towerNameID;
+                    gps.TowerName = towerNameID;
                     gps.DeviceID = QuerydeviceID;
                     gps.IP = IpAddress;
                     db.towerGps.Add(gps);
@@ -1236,7 +1236,7 @@ namespace AdminPanelDevice.Controllers
 
 
         [HttpPost]
-        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd,string IP)
+        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd,string IP,int TowerGpsID)
         {
             if (gpscheckInd != 0)
             {
@@ -1251,8 +1251,9 @@ namespace AdminPanelDevice.Controllers
                     gpsCordinate.Lattitube = lattitube;
                     gpsCordinate.Longitube = longitube;
                     gpsCordinate.Altitube = altitube;
-                    gpsCordinate.TowerNameID = towerName;
+                    gpsCordinate.TowerName = towerName;
                     gpsCordinate.IP = IP;
+                    gpsCordinate.TowerID = TowerGpsID;
                     db.towerGps.Add(gpsCordinate);
                     db.SaveChanges();
                 }
@@ -1260,11 +1261,11 @@ namespace AdminPanelDevice.Controllers
             else
             {
                 TowerGps gpsCordinate = new TowerGps();
-                gpsCordinate.TowerNameID = towerName;
+                gpsCordinate.TowerName = towerName;
                 gpsCordinate.Lattitube = lattitube;
                 gpsCordinate.Longitube = longitube;
                 gpsCordinate.Altitube = altitube;
-
+                gpsCordinate.TowerID = TowerGpsID;
                 db.towerGps.Add(gpsCordinate);
                 db.SaveChanges();
             }

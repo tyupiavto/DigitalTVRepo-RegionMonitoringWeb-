@@ -303,6 +303,7 @@
     </Compile>
     <Compile Include="HangfireBootstrapper.cs" />
     <Compile Include="Helpers\PickerHelper.cs" />
+    <Compile Include="Infrastructure\AlarmDefineColor.cs" />
     <Compile Include="Infrastructure\BuildMIBTree.cs" />
     <Compile Include="Infrastructure\CheckUncheckGetThread.cs" />
     <Compile Include="Infrastructure\CityAddDiagram.cs" />
@@ -343,6 +344,7 @@
       <DependentUpon>201801091342590_last db .cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AlarmLogStatus.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Countrie.cs" />
     <Compile Include="Models\CountrieStateCityModel.cs" />

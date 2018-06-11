@@ -133,5 +133,24 @@ namespace AdminPanelDevice.Controllers
             thread.Start();
             return Json("", JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult AlarmLog (string alarmColor, string deviceName, string alarmText)
+        {
+           var alarmtextdecode= System.Uri.UnescapeDataString(alarmText);
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+
+            //}
+            AlarmLogStatus alarmlog = new AlarmLogStatus();
+            alarmlog.AlarmStatus = alarmColor;
+            alarmlog.AlarmText = alarmtextdecode;
+            alarmlog.DeviceName = deviceName;
+
+            db.AlarmLogStatus.Add(alarmlog);
+            db.SaveChanges();
+
+            return Json("");
+        }
     }
 }

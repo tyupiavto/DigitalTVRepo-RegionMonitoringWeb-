@@ -23,5 +23,6 @@ namespace AdminPanelDevice.Models
         public string DeviceName { get; set; }
         public string Description { get; set; }
         public string dateTimeTrap { get; set; }
+        public string AlarmStatus { get; set; }
     }
 }

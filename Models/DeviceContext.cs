@@ -41,6 +41,7 @@ namespace AdminPanelDevice.Models
         public DbSet<TowerPreset> TowerPreset { get; set; }
         public DbSet<DeviceThreadOnOff> DeviceThreadOnOff { get; set; }
         public DbSet<GetSleepThread> GetSleepThread { get; set; }
+        public DbSet<AlarmLogStatus> AlarmLogStatus { get; set; }
 
         public System.Data.Entity.DbSet<AdminPanelDevice.Models.WalkInformation> WalkInformations { get; set; }
 

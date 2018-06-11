@@ -731,7 +731,9 @@
                                   clickInd = 0;
                                   removePosition = i;
                                   $('.removeLine').css("display", "block");
-
+                                  flightPath[removePosition].setMap(null);
+                                  // flightPath[removePosition] = null;
+                                  flightPath.splice(removePosition, 1);
                                   RemoveLine = new google.maps.Polyline({
                                       path: [startposition, marker.position],
                                       geodesic: true,
@@ -749,6 +751,8 @@
                           });
                           if (removelineInd == 0) {
                               LC.push(marker.position);
+                              //flightPath[removePosition].setMap(null);
+                              // flightPath[removePosition] = null;
                               flightPath.push(new google.maps.Polyline({
                                   path: [startposition, marker.position],
                                   geodesic: true,
@@ -779,9 +783,11 @@
                                   RemoveLine.setMap(null);
                                   RemoveLine = null;
                                   flightPath[removePosition].setMap(null);
-                                  flightPath[removePosition] = null;
+                                  // flightPath[removePosition] = null;
+                                  flightPath.splice(removePosition, 1);
                                   $('.removeLine').css("display", "none");
-                                  LC[removePosition] = 0;
+                                  //   LC[removePosition] = 0;
+                                  LC.splice(removePosition, 1);
                                   clickInd = 1;
                                   $.post("/Map/RemoveTowerLine", { parentTowerID: parentTowerID, childTowerID: childTowerID }, function () { }, 'json');
                               }

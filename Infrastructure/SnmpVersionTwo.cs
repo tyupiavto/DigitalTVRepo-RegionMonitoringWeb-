@@ -16,12 +16,13 @@ namespace AdminPanelDevice.Infrastructure
     {
         DeviceContext db = new DeviceContext();
         Hexstring hex = new Hexstring();
-        public SnmpVersionTwo(SnmpV2Packet pkt, EndPoint inep)
+        AlarmDefineColor alarmstatus = new AlarmDefineColor();
+        public SnmpVersionTwo(SnmpV2Packet pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
-                var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+                //var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
+                //var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
 
                 foreach (Vb v in pkt.Pdu.VbList)
                 {
@@ -33,6 +34,8 @@ namespace AdminPanelDevice.Infrastructure
                     trap.Value = v.Value.ToString();
                     trap.dateTimeTrap = DateTime.Now.ToString();
                     var tDevice = towerDevices.Where(t => t.IP == trap.IpAddres).FirstOrDefault();
+                    trap.AlarmStatus= alarmstatus.AlarmColorDefines(v.Value.ToString(), alarmLog,tDevice);
+
                     if (tDevice == null)
                     {
                         trap.Countrie = "Unknown";

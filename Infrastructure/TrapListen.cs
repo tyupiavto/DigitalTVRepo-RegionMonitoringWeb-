@@ -18,10 +18,17 @@ namespace AdminPanelDevice.Infrastructure
     {
         DeviceContext db = new DeviceContext();
         Hexstring hex = new Hexstring();
-
+        List<MibTreeInformation> mibTreeInformation = new List<MibTreeInformation>();
+        List<TowerDevices> towerDevices = new List<TowerDevices>();
+        List<AlarmLogStatus> alarmLog = new List<AlarmLogStatus>();
         public TrapListen()
         {
-
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                 mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
+                 towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+                 alarmLog = connection.Query<AlarmLogStatus>("select * from AlarmLogStatus").ToList();
+            }
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 162);
             EndPoint ep = (EndPoint)ipep;
@@ -53,7 +60,7 @@ namespace AdminPanelDevice.Infrastructure
                         {
                             SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
                             pkt.decode(indata, inlen);
-                            new SnmpVersionOne(pkt, inep);
+                            new SnmpVersionOne(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
                         }
                         catch (Exception e)
                         {
@@ -67,7 +74,7 @@ namespace AdminPanelDevice.Infrastructure
                         {
                             SnmpV2Packet pkt = new SnmpV2Packet();
                             pkt.decode(indata, inlen);
-                            new SnmpVersionTwo(pkt, inep);
+                            new SnmpVersionTwo(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
                         }
                         catch (Exception e)
                         {

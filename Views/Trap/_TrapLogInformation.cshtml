@@ -19,13 +19,13 @@
             <th id="oidColumn">OID</th>
             <th id="valueColumn">Value</th>
             <th id="datetimeColumn">Date/Time</th>
-            <th id="errorMapColumn" style="display:none">CorrectErrorMap</th>
+            <th id="errorMapColumn" style="display:block">Status</th>
         </tr>
     </thead>
     <tbody id="trap_log_information">
         @foreach (var item in Model)
         {
-        <tr>
+        <tr style="background-color:@(item.AlarmStatus)">
             <td id="countrieColumn@(item.ID)" value="@item.ID">@item.Countrie</td>
             <td id="stateColumn@(item.ID)" value="@item.ID">@item.States</td>
             <td id="cityColumn@(item.ID)" value="@item.ID">@item.City</td>
@@ -36,7 +36,18 @@
             <td id="oidColumn@(item.ID)" value="@item.ID">@item.CurrentOID</td>
             <td id="valueColumn@(item.ID)" value="@item.ID">@item.Value</td>
             <td id="datetimeColumn@(item.ID)" value="@item.ID">@item.dateTimeTrap</td>
-            <td id="errorMapColumn@(item.ID)" value="@item.ID" style="display:none"><input type="checkbox"  style="margin-left:50%"/></td>
+            <td id="errorMapColumn@(item.ID)" value="@item.ID" >
+                <div class="dropdown" id="logList" value="@(item.ID)">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" value="@(item.ID)" id="logListStatus@(item.ID)">
+                        <i class="glyphicon glyphicon-th-list"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li style="background-color:green; width:50%; cursor:pointer;"id="logCorrect" data-toggle="modal" data-target="#statusLogCorrectError" value="@(item.ID)">Correct</li>
+                        <li style="background-color:red;  width:50%; cursor:pointer;" id="logError" data-toggle="modal" data-target="#statusLogCorrectError" value="@(item.ID)">Error</li>
+                        <li style="background-color:yellow;  width:50%;cursor:pointer;" id="logCrash" data-toggle="modal" data-target="#statusLogCorrectError" value="@(item.ID)">Crash</li>
+                    </ul>
+                </div>
+            </td>
         </tr>
         }
     </tbody>

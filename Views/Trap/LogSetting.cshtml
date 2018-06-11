@@ -30,7 +30,7 @@
         <button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-th icon-th"></i>
         </button>
- 
+
         <ul class="dropdown-menu" role="menu" id="dropdown" style="position:absolute; top:35px;">
             <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="1" checked="checked">Countrie</label></li>
             <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="2" checked="checked">State</label></li>
@@ -42,7 +42,7 @@
             <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="8" checked="checked">OID</label>
             <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="9" checked="checked">Value</label>
             <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Date/Time</label>
-            <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" value="11">CorrectErrorMap</label>
+            <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" checked="checked" value="11">CorrectError</label>
         </ul>
         <div class="row">
             <div class='col-sm-2'>
@@ -89,7 +89,31 @@
             </div>
 
         </div>
-            <div id="loginformation"> </div>
+        <div id="loginformation"> </div>
+
+        <div class="modal fade" id="statusLogCorrectError" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:700px;">
+                    <div class="modal-body" style="padding:5px;">
+
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="textCorrectError" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer" style="padding:1px;">
+                        <button type="button" class="btn btn-default"data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="alarmSave">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>
 

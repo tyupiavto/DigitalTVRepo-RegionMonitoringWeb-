@@ -10,6 +10,8 @@ using System.Data.SqlClient;
 using System.Configuration;
 using Dapper;
 using System.Net;
+using Microsoft.AspNet.SignalR;
+using System.Globalization;
 
 namespace AdminPanelDevice.Infrastructure
 {
@@ -17,12 +19,15 @@ namespace AdminPanelDevice.Infrastructure
     {
         DeviceContext db = new DeviceContext();
         Hexstring hex = new Hexstring();
-        public SnmpVersionOne (SnmpV1TrapPacket pkt, EndPoint inep)
+        AlarmDefineColor alarmstatus = new AlarmDefineColor();
+        MapViewInformation mapinformation = new MapViewInformation();
+        MapTowerLineInformation mapline = new MapTowerLineInformation();
+        public SnmpVersionOne(SnmpV1TrapPacket pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
-                var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+                //var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
+               // var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
                 foreach (Vb v in pkt.Pdu.VbList)
                 {
                     Trap trap = new Trap();
@@ -31,6 +36,7 @@ namespace AdminPanelDevice.Infrastructure
                     trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
                     trap.ReturnedOID = v.Oid.ToString();
                     trap.dateTimeTrap = DateTime.Now.ToString();
+                    //trap.AlarmStatus = alarmstatus.AlarmColorDefines(v.Value.ToString(), alarmLog);
                     if (v.Value.GetType().Name == "OctetString")
                     {
                         trap.Value = hex.Hexstrings(v.Value.ToString());
@@ -40,6 +46,9 @@ namespace AdminPanelDevice.Infrastructure
                         trap.Value = v.Value.ToString();
                     }
                     var tDevice = towerDevices.Where(t => t.IP == pkt.Pdu.AgentAddress.ToString()).FirstOrDefault();
+
+                    trap.AlarmStatus = alarmstatus.AlarmColorDefines(trap.Value, alarmLog,tDevice);                
+
                     if (tDevice == null)
                     {
                         trap.Countrie = "Unknown";

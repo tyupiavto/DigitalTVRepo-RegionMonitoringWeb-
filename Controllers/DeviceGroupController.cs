@@ -1197,7 +1197,7 @@ namespace AdminPanelDevice.Controllers
                         var devicename = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + item + "%'").FirstOrDefault();
                         gpsDevice.DeviceName.Add(devicename.Name);
                     }
-                    var gpscordinate = connection.Query<TowerGps>($"select * from TowerGps where TowerNameID='{towerName}'").FirstOrDefault();
+                    var gpscordinate = connection.Query<TowerGps>($"select * from TowerGps where TowerName='{towerName}'").FirstOrDefault();
                     if (gpscordinate != null)
                     {
                         gpsDevice.Lattitube = gpscordinate.Lattitube;
@@ -1244,7 +1244,7 @@ namespace AdminPanelDevice.Controllers
                 {
                   //  var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
                    // TowerGps gpsCordinate = connection.Query<TowerGps>($"Select * from TowerGps where TowerNameID='{towerName}'").FirstOrDefault();
-                    connection.Query<TowerGps>($"delete from TowerGps where TowerNameID='{towerName}'");
+                    connection.Query<TowerGps>($"delete from TowerGps where TowerName='{towerName}'");
 
                     TowerGps gpsCordinate = new TowerGps();
 

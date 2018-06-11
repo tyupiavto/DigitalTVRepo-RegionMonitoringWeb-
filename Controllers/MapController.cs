@@ -17,20 +17,22 @@ namespace AdminPanelDevice.Controllers
         DeviceContext db = new DeviceContext();
         public List<TowerGps> towerMap = new List<TowerGps>();
 
-        public struct mapTower
-        {
-            public double lattitube { get; set; }
-            public double longitube { get; set; }
-            public string cityname { get; set; }
-            public int towerID { get; set; }
-        }
-        public struct mapLine
-        {
-            public double parentlattitube { get; set; }
-            public double parentlongitube { get; set; }
-            public double childlattitube { get; set; }
-            public double childlongitube { get; set; }
-        }
+        //public struct mapTower
+        //{
+        //    public double lattitube { get; set; }
+        //    public double longitube { get; set; }
+        //    public string cityname { get; set; }
+        //    public int towerID { get; set; }
+        //    public string towerCityName { get; set; }
+        //}
+        //public struct mapLine
+        //{
+        //    public double parentlattitube { get; set; }
+        //    public double parentlongitube { get; set; }
+        //    public double childlattitube { get; set; }
+        //    public double childlongitube { get; set; }
+        //}
+
         public List<mapTower> TowerMapCord = new List<mapTower>();
         public List<LineConnection> TowerLine = new List<LineConnection>();
         public List<mapLine> LinesCon = new List<mapLine>();
@@ -76,7 +78,7 @@ namespace AdminPanelDevice.Controllers
                             mapt.cityname = item.PresetName;
                         }
                         mapt.towerID = item.TowerID;
-
+                        mapt.towerCityName = item.TowerName.Substring(0, item.TowerName.IndexOf('_'));
                         TowerMapCord.Add(mapt);
                     });
 

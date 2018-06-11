@@ -14,7 +14,8 @@ $(document).on('click touchend', '.settings', function () { // add device settin
 
 $('body').on('keyup touchend', '#countries_search', function () {
     countrieSearchName = $('#countries_search').val();
-    $.post("/DeviceGroup/countrieSearch", { countrieSearchName: countrieSearchName}, function (Response) {
+
+    $.post("/DeviceGroup/countrieSearch", { countrieSearchName: countrieSearchName }, function (Response) {
         $('#countrie_partial').html("");
         $('#countrie_partial').html(Response);
     }, 'text');
@@ -189,3 +190,10 @@ $('body').on('click touchend', '#typeSelectCity', function (e) {
         }
 
 });
+
+//$('#tower_ip').countries_search(function () {
+
+//    window.alert("sejj");
+
+//    // jQuery('#tower_ip').geokbd();
+//});

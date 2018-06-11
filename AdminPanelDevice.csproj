@@ -314,6 +314,7 @@
     <Compile Include="Infrastructure\Hexstring.cs" />
     <Compile Include="Infrastructure\HubMessage.cs" />
     <Compile Include="Infrastructure\JobSheduler.cs" />
+    <Compile Include="Infrastructure\MapTowerLineInformation.cs" />
     <Compile Include="Infrastructure\MibTreeCreate.cs" />
     <Compile Include="Infrastructure\PresetFill.cs" />
     <Compile Include="Infrastructure\RemoveLog.cs" />
@@ -357,6 +358,8 @@
     <Compile Include="Models\LineConnection.cs" />
     <Compile Include="Models\LiveValue.cs" />
     <Compile Include="Models\LogMapSettingValue.cs" />
+    <Compile Include="Models\mapLine.cs" />
+    <Compile Include="Models\mapTower.cs" />
     <Compile Include="Models\MapViewInformation.cs" />
     <Compile Include="Models\MibGet.cs" />
     <Compile Include="Models\MibTreeInformation.cs" />

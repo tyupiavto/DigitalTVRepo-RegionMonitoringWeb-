@@ -50,23 +50,42 @@
             </div>
         </div>
     </div>
-    @* <button type="button" class="btn btn-info" id="remove_line" style="width: 65px;height: 22px;line-height: 8px; font-size: 11px; margin-left: 172px; margin-top: 50px;position:absolute">style</button>*@
-    @*<button type="button" class="btn btn-default" id="close_line" style="width: 65px;height: 22px;line-height: 9px;font-size: 11px; margin-top: 50px;position:absolute"></button>*@
+
     <div id="map"></div>
     <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
     <script src="~/signalr/Hubs"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+         
+            //var con = $.hubConnection();
+            //var hub = con.createHubProxy('hubMessage');
+            //hub.on('onHitRecorded', function (i) {
+            //    $("#towerColor" + i.TowerID).css('background-color', i.MapColor);
+            //    $("#mmsid" + i.TowerID).text(i.Value/10);
+            //    $("#towerColor" + i.TowerID).css('color', i.TextColor);
+            //    var startposition = new google.maps.LatLng(i.StartLattitube, i.StartLongitube);
 
-            var con = $.hubConnection();
-            var hub = con.createHubProxy('hubMessage');
-            hub.on('onHitRecorded', function (i) {
-                $("#towerColor" + i.TowerID).css('background-color', i.MapColor);
-                $("#mmsid" + i.TowerID).text(i.Value/10);
-                $("#towerColor" + i.TowerID).css('color', i.TextColor);
-            });
-            con.start();
+            //    if (i.TowerLine.length > 0) {
+            //        $.each(i.TowerLine, function (e, value) {
+            //            var childposition = new google.maps.LatLng(value.lattitube, value.longitube);
+            //            flightPath.push(new google.maps.Polyline({
+            //                path: [startposition, childposition],
+            //                geodesic: true,
+            //                strokeColor: '#ff0000',
+            //                strokeOpacity: 0.8,
+            //                strokeWeight: 2,
+            //                map: map,
+            //                icons: [{
+            //                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+            //                    offset: '100%',
+            //                    repeat: '80px'
+            //                }]
+            //            }));
+            //        });
+            //    }
+            //});
+            //con.start();
             //con.start(function () {
             //    hub.invoke('Send');
             //});
@@ -86,7 +105,9 @@
         var arra = new Array();
         var linearray = new Array();
         var marker = new Array();
-        var styles;
+        var styles,indLine;
+        var existingColor="green";
+
             var LineConnection = [];
             var LC = [],removeList=[];
             var startposition, finishposition, startparent, cordXP, cordYP, cordXC, cordYC,manJump=0;
@@ -465,8 +486,9 @@
                 anchor: new google.maps.Point(5, 5),
                 scaledSize: new google.maps.Size(15, 15),
 
-            };
-            if (towerLine.length > 0) {
+                };
+
+            if (towerLine.length > 0) { 
 
                 $.each(towerLine, function (j, value) {
                     if (cordXP == value.parentlattitube && cordYP == value.parentlongitube) {
@@ -475,7 +497,7 @@
                     }
                     else {
                         if (startposition != null) {
-                            LineConnection.push({ startposition, LC, flightPath });
+                            LineConnection.push({ startposition, LC, flightPath,existingColor });
                         }
                         LC = [];
                         flightPath = [];
@@ -485,11 +507,11 @@
                         cordYP = value.parentlongitube;
                     }
                      childposition = new google.maps.LatLng(value.childlattitube, value.childlongitube);
-                    flightPath.push(new google.maps.Polyline({
+                     flightPath.push(new google.maps.Polyline({
                         path: [startposition, childposition],
                         geodesic: true,
                         strokeColor: '#009900',
-                        strokeOpacity: 1,
+                        strokeOpacity: 0.8,
                         strokeWeight: 2,
                         map: map,
                         icons: [{
@@ -497,12 +519,113 @@
                             offset: '100%',
                             repeat: '80px'
                         }]
-                    }));
+                     }));
                 });
                 }
 
+                var con = $.hubConnection(); // shecdomebit washla daxatva xazebis 
+                var hub = con.createHubProxy('hubMessage');
+                hub.on('onHitRecorded', function (i) {
+                    $("#towerColor" + i.TowerID).css('background-color', i.MapColor);
+                    $("#mmsid" + i.TowerID).text(i.Value / 10);
+                    $("#towerColor" + i.TowerID).css('color', i.TextColor);
+                    var startposition = new google.maps.LatLng(i.StartLattitube, i.StartLongitube);
+
+                    if (i.TowerLine.length > 0) {
+                        existingColor = i.LineColor;
+                        var state = LineConnection.filter(f => f.startposition.toString() == startposition.toString());
+                        $.each(LineConnection, function (e,value) {
+                            if (value.startposition.toString() == state[0].startposition.toString()) {
+                                if (LineConnection[e].existingColor != i.LineColor) {
+                                    LineConnection[e].existingColor = i.LineColor;
+                                    indLine = 1;
+                                }
+                                else {
+                                    indLine = 0;
+                                }
+                            }
+                        })
+                        if (indLine == 1) {
+                            state[0].existingColor = existingColor;
+                            $.each(state[0].LC, function (j, v) {
+                                var childposition = new google.maps.LatLng(i.TowerLine[j].lattitube, i.TowerLine[j].longitube);
+
+                                state[0].flightPath[0].setMap(null);
+                                state[0].flightPath.splice(0, 1);
+
+                                state[0].flightPath.push(new google.maps.Polyline({
+                                    path: [startposition, childposition],
+                                    geodesic: true,
+                                    strokeColor: i.LineColor,
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 2,
+                                    map: map,
+                                    icons: [{
+                                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                                        offset: '100%',
+                                        repeat: '80px'
+                                    }]
+                                }));
+
+                            });
+                        }
+                        //}
+                            //$.each(i.TowerLine, function (e, value) {
+                                //var Linepos = new google.maps.LatLng(value.lattitube, value.longitube);
+                               
+                                //$.each(LineConnection, function (i, val) {
+                                //    //if (val.existingColor != existingColor) {
+                                //    //    //    val.existingColor = existingColor;
+                                //    //    indLine = 1;
+                                      
+                                //        if (val.startposition.toString() == startposition.toString()) {
+                                //            flightPath = val.flightPath;
+                                //            LC = val.LC;
+                                //            clickInd = i;
+                                //            indLine = 1;
+                                //            $.each(LC, function (j, v) {
+                                //                if (Linepos.toString() == v.toString()) {
+                                //                    flightPath[j].setMap(null);
+                                //                    flightPath[j] = null;
+                                //                    LC[j] = 0;
+                                //                    //flightPath[j].remove();
+                                //                    //LC[j].remove();
+                                //                    //val.LC[j].remove();
+                                //                    //val.flightPath[j].remove();
+                                //                }
+                                //            });
+                                //        }
+                                //    //}
+                                //       //else {
+                                //       // indLine = 0;
+                                //       // }
+                                //});
+                               
+                                //if (indLine == 1) {
+                                  //  LineConnection[clickInd].existingColor = existingColor;
+                                    //var childposition = new google.maps.LatLng(value.lattitube, value.longitube);
+                                    //LC.push(childposition);
+                                    //flightPath.push(new google.maps.Polyline({
+                                    //    path: [startposition, childposition],
+                                    //    geodesic: true,
+                                    //    strokeColor: i.LineColor,
+                                    //    strokeOpacity: 0.8,
+                                    //    strokeWeight: 2,
+                                    //    map: map,
+                                    //    icons: [{
+                                    //        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                                    //        offset: '100%',
+                                    //        repeat: '80px'
+                                    //    }]
+                                    //}));
+                                //}
+                            // });
+                    }
+                });
+                con.start();
+
                 $.each(listgps, function (i, val) {
-                    var contentString = '<tbody><table><tr><td><div style="background-color: rgb(51, 51, 51); color: rgb(0, 0, 0); opacity:0.8; font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor' + val.towerID + '">წალკა</div></td><td><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
+                    var contentString = '<tbody><table><tr><td><div style="background-color: rgb(51, 51, 51); color:white; opacity:0.7; font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor' + val.towerID + '">' + val.towerCityName + '</div></td><td><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
   
                     var infowindows = new google.maps.InfoWindow({
                         content: contentString
@@ -518,7 +641,6 @@
                     });
                
                     infowindows.open(map, marker);
-                   
                     
               var infowindow = new google.maps.InfoWindow();                                             // marjvena gilakit monishvna da xazis gavlebis dawyeba
               google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
@@ -530,15 +652,16 @@
                           lineLenghtList = 0;
                           manJump = 0;
                           $.each(LineConnection, function (i, val) {
-                              if (val.startposition== startposition) {
+                              if (val.startposition==startposition) {
                                   lineLenghtList = 1;
                                   LineConnection[i].startposition = startposition;
                                   LineConnection[i].LC = LC;
                                   LineConnection.flightPath = flightPath;
+                                 // LineConnection.existingColor = existingColor;
                               }
                           });
                           if (lineLenghtList == 0) {
-                              LineConnection.push({ startposition, LC, flightPath });
+                              LineConnection.push({ startposition, LC, flightPath, existingColor});
                           }
                           lineLenght += LC.length;
                           LC = [];
@@ -572,7 +695,7 @@
 
                       $.each(LineConnection, function (i, val) {
 
-                          if (val.startposition.toString() == startposition.toString() /*&& val.startposition.lng() == startposition.lng()*/) {
+                          if (val.startposition.toString() == startposition.toString()) {
                               flightPath = val.flightPath;
                               LC = val.LC;
                               ind = 0; clickInd = 0;
@@ -586,7 +709,7 @@
                                       path: [startposition, marker.position],
                                       geodesic: true,
                                       strokeColor: '#ff0000',
-                                      strokeOpacity: 1,
+                                      strokeOpacity: 0.8,
                                       strokeWeight: 2,
                                       map: map,
                                       icons: [{
@@ -613,7 +736,7 @@
                                       path: [startposition, marker.position],
                                       geodesic: true,
                                       strokeColor: '#ff0000',
-                                      strokeOpacity: 1,
+                                      strokeOpacity: 0.8,
                                       strokeWeight: 2,
                                       map: map,
                                       icons: [{
@@ -630,7 +753,7 @@
                                   path: [startposition, marker.position],
                                   geodesic: true,
                                   strokeColor: '#009900',
-                                  strokeOpacity: 1,
+                                  strokeOpacity:0.8,
                                   strokeWeight: 2,
                                   map: map,
                                   icons: [{
@@ -653,7 +776,7 @@
 
                           $('#remove_line').click(function () {
                               if (clickInd == 0) {
-                                  RemoveLine.setMap(null); /*RemoveLine.setMap(null); RemoveLine.setMap(null); RemoveLine.setMap(null);*/
+                                  RemoveLine.setMap(null);
                                   RemoveLine = null;
                                   flightPath[removePosition].setMap(null);
                                   flightPath[removePosition] = null;
@@ -664,9 +787,11 @@
                               }
                           });
                   };
-              })(marker, infowindow));
+                    })(marker, infowindow));
+  
+
             });
-        }
+             }
           //  google.maps.event.addDomListener(window, 'load', initMap);
 
     </script>

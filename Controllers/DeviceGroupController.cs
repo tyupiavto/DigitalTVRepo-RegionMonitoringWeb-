@@ -754,8 +754,8 @@ namespace AdminPanelDevice.Controllers
                         try
                         {
                             walkSearch.Clear();
-                            //searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            walkSearch = walkList.Where(x => x.WalkDescription != null && x.WalkDescription.Contains(SearchName) || x.Type != null && x.Type.Contains(SearchName) || x.OIDName != null && x.OIDName.Contains(SearchName)).ToList();
+                            searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
+                            walkSearch = walkList.Where(x => x.WalkDescription != null && x.WalkDescription.Contains(SearchName) || x.Type != null && x.Type.Contains(SearchName) || x.OIDName != null && x.OIDName.Contains(SearchName) || x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)).ToList();
                         }
                         catch (Exception e) { }
                         return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));

@@ -382,6 +382,7 @@
     <Compile Include="Models\TowerGps.cs" />
     <Compile Include="Models\TowerPreset.cs" />
     <Compile Include="Models\Trap.cs" />
+    <Compile Include="Models\TrapListNameCheck.cs" />
     <Compile Include="Models\TrapLog.cs" />
     <Compile Include="Models\TreeStructure.cs" />
     <Compile Include="Models\WalkDevice.cs" />

@@ -21,9 +21,7 @@ namespace AdminPanelDevice.Infrastructure
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                //var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
-                //var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
-
+                
                 foreach (Vb v in pkt.Pdu.VbList)
                 {
                     Trap trap = new Trap();
@@ -67,22 +65,25 @@ namespace AdminPanelDevice.Infrastructure
                             OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
 
                             if (OidMibdescription != null)
+                            {
                                 trap.Description = OidMibdescription.Description;
+                            }
                             else
                             {
                                 trap.Description = "Unknown";
+                                trap.OIDName = "Unknown";
                             }
+                            trap.OIDName = OidMibdescription.Name;
                         }
                         else
                         {
-                            //if (OidMibdescription.Description != null)
-                            //{
                                 trap.Description = OidMibdescription.Description;
-                            //}
+                                trap.OIDName = OidMibdescription.Name;
                         }
                         if (trap.Description == "")
                         {
                             trap.Description = "Unknown";
+                            trap.OIDName = "Unknown";
                         }
                     }
                     db.Traps.Add(trap);

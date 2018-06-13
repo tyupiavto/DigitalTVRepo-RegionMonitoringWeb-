@@ -36,7 +36,7 @@ namespace AdminPanelDevice.Infrastructure
                     trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
                     trap.ReturnedOID = v.Oid.ToString();
                     trap.dateTimeTrap = DateTime.Now.ToString();
-                    //trap.AlarmStatus = alarmstatus.AlarmColorDefines(v.Value.ToString(), alarmLog);
+
                     if (v.Value.GetType().Name == "OctetString")
                     {
                         trap.Value = hex.Hexstrings(v.Value.ToString());
@@ -81,10 +81,14 @@ namespace AdminPanelDevice.Infrastructure
                             OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
 
                             if (OidMibdescription != null)
+                            {
                                 trap.Description = OidMibdescription.Description;
+                                trap.OIDName = OidMibdescription.Name;
+                            }
                             else
                             {
                                 trap.Description = "Unknown";
+                                trap.OIDName = "Unknown";
                             }
                         }
                         else
@@ -93,11 +97,14 @@ namespace AdminPanelDevice.Infrastructure
                             {
                                 trap.Description = OidMibdescription.Description;
                             }
+                            trap.OIDName = OidMibdescription.Name;
                         }
                         if (trap.Description == "")
                         {
                             trap.Description = "Unknown";
+                            trap.OIDName = "Unknown";
                         }
+                       
                     }
                     db.Traps.Add(trap);
                     db.SaveChanges();

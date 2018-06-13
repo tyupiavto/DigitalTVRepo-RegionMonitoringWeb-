@@ -15,5 +15,7 @@ namespace AdminPanelDevice.Models
         public string DeviceName{ get; set; }
         public string AlarmText { get; set; }
         public string AlarmStatus { get; set; }
+        public string ReturnOidText { get; set; }
+        public string CurrentOidText { get; set; }
     }
 }

@@ -28,7 +28,6 @@ namespace AdminPanelDevice.Infrastructure
             {
                 alarmLog.ForEach(item =>
                 {
-
                     status = Regex.IsMatch(value, item.AlarmText);
                     if (status == true)
                     {
@@ -41,15 +40,31 @@ namespace AdminPanelDevice.Infrastructure
                         var cord = connection.Query<TowerGps>($"select * from TowerGps where TowerID='{towerID}'").FirstOrDefault();
                         mapinformation.StartLattitube = Double.Parse(cord.Lattitube.Remove(cord.Lattitube.Length - 2), CultureInfo.InvariantCulture);
                         mapinformation.StartLongitube = Double.Parse(cord.Longitube.Remove(cord.Longitube.Length - 2), CultureInfo.InvariantCulture);
-                        mapinformation.MapColor = item.AlarmStatus;
-                        mapinformation.LineColor = item.AlarmStatus;
-                        mapinformation.TextColor = "white";
+                        if (item.AlarmStatus == "green")
+                        {
+                            mapinformation.MapColor = "rgb(51, 51, 51)";
+                            mapinformation.LineColor = "#006699";
+                        }
+                        else
+                        {
+                            mapinformation.MapColor = item.AlarmStatus;
+                             mapinformation.LineColor = item.AlarmStatus;
+                        }
+
+                       
+                        if (item.AlarmStatus == "yellow")
+                        {
+                            mapinformation.TextColor = "black";
+                        }
+                        else
+                        {
+                          mapinformation.TextColor = "white";
+                        }
                         context.Clients.All.onHitRecorded(mapinformation);
                     }
                 });
             }
-            return statuscolor;
-                 
+            return statuscolor;        
         }
     }
 }

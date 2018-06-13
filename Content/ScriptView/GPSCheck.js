@@ -171,6 +171,7 @@ $('body').on('click touchend', '#gps_list_altitude li', function () { // walk li
 });
 
 $('body').on('click touchend', '#gps_cor_sub', function () {
+    gpscheckInd = 1;
     lattitube = $('#lattitube_name').val();
     longitube = $('#longitube_name').val();
     altitube = $('#altitube_name').val();

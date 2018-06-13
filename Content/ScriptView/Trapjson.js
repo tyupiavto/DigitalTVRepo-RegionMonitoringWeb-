@@ -1,4 +1,4 @@
-﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,ll;
+﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
 $('body').on('click touchend', '#start_log', function () {
     window.open('/Trap/LogSetting', $.post("/Trap/LogShow", {}, function (Response) {
      //   window.open('/Trap/LogSetting');
@@ -20,6 +20,7 @@ $("#buttrap").click(function () {
     $.post("/Trap/LogShow", {}, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
+        TrapPageCheck();
     });
 });
 
@@ -31,6 +32,7 @@ $('#search_log').on('click', function () {
     $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear, startTime: startTime, endTime: endTime }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
+        TrapPageCheck();
     },'text');
 });
 
@@ -45,44 +47,40 @@ $('#search_log').on('click', function () {
 
 $('body').on('click touched', '#logCorrect', function () {
     alarmColor = "green";
-    //alarmText = $('#valueColumn' + $(this).attr('value')).text();
     deviceName = $('#deviceColumn' + $(this).attr('value')).text();
+    returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
+    currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
-    //$.post('Trap/AlarmLog', { alarmColor: alarmColor, alarmText: alarmText, deviceName: deviceName }, function () { });
 });
 
 $('body').on('click touched', '#logError', function () {
     alarmColor = "red";
-    //alarmText = $('#valueColumn' + $(this).attr('value')).text();
     deviceName = $('#deviceColumn' + $(this).attr('value')).text();
+    returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
+    currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
-   // $.post('Trap/AlarmLog', { alarmColor: alarmColor, alarmText: alarmText, deviceName: deviceName }, function () { });
 });
 
 $('body').on('click touched', '#logCrash', function () {
     alarmColor = "yellow";
-   // alarmText = $('#valueColumn' + $(this).attr('value')).text();
     deviceName = $('#deviceColumn' + $(this).attr('value')).text();
+    returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
+    currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
-    //$.post('Trap/AlarmLog', { alarmColor: alarmColor, alarmText: alarmText, deviceName: deviceName}, function () {});
+});
+
+$('body').on('click touched', '#logClear', function () {
+    alarmColor = "white";
+    deviceName = $('#deviceColumn' + $(this).attr('value')).text();
+    returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
+    currentOidText = $('#oidColumn' + $(this).attr('value')).text();
+    $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
 });
 
 $('body').on('click touched', '#alarmSave', function () {
-    alarmText = encodeURIComponent( $('#textCorrectError').val());
-   //// alarmText = "<M>";
-   // $.ajax({
-   //     type: 'POST',
-   //     data: {
-   //         'alarmText': alarmText
-   //     },
-   //     contentType: "application/json; charset=utf-8",
-   //     dataType: 'json',
-   //     url: "/Trap/AlarmLog",
-   //     success: function (Response) {
-   //     }
-   // });
+    alarmText = encodeURIComponent($('#textCorrectError').val());
 
-    $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText }, function (Response) {
+    $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText}, function (Response) {
     });
 });
 
@@ -121,3 +119,184 @@ $(".log-menu li").click(function (event) {
     }
     $(".log-menu").hide(100);
 });
+
+$('body').on('click touched', '#pagelistlog li', function () {
+    $('#traplogpagelist').text($(this).text());
+    listNumber = $(this).text();
+    $.post('/Trap/PageLogList', { listNumber: listNumber }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        TrapPageCheck();
+    });
+});
+
+$('body').on('click touched', '#dropdown li', function () {
+    var listID = $(this).attr('id');
+    if ($(this).children().children().is(':checked') == false) {
+        check = false;
+    }
+    else {
+        check = true;
+    }
+    var trapListName = $('#' + $(this).attr('id')).text();
+    
+    $.post('/Trap/TrapNameCheck', { trapListName: trapListName, check: check}, function () { });
+});
+
+$('body').on('click touched', '#logAllColor', function () {
+    if ($('#logAllColor').is(':checked') == false) {
+        $('#logAllColor').removeClass("checked").addClass("");
+        $("#logAllColor").prop('checked', false);
+
+        $('#logCorrectColor').removeClass("checked").addClass("");
+        $("#logCorrectColor").prop('checked', false);
+
+        $('#logErrorColor').removeClass("checked").addClass("");
+        $("#logErrorColor").prop('checked', false);
+
+        $('#logCrashColor').removeClass("checked").addClass("");
+        $("#logCrashColor").prop('checked', false);
+
+        $('#logWhiteColor').removeClass("checked").addClass("");
+        $("#logWhiteColor").prop('checked', false);
+        correctColor = " ";
+        errorColor = " ";
+        crashColor = " ";
+        whiteColor = " ";
+        all = 0;
+    }
+    else {
+        $('#logAllColor').removeClass("").addClass("checked");
+        $("#logAllColor").prop('checked', true);
+
+        $('#logCorrectColor').removeClass("").addClass("checked");
+        $("#logCorrectColor").prop('checked', true);
+
+        $('#logErrorColor').removeClass("").addClass("checked");
+        $("#logErrorColor").prop('checked', true);
+
+        $('#logCrashColor').removeClass("").addClass("checked");
+        $("#logCrashColor").prop('checked', true);
+
+        $('#logWhiteColor').removeClass("").addClass("checked");
+        $("#logWhiteColor").prop('checked', true);
+
+        all = 1;
+        correctColor = " ";
+        errorColor = " ";
+        crashColor = " ";
+        whiteColor = " ";
+
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+});
+$('body').on('click touched', '#logWhiteColor', function () {
+    if ($('#logWhiteColor').is(':checked') == false) {
+        $('#logWhiteColor').removeClass("checked").addClass("");
+        $("#logWhiteColor").prop('checked', false);
+        whiteColor = " ";
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+    else {
+        whiteColor = "white";
+        $('#logWhiteColor').removeClass("").addClass("checked");
+        $("#logWhiteColor").prop('checked', true);
+
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+});
+$('body').on('click touched', '#logCorrectColor', function () {
+    if ($('#logCorrectColor').is(':checked') == false) {
+        $('#logCorrectColor').removeClass("checked").addClass("");
+        $("#logCorrectColor").prop('checked', false);
+        correctColor = " ";
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+    else {
+        correctColor = "green";
+        $('#logCorrectColor').removeClass("").addClass("checked");
+        $("#logCorrectColor").prop('checked', true);
+
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+});
+$('body').on('click touched', '#logErrorColor', function () {
+    if ($('#logErrorColor').is(':checked') == false) {
+        $('#logErrorColor').removeClass("checked").addClass("");
+        $("#logErrorColor").prop('checked', false);
+        errorColor = " ";
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+    else {
+        errorColor = "red";
+        $('#logErrorColor').removeClass("").addClass("checked");
+        $("#logErrorColor").prop('checked', true);
+
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+});
+$('body').on('click touched', '#logCrashColor', function () {
+    if ($('#logCrashColor').is(':checked') == false) {
+        $('#logCrashColor').removeClass("checked").addClass("");
+        $("#logCrashColor").prop('checked', false);
+        crashColor = " ";
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+    else {
+        crashColor = "yellow";
+        $('#logCrashColor').removeClass("").addClass("checked");
+        $("#logCrashColor").prop('checked', true);
+
+        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor,all: all }, function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            TrapPageCheck();
+        });
+    }
+});
+function TrapPageCheck() {
+    $('#dropdown li').each(function () {
+        if ($(this).children().children().is(':checked') == false) {
+            $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child(' + $(this).children().children().attr("value") + ')').hide();
+            var column = "table #" + $(this).attr("id");
+            $(column).hide();
+        }
+        else {
+            var column = "table #" + $(this).attr("id");
+            $(column).show();
+            $('td:nth-child(' + $(this).children().children().attr("value") + '),th:nth-child(' + $(this).children().children().attr("value") + ')').show();
+        }
+    });
+}

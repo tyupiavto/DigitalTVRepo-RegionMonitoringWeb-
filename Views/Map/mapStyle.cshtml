@@ -515,8 +515,8 @@
                      childposition = new google.maps.LatLng(value.childlattitube, value.childlongitube);
                      flightPath.push(new google.maps.Polyline({
                         path: [startposition, childposition],
-                        geodesic: true,
-                         strokeColor: '#006699',
+                         geodesic: true,
+                         strokeColor: value.AlarmLineColor,
                         strokeOpacity: 0.8,
                         strokeWeight: 2,
                         map: map,
@@ -581,7 +581,7 @@
 
                 $.each(listgps, function (i, val) {
 
-                    var contentString = '<tbody><table><tr><td><div style="background-color: rgb(51, 51, 51); color:white; opacity:0.7; font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor' + val.towerID + '">' + val.towerCityName + '</div></td><td style="display:none;"><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
+                    var contentString = '<tbody><table><tr><td><div style="background-color:'+val.AlarmColor+'; color:white; opacity:0.7; font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" id="towerColor' + val.towerID + '">' + val.towerCityName + '</div></td><td style="display:none;"><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
                     var infowindows = new google.maps.InfoWindow({
                         content: contentString
                     });
@@ -711,7 +711,7 @@
                               flightPath.push(new google.maps.Polyline({
                                   path: [startposition, marker.position],
                                   geodesic: true,
-                                  strokeColor: '#009900',
+                                  strokeColor: '#006699',
                                   strokeOpacity:0.8,
                                   strokeWeight: 2,
                                   map: map,

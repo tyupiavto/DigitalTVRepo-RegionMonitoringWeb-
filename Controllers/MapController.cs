@@ -53,13 +53,22 @@ namespace AdminPanelDevice.Controllers
                     towerMap.ForEach(item =>
                     {
                         mapTower mapt = new mapTower();
-                      //  item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
                         mapt.lattitube = Double.Parse(item.Lattitube.Remove(item.Lattitube.Length - 2), CultureInfo.InvariantCulture);
-                       // item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
                         mapt.longitube = Double.Parse(item.Longitube.Remove(item.Longitube.Length - 2), CultureInfo.InvariantCulture);
                         if (item.PresetName != null)
                         {
                             mapt.cityname = item.PresetName;
+                        }
+                      
+                        DateTime start = DateTime.Now;
+                        DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+                        var alarmColor = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{item.TowerName}'").ToList();
+                        if (alarmColor.Count!=0)
+                        {
+                            mapt.AlarmColor = alarmColor.LastOrDefault().AlarmStatus;
+                        }
+                       if (alarmColor.Count==0 || alarmColor.LastOrDefault().AlarmStatus=="white") {
+                            mapt.AlarmColor = "rgb(51, 51, 51)";
                         }
                         mapt.towerID = item.TowerID;
                         mapt.towerCityName = item.TowerName.Substring(0, item.TowerName.IndexOf('_'));
@@ -69,9 +78,18 @@ namespace AdminPanelDevice.Controllers
                     TowerLine.ForEach(line =>
                     {
                         mapLine ml = new mapLine();
+
                         var latlon = TowerMapCord.Where(t => t.towerID == line.ParentTowerID).FirstOrDefault();
                         ml.parentlattitube = latlon.lattitube;
                         ml.parentlongitube = latlon.longitube;
+                        if (latlon.AlarmColor == "rgb(51, 51, 51)")
+                        {
+                            ml.AlarmLineColor = "#006699";
+                        }
+                        else
+                        {
+                            ml.AlarmLineColor = latlon.AlarmColor;
+                        }
                         latlon = TowerMapCord.Where(t => t.towerID == line.ChildTowerID).FirstOrDefault();
                         ml.childlattitube = latlon.lattitube;
                         ml.childlongitube = latlon.longitube;

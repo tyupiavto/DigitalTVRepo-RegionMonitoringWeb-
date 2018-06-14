@@ -12,5 +12,6 @@ namespace AdminPanelDevice.Models
         public string cityname { get; set; }
         public int towerID { get; set; }
         public string towerCityName { get; set; }
+        public string AlarmColor { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace AdminPanelDevice.Models
         public double parentlongitube { get; set; }
         public double childlattitube { get; set; }
         public double childlongitube { get; set; }
+        public string AlarmLineColor { get; set; }
     }
 }

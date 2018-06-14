@@ -17,22 +17,6 @@ namespace AdminPanelDevice.Controllers
         DeviceContext db = new DeviceContext();
         public List<TowerGps> towerMap = new List<TowerGps>();
 
-        //public struct mapTower
-        //{
-        //    public double lattitube { get; set; }
-        //    public double longitube { get; set; }
-        //    public string cityname { get; set; }
-        //    public int towerID { get; set; }
-        //    public string towerCityName { get; set; }
-        //}
-        //public struct mapLine
-        //{
-        //    public double parentlattitube { get; set; }
-        //    public double parentlongitube { get; set; }
-        //    public double childlattitube { get; set; }
-        //    public double childlongitube { get; set; }
-        //}
-
         public List<mapTower> TowerMapCord = new List<mapTower>();
         public List<LineConnection> TowerLine = new List<LineConnection>();
         public List<mapLine> LinesCon = new List<mapLine>();
@@ -69,10 +53,10 @@ namespace AdminPanelDevice.Controllers
                     towerMap.ForEach(item =>
                     {
                         mapTower mapt = new mapTower();
-                        item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
-                        mapt.lattitube = Double.Parse(item.Lattitube, CultureInfo.InvariantCulture);
-                        item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
-                        mapt.longitube = Double.Parse(item.Longitube, CultureInfo.InvariantCulture);
+                      //  item.Lattitube = item.Lattitube.Remove(item.Lattitube.Length - 2);
+                        mapt.lattitube = Double.Parse(item.Lattitube.Remove(item.Lattitube.Length - 2), CultureInfo.InvariantCulture);
+                       // item.Longitube = item.Longitube.Remove(item.Longitube.Length - 2);
+                        mapt.longitube = Double.Parse(item.Longitube.Remove(item.Longitube.Length - 2), CultureInfo.InvariantCulture);
                         if (item.PresetName != null)
                         {
                             mapt.cityname = item.PresetName;
@@ -94,7 +78,7 @@ namespace AdminPanelDevice.Controllers
                         LinesCon.Add(ml);
                     });
 
-                LinesCon.Add(new mapLine());
+               // LinesCon.Add(new mapLine());
                 ViewBag.MapGPS = TowerMapCord;
                 ViewBag.TowerLine = LinesCon;
           

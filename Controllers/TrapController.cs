@@ -100,7 +100,7 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult LogSearch(int? page, string SearchName,int SearchClear, string startTime, string endTime)
         {
             ViewBag.pageNumber = pageListNumber;
-            if (SearchName == "" && startTime != "" && endTime != "")
+            if (SearchName == "" && startTime != "" && startTime!=null && endTime != "" && endTime !=null)
             {
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
@@ -123,8 +123,9 @@ namespace AdminPanelDevice.Controllers
                 {
                     SearchIndicator = 1;
                     TrapLogListSearch.Clear();
+
                     var searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                    TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName)).ToList();
+                    TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) ||s.AlarmDescription!=null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription!=null && s.AlarmDescription.Contains(searchName)).ToList();
                     TrapLogListSearch = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
                     return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
                 }
@@ -158,12 +159,12 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult AlarmLog (string alarmColor, string deviceName, string alarmText,string returnOidText,string currentOidText)
+        public JsonResult AlarmLog (string alarmColor, string deviceName, string alarmText,string returnOidText,string currentOidText,string alarmDescription)
         {
            var alarmtextdecode= System.Uri.UnescapeDataString(alarmText);
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
+                connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription='{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
           
                 connection.Query<AlarmLogStatus>($"delete from AlarmLogStatus where AlarmText like '%{alarmtextdecode}%' and ReturnOidText='{returnOidText}' and CurrentOidText='{currentOidText}'");
             }
@@ -173,6 +174,7 @@ namespace AdminPanelDevice.Controllers
             alarmlog.DeviceName = deviceName;
             alarmlog.ReturnOidText = returnOidText;
             alarmlog.CurrentOidText = currentOidText;
+            alarmlog.AlarmDescription = alarmDescription;
             db.AlarmLogStatus.Add(alarmlog);
             db.SaveChanges();
 

@@ -345,6 +345,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AlarmLogStatus.cs" />
+    <Compile Include="Models\AlarmStatusDescription.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Countrie.cs" />
     <Compile Include="Models\CountrieStateCityModel.cs" />

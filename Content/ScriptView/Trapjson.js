@@ -1,4 +1,4 @@
-﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
+﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,alarmDescription,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
 $('body').on('click touchend', '#start_log', function () {
     window.open('/Trap/LogSetting', $.post("/Trap/LogShow", {}, function (Response) {
      //   window.open('/Trap/LogSetting');
@@ -51,6 +51,8 @@ $('body').on('click touched', '#logCorrect', function () {
     returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
+    $('#modalColor').css('background-color', 'green');
+    $('#correctErrorDescription').val("");
 });
 
 $('body').on('click touched', '#logError', function () {
@@ -59,6 +61,8 @@ $('body').on('click touched', '#logError', function () {
     returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
+    $('#modalColor').css('background-color', 'red');
+    $('#correctErrorDescription').val("");
 });
 
 $('body').on('click touched', '#logCrash', function () {
@@ -67,6 +71,8 @@ $('body').on('click touched', '#logCrash', function () {
     returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
+    $('#modalColor').css('background-color', 'yellow');
+    $('#correctErrorDescription').val("");
 });
 
 $('body').on('click touched', '#logClear', function () {
@@ -75,12 +81,14 @@ $('body').on('click touched', '#logClear', function () {
     returnOidText = $('#oidColumn' + $(this).attr('value')).attr("name");
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
+    $('#modalColor').css('background-color', 'white');
+    $('#correctErrorDescription').val("");
 });
 
 $('body').on('click touched', '#alarmSave', function () {
     alarmText = encodeURIComponent($('#textCorrectError').val());
-
-    $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText}, function (Response) {
+    alarmDescription = $('#correctErrorDescription').val();
+    $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText, alarmDescription:alarmDescription}, function (Response) {
     });
 });
 
@@ -103,17 +111,21 @@ $(".log-menu li").click(function (event) {
         case "Search":
             SearchName = $('#' + searchID).text();
             SearchClear = 1;
-            $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear }, function (Response) {
-                $('#loginformation').html("");
-                $('#loginformation').html(Response);
-            },'text');
+            if (SearchName != "") {
+                $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear }, function (Response) {
+                    $('#loginformation').html("");
+                    $('#loginformation').html(Response);
+                    TrapPageCheck();
+                }, 'text');
+            }
             break;
         case "Clear":
-
+            
             SearchClear = 0;
             $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear }, function (Response) {
                 $('#loginformation').html("");
                 $('#loginformation').html(Response);
+                TrapPageCheck();
             }, 'text');
             break;
     }
@@ -142,7 +154,7 @@ $('body').on('click touched', '#dropdown li', function () {
     
     $.post('/Trap/TrapNameCheck', { trapListName: trapListName, check: check}, function () { });
 });
-
+// search ferebis mixedvit
 $('body').on('click touched', '#logAllColor', function () {
     if ($('#logAllColor').is(':checked') == false) {
         $('#logAllColor').removeClass("checked").addClass("");

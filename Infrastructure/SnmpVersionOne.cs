@@ -22,6 +22,7 @@ namespace AdminPanelDevice.Infrastructure
         AlarmDefineColor alarmstatus = new AlarmDefineColor();
         MapViewInformation mapinformation = new MapViewInformation();
         MapTowerLineInformation mapline = new MapTowerLineInformation();
+        AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
         public SnmpVersionOne(SnmpV1TrapPacket pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -47,8 +48,9 @@ namespace AdminPanelDevice.Infrastructure
                     }
                     var tDevice = towerDevices.Where(t => t.IP == pkt.Pdu.AgentAddress.ToString()).FirstOrDefault();
 
-                    trap.AlarmStatus = alarmstatus.AlarmColorDefines(trap.Value, alarmLog,tDevice);                
-
+                    alarmStatusDescription = alarmstatus.AlarmColorDefines(trap.Value, alarmLog,tDevice);
+                    trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
+                    trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
                     if (tDevice == null)
                     {
                         trap.Countrie = "Unknown";

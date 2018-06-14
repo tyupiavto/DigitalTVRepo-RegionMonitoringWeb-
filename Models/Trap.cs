@@ -25,5 +25,6 @@ namespace AdminPanelDevice.Models
         public string dateTimeTrap { get; set; }
         public string AlarmStatus { get; set; }
         public string OIDName { get; set; }
+        public string AlarmDescription { get; set; }
     }
 }

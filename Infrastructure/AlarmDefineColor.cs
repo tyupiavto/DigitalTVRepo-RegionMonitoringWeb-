@@ -21,7 +21,8 @@ namespace AdminPanelDevice.Infrastructure
         }
         MapViewInformation mapinformation = new MapViewInformation();
         MapTowerLineInformation mapline = new MapTowerLineInformation();
-        public string AlarmColorDefines(string value, List<AlarmLogStatus> alarmLog, TowerDevices tDevice)
+        AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
+        public AlarmStatusDescription AlarmColorDefines(string value, List<AlarmLogStatus> alarmLog, TowerDevices tDevice)
         {
             bool status = false; string statuscolor = "white";
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -31,9 +32,12 @@ namespace AdminPanelDevice.Infrastructure
                     status = Regex.IsMatch(value, item.AlarmText);
                     if (status == true)
                     {
-                        statuscolor = item.AlarmStatus;
+                        alarmStatusDescription.AlarmStatusColor = item.AlarmStatus;
+                        alarmStatusDescription.AlarmDescription = item.AlarmDescription;
+
                         var towerID = Convert.ToInt32(tDevice.TowerID.Substring(6, tDevice.TowerID.Length - 6));
                         var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
+
                         mapinformation.Value = "";
                         mapinformation.TowerID = towerID;
                         mapinformation.TowerLine = mapline.LinesCordinate(towerID);
@@ -48,7 +52,7 @@ namespace AdminPanelDevice.Infrastructure
                         else
                         {
                             mapinformation.MapColor = item.AlarmStatus;
-                             mapinformation.LineColor = item.AlarmStatus;
+                            mapinformation.LineColor = item.AlarmStatus;
                         }
 
                        
@@ -64,7 +68,7 @@ namespace AdminPanelDevice.Infrastructure
                     }
                 });
             }
-            return statuscolor;        
+            return alarmStatusDescription;        
         }
     }
 }

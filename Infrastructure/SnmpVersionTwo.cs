@@ -17,6 +17,8 @@ namespace AdminPanelDevice.Infrastructure
         DeviceContext db = new DeviceContext();
         Hexstring hex = new Hexstring();
         AlarmDefineColor alarmstatus = new AlarmDefineColor();
+        AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
+
         public SnmpVersionTwo(SnmpV2Packet pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -32,7 +34,9 @@ namespace AdminPanelDevice.Infrastructure
                     trap.Value = v.Value.ToString();
                     trap.dateTimeTrap = DateTime.Now.ToString();
                     var tDevice = towerDevices.Where(t => t.IP == trap.IpAddres).FirstOrDefault();
-                    trap.AlarmStatus= alarmstatus.AlarmColorDefines(v.Value.ToString(), alarmLog,tDevice);
+                    alarmStatusDescription = alarmstatus.AlarmColorDefines(v.Value.ToString(), alarmLog,tDevice);
+                    trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
+                    trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
 
                     if (tDevice == null)
                     {

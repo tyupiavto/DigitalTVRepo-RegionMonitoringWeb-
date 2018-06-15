@@ -48,9 +48,10 @@ namespace AdminPanelDevice.Infrastructure
                     }
                     var tDevice = towerDevices.Where(t => t.IP == pkt.Pdu.AgentAddress.ToString()).FirstOrDefault();
 
-                    alarmStatusDescription = alarmstatus.AlarmColorDefines(trap.Value, alarmLog,tDevice);
+                    alarmStatusDescription = alarmstatus.AlarmColorDefines(trap.Value,trap.CurrentOID,trap.ReturnedOID, alarmLog,tDevice);
                     trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
                     trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
+
                     if (tDevice == null)
                     {
                         trap.Countrie = "Unknown";
@@ -104,7 +105,6 @@ namespace AdminPanelDevice.Infrastructure
                         if (trap.Description == "")
                         {
                             trap.Description = "Unknown";
-                            trap.OIDName = "Unknown";
                         }
                        
                     }

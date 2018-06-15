@@ -25,60 +25,64 @@ namespace AdminPanelDevice.Infrastructure
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                 mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
-                 towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
-                 alarmLog = connection.Query<AlarmLogStatus>("select * from AlarmLogStatus").ToList();
-            }
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 162);
-            EndPoint ep = (EndPoint)ipep;
-            socket.Bind(ep);
-            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 0);
+                mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
+                towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+                alarmLog = connection.Query<AlarmLogStatus>("select * from AlarmLogStatus").ToList();
 
-            bool run = true;
-            int inlen = -1;
-            while (run)
-            {
-                byte[] indata = new byte[16 * 1024];
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 162);
+                EndPoint ep = (EndPoint)ipep;
+                socket.Bind(ep);
+                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 0);
 
-                IPEndPoint peer = new IPEndPoint(IPAddress.Any, 0);
-                EndPoint inep = (EndPoint)peer;
-                try
+                bool run = true;
+                int inlen = -1;
+                while (run)
                 {
-                    inlen = socket.ReceiveFrom(indata, ref inep);
-                }
-                catch (Exception ex)
-                {
-                    inlen = -1;
-                }
-                if (inlen > 0)
-                {
-                    int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
-                    if (ver == 0)
+
+                    alarmLog = connection.Query<AlarmLogStatus>("select * from AlarmLogStatus").ToList();
+
+                    byte[] indata = new byte[16 * 1024];
+
+                    IPEndPoint peer = new IPEndPoint(IPAddress.Any, 0);
+                    EndPoint inep = (EndPoint)peer;
+                    try
                     {
-                        try
-                        {
-                            SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
-                            pkt.decode(indata, inlen);
-                            new SnmpVersionOne(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
+                        inlen = socket.ReceiveFrom(indata, ref inep);
                     }
-
-                    if (ver == 2 || ver == 1)
+                    catch (Exception ex)
                     {
-                        try
+                        inlen = -1;
+                    }
+                    if (inlen > 0)
+                    {
+                        int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
+                        if (ver == 0)
                         {
-                            SnmpV2Packet pkt = new SnmpV2Packet();
-                            pkt.decode(indata, inlen);
-                            new SnmpVersionTwo(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
-                        }
-                        catch (Exception e)
-                        {
+                            try
+                            {
+                                SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
+                                pkt.decode(indata, inlen);
+                                new SnmpVersionOne(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
+                            }
+                            catch (Exception e)
+                            {
 
+                            }
+                        }
+
+                        if (ver == 2 || ver == 1)
+                        {
+                            try
+                            {
+                                SnmpV2Packet pkt = new SnmpV2Packet();
+                                pkt.decode(indata, inlen);
+                                new SnmpVersionTwo(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
                         }
                     }
                 }

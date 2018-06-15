@@ -15,22 +15,23 @@ namespace AdminPanelDevice.Infrastructure
 {
     public class AlarmDefineColor
     {
-        public AlarmDefineColor ()
+        public AlarmDefineColor()
         {
 
         }
         MapViewInformation mapinformation = new MapViewInformation();
         MapTowerLineInformation mapline = new MapTowerLineInformation();
-        AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
-        public AlarmStatusDescription AlarmColorDefines(string value, List<AlarmLogStatus> alarmLog, TowerDevices tDevice)
+
+        public AlarmStatusDescription AlarmColorDefines(string value,string CurrentOID,string ReturnedOID, List<AlarmLogStatus> alarmLog, TowerDevices tDevice)
         {
             bool status = false; string statuscolor = "white";
+            AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 alarmLog.ForEach(item =>
                 {
                     status = Regex.IsMatch(value, item.AlarmText);
-                    if (status == true)
+                    if (status == true && item.CurrentOidText==CurrentOID && item.ReturnOidText==ReturnedOID)
                     {
                         alarmStatusDescription.AlarmStatusColor = item.AlarmStatus;
                         alarmStatusDescription.AlarmDescription = item.AlarmDescription;
@@ -55,18 +56,22 @@ namespace AdminPanelDevice.Infrastructure
                             mapinformation.LineColor = item.AlarmStatus;
                         }
 
-                       
                         if (item.AlarmStatus == "yellow")
                         {
                             mapinformation.TextColor = "black";
                         }
                         else
                         {
-                          mapinformation.TextColor = "white";
+                            mapinformation.TextColor = "white";
                         }
                         context.Clients.All.onHitRecorded(mapinformation);
                     }
                 });
+            }
+            if (alarmStatusDescription.AlarmStatusColor == null || alarmStatusDescription.AlarmStatusColor=="")
+            {
+                alarmStatusDescription.AlarmStatusColor = "white";
+                alarmStatusDescription.AlarmDescription = " ";
             }
             return alarmStatusDescription;        
         }

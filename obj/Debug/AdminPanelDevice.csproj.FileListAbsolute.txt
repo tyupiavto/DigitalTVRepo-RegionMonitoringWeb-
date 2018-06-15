@@ -127,14 +127,11 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.CSharp.
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.VisualBasic.Core.targets
-D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\Microsoft.Win32.Primitives.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.AppContext.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Console.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
-D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Diagnostics.Process.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Diagnostics.StackTrace.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.Compression.dll
-D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.FileSystem.Primitives.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.Pipes.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Reflection.Metadata.dll
@@ -146,7 +143,6 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Security.C
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Security.Principal.Windows.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Text.Encoding.CodePages.dll
-D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Threading.Thread.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.ValueTuple.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Xml.ReaderWriter.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Xml.XmlDocument.dll

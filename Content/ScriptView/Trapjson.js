@@ -1,21 +1,31 @@
 ﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,alarmDescription,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
 $('body').on('click touchend', '#start_log', function () {
-    window.open('/Trap/LogSetting', $.post("/Trap/LogShow", {}, function (Response) {
-     //   window.open('/Trap/LogSetting');
-        $('#loginformation').html("");
-        $('#loginformation').html(Response);
-        ll = Response;
-    }));
-    //var l;
-    //$.post("/Trap/LogShow", {}, function (Response) {
-    //    window.open('/Trap/LogSetting');
-    //    $('#loginformation').html("");
-    //    $('#loginformation').html(Response);
-    //    l = Response;
-    //});
-    //$('#loginformation').html(l);
-});
+    window.open('/Trap/LogSetting', '/Trap/LogSetting');
+//    $(document).ready(function () {
+//    $.post("/Trap/LogShow", {}, function (Response) {
+//        $('#loginformation').html("");
+//        $('#loginformation').html(Response);
+//    });
+//});
+//    var winGoogle = window.open('/Trap/LogSetting');
+//    winGoogle.onload = function () {
+//        setTimeout(LogInformations, 8000);
+//    }
+//});
+//function LogInformations() {
 
+//    $.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
+//        $('#loginformation').html("");
+//        $('#loginformation').html(Response);
+//        alert("shemovida");
+    });
+//}
+//$(document).ready(function () {
+//    $.post("/Trap/LogShow", {}, function (Response) {
+//        $('#loginformation').html("");
+//        $('#loginformation').html(Response);
+//    });
+//});
 $("#buttrap").click(function () {
     $.post("/Trap/LogShow", {}, function (Response) {
         $('#loginformation').html("");

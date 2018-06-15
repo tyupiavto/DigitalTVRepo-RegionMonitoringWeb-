@@ -34,12 +34,12 @@ namespace AdminPanelDevice.Infrastructure
                     trap.Value = v.Value.ToString();
                     trap.dateTimeTrap = DateTime.Now.ToString();
                     var tDevice = towerDevices.Where(t => t.IP == trap.IpAddres).FirstOrDefault();
-                    alarmStatusDescription = alarmstatus.AlarmColorDefines(v.Value.ToString(), alarmLog,tDevice);
+                    alarmStatusDescription = alarmstatus.AlarmColorDefines(v.Value.ToString(),trap.CurrentOID,trap.ReturnedOID, alarmLog,tDevice);
                     trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
                     trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
 
                     if (tDevice == null)
-                    {
+                    { 
                         trap.Countrie = "Unknown";
                         trap.States = "Unknown";
                         trap.City = "Unknown";
@@ -87,7 +87,6 @@ namespace AdminPanelDevice.Infrastructure
                         if (trap.Description == "")
                         {
                             trap.Description = "Unknown";
-                            trap.OIDName = "Unknown";
                         }
                     }
                     db.Traps.Add(trap);

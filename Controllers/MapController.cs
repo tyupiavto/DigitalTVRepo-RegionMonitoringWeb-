@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using AdminPanelDevice.Models;
 using Dapper;
+using PagedList;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -20,6 +21,7 @@ namespace AdminPanelDevice.Controllers
         public List<mapTower> TowerMapCord = new List<mapTower>();
         public List<LineConnection> TowerLine = new List<LineConnection>();
         public List<mapLine> LinesCon = new List<mapLine>();
+
         // GET: Map
         public ActionResult Index()
         {
@@ -59,13 +61,27 @@ namespace AdminPanelDevice.Controllers
                         {
                             mapt.cityname = item.PresetName;
                         }
-                      
+
                         DateTime start = DateTime.Now;
                         DateTime end = start.Add(new TimeSpan(-24, 0, 0));
                         var alarmColor = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{item.TowerName}'").ToList();
-                        if (alarmColor.Count!=0)
+
+                        if (alarmColor.Count != 0)
                         {
-                            mapt.AlarmColor = alarmColor.LastOrDefault().AlarmStatus;
+                            if (alarmColor.LastOrDefault().AlarmStatus == "green" || alarmColor.LastOrDefault().AlarmStatus == "white" || alarmColor.LastOrDefault().AlarmStatus==null)
+                            {
+                                mapt.AlarmColor = "rgb(51, 51, 51)";
+                                mapt.TextColor = "white";
+                            }
+                            else
+                            {
+                                mapt.AlarmColor = alarmColor.LastOrDefault().AlarmStatus;
+                                mapt.TextColor = "white";
+                            }
+                            if (alarmColor.LastOrDefault().AlarmStatus == "yellow")
+                            {
+                                mapt.TextColor = "black";
+                            }
                         }
                        if (alarmColor.Count==0 || alarmColor.LastOrDefault().AlarmStatus=="white") {
                             mapt.AlarmColor = "rgb(51, 51, 51)";
@@ -137,5 +153,6 @@ namespace AdminPanelDevice.Controllers
           
             return Json("");
         }
+
     }
 }

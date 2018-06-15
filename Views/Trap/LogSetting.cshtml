@@ -123,7 +123,7 @@
                 {
                     <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Value</label></li>
                 }
-                if (item.ListName == "AlarmDescription" && item.Checked == "false")
+                if (item.ListName == "Value" && item.Checked == "false")
                 {
                     <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="10">Value</label></li>
                 }
@@ -131,7 +131,7 @@
                 {
                     <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="11" checked="checked">AlarmDescription</label></li>
                 }
-                if (item.ListName == "Value" && item.Checked == "false")
+                if (item.ListName == "AlarmDescription" && item.Checked == "false")
                 {
                     <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="11">AlarmDescription</label></li>
                 }
@@ -203,9 +203,9 @@
             </button>
         </div>*@
 
-            <div class='col-sm-1'>
+            @*<div class='col-sm-1'>
                 <input type="button" id="buttrap" class="btn" value="Log" />
-            </div>
+            </div>*@
 
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="logListStatusColor">

@@ -198,6 +198,7 @@
     <Content Include="Content\ScriptView\jquery.slider.bundle.js" />
     <Content Include="Content\ScriptView\jquery.slider.js" />
     <Content Include="Content\ScriptView\LogSearch.js" />
+    <Content Include="Content\ScriptView\Map.js" />
     <Content Include="Content\ScriptView\MenuDevice.js" />
     <Content Include="Content\ScriptView\WalkMapLogPreset.js" />
     <Content Include="Content\ScriptView\DevicePanel.js" />

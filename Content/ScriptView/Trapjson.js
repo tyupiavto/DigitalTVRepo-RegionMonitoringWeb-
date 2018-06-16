@@ -126,7 +126,6 @@ $('body').on('click touched', '#alarmSave', function () {
         var id = val.id.substring(11);
         var valid = val.innerText.indexOf($('#textCorrectError').val());
         if (val.innerText.indexOf($('#textCorrectError').val()) != -1 && $('#oidColumn' + id).text() == currentOidText && $('#oidreturnedColumn' + id).text() == returnOidText) {
-            alert(alarmColor);
             $('#' + val.id).parent().css('background-color', alarmColor)
         }
     });

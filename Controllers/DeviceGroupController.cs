@@ -1058,7 +1058,8 @@ namespace AdminPanelDevice.Controllers
                 db.Presets.Add(preset);
                 db.SaveChanges();
 
-                updateCheck.WalkPresetSave(walkList,preset.ID,DeviceNameLocal, TowerIDLocal,deviceIDLocal);
+                var walkL= connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
+                updateCheck.WalkPresetSave(walkL, preset.ID,DeviceNameLocal, TowerIDLocal,deviceIDLocal);
                 var gpscoordinate = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and GpsID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 if (gpscoordinate.Count == 3)
                 {
@@ -1086,15 +1087,15 @@ namespace AdminPanelDevice.Controllers
             {
                 presetID = connection.Query<Preset>("Select * From Preset where PresetName = '" + presetSearchName + "'").FirstOrDefault().ID;
 
-                var walkLenght = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceID='"+deviceIDLocal+"'").ToList().LastOrDefault().WalkID;
-                connection.Query<WalkTowerDevice>("update WalkTowerDevice set MapID=0,LogID=0,GpsID=0,ScanInterval=60 where TowerName='" + TowerIDLocal + "' and WalkID<='" + walkLenght + "' and DeviceID='" + deviceIDLocal + "'");
+                var walkLenght = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceID='" + deviceIDLocal + "'").ToList().LastOrDefault().WalkID;
+                connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=0,LogID=0,GpsID=0,ScanInterval=60 where TowerName='{TowerIDLocal}' and WalkID<='{walkLenght}' and DeviceID='{deviceIDLocal}'");
 
-                var LMI = connection.Query<WalkPreset>("select * from WalkPreset where PresetID='" + presetID + "'").ToList();
+                var LMI = connection.Query<WalkPreset>($"select * from WalkPreset where PresetID='{presetID}'").ToList();
                 LMI.ForEach(lmi =>
                 {
-                    connection.Query<WalkTowerDevice>("update WalkTowerDevice set MapID=1,ScanInterval='" + lmi.Interval + "'  where TowerName='" + TowerIDLocal + "' and WalkID='" + lmi.MapID+ "' and DeviceID='" + deviceIDLocal + "'");
-                    connection.Query<WalkTowerDevice>("update WalkTowerDevice set LogID=1,ScanInterval='" + lmi.Interval + "'  where TowerName='" + TowerIDLocal + "' and WalkID='" + lmi.LogID + "' and DeviceID='" + deviceIDLocal + "'");
-                    connection.Query<WalkTowerDevice>("update WalkTowerDevice set GpsID=1,ScanInterval='" + lmi.Interval + "'  where TowerName='" + TowerIDLocal + "' and WalkID='" + lmi.GpsID + "' and DeviceID='" + deviceIDLocal + "'");
+                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}' where TowerName='{TowerIDLocal}' and WalkID='{lmi.MapID}' and DeviceID='{deviceIDLocal}'");
+                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set LogID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and WalkID='{lmi.LogID}' and DeviceID='{deviceIDLocal}'");
+                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set GpsID=1,ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and WalkID='{lmi.GpsID}' and DeviceID='{deviceIDLocal}'");
                 });
 
                 ViewBag.LMI = LMI;

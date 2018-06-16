@@ -90,6 +90,18 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.IntervalID = l;
                     wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[l - 1].ScanInterval;
+
+                    wlk.StartCorrect = walkList[l - 1].StartCorrect;
+                    wlk.EndCorrect = walkList[l - 1].EndCorrect;
+                    wlk.OneStartError= walkList[l - 1].OneStartError;
+                    wlk.OneEndError = walkList[l - 1].OneEndError;
+                    wlk.OneStartCrash = walkList[l - 1].OneStartCrash;
+                    wlk.OneEndCrash = walkList[l - 1].OneEndCrash;
+                    wlk.TwoStartError = walkList[l - 1].TwoStartError;
+                    wlk.TwoEndError = walkList[l - 1].TwoEndError;
+                    wlk.TwoStartCrash = walkList[l - 1].TwoStartCrash;
+                    wlk.TwoEndCrash = walkList[l - 1].TwoEndCrash;
+
                     walkPresetList.Add(wlk);
                 });
 
@@ -108,6 +120,18 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.IntervalID = m;
                     wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[m - 1].ScanInterval;
+
+                    wlk.StartCorrect = walkList[m - 1].StartCorrect;
+                    wlk.EndCorrect = walkList[m - 1].EndCorrect;
+                    wlk.OneStartError = walkList[m - 1].OneStartError;
+                    wlk.OneEndError = walkList[m - 1].OneEndError;
+                    wlk.OneStartCrash = walkList[m - 1].OneStartCrash;
+                    wlk.OneEndCrash = walkList[m - 1].OneEndCrash;
+                    wlk.TwoStartError = walkList[m - 1].TwoStartError;
+                    wlk.TwoEndError = walkList[m - 1].TwoEndError;
+                    wlk.TwoStartCrash = walkList[m - 1].TwoStartCrash;
+                    wlk.TwoEndCrash = walkList[m - 1].TwoEndCrash;
+
                     walkPresetList.Add(wlk);
                 });
                 Gps.ForEach(g =>

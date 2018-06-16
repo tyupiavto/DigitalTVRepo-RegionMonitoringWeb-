@@ -44,6 +44,7 @@ namespace AdminPanelDevice.Controllers
         public static List<ScanningInterval> intervalTime = new List<ScanningInterval>();
         public static List<WalkTowerDevice> walkList = new List<WalkTowerDevice>();
         public static List<WalkTowerDevice> walkSearch = new List<WalkTowerDevice>();
+        public static List<WalkTowerDevice> CheckLogMap = new List<WalkTowerDevice>();
         public List<WalkDevice> PresetList = new List<WalkDevice>();
         public List<ScanningInterval> intervalList = new List<ScanningInterval>();
         public static List<int> GPSCoordinate = new List<int>();
@@ -755,7 +756,7 @@ namespace AdminPanelDevice.Controllers
                         {
                             walkSearch.Clear();
                             searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            walkSearch = walkList.Where(x => x.WalkDescription != null && x.WalkDescription.Contains(SearchName) || x.Type != null && x.Type.Contains(SearchName) || x.OIDName != null && x.OIDName.Contains(SearchName) || x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)).ToList();
+                            walkSearch = walkList.Where(x => x.WalkOID != null && x.WalkOID.Contains(searchName) || x.WalkDescription != null && x.WalkDescription.Contains(SearchName) || x.Type != null && x.Type.Contains(SearchName) || x.OIDName != null && x.OIDName.Contains(SearchName) || x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)).ToList();
                         }
                         catch (Exception e) { }
                         return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
@@ -885,7 +886,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult SelectAllLog(int? page, bool check)
+        public PartialViewResult SelectAllLogMap(int? page, bool checkMap,bool checkLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -895,20 +896,30 @@ namespace AdminPanelDevice.Controllers
                 ViewBag.TowerIP = TowerIP;
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.DefineWalk = false;
+
+                ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>60 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.GPS = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and GpsID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
-                if (check == true)
-                {
-                    var logSelect = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
-                    return PartialView("_DeviceSettings", logSelect.ToPagedList(page ?? 1, pageListNumber));
-                }
-                else
-                {
-                    ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
-                    return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
-                }
 
+                if (checkLog == true && checkMap != true)
+                {
+                    CheckLogMap = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                    return PartialView("_DeviceSettings", CheckLogMap.ToPagedList(page ?? 1, pageListNumber));
+                }
+                if (checkLog != true && checkMap == true)
+                {
+                    CheckLogMap = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                    return PartialView("_DeviceSettings", CheckLogMap.ToPagedList(page ?? 1, pageListNumber));
+                    //ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                    //return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+                }
+                if (checkLog == true && checkMap == true)
+                {
+                    CheckLogMap = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 or LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                    return PartialView("_DeviceSettings", CheckLogMap.ToPagedList(page ?? 1, pageListNumber));
+                }
+                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
             }
         }
 
@@ -1037,6 +1048,8 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
+                var con = connection.Query<Preset>($"delete from Preset where PresetName='{presetName}'");
+
                 Preset preset = new Preset();
                 preset.DeviceID =db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
                 preset.PresetName = presetName;

@@ -15,6 +15,7 @@ using PagedList;
 using AdminPanelDevice.Infrastructure;
 using System.Threading;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -186,6 +187,16 @@ namespace AdminPanelDevice.Controllers
           
                 connection.Query<AlarmLogStatus>($"delete from AlarmLogStatus where AlarmText like '%{alarmtextdecode}%' and ReturnOidText='{returnOidText}' and CurrentOidText='{currentOidText}'");
             }
+           
+            TrapLogList.ForEach(item =>
+            {
+             bool status = Regex.IsMatch(item.Value,alarmtextdecode);
+             if (status == true && item.CurrentOID == currentOidText && item.ReturnedOID == returnOidText) {
+                    item.AlarmStatus = alarmColor;
+                    item.AlarmDescription = alarmDescription;
+                }
+            });
+
             if (alarmColor != "white")
             {
                 AlarmLogStatus alarmlog = new AlarmLogStatus();

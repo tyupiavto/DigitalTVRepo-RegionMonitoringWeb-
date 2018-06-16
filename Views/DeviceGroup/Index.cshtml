@@ -111,8 +111,11 @@
             <div class="titileGroup" style="height:21px; margin-top:1px;">
                 <table>
                     <tr>
-                        <td style="width:0%;">
+                        <td style="width:2%;">
                             <input class="deviceInput inputField gradient port_ip" id="tower_ip" placeholder="IP" value="" type="text" hidefocus="true" style="color: #b8c0c8; font-size:12px; width:150px; margin-top:-5px;">
+                        </td>
+                        <td style="width:1%;" id="opneIPLink">
+                           <a target="_blank" href="http://" style="margin-left:2px;">Link</a>
                         </td>
                         <td style="width:1%;">
                             <input class="deviceInput inputField gradient port_ip" id="tower_port" placeholder="Port" value="161" type="text" hidefocus="true" style="margin-left:5px; color: #b8c0c8; font-size:12px; width:60px;margin-top:-5px;">
@@ -151,7 +154,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="adapterInput" id="preset_add_remove" style="width:12%">
+                        <td class="adapterInput" id="preset_add_remove" style="width:6%">
                             <ul class="Type typeSelect" style="height: 22px;width: 101px;min-width:46px;">
                                 <li>
                                     <span class="type" id="Type">
@@ -168,10 +171,13 @@
                                 </div>
                             </ul>
                         </td>
+                        <td style="width:4%;">
+                            <input type="button" id="preset_send" value="Send" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;">
+                        </td>
                         <td style="width:16.4%;">
-                            <ul id="timButtons">
-                                <li><input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;"></li>
-                            </ul>
+                            @*<ul id="timButtons">*@
+                                @*<li>*@<input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;">@*</li>*@
+                            @*</ul>*@
                         </td>
                         <td style="width:5%">
                             <div class="input_styled checklist pull-left" style="margin-top:-6px; height:20px;">

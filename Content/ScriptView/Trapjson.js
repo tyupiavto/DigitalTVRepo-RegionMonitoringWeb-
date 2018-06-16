@@ -1,10 +1,14 @@
 ﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,alarmDescription,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
-$('body').on('click touchend', '#start_log', function () {
-    window.open('/Trap/LogSetting', '/Trap/LogSetting');
-//    $(document).ready(function () {
+//$('body').on('click touchend', '#start_log', function () {
+
+//    //window.open('/Trap/LogSetting', '/Trap/LogSetting');
+////    $(document).ready(function () {
+    
 //    $.post("/Trap/LogShow", {}, function (Response) {
 //        $('#loginformation').html("");
 //        $('#loginformation').html(Response);
+//        setTimeout(() => window.open('http://google.com'), 3000);
+//        //setTimeout(LogInformations,6000);
 //    });
 //});
 //    var winGoogle = window.open('/Trap/LogSetting');
@@ -18,14 +22,34 @@ $('body').on('click touchend', '#start_log', function () {
 //        $('#loginformation').html("");
 //        $('#loginformation').html(Response);
 //        alert("shemovida");
+//});
+
+$("#start_log").click(function (e) {
+    var redirectWindow = window.open("/Trap/LogSetting");
+    $.ajax({
+        type: 'POST',
+        dataType: "text",
+        url: "/Trap/LogShow",
+        async: false,
+        success: function (Response) {
+            $('#loginformation').html("");
+            $('#loginformation').html(Response);
+            redirectWindow.location;
+        }
     });
-//}
+});
+
+
+function LogInformations() {
+    window.open('/Trap/LogSetting');
+}
 //$(document).ready(function () {
 //    $.post("/Trap/LogShow", {}, function (Response) {
 //        $('#loginformation').html("");
 //        $('#loginformation').html(Response);
 //    });
 //});
+
 $("#buttrap").click(function () {
     $.post("/Trap/LogShow", {}, function (Response) {
         $('#loginformation').html("");
@@ -98,6 +122,14 @@ $('body').on('click touched', '#logClear', function () {
 $('body').on('click touched', '#alarmSave', function () {
     alarmText = encodeURIComponent($('#textCorrectError').val());
     alarmDescription = $('#correctErrorDescription').val();
+    $('#logTableInf').find("td.valueInformation").map(function (i, val) {
+        var id = val.id.substring(11);
+        var valid = val.innerText.indexOf($('#textCorrectError').val());
+        if (val.innerText.indexOf($('#textCorrectError').val()) != -1 && $('#oidColumn' + id).text() == currentOidText && $('#oidreturnedColumn' + id).text() == returnOidText) {
+            alert(alarmColor);
+            $('#' + val.id).parent().css('background-color', alarmColor)
+        }
+    });
     $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText, alarmDescription:alarmDescription}, function (Response) {
     });
 });

@@ -123,12 +123,21 @@ namespace AdminPanelDevice.Infrastructure
                                         }
                                         if (OidMibdescription != null)
                                             walk.WalkDescription = OidMibdescription.Description;
-
+                                        else
+                                        {
+                                            walk.WalkDescription = "Is Not Description";
+                                        }
                                         walk.WalkOID = v.Oid.ToString();
                                         var oidname = mibInf.Where(o => o.OID == oid).FirstOrDefault();
 
-                                        if (oidname!=null)
-                                        walk.OIDName = oidname.Name;
+                                        if (oidname != null)
+                                        {
+                                            walk.OIDName = oidname.Name;
+                                        }
+                                        else
+                                        {
+                                            walk.OIDName = "Is Not Name";
+                                        }
                                         walk.Type = v.Value.ToString();
                                         walk.Value = SnmpConstants.GetTypeName(v.Value.Type);
                                         walk.ScanInterval = 60;

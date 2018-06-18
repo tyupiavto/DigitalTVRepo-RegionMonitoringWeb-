@@ -3,7 +3,7 @@ var deviceGroupList, deviceRemoveID,towerID,deviceName,deviceTopMinimizeID=0,dia
 
 
 var file; var DeviceInsert = []; var array = [];
-$('#add_file').click(function () {
+$('body').on('click touched','#add_mib_file',function () {
 
     file = new FormData();
     file.append("Name", $('#device_name').val());
@@ -25,7 +25,7 @@ $('#add_file').click(function () {
     });
 });
 
-$('body').on('click touchend', '#clear_diagram', function () {
+$('body').on('click touched', '#clear_diagram', function () {
    // alert("You want to delete ?");
     var conf = confirm("You want to delete ?");
     if (conf == true) {
@@ -36,7 +36,7 @@ $('body').on('click touchend', '#clear_diagram', function () {
     }
 });
 
-$('body').on('click touchend', '#open_map', function () {
+$('body').on('click touched', '#open_map', function () {
     var win = window.open('/Map/mapStyle', 'Map');
     //$.post('/Map/openMap', {}, function () { });
 });

@@ -90,6 +90,9 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.IntervalID = l;
                     wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[l - 1].ScanInterval;
+                    wlk.OIDName = walkList[l - 1].OIDName;
+                    wlk.WalkOID = walkList[l - 1].WalkOID;
+                    wlk.Description = walkList[l - 1].WalkDescription;
 
                     wlk.StartCorrect = walkList[l - 1].StartCorrect;
                     wlk.EndCorrect = walkList[l - 1].EndCorrect;
@@ -120,6 +123,9 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.IntervalID = m;
                     wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[m - 1].ScanInterval;
+                    wlk.OIDName = walkList[m - 1].OIDName;
+                    wlk.WalkOID = walkList[m - 1].WalkOID;
+                    wlk.Description = walkList[m - 1].WalkDescription;
 
                     wlk.StartCorrect = walkList[m - 1].StartCorrect;
                     wlk.EndCorrect = walkList[m - 1].EndCorrect;
@@ -143,6 +149,10 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.IntervalID = g;
                     wlk.DeviceID = deviceID;
                     wlk.Interval = walkList[g - 1].ScanInterval;
+                    wlk.OIDName = walkList[g - 1].OIDName;
+                    wlk.WalkOID = walkList[g - 1].WalkOID;
+                    wlk.Description = walkList[g - 1].WalkDescription;
+
                     walkPresetList.Add(wlk);
                 });
                 db.WalkPresets.AddRange(walkPresetList);

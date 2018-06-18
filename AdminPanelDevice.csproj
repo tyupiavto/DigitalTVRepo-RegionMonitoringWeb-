@@ -102,15 +102,14 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="nsoftware.IPWorksSNMP, Version=16.0.6610.0, Culture=neutral, PublicKeyToken=cdc168f89cffe9cf, processorArchitecture=MSIL">
-      <HintPath>..\packages\nsoftware.IPWorksSNMP.16.0.6610\lib\net20\nsoftware.IPWorksSNMP.dll</HintPath>
+    <Reference Include="nsoftware.IPWorksSNMP, Version=16.0.6666.0, Culture=neutral, PublicKeyToken=cdc168f89cffe9cf, processorArchitecture=MSIL">
+      <HintPath>..\packages\nsoftware.IPWorksSNMP.16.0.6666\lib\net20\nsoftware.IPWorksSNMP.dll</HintPath>
     </Reference>
     <Reference Include="nsoftware.IPWorksSNMP.Design, Version=16.0.0.0, Culture=neutral, PublicKeyToken=cdc168f89cffe9cf, processorArchitecture=MSIL">
-      <HintPath>..\packages\nsoftware.IPWorksSNMP.16.0.6610\lib\net20\nsoftware.IPWorksSNMP.Design.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\nsoftware.IPWorksSNMP.16.0.6666\lib\net20\nsoftware.IPWorksSNMP.Design.dll</HintPath>
     </Reference>
     <Reference Include="nsoftware.IPWorksSNMP.System, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cdc168f89cffe9cf, processorArchitecture=MSIL">
-      <HintPath>..\packages\nsoftware.IPWorksSNMP.16.0.6610\lib\net20\nsoftware.IPWorksSNMP.System.dll</HintPath>
+      <HintPath>..\packages\nsoftware.IPWorksSNMP.16.0.6666\lib\net20\nsoftware.IPWorksSNMP.System.dll</HintPath>
     </Reference>
     <Reference Include="nsoftware.IPWorksSSNMP, Version=9.0.6250.0, Culture=neutral, PublicKeyToken=cdc168f89cffe9cf, processorArchitecture=MSIL">
       <HintPath>..\packages\nsoftware.IPWorksSSNMP.9.0.6250\lib\nsoftware.IPWorksSSNMP.dll</HintPath>
@@ -295,6 +294,7 @@
     <Compile Include="Controllers\DiagramController.cs" />
     <Compile Include="Controllers\GetNextController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LiveTrapController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\TowerController.cs" />
     <Compile Include="Controllers\TrapController.cs" />
@@ -464,7 +464,9 @@
     <Folder Include="image\mapImage\" />
     <Folder Include="MapStyle\" />
     <Folder Include="MibFiles\" />
+    <Folder Include="Trap\" />
     <Folder Include="Views\GetNext\" />
+    <Folder Include="Views\LiveTrap\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712081256218_device db schema.resx">

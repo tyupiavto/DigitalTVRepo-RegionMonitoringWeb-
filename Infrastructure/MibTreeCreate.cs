@@ -48,7 +48,7 @@ namespace AdminPanelDevice.Infrastructure
 
         public MibTreeCreate(string fileName,int deviceID)
         {
-            mibbrowser.OnMibNode += new nsoftware.IPWorksSNMP.Mibbrowser.OnMibNodeHandler(mibbrowser1_OnMibNode);
+            mibbrowser.OnMibNode += new nsoftware.IPWorksSNMP.Mibbrowser.OnMibNodeHandler(mibbrowser_OnMibNode);
 
             string filename = "C:\\Users\\tyupi\\Documents\\Visual Studio 2017\\Projects\\AdminPanelDevice\\AdminPanelDevice\\" + fileName;
             mibbrowser.LoadMib(filename);
@@ -84,7 +84,7 @@ namespace AdminPanelDevice.Infrastructure
 
 
 
-        public void mibbrowser1_OnMibNode(object sender, nsoftware.IPWorksSNMP.MibbrowserMibNodeEventArgs e)
+        public void mibbrowser_OnMibNode(object sender, nsoftware.IPWorksSNMP.MibbrowserMibNodeEventArgs e)
         {
          
                 string[] subids = e.NodeOid.Split(".".ToCharArray());
@@ -136,7 +136,7 @@ namespace AdminPanelDevice.Infrastructure
                         TreeMibList[TreeMibList.Count - 1].ParrentID = parrent.MibID;
                     }
 
-                    id++;
+                        id++;
                         matchingTreeNode = new MyTreeNode(oid, e.NodeLabel, subid, e.NodeTypeString);
                         treeNodeCollection.Add(matchingTreeNode);
                     }

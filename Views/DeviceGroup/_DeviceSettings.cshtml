@@ -78,7 +78,7 @@
             {
                 <tr id="@item.WalkID" class="information_walk">
                     <td style="width:25%;">
-                        @if (item.OIDName == "" || item.OIDName == null)
+                        @if (item.OIDName == "" || item.OIDName == "Is Not Name")
                         {
                             <div class="descriptionDiv" title="@item.OIDName" id="oidname@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Name</div>
                         }
@@ -88,7 +88,7 @@
                         }
                     </td>
                     <td style="width:40%;">
-                        @if (item.WalkDescription == "" || item.WalkDescription == null)
+                        @if (item.WalkDescription == "" || item.WalkDescription == "Is Not Description")
                         {
                             <div class="descriptionDiv" title="@item.WalkDescription" id="description@(item.WalkID)" style="color:darkred;" value="@item.WalkOID">Is Not Description</div>
                         }

@@ -756,7 +756,8 @@ namespace AdminPanelDevice.Controllers
                         {
                             walkSearch.Clear();
                             searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            walkSearch = walkList.Where(x => x.WalkOID != null && x.WalkOID.Contains(searchName) || x.WalkDescription != null && x.WalkDescription.Contains(SearchName) || x.Type != null && x.Type.Contains(SearchName) || x.OIDName != null && x.OIDName.Contains(SearchName) || x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)).ToList();
+                            walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkOID like '%{SearchName}%' or WalkDescription like '%{SearchName}%' or Type like '%{SearchName}%' or OIDName like '%{SearchName}%' and DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
+                          //  walkSearch = walkList.Where(x => x.WalkOID.Contains(SearchName) || x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName) ||  x.OIDName.Contains(SearchName) /*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
                         }
                         catch (Exception e) { }
                         return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
@@ -1085,17 +1086,26 @@ namespace AdminPanelDevice.Controllers
 
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                presetID = connection.Query<Preset>("Select * From Preset where PresetName = '" + presetSearchName + "'").FirstOrDefault().ID;
+                presetID = connection.Query<Preset>($"Select * From Preset where PresetName = '{presetSearchName}'").FirstOrDefault().ID;
 
-                var walkLenght = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceID='" + deviceIDLocal + "'").ToList().LastOrDefault().WalkID;
+                var walkLenght = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceID='{deviceIDLocal}'").ToList().LastOrDefault().WalkID;
                 connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=0,LogID=0,GpsID=0,ScanInterval=60 where TowerName='{TowerIDLocal}' and WalkID<='{walkLenght}' and DeviceID='{deviceIDLocal}'");
 
                 var LMI = connection.Query<WalkPreset>($"select * from WalkPreset where PresetID='{presetID}'").ToList();
                 LMI.ForEach(lmi =>
                 {
-                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}' where TowerName='{TowerIDLocal}' and WalkID='{lmi.MapID}' and DeviceID='{deviceIDLocal}'");
-                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set LogID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and WalkID='{lmi.LogID}' and DeviceID='{deviceIDLocal}'");
-                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set GpsID=1,ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and WalkID='{lmi.GpsID}' and DeviceID='{deviceIDLocal}'");
+                    if (lmi.MapID != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}' where TowerName='{TowerIDLocal}'  and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.LogID != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set LogID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.GpsID != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set GpsID=1,ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                    }
                 });
 
                 ViewBag.LMI = LMI;
@@ -1208,7 +1218,7 @@ namespace AdminPanelDevice.Controllers
                 {
                     foreach (var item in devicetype)
                     {
-                        var devicename = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + item + "%'").FirstOrDefault();
+                        var devicename = connection.Query<DeviceType>($"Select * from DeviceType where Name like N'" +item + "%'").FirstOrDefault();
                         gpsDevice.DeviceName.Add(devicename.Name);
                     }
                     var gpscordinate = connection.Query<TowerGps>($"select * from TowerGps where TowerName='{towerName}'").FirstOrDefault();

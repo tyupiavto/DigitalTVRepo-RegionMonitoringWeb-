@@ -22,21 +22,21 @@ namespace AdminPanelDevice.Infrastructure
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set LogID='" + chechkLog + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set LogID='{chechkLog}' where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
             }
         }
         public void UpdateChechkMap(int checkMap, int walkCheckID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set MapID='" + checkMap + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set MapID='{checkMap}' where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
             }
         }
         public void UpdateInterval(int intervalID, int Interval, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set ScanInterval='" + Interval + "' where WalkID='" + intervalID + "' and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set ScanInterval='{Interval}' where WalkID='{intervalID}' and TowerName='{towerName}' and DeviceID='{deviceID}'");
             }
         }
 
@@ -44,7 +44,7 @@ namespace AdminPanelDevice.Infrastructure
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("Update WalkTowerDevice Set GpsID='" + checkGps + "' where WalkID='" + walkCheckID + "'and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'");
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set GpsID='{checkGps}' where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
             }
         }
 

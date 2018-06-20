@@ -24,7 +24,7 @@ namespace AdminPanelDevice.Infrastructure
 
         public AlarmStatusDescription AlarmColorDefines(string value,string CurrentOID,string ReturnedOID, List<AlarmLogStatus> alarmLog, TowerDevices tDevice)
         {
-            bool status = false; string statuscolor = "white";
+            bool status = false; 
             AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -64,6 +64,9 @@ namespace AdminPanelDevice.Infrastructure
                         {
                             mapinformation.TextColor = "white";
                         }
+
+                        mapinformation.GetTrap = "trap";
+
                         context.Clients.All.onHitRecorded(mapinformation);
                     }
                 });
@@ -73,6 +76,7 @@ namespace AdminPanelDevice.Infrastructure
                 alarmStatusDescription.AlarmStatusColor = "white";
                 alarmStatusDescription.AlarmDescription = " ";
             }
+         
             return alarmStatusDescription;        
         }
     }

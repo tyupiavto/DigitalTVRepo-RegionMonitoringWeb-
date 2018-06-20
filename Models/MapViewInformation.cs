@@ -16,6 +16,7 @@ namespace AdminPanelDevice.Models
         public int TowerID { get; set; }
         public double StartLattitube { get; set; }
         public double StartLongitube { get; set; }
+        public string GetTrap { get; set; }
 
         public List<mapTower> TowerLine = new List<mapTower>();
     }

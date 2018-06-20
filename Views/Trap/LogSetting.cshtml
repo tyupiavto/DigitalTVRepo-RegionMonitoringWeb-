@@ -30,12 +30,16 @@
 
     <ul class='dropdown-menu log-menu' style="display:none;min-width:70px;cursor:pointer;position:absolute;">
         <li data-action="Search">
-            <i style="margin-left:5px;" class="fa fa-search"></i>
-            <span style="font-size: 11px;">Search</span>
+            @*<i style="margin-left:5px;" class="fa fa-search"></i>*@
+            <span style="font-size: 13px; margin-left:20%">Search</span>
         </li>
         <li data-action="Clear" style="border-top: 1px solid;">
-            <i style="margin-left:5px;color:red" class="fa fa-trash-o"></i>
-            <span style="font-size: 11px;">Clear</span>
+            @*<i style="margin-left:5px;color:red" class="fa fa-trash-o"></i>*@
+            <span style="font-size: 13px;margin-left:20%">Clear</span>
+        </li>
+        <li data-action="Copy" style="border-top: 1px solid;">
+            @*<i style="margin-left:5px;color:red" class="fa fa-trash-o"></i>*@
+            <span style="font-size: 13px;margin-left:20%">Copy</span>
         </li>
     </ul>
 
@@ -47,117 +51,125 @@
         <ul class="dropdown-menu" role="menu" id="dropdown" style="position:absolute; top:35px;">
             @foreach (var item in Model)
             {
+                if (item.ListName == "ID" && item.Checked == "true")
+                {
+                    <li role="menuitem" id="idColumn"><label><input type="checkbox" data-field="ID" value="1" checked="checked">ID</label></li>
+                }
+                if (item.ListName == "ID" && item.Checked == "false")
+                {
+                    <li role="menuitem" id="idColumn"><label><input type="checkbox" data-field="ID" value="1">ID</label></li>
+                }
                 if (item.ListName == "Countrie" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="1" checked="checked">Countrie</label></li>
+                    <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="2" checked="checked">Countrie</label></li>
                 }
                 if (item.ListName == "Countrie" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="1">Countrie</label></li>
+                    <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="2">Countrie</label></li>
                 }
                 if (item.ListName == "State" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="2" checked="checked">State</label></li>
+                    <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="3" checked="checked">State</label></li>
                 }
                 if (item.ListName == "State" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="2">State</label></li>
+                    <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="3">State</label></li>
                 }
                 if (item.ListName == "City" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="3" checked="checked">City</label></li>
+                    <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="4" checked="checked">City</label></li>
                 }
                 if (item.ListName == "City" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="3">City</label></li>
+                    <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="4">City</label></li>
                 }
                 if (item.ListName == "Tower" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="4" checked="checked">Tower</label></li>
+                    <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="5" checked="checked">Tower</label></li>
                 }
                 if (item.ListName == "Tower" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="4">Tower</label></li>
+                    <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="5">Tower</label></li>
                 }
                 if (item.ListName == "Device Name" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="5" checked="checked">Device Name</label></li>
+                    <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="6" checked="checked">Device Name</label></li>
                 }
                 if (item.ListName == "Device Name" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="5">Device Name</label></li>
+                    <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="6">Device Name</label></li>
                 }
                 if (item.ListName == "IP" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="6" checked="checked">IP</label></li>
+                    <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="7" checked="checked">IP</label></li>
                 }
                 if (item.ListName == "IP" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="6">IP</label></li>
+                    <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="7">IP</label></li>
                 }
                 if (item.ListName == "Date/Time" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="7" checked="checked">Date/Time</label></li>
+                    <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="8" checked="checked">Date/Time</label></li>
                 }
                 if (item.ListName == "Date/Time" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="7">Date/Time</label></li>
+                    <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="8">Date/Time</label></li>
                 }
                 if (item.ListName == "OIDName" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="oidNameColumn"><label><input type="checkbox" data-field="name" value="8" checked="checked">OIDName</label></li>
+                    <li role="menuitem" id="oidNameColumn"><label><input type="checkbox" data-field="name" value="9" checked="checked">OIDName</label></li>
                 }
                 if (item.ListName == "OIDName" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="oidNameColumn"><label><input type="checkbox" data-field="name" value="8">OIDName</label></li>
+                    <li role="menuitem" id="oidNameColumn"><label><input type="checkbox" data-field="name" value="9">OIDName</label></li>
                 }
                 if (item.ListName == "Description" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="9" checked="checked">Description</label></li>
+                    <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Description</label></li>
                 }
                 if (item.ListName == "Description" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="9">Description</label></li>
+                    <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="10">Description</label></li>
                 }
                 if (item.ListName == "Value" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Value</label></li>
+                    <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="11" checked="checked">Value</label></li>
                 }
                 if (item.ListName == "Value" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="10">Value</label></li>
+                    <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="11">Value</label></li>
                 }
                 if (item.ListName == "AlarmDescription" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="11" checked="checked">AlarmDescription</label></li>
+                    <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="12" checked="checked">AlarmDescription</label></li>
                 }
                 if (item.ListName == "AlarmDescription" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="11">AlarmDescription</label></li>
+                    <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="12">AlarmDescription</label></li>
                 }
                 if (item.ListName == "CurrentOID" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="12" checked="checked">CurrentOID</label></li>
+                    <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="13" checked="checked">CurrentOID</label></li>
                 }
                 if (item.ListName == "CurrentOID" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="12">CurrentOID</label></li>
+                    <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="13">CurrentOID</label></li>
                 }
                 if (item.ListName == "ReturnedOID" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="oidreturnedColumn"><label><input type="checkbox" data-field="price" value="13" checked="checked">ReturnedOID</label></li>
+                    <li role="menuitem" id="oidreturnedColumn"><label><input type="checkbox" data-field="price" value="14" checked="checked">ReturnedOID</label></li>
                 }
                 if (item.ListName == "ReturnedOID" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="oidreturnedColumn"><label><input type="checkbox" data-field="price" value="13">ReturnedOID</label></li>
+                    <li role="menuitem" id="oidreturnedColumn"><label><input type="checkbox" data-field="price" value="14">ReturnedOID</label></li>
                 }
                 if (item.ListName == "CorrectError" && item.Checked == "true")
                 {
-                    <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" checked="checked" value="14">CorrectError</label></li>
+                    <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" checked="checked" value="15">CorrectError</label></li>
                 }
                 if (item.ListName == "CorrectError" && item.Checked == "false")
                 {
-                    <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" value="14">CorrectError</label></li>
+                    <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" value="15">CorrectError</label></li>
                 }
             }
 
@@ -204,8 +216,8 @@
         </div>*@
 
             @*<div class='col-sm-1'>
-                <input type="button" id="buttrap" class="btn" value="Log" />
-            </div>*@
+            <input type="button" id="buttrap" class="btn" value="Log" />
+        </div>*@
 
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="logListStatusColor">
@@ -219,8 +231,15 @@
                     <li style="background-color:white; cursor:pointer;"><label><input type="checkbox" data-field="price" checked="checked" id="logWhiteColor" value="13">Clean</label></li>
                 </ul>
             </div>
+
+            <button type="button" class="btn btn-secondary" style="height:34px; margin-left:3px;">ALL <span class="badge" id="allCount"></span></button>
+            <button type="button" class="btn btn-danger" style="height:34px; margin-left:5px;">Error <span class="badge" id="errorCount"></span></button>
+            <button type="button" class="btn btn-warning" style="height:34px; margin-left:3px;">Crash <span class="badge" id="crashCount"></span></button>
+            <button type="button" class="btn btn-success" style="height:34px; margin-left:3px;">Correct <span class="badge" id="correctCount"></span></button>
+            <button type="button" class="btn btn-outline-dark" style="height:34px; margin-left:3px;">White<span class="badge" id="whiteCount"></span></button>
+
         </div>
-        <div id="loginformation"></div>
+        <div id="loginformation"></divlight
 
         <!-- modal list alarm color log-->
         <div class="modal fade" id="statusLogCorrectError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

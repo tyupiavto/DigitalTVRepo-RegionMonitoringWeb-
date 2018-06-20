@@ -4,11 +4,12 @@
     //<script type="text/javascript">
        
 $(document).ready(function () {
-    jQuery('.gm-style-iw').prev('div').remove();
-    jQuery('.gm-style-iw').next().remove();
-    $('.gm-style-iw').parent().parent().css('top', '40px');
-    $('.gm-style-iw').parent().parent().css('left', '10px');
-    window.open('/Trap/LogSetting');
+    //$('.gm-style-iw').prev('div').remove();
+    //$('.gm-style-iw').next().remove();
+    //$('.gm-style-iw').parent().parent().css('top', '40px');
+    //$('.gm-style-iw').parent().parent().css('left', '10px');
+
+    //window.open('/Trap/LogSetting');
     $('body').on('click touched', '.towerMap', function (event) {
         mapTowerName = $(this).attr("name");
         mapTowerID = $(this).attr("value");

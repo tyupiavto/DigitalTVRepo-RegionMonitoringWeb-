@@ -401,43 +401,43 @@ $('body').on('click touchend', '#getButtons', function () { // open modal set an
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////// check log minb and search interval
-$('body').on('click touched', '.mib_map_check div', function () { // map click checked 
-    var mapID = $(this).attr("id");
-    towerName = $('#device_settings_name').text();
-    var OidMib = $('#description' + mapID).attr("value");
-    IP = $('#tower_ip').val();
-    if ($('#mib_map_checked' + mapID).is(':checked') == false) {
-        $('#mib_map_checked_add' + mapID).removeClass("").addClass("checked");
-        $("#mib_map_checked" + mapID).prop('checked', true);
+//$('body').on('click touched', '.mib_map_check div', function () { // map click checked 
+//    var mapID = $(this).attr("id");
+//    towerName = $('#device_settings_name').text();
+//    var OidMib = $('#description' + mapID).attr("value");
+//    IP = $('#tower_ip').val();
+//    if ($('#mib_map_checked' + mapID).is(':checked') == false) {
+//        $('#mib_map_checked_add' + mapID).removeClass("").addClass("checked");
+//        $("#mib_map_checked" + mapID).prop('checked', true);
 
-        chechkID = mapID;
-        $.post("/DeviceGroup/CheckMapMib", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // map check 
-    } else {
-        unChechkID = mapID;
-        $.post("/DeviceGroup/UncheckMapMib", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // map uncheck 
+//        chechkID = mapID;
+//        $.post("/DeviceGroup/CheckMapMib", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // map check 
+//    } else {
+//        unChechkID = mapID;
+//        $.post("/DeviceGroup/UncheckMapMib", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // map uncheck 
 
-        $('#mib_map_checked_add' + mapID).removeClass("checked").addClass("");
-        $("#mib_map_checked" + mapID).prop('checked', false);
-    }
-});
+//        $('#mib_map_checked_add' + mapID).removeClass("checked").addClass("");
+//        $("#mib_map_checked" + mapID).prop('checked', false);
+//    }
+//});
 
-$('body').on('click touched', '.mib_log_check div', function () { // log checked preset 
-    var logID = $(this).attr("id");
-    towerName = $('#device_settings_name').text();
-    var OidMib = $('#description' + logID).attr("value");
-    if ($('#mib_log_checked' + logID).is(':checked') == false) {
-        chechkID = logID;
-        $.post("/DeviceGroup/CheckLogMib", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // log check 
+//$('body').on('click touched', '.mib_log_check div', function () { // log checked preset 
+//    var logID = $(this).attr("id");
+//    towerName = $('#device_settings_name').text();
+//    var OidMib = $('#description' + logID).attr("value");
+//    if ($('#mib_log_checked' + logID).is(':checked') == false) {
+//        chechkID = logID;
+//        $.post("/DeviceGroup/CheckLogMib", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // log check 
 
-        $('#mib_log_checked_add' + logID).removeClass("").addClass("checked");
-        $("#mib_log_checked" + logID).prop('checked', true);
-    } else {
-        unChechkID = logID;
-        $.post("/DeviceGroup/UncheckLogMib", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // log uncheck 
-        $('#mib_log_checked_add' + logID).removeClass("checked").addClass("");
-        $("#mib_log_checked" + logID).prop('checked', false);
-    }
-});
+//        $('#mib_log_checked_add' + logID).removeClass("").addClass("checked");
+//        $("#mib_log_checked" + logID).prop('checked', true);
+//    } else {
+//        unChechkID = logID;
+//        $.post("/DeviceGroup/UncheckLogMib", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // log uncheck 
+//        $('#mib_log_checked_add' + logID).removeClass("checked").addClass("");
+//        $("#mib_log_checked" + logID).prop('checked', false);
+//    }
+//});
 
 $('body').on('click touched', '.mib_search_time_interval li', function () { // time interval add
     var Interval = $(this).attr("value");

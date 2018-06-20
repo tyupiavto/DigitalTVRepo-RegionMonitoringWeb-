@@ -756,7 +756,7 @@ namespace AdminPanelDevice.Controllers
                         {
                             walkSearch.Clear();
                             searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkOID like '%{SearchName}%' or WalkDescription like '%{SearchName}%' or Type like '%{SearchName}%' or OIDName like '%{SearchName}%' and DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
+                            walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkOID like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkDescription like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and Type like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName like '%{SearchName}%'").ToList();
                           //  walkSearch = walkList.Where(x => x.WalkOID.Contains(SearchName) || x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName) ||  x.OIDName.Contains(SearchName) /*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
                         }
                         catch (Exception e) { }
@@ -943,89 +943,89 @@ namespace AdminPanelDevice.Controllers
             return PartialView("_ScaninningInterval", intervalTime);
         }
         ///  // /// / /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        [HttpPost]
-        public JsonResult UncheckLogMib(int unChechkID, string towerName, int deviceID,string OidMib) // uncheckd log mib
-        {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where LogID=1 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='"+ OidMib + "'");
-            }
-                return Json("");
-        }
+        //[HttpPost]
+        //public JsonResult UncheckLogMib(int unChechkID, string towerName, int deviceID,string OidMib) // uncheckd log mib
+        //{
+        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+        //    {
+        //        connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where LogID=1 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='"+ OidMib + "'");
+        //    }
+        //        return Json("");
+        //}
 
-        [HttpPost]
-        public JsonResult CheckLogMib(int chechkID, string towerName, int deviceID, string OidMib) // checked log mib 
-        {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                var logExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'and WalkOID='" + OidMib + "'").FirstOrDefault();
-                if (logExistence == null)
-                {
-                    var idName = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList().LastOrDefault();
-                    var mibcheck = connection.Query<MibTreeInformation>("select * from TreeInformation where MibID='" + chechkID + "'").FirstOrDefault();
-                    WalkTowerDevice wlk = new WalkTowerDevice();
-                    wlk.DeviceID = deviceID;
-                    wlk.WalkDescription = mibcheck.Description;
-                    wlk.WalkOID = mibcheck.OID;
-                    wlk.Value = mibcheck.Syntax;
-                    wlk.LogID = 1;
-                    wlk.WalkID = idName.WalkID + 1;
-                    wlk.DeviceName = idName.DeviceName;
-                    wlk.OIDName = mibcheck.Name;
-                    wlk.TowerName = towerName;
-                    wlk.ScanInterval = 60;
-                    db.WalkTowerDevices.Add(wlk);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    connection.Query<WalkTowerDevice>("update WalkTowerDevice set LogID=1 from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
-                }
-            }
-            return Json("");
-        }
+        //[HttpPost]
+        //public JsonResult CheckLogMib(int chechkID, string towerName, int deviceID, string OidMib) // checked log mib 
+        //{
+        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+        //    {
+        //        var logExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'and WalkOID='" + OidMib + "'").FirstOrDefault();
+        //        if (logExistence == null)
+        //        {
+        //            var idName = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList().LastOrDefault();
+        //            var mibcheck = connection.Query<MibTreeInformation>("select * from TreeInformation where MibID='" + chechkID + "'").FirstOrDefault();
+        //            WalkTowerDevice wlk = new WalkTowerDevice();
+        //            wlk.DeviceID = deviceID;
+        //            wlk.WalkDescription = mibcheck.Description;
+        //            wlk.WalkOID = mibcheck.OID;
+        //            wlk.Value = mibcheck.Syntax;
+        //            wlk.LogID = 1;
+        //            wlk.WalkID = idName.WalkID + 1;
+        //            wlk.DeviceName = idName.DeviceName;
+        //            wlk.OIDName = mibcheck.Name;
+        //            wlk.TowerName = towerName;
+        //            wlk.ScanInterval = 60;
+        //            db.WalkTowerDevices.Add(wlk);
+        //            db.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            connection.Query<WalkTowerDevice>("update WalkTowerDevice set LogID=1 from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
+        //        }
+        //    }
+        //    return Json("");
+        //}
 
-        [HttpPost]
-        public JsonResult UncheckMapMib(int unChechkID, string towerName, int deviceID, string OidMib) // unchecked map mib 
-        {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where MapID=1 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
-            }
-            return Json("");
-        }
+        //[HttpPost]
+        //public JsonResult UncheckMapMib(int unChechkID, string towerName, int deviceID, string OidMib) // unchecked map mib 
+        //{
+        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+        //    {
+        //        connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where MapID=1 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
+        //    }
+        //    return Json("");
+        //}
 
-        [HttpPost]
-        public JsonResult CheckMapMib(int chechkID, string towerName, int deviceID, string OidMib) // checked map mib 
-        {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                var logExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'and WalkOID='" + OidMib + "'").FirstOrDefault();
-                if (logExistence == null)
-                {
-                    var idName = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList().LastOrDefault();
-                    var mibcheck = connection.Query<MibTreeInformation>("select * from TreeInformation where MibID='" + chechkID + "'").FirstOrDefault();
-                    WalkTowerDevice wlk = new WalkTowerDevice();
-                    wlk.DeviceID = deviceID;
-                    wlk.WalkDescription = mibcheck.Description;
-                    wlk.WalkOID = mibcheck.OID;
-                    wlk.Value = mibcheck.Syntax;
-                    wlk.MapID = 1;
-                    wlk.WalkID = idName.WalkID + 1;
-                    wlk.DeviceName = idName.DeviceName;
-                    wlk.OIDName = mibcheck.Name;
-                    wlk.TowerName = towerName;
-                    wlk.ScanInterval = 60;
-                    db.WalkTowerDevices.Add(wlk);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    connection.Query<WalkTowerDevice>("update WalkTowerDevice set MapID=1 from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
-                }
-            }
-            return Json("");
-        }
+        //[HttpPost]
+        //public JsonResult CheckMapMib(int chechkID, string towerName, int deviceID, string OidMib) // checked map mib 
+        //{
+        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+        //    {
+        //        var logExistence = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'and WalkOID='" + OidMib + "'").FirstOrDefault();
+        //        if (logExistence == null)
+        //        {
+        //            var idName = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList().LastOrDefault();
+        //            var mibcheck = connection.Query<MibTreeInformation>("select * from TreeInformation where MibID='" + chechkID + "'").FirstOrDefault();
+        //            WalkTowerDevice wlk = new WalkTowerDevice();
+        //            wlk.DeviceID = deviceID;
+        //            wlk.WalkDescription = mibcheck.Description;
+        //            wlk.WalkOID = mibcheck.OID;
+        //            wlk.Value = mibcheck.Syntax;
+        //            wlk.MapID = 1;
+        //            wlk.WalkID = idName.WalkID + 1;
+        //            wlk.DeviceName = idName.DeviceName;
+        //            wlk.OIDName = mibcheck.Name;
+        //            wlk.TowerName = towerName;
+        //            wlk.ScanInterval = 60;
+        //            db.WalkTowerDevices.Add(wlk);
+        //            db.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            connection.Query<WalkTowerDevice>("update WalkTowerDevice set MapID=1 from WalkTowerDevice where TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
+        //        }
+        //    }
+        //    return Json("");
+        //}
 
         [HttpPost]
         public JsonResult IntervalSearchMib(int intervalID, int Interval, string towerName, int deviceID, string OidMib)

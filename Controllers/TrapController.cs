@@ -16,6 +16,7 @@ using AdminPanelDevice.Infrastructure;
 using System.Threading;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Microsoft.AspNet.SignalR;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -115,17 +116,37 @@ namespace AdminPanelDevice.Controllers
                     var EndTm = DateTime.ParseExact(endTime, "M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
                     TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{startTm}' and '{EndTm}'").ToList();
                     TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+
+                    ViewBag.errorCount = TrapLogList.Where(t => t.AlarmStatus == "red").ToList().Count;
+                    ViewBag.correctCount = TrapLogList.Where(t => t.AlarmStatus == "green").ToList().Count;
+                    ViewBag.crashCount = TrapLogList.Where(t => t.AlarmStatus == "yellow").ToList().Count;
+                    ViewBag.whiteCount = TrapLogList.Where(t => t.AlarmStatus == "white").ToList().Count;
+                    ViewBag.allCount = TrapLogList.Count;
+                    TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+
                     return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
                 }
                 else
                 {
                     if (SearchName == "" && startTime == "" && endTime == "")
                     {
+                        SearchIndicator = 0;
                         maplog = 0;
                         DateTime start = DateTime.Now;
                         DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                        TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{ end }' and '{ start}'").ToList();
+                        TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
+
+                        //var errorCount= connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and AlarmStatus='red'").ToList().Count;
+                        //var correctCount = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and AlarmStatus='green'").ToList().Count;
+                        //var crashCount = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and AlarmStatus='yellow'").ToList().Count;
+
+                        ViewBag.errorCount = TrapLogList.Where(t=>t.AlarmStatus=="red").ToList().Count;
+                        ViewBag.correctCount = TrapLogList.Where(t => t.AlarmStatus == "green").ToList().Count;
+                        ViewBag.crashCount = TrapLogList.Where(t => t.AlarmStatus == "yellow").ToList().Count;
+                        ViewBag.whiteCount= TrapLogList.Where(t => t.AlarmStatus == "white").ToList().Count;
+                        ViewBag.allCount = TrapLogList.Count;
                         TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+
                         return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
                     }
                     else
@@ -140,9 +161,11 @@ namespace AdminPanelDevice.Controllers
                         {
                             SearchIndicator = 1;
                             TrapLogListSearch.Clear();
+                            
+                            int trapID = Convert.ToInt32(SearchName);
 
                             var searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(searchName)).ToList();
+                            TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(searchName) || s.ID==trapID).ToList();
                             TrapLogListSearch = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
                             return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
                         }
@@ -183,8 +206,16 @@ namespace AdminPanelDevice.Controllers
            var alarmtextdecode= System.Uri.UnescapeDataString(alarmText);
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription='{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
-          
+
+                if (alarmColor != "white")
+                {
+                    connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription=N'{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
+                }
+                else
+                {
+                    alarmDescription = "";
+                    connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription='{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
+                }
                 connection.Query<AlarmLogStatus>($"delete from AlarmLogStatus where AlarmText like '%{alarmtextdecode}%' and ReturnOidText='{returnOidText}' and CurrentOidText='{currentOidText}'");
             }
            

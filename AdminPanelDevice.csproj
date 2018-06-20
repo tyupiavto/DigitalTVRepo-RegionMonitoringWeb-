@@ -210,7 +210,6 @@
     <Content Include="Content\ScriptView\MapLogCheck.js" />
     <Content Include="Content\ScriptView\pageListClick.js" />
     <Content Include="Content\ScriptView\ResizableTable.js" />
-    <Content Include="Content\ScriptView\sorttable.js" />
     <Content Include="Content\ScriptView\style.js" />
     <Content Include="Content\ScriptView\TowerUpdate.js" />
     <Content Include="Content\ScriptView\TowerPanel.js" />

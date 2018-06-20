@@ -25,7 +25,7 @@ namespace AdminPanelDevice.Infrastructure
             mapinf.Value = value;
             mapinf.TowerID = TowerID;
             mapinf.TowerLine= mapline.LinesCordinate(TowerID);
-
+            mapinf.GetTrap = "get";
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var cord = connection.Query<TowerGps>($"select * from TowerGps where TowerID='{TowerID}'").FirstOrDefault();
@@ -37,7 +37,6 @@ namespace AdminPanelDevice.Infrastructure
                 mapinf.MapColor = "red";
                 mapinf.LineColor = "red";
                 mapinf.TextColor = "white";
-
                 context.Clients.All.onHitRecorded(mapinf);
                 return "Red";
             }

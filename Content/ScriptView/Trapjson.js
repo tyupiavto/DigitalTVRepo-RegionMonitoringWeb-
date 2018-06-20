@@ -1,5 +1,6 @@
 ﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,alarmDescription,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
-//$('body').on('click touchend', '#start_log', function () {
+var response;
+$('body').on('click touchend', '#start_log', function () {
 
 //    //window.open('/Trap/LogSetting', '/Trap/LogSetting');
 ////    $(document).ready(function () {
@@ -11,38 +12,48 @@
 //        //setTimeout(LogInformations,6000);
 //    });
 //});
-//    var winGoogle = window.open('/Trap/LogSetting');
-//    winGoogle.onload = function () {
-//        setTimeout(LogInformations, 8000);
-//    }
+    var winGoogle = window.open('/Trap/LogSetting');
+    //winGoogle.onload = function () {
+    //    setTimeout(LogInformations, 8000);
+    //    $('#loginformation').html("");
+    //    $('#loginformation').html(response);
+    //}
 //});
 //function LogInformations() {
 
 //    $.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
 //        $('#loginformation').html("");
 //        $('#loginformation').html(Response);
-//        alert("shemovida");
+    //        alert("shemovida");
+});
+function LogInformations() {
+
+    $.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        response = Response;
+        alert("shemovida");
+    });
+}
+//$("#start_log").click(function (e) {
+//    var redirectWindow = window.open("/Trap/LogSetting");
+//    $.ajax({
+//        type: 'POST',
+//        dataType: "text",
+//        url: "/Trap/LogShow",
+//        async: false,
+//        success: function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            redirectWindow.location;
+//        }
+//    });
 //});
 
-$("#start_log").click(function (e) {
-    var redirectWindow = window.open("/Trap/LogSetting");
-    $.ajax({
-        type: 'POST',
-        dataType: "text",
-        url: "/Trap/LogShow",
-        async: false,
-        success: function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            redirectWindow.location;
-        }
-    });
-});
 
-
-function LogInformations() {
-    window.open('/Trap/LogSetting');
-}
+//function LogInformations() {
+//    window.open('/Trap/LogSetting');
+//}
 //$(document).ready(function () {
 //    $.post("/Trap/LogShow", {}, function (Response) {
 //        $('#loginformation').html("");
@@ -86,7 +97,7 @@ $('body').on('click touched', '#logCorrect', function () {
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
     $('#modalColor').css('background-color', 'green');
-    $('#correctErrorDescription').val("");
+    $('#correctErrorDescription').val($('#alarmDescriptionColumn' + $(this).attr('value')).text());
 });
 
 $('body').on('click touched', '#logError', function () {
@@ -96,7 +107,7 @@ $('body').on('click touched', '#logError', function () {
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
     $('#modalColor').css('background-color', 'red');
-    $('#correctErrorDescription').val("");
+    $('#correctErrorDescription').val($('#alarmDescriptionColumn' + $(this).attr('value')).text());
 });
 
 $('body').on('click touched', '#logCrash', function () {
@@ -106,7 +117,7 @@ $('body').on('click touched', '#logCrash', function () {
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
     $('#modalColor').css('background-color', 'yellow');
-    $('#correctErrorDescription').val("");
+    $('#correctErrorDescription').val($('#alarmDescriptionColumn' + $(this).attr('value')).text());
 });
 
 $('body').on('click touched', '#logClear', function () {
@@ -116,7 +127,7 @@ $('body').on('click touched', '#logClear', function () {
     currentOidText = $('#oidColumn' + $(this).attr('value')).text();
     $('#textCorrectError').val($('#valueColumn' + $(this).attr('value')).text());
     $('#modalColor').css('background-color', 'white');
-    $('#correctErrorDescription').val("");
+    $('#correctErrorDescription').val($('#alarmDescriptionColumn' + $(this).attr('value')).text());
 });
 
 $('body').on('click touched', '#alarmSave', function () {
@@ -124,13 +135,20 @@ $('body').on('click touched', '#alarmSave', function () {
     alarmDescription = $('#correctErrorDescription').val();
     $('#logTableInf').find("td.valueInformation").map(function (i, val) {
         var id = val.id.substring(11);
-        var valid = val.innerText.indexOf($('#textCorrectError').val());
-        if (val.innerText.indexOf($('#textCorrectError').val()) != -1 && $('#oidColumn' + id).text() == currentOidText && $('#oidreturnedColumn' + id).text() == returnOidText) {
-            $('#' + val.id).parent().css('background-color', alarmColor)
+        var value = val.innerText.indexOf($('#textCorrectError').val());
+
+        if (value != -1 && $('#oidColumn' + id).text() == currentOidText && $('#oidreturnedColumn' + id).text() == returnOidText) {
+            if (alarmColor == "white") {
+                $('#alarmDescriptionColumn' + id).text("");
+            }
+            else {
+                $('#alarmDescriptionColumn' + id).text($('#correctErrorDescription').val());
+            }
+            $('#' + val.id).parent().css('background-color', alarmColor);
+           
         }
     });
-    $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText, alarmDescription:alarmDescription}, function (Response) {
-    });
+    $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText, alarmDescription:alarmDescription}, function (Response) {});
 });
 
 $('body').on('contextmenu touched', '#trap_log_information tr td', function () { // checked gps right click
@@ -169,9 +187,28 @@ $(".log-menu li").click(function (event) {
                 TrapPageCheck();
             }, 'text');
             break;
+        case "Copy":
+            copyToCli();
+            break;
     }
-    $(".log-menu").hide(100);
+    $(".log-menu").hide(10);
 });
+
+function copyToCli() {
+    var msg = $('#' + searchID).text();
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(msg).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
+
+function copyToClipboard() {
+    var copyText = document.getElementById("Copy" + searchID);
+    copyText.select();
+    document.execCommand("copy");
+    alert("Copied the text: " + copyText.value);
+}
 
 $('body').on('click touched', '#pagelistlog li', function () {
     $('#traplogpagelist').text($(this).text());

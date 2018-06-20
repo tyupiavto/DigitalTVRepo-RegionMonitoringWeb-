@@ -28,13 +28,16 @@ namespace AdminPanelDevice.Infrastructure
                 {
                     Trap trap = new Trap();
                     string IP = inep.ToString();
-                    trap.IpAddres = IP.Remove(13, (IP.Length - 13));
+                    var leng = IP.IndexOf(":");
+                    trap.IpAddres = IP.Remove(leng, (IP.Length - leng));
                     trap.CurrentOID = pkt.Pdu.TrapObjectID.ToString();
                     trap.ReturnedOID = v.Oid.ToString();
                     trap.Value = v.Value.ToString();
                     trap.dateTimeTrap = DateTime.Now.ToString();
                     var tDevice = towerDevices.Where(t => t.IP == trap.IpAddres).FirstOrDefault();
+
                     alarmStatusDescription = alarmstatus.AlarmColorDefines(v.Value.ToString(),trap.CurrentOID,trap.ReturnedOID, alarmLog,tDevice);
+
                     trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
                     trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
 

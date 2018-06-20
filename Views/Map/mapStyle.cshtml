@@ -1,6 +1,14 @@
 ﻿
 @{
     var gps = ViewBag.MapGPS;
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.gm-style-iw').prev('div').remove();
+            $('.gm-style-iw').next('div').remove();
+            $('.gm-style-iw').parent().parent().css('top', '40px');
+            $('.gm-style-iw').parent().parent().css('left', '10px');
+        });
+    </script>
 }
 <html>
 <head>
@@ -9,6 +17,10 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
+
+        /*.gm-style-iw > div {
+                    display: none !important;
+                }*/
         #map {
             height: 100%;
         }
@@ -30,7 +42,6 @@
             margin-left: 40%;
             z-index: 1;
         }
-     
     </style>
 </head>
 <body>
@@ -56,12 +67,12 @@
     <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
     <script src="~/signalr/Hubs"></script>
-  
+
     <script type="text/javascript">
         var mapTowerName, mapTowerID;
         $(document).ready(function () {
-            //jQuery('.gm-style-iw').prev('div').remove();
-            //jQuery('.gm-style-iw').next().remove();
+            //$('.gm-style-iw').prev('div').remove();
+            //$('.gm-style-iw').next('div').remove();
             //$('.gm-style-iw').parent().parent().css('top', '40px');
             //$('.gm-style-iw').parent().parent().css('left', '10px');
 
@@ -74,7 +85,7 @@
             //        $('#loginformation').html(Response);
             //    });
             //    window.open('/Trap/LogSetting');
-              
+
             //});
 
             //function TrapPageCheck() {
@@ -439,7 +450,7 @@
                      ]
                  }
              ]
-        
+
             function initMap() {
             // Styles a map in night mode.
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -483,7 +494,8 @@
 
                 };
 
-            if (towerLine.length > 0) { 
+
+            if (towerLine.length > 0) {
 
                 $.each(towerLine, function (j, value) {
                     if (cordXP == value.parentlattitube && cordYP == value.parentlongitube) {
@@ -518,13 +530,20 @@
                 });
                 }
 
-                var con = $.hubConnection(); // shecdomebit washla daxatva xazebis 
+                var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
                 var hub = con.createHubProxy('hubMessage');
                 hub.on('onHitRecorded', function (i) {
-                    $("#towerColor" + i.TowerID).css('background-color', i.MapColor);
-                    $("#mmsid" + i.TowerID).text(i.Value / 10);
-                    $("#towerColor" + i.TowerID).css('color', i.TextColor);
-                    var startposition = new google.maps.LatLng(i.StartLattitube, i.StartLongitube);
+                    if (i.GetTrap == "trap") {
+                        $("#towerColorTrap" + i.TowerID).css('background-color', i.MapColor);
+                        // $("#mmsid" + i.TowerID).text(i.Value / 10);
+                        $("#towerColorTrap" + i.TowerID).css('color', i.TextColor);
+                    }
+                    else {
+                        $("#towerColorGet" + i.TowerID).css('background-color', i.MapColor);
+                        // $("#mmsid" + i.TowerID).text(i.Value / 10);
+                        $("#towerColorGet" + i.TowerID).css('color', i.TextColor);
+                    }
+                        var startposition = new google.maps.LatLng(i.StartLattitube, i.StartLongitube);
 
                     if (i.TowerLine.length > 0) {
                         existingColor = i.LineColor;
@@ -570,11 +589,11 @@
 
                 $.each(listgps, function (i, val) {
 
-                    var contentString = '<tbody><table><tr><td><div style="background-color:' + val.AlarmColor + '; color:' + val.TextColor + '; opacity:0.7; font-weight: normal; width: 100px;  height: 25px; text-align: center; text-align - last: auto; line-height: 22px;" class="towerMap" name="' + val.towerCityName + '" value="' + val.towerID + '" id="towerColor' + val.towerID + '">' + val.towerCityName + '</div></td><td style="display:none;"><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr></table></tbody>';
+                    var contentString = '<tbody><table><tr><td><div style="background-color:' + val.AlarmColor + '; color:' + val.TextColor + '; opacity:0.7; font-weight: normal; width: 100px;  height: 20px; text-align: center; text-align - last: auto; line-height: 22px;" class="towerMap" name="' + val.towerCityName + '" value="' + val.towerID + '" id="towerColorTrap' + val.towerID + '">' + val.towerCityName + '</div></td><td style="display:none;"><div style="width:35px; height:25px;background-color:green; color: white;font-weight: normal; text-align: center; text-align - last: auto; line-height: 22px;" id="mmsid' + val.towerID + '"></div></td></td></tr><tr><td><div style="background-color:' + val.AlarmColor + '; color:' + val.TextColor + '; opacity:0.7; font-weight: normal; width: 100px;  height:10px; text-align: center; text-align - last: auto; line-height: 22px;" class="towerMap" name="' + val.towerCityName + '" value="' + val.towerID + '" id="towerColorGet' + val.towerID + '"></div></td></tr></table></tbody>';
                     var infowindows = new google.maps.InfoWindow({
                         content: contentString
                     });
-                   
+
                    var  marker =new google.maps.Marker({
                     position: new google.maps.LatLng(val.lattitube, val.longitube),
                     map: map,
@@ -583,13 +602,13 @@
                     type: 'point',
                     title: val.cityname
                     });
-               
+
                     infowindows.open(map, marker);
-                    
+
               var infowindow = new google.maps.InfoWindow();                                             // marjvena gilakit monishvna da xazis gavlebis dawyeba
               google.maps.event.addListener(marker, 'rightclick', (function (marker, infowindow) {
                   return function () {
-                 
+
                       if (marker.getAnimation() != null && manJump == 1) {
                           marker.setAnimation(null);
                           marker.setMap(null);
@@ -738,7 +757,7 @@
                           });
                   };
                     })(marker, infowindow));
-  
+
 
             });
              }

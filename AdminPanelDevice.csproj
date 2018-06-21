@@ -196,6 +196,7 @@
     <Content Include="Content\ScriptView\jquery-ui-slider-pips.js" />
     <Content Include="Content\ScriptView\jquery.slider.bundle.js" />
     <Content Include="Content\ScriptView\jquery.slider.js" />
+    <Content Include="Content\ScriptView\LiveGet.js" />
     <Content Include="Content\ScriptView\LogSearch.js" />
     <Content Include="Content\ScriptView\Map.js" />
     <Content Include="Content\ScriptView\MenuDevice.js" />
@@ -225,6 +226,7 @@
     <Content Include="Content\Style\jquery-ui-slider-pips.css" />
     <Content Include="Content\Style\jslider.css" />
     <Content Include="Content\Style\light.css" />
+    <Content Include="Content\Style\LiveGetStyle.css" />
     <Content Include="Content\Style\main.css" />
     <Content Include="Content\Style\style.css" />
     <Content Include="Content\Style\table-resize.css" />
@@ -294,6 +296,7 @@
     <Compile Include="Controllers\GetNextController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LiveTrapController.cs" />
+    <Compile Include="Controllers\LiveGetController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\TowerController.cs" />
     <Compile Include="Controllers\TrapController.cs" />
@@ -383,6 +386,7 @@
     <Compile Include="Models\TowerGps.cs" />
     <Compile Include="Models\TowerPreset.cs" />
     <Compile Include="Models\Trap.cs" />
+    <Compile Include="Models\TrapColorCount.cs" />
     <Compile Include="Models\TrapListNameCheck.cs" />
     <Compile Include="Models\TrapLog.cs" />
     <Compile Include="Models\TreeStructure.cs" />
@@ -449,6 +453,10 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\LiveTrapGet\LiveGetTrap.cshtml" />
+    <Content Include="Views\LiveTrapGet\_GetLiveInformation.cshtml" />
+    <Content Include="Views\LiveGet\LiveGet.cshtml" />
+    <Content Include="Views\LiveGet\_GetLiveInformation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

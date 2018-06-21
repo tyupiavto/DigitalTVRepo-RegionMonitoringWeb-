@@ -46,7 +46,7 @@ namespace AdminPanelDevice.Infrastructure
                         checkMapLog.Version = addthread.Version;
                         checkMapLog.CheckID = addthread.WalkID;
                         checkMapLog.TowerID = towerID;
-                        checkMapLog.thread = new Thread(() => getThreadPreset.ThreadPreset(towerID, addthread.IP, addthread.ScanInterval, addthread.DeviceID, addthread.WalkOID, addthread.Version, addthread.StartCorrect, addthread.EndCorrect, addthread.OneStartError, addthread.OneEndError, addthread.OneStartCrash, addthread.OneEndCrash, addthread.TwoStartError, addthread.TwoEndError, addthread.TwoStartCrash, addthread.TwoEndCrash));
+                        checkMapLog.thread = new Thread(() => getThreadPreset.ThreadPreset(addthread.ID,towerID, addthread.IP, addthread.ScanInterval, addthread.DeviceID, addthread.WalkOID, addthread.Version, addthread.StartCorrect, addthread.EndCorrect, addthread.OneStartError, addthread.OneEndError, addthread.OneStartCrash, addthread.OneEndCrash, addthread.TwoStartError, addthread.TwoEndError, addthread.TwoStartCrash, addthread.TwoEndCrash));
                         checkMapLog.thread.Start();
 
                         db.GetSleepThread.Add(checkMapLog);
@@ -125,7 +125,7 @@ namespace AdminPanelDevice.Infrastructure
                     intervalChange.thread.Abort();
                     intervalChange.ScanInterval = Interval;
                     getThread.Remove(intervalChange);
-                    intervalChange.thread= new Thread(() => getThreadPreset.ThreadPreset(towerID,intervalChange.IP, intervalChange.ScanInterval, intervalChange.DeviceID, intervalChange.WalkOid, intervalChange.Version, intervalChange.StartCorrect, intervalChange.EndCorrect, intervalChange.OneStartError, intervalChange.OneEndError, intervalChange.OneStartCrash, intervalChange.OneEndCrash, intervalChange.TwoStartError, intervalChange.TwoEndError, intervalChange.TwoStartCrash, intervalChange.TwoEndCrash));
+                    intervalChange.thread= new Thread(() => getThreadPreset.ThreadPreset(intervalChange.ID, towerID,intervalChange.IP, intervalChange.ScanInterval, intervalChange.DeviceID, intervalChange.WalkOid, intervalChange.Version, intervalChange.StartCorrect, intervalChange.EndCorrect, intervalChange.OneStartError, intervalChange.OneEndError, intervalChange.OneStartCrash, intervalChange.OneEndCrash, intervalChange.TwoStartError, intervalChange.TwoEndError, intervalChange.TwoStartCrash, intervalChange.TwoEndCrash));
                     intervalChange.thread.Start();
                     getThread.Add(intervalChange);
                 }

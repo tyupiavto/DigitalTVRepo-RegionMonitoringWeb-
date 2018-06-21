@@ -28,7 +28,6 @@ namespace AdminPanelDevice.Controllers
         public static int pageListNumber=20;
         public static int SearchIndicator = 0;
         public static int maplog=0;
-
         DeviceContext db = new DeviceContext();
         // GET: Trap
         public ActionResult Index()
@@ -70,7 +69,7 @@ namespace AdminPanelDevice.Controllers
                 {
                     DateTime start = DateTime.Now;
                     DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                    TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{ end }' and '{ start}'").ToList();
+                    TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
                     TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
                     ViewBag.pageNumber = pageListNumber;
                 }
@@ -81,6 +80,7 @@ namespace AdminPanelDevice.Controllers
         {
             //pageListNumber = listNumber;
             ViewBag.pageNumber = pageListNumber;
+            ViewBag.ColorDefine = 1;
             if (SearchIndicator == 0)
             {
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
@@ -110,8 +110,11 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 ViewBag.pageNumber = pageListNumber;
+              
                 if (SearchName == "" && startTime != "" && startTime != null && endTime != "" && endTime != null)
                 {
+                    ViewBag.ColorDefine = 1;
+
                     var startTm = DateTime.ParseExact(startTime, "M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
                     var EndTm = DateTime.ParseExact(endTime, "M/d/yyyy h:mm tt", CultureInfo.InvariantCulture);
                     TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{startTm}' and '{EndTm}'").ToList();
@@ -145,8 +148,8 @@ namespace AdminPanelDevice.Controllers
                         ViewBag.crashCount = TrapLogList.Where(t => t.AlarmStatus == "yellow").ToList().Count;
                         ViewBag.whiteCount= TrapLogList.Where(t => t.AlarmStatus == "white").ToList().Count;
                         ViewBag.allCount = TrapLogList.Count;
-                        TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
 
+                        TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
                         return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
                     }
                     else
@@ -257,6 +260,7 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult ColorSearch(int? page, string correctColor, string errorColor, string crashColor,string whiteColor, int all)
         {
             ViewBag.pageNumber = pageListNumber;
+            ViewBag.ColorDefine = 1;
             if (correctColor == " " && errorColor == " " && crashColor == " " && whiteColor== " ")
             {
                 all = 1;
@@ -270,7 +274,6 @@ namespace AdminPanelDevice.Controllers
             }
             else
             {
-                SearchIndicator = 0;
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             }
         }

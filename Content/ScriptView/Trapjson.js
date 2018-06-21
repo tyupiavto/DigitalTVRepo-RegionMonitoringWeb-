@@ -232,150 +232,218 @@ $('body').on('click touched', '#dropdown li', function () {
     
     $.post('/Trap/TrapNameCheck', { trapListName: trapListName, check: check}, function () { });
 });
+$('body').on('click touched', '#whiteColor', function () { // mxolod tetri feris archeva
+    all = 0;
+    whiteColor = "white";
+    correctColor = " ";
+    errorColor = " ";
+    crashColor = " ";
+    $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        TrapPageCheck();
+    });
+
+});
+
+$('body').on('click touched', '#correctColor', function () {//mxolod mwvane feris archeva
+    all = 0;
+    correctColor = "green";
+    whiteColor = " ";
+    errorColor = " ";
+    crashColor = " ";
+    $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        TrapPageCheck();
+    });
+});
+
+$('body').on('click touched', '#errorColor', function () {// mxolod witeli feris archeva
+    all = 0;
+    whiteColor = " ";
+    correctColor = " ";
+    crashColor = " ";
+    errorColor = "red";
+     $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        TrapPageCheck();
+    });
+});
+
+$('body').on('click touched', '#crashColor', function () { //mxolod yviteli feris archeva
+    all = 0;
+    whiteColor = " ";
+    correctColor = " ";
+    errorColor = " ";
+    crashColor = "yellow";
+    $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        TrapPageCheck();
+    });
+});
+
+$('body').on('click touched', '#allColor', function () { // yvela feri ertad
+    all = 1;
+    correctColor = " ";
+    errorColor = " ";
+    crashColor = " ";
+    whiteColor = " ";
+
+    $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+        $('#loginformation').html("");
+        $('#loginformation').html(Response);
+        TrapPageCheck();
+    });
+});
+
 // search ferebis mixedvit
-$('body').on('click touched', '#logAllColor', function () {
-    if ($('#logAllColor').is(':checked') == false) {
-        $('#logAllColor').removeClass("checked").addClass("");
-        $("#logAllColor").prop('checked', false);
+//$('body').on('click touched', '#logAllColor', function () {
+//    if ($('#logAllColor').is(':checked') == false) {
+//        $('#logAllColor').removeClass("checked").addClass("");
+//        $("#logAllColor").prop('checked', false);
 
-        $('#logCorrectColor').removeClass("checked").addClass("");
-        $("#logCorrectColor").prop('checked', false);
+//        $('#logCorrectColor').removeClass("checked").addClass("");
+//        $("#logCorrectColor").prop('checked', false);
 
-        $('#logErrorColor').removeClass("checked").addClass("");
-        $("#logErrorColor").prop('checked', false);
+//        $('#logErrorColor').removeClass("checked").addClass("");
+//        $("#logErrorColor").prop('checked', false);
 
-        $('#logCrashColor').removeClass("checked").addClass("");
-        $("#logCrashColor").prop('checked', false);
+//        $('#logCrashColor').removeClass("checked").addClass("");
+//        $("#logCrashColor").prop('checked', false);
 
-        $('#logWhiteColor').removeClass("checked").addClass("");
-        $("#logWhiteColor").prop('checked', false);
-        correctColor = " ";
-        errorColor = " ";
-        crashColor = " ";
-        whiteColor = " ";
-        all = 0;
-    }
-    else {
-        $('#logAllColor').removeClass("").addClass("checked");
-        $("#logAllColor").prop('checked', true);
+//        $('#logWhiteColor').removeClass("checked").addClass("");
+//        $("#logWhiteColor").prop('checked', false);
+//        correctColor = " ";
+//        errorColor = " ";
+//        crashColor = " ";
+//        whiteColor = " ";
+//        all = 0;
+//    }
+//    else {
+//        $('#logAllColor').removeClass("").addClass("checked");
+//        $("#logAllColor").prop('checked', true);
 
-        $('#logCorrectColor').removeClass("").addClass("checked");
-        $("#logCorrectColor").prop('checked', true);
+//        $('#logCorrectColor').removeClass("").addClass("checked");
+//        $("#logCorrectColor").prop('checked', true);
 
-        $('#logErrorColor').removeClass("").addClass("checked");
-        $("#logErrorColor").prop('checked', true);
+//        $('#logErrorColor').removeClass("").addClass("checked");
+//        $("#logErrorColor").prop('checked', true);
 
-        $('#logCrashColor').removeClass("").addClass("checked");
-        $("#logCrashColor").prop('checked', true);
+//        $('#logCrashColor').removeClass("").addClass("checked");
+//        $("#logCrashColor").prop('checked', true);
 
-        $('#logWhiteColor').removeClass("").addClass("checked");
-        $("#logWhiteColor").prop('checked', true);
+//        $('#logWhiteColor').removeClass("").addClass("checked");
+//        $("#logWhiteColor").prop('checked', true);
 
-        all = 1;
-        correctColor = " ";
-        errorColor = " ";
-        crashColor = " ";
-        whiteColor = " ";
+//        all = 1;
+//        correctColor = " ";
+//        errorColor = " ";
+//        crashColor = " ";
+//        whiteColor = " ";
 
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-});
-$('body').on('click touched', '#logWhiteColor', function () {
-    if ($('#logWhiteColor').is(':checked') == false) {
-        $('#logWhiteColor').removeClass("checked").addClass("");
-        $("#logWhiteColor").prop('checked', false);
-        whiteColor = " ";
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-    else {
-        whiteColor = "white";
-        $('#logWhiteColor').removeClass("").addClass("checked");
-        $("#logWhiteColor").prop('checked', true);
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//});
+//$('body').on('click touched', '#logWhiteColor', function () {
+//    if ($('#logWhiteColor').is(':checked') == false) {
+//        $('#logWhiteColor').removeClass("checked").addClass("");
+//        $("#logWhiteColor").prop('checked', false);
+//        whiteColor = " ";
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//    else {
+//        whiteColor = "white";
+//        $('#logWhiteColor').removeClass("").addClass("checked");
+//        $("#logWhiteColor").prop('checked', true);
 
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-});
-$('body').on('click touched', '#logCorrectColor', function () {
-    if ($('#logCorrectColor').is(':checked') == false) {
-        $('#logCorrectColor').removeClass("checked").addClass("");
-        $("#logCorrectColor").prop('checked', false);
-        correctColor = " ";
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-    else {
-        correctColor = "green";
-        $('#logCorrectColor').removeClass("").addClass("checked");
-        $("#logCorrectColor").prop('checked', true);
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//});
+//$('body').on('click touched', '#logCorrectColor', function () {
+//    if ($('#logCorrectColor').is(':checked') == false) {
+//        $('#logCorrectColor').removeClass("checked").addClass("");
+//        $("#logCorrectColor").prop('checked', false);
+//        correctColor = " ";
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//    else {
+//        correctColor = "green";
+//        $('#logCorrectColor').removeClass("").addClass("checked");
+//        $("#logCorrectColor").prop('checked', true);
 
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-});
-$('body').on('click touched', '#logErrorColor', function () {
-    if ($('#logErrorColor').is(':checked') == false) {
-        $('#logErrorColor').removeClass("checked").addClass("");
-        $("#logErrorColor").prop('checked', false);
-        errorColor = " ";
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-    else {
-        errorColor = "red";
-        $('#logErrorColor').removeClass("").addClass("checked");
-        $("#logErrorColor").prop('checked', true);
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//});
+//$('body').on('click touched', '#logErrorColor', function () {
+//    if ($('#logErrorColor').is(':checked') == false) {
+//        $('#logErrorColor').removeClass("checked").addClass("");
+//        $("#logErrorColor").prop('checked', false);
+//        errorColor = " ";
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//    else {
+//        errorColor = "red";
+//        $('#logErrorColor').removeClass("").addClass("checked");
+//        $("#logErrorColor").prop('checked', true);
 
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-});
-$('body').on('click touched', '#logCrashColor', function () {
-    if ($('#logCrashColor').is(':checked') == false) {
-        $('#logCrashColor').removeClass("checked").addClass("");
-        $("#logCrashColor").prop('checked', false);
-        crashColor = " ";
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-    else {
-        crashColor = "yellow";
-        $('#logCrashColor').removeClass("").addClass("checked");
-        $("#logCrashColor").prop('checked', true);
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//});
+//$('body').on('click touched', '#logCrashColor', function () {
+//    if ($('#logCrashColor').is(':checked') == false) {
+//        $('#logCrashColor').removeClass("checked").addClass("");
+//        $("#logCrashColor").prop('checked', false);
+//        crashColor = " ";
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all  }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//    else {
+//        crashColor = "yellow";
+//        $('#logCrashColor').removeClass("").addClass("checked");
+//        $("#logCrashColor").prop('checked', true);
 
-        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor,all: all }, function (Response) {
-            $('#loginformation').html("");
-            $('#loginformation').html(Response);
-            TrapPageCheck();
-        });
-    }
-});
+//        $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor,all: all }, function (Response) {
+//            $('#loginformation').html("");
+//            $('#loginformation').html(Response);
+//            TrapPageCheck();
+//        });
+//    }
+//});
+
 function TrapPageCheck() {
     $('#dropdown li').each(function () {
         if ($(this).children().children().is(':checked') == false) {

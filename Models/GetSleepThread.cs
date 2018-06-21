@@ -23,6 +23,7 @@ namespace AdminPanelDevice.Models
         public int CheckID { get; set; }
         public int LogID { get; set; }
         public int MapID { get; set; }
+        public int WalkID { get; set; }
 
         public string OneStartError { get; set; }
         public string OneEndError { get; set; }

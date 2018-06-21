@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>
+<div style="margin-left:3px;">
+    <table class="table table-bordered"  id="liveTable">
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="2" style="text-align:center" id="liveDeviceName">სარელეო-rable 610 - RX</th>
+            @*<tr>
+                <th></th>
+                <th colspan="2" style="text-align:center">Get</th>
+            </tr>*@
+            <tr>
+                <th></th>
+                <th style="text-align:center">Neme</th>
+                <th style="text-align:center">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="50" id="liveTowerName"><div style="text-align:center;" class="rotate" id=""></div></td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td id="@(item.TowerName)getName@(item.ID)"style="text-align:center">@item.OIDName</td>
+                    <td id="@(item.TowerName)getValue@(item.ID)"style="text-align:center">@item.Type</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<link href="~/Content/Style/LiveGetStyle.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
+<script src="~/signalr/Hubs"></script>
+<script type="text/javascript">
+    var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
+    var hub = con.createHubProxy('hubMessage');
+    hub.on('onHitRecorded', function (i) {
+      
+        if (i.GetTrap == "trap") {
+            $("#liveTowerName").css('background-color', i.MapColor);
+            $("#liveTowerName").css('color', i.TextColor);
+            //$("#liveTowerName").text(i.Name);
+        }
+        if (i.GetTrap == "get") {
+        
+            $("#tower_" + i.TowerID+"getValue" + i.ID).css('background-color', i.MapColor);
+            $("#tower_" + i.TowerID +"getValue" + i.ID).css('color', i.TextColor);
+            $("#tower_" + i.TowerID +"getValue" + i.ID).text(i.Value);
+        }
+    });
+    con.start();
+</script>
+
+<style>
+    .rotate {
+        width: 10px;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+</style>

@@ -253,7 +253,7 @@ input::-webkit-input-placeholder {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 400px;
+    /*max-width: 400px;*/
     color: #b8c0c8;
 }
 
@@ -916,3 +916,4 @@ input[type="password"]:focus {
     margin-left: 160px;
     margin-top: -30px;
 }
+

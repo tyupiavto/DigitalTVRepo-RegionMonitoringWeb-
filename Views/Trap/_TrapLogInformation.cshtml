@@ -10,14 +10,17 @@
     var pagenumber = ViewBag.pageNumber;
     var textcolor = "";
     <script type="text/javascript">
-        $('#errorCount').text(@Html.Raw(Json.Encode(@ViewBag.errorCount)));
-        $('#correctCount').text(@Html.Raw(Json.Encode(@ViewBag.correctCount)));
-        $('#crashCount').text(@Html.Raw(Json.Encode(@ViewBag.crashCount)));
-        $('#allCount').text(@Html.Raw(Json.Encode(@ViewBag.allCount)));
-        $('#whiteCount').text(@Html.Raw(Json.Encode(@ViewBag.whiteCount)));
+        var colorDefine = @Html.Raw(Json.Encode(@ViewBag.ColorDefine));
 
+        if (colorDefine != 1) {
+            $('#errorCount').text(@Html.Raw(Json.Encode(@ViewBag.errorCount)));
+            $('#errorCount').text(@Html.Raw(Json.Encode(@ViewBag.errorCount)));
+            $('#correctCount').text(@Html.Raw(Json.Encode(@ViewBag.correctCount)));
+            $('#crashCount').text(@Html.Raw(Json.Encode(@ViewBag.crashCount)));
+            $('#allCount').text(@Html.Raw(Json.Encode(@ViewBag.allCount)));
+            $('#whiteCount').text(@Html.Raw(Json.Encode(@ViewBag.whiteCount)));
+        }
     </script>
-
 }
 <table class="table table-striped table-bordered draggable sortable" id="logTableInf" style="width: 99.3%; display: block; overflow: auto;  height: 850px;" data-toggle="table">
     <thead>

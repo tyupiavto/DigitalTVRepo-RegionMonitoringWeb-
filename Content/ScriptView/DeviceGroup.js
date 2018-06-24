@@ -75,6 +75,7 @@ $(".remove-menu li").click(function (event) {
                     $('.add' + towID).height(height - 35);
                     deviceTopMinimizeID = 1;
                     $.post("/DeviceGroup/RemoveDevice", { DeviceName: DeviceName, towerID: towerID }, function () { }, 'json');
+                    saveDiagram();
                 }
             });
             break;

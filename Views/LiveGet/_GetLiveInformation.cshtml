@@ -1,35 +1,47 @@
-﻿@model IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>
-<div style="margin-left:3px;">
-    <table class="table table-bordered"  id="liveTable">
-        <thead>
-            <tr>
-                <th></th>
-                <th colspan="2" style="text-align:center" id="liveDeviceName">სარელეო-rable 610 - RX</th>
-            @*<tr>
-                <th></th>
-                <th colspan="2" style="text-align:center">Get</th>
-            </tr>*@
-            <tr>
-                <th></th>
-                <th style="text-align:center">Neme</th>
-                <th style="text-align:center">Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td rowspan="50" id="liveTowerName"><div style="text-align:center;" class="rotate" id=""></div></td>
-            </tr>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td id="@(item.TowerName)getName@(item.ID)"style="text-align:center">@item.OIDName</td>
-                    <td id="@(item.TowerName)getValue@(item.ID)"style="text-align:center">@item.Type</td>
-                </tr>
-            }
+﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>*@
 
-        </tbody>
+
+<div id="liveDiagram">
+    @foreach (var item in ViewBag.Sensor)
+    {
+    <table id="liveTable" style="margin-top:2px;">
+        <tr>
+            <td rowspan="70" class="cl">
+                <p>
+                    @item[0].TowerSensor[0].TowerName
+                </p>
+            </td>
+
+            @foreach (var items in item[0].TowerSensor)
+            {
+                <th colspan="2" id="liveDeviceName">@items.DeviceName</th>
+            }
+            </tr>
+        
+        <tr>
+
+            @foreach (var items in item[0].TowerSensor)
+            {
+                <td>name</td>
+                <td>value</td>
+            }
+        </tr>
+        @foreach (var itm in item[0].SensorDevice)
+        {
+           
+            <tr>
+                @foreach (var it in itm)
+                {
+                    <td id="@(it.TowerName)getName@(it.ID)" style="text-align:center">@it.OIDName</td>
+                    <td id="@(it.TowerName)getValue@(it.ID)" style="text-align:center">@it.Type</td>
+                }
+            </tr>
+        }
     </table>
-</div>
+    }
+    </div>
+
+
 <link href="~/Content/Style/LiveGetStyle.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
 <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
@@ -38,29 +50,55 @@
     var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
     var hub = con.createHubProxy('hubMessage');
     hub.on('onHitRecorded', function (i) {
-      
+
         if (i.GetTrap == "trap") {
             $("#liveTowerName").css('background-color', i.MapColor);
             $("#liveTowerName").css('color', i.TextColor);
             //$("#liveTowerName").text(i.Name);
         }
         if (i.GetTrap == "get") {
-        
-            $("#tower_" + i.TowerID+"getValue" + i.ID).css('background-color', i.MapColor);
-            $("#tower_" + i.TowerID +"getValue" + i.ID).css('color', i.TextColor);
-            $("#tower_" + i.TowerID +"getValue" + i.ID).text(i.Value);
+
+            $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
+            $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
+            $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
         }
     });
     con.start();
 </script>
 
 <style>
-    .rotate {
-        width: 10px;
-        -webkit-transform: rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -o-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        transform: rotate(90deg);
+    table, td, th {
+        border: 1px solid black;
+        text-align: center;
     }
+
+    table {
+        /*width: 500px;*/
+        table-layout: fixed;
+        width: 100%
+    }
+
+    p {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        transform: rotate(-90deg);
+        margin: 0;
+        padding: 0;
+    }
+
+    .cl {
+        max-width: 10px;
+    }
+
+    #liveTable {
+        width: 50%;
+    }
+
+        #liveTable td {
+            height: 25px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 </style>

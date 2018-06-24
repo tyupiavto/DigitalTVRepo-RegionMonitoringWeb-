@@ -349,11 +349,13 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AlarmLogStatus.cs" />
     <Compile Include="Models\AlarmStatusDescription.cs" />
+    <Compile Include="Models\AllDeviceLive.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Countrie.cs" />
     <Compile Include="Models\CountrieStateCityModel.cs" />
     <Compile Include="Models\DeviceContext.cs" />
     <Compile Include="Models\Devices.cs" />
+    <Compile Include="Models\DeviceSensorList.cs" />
     <Compile Include="Models\DeviceThreadOnOff.cs" />
     <Compile Include="Models\DeviceType.cs" />
     <Compile Include="Models\GetSleepThread.cs" />
@@ -384,6 +386,8 @@
     <Compile Include="Models\TowerDevices.cs" />
     <Compile Include="Models\TowerDevicesPreset.cs" />
     <Compile Include="Models\TowerGps.cs" />
+    <Compile Include="Models\TowerList.cs" />
+    <Compile Include="Models\TowerListLive.cs" />
     <Compile Include="Models\TowerPreset.cs" />
     <Compile Include="Models\Trap.cs" />
     <Compile Include="Models\TrapColorCount.cs" />

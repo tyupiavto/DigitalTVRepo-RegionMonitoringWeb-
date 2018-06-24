@@ -9,7 +9,7 @@ var handleThree = $("#slider-range-three");
 var handleFour = $("#slider-range-four");
 var handleFive = $("#slider-range-five");
 
-var leftvalue;
+var leftvalue, oidName, description, walkOid;
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     deviceID = $(this).closest($(".foo")).attr("id");
@@ -463,9 +463,15 @@ $('body').on('click touched', '.logmapsetting', function () {
     $('#value_logmap_min').val("");
     $('#value_logmap_max').val("");
 
-    settingID = $(this).attr("value");
+     settingID= $(this).attr("value");
+     oidName = $('#oidname' + settingID).text();
+     walkOid = $('#description' + settingID).attr("value");
+     description = $('#description' + settingID).text();
+     if (description == "Is Not Description") {
+        description = '';
+     }
 
-    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, settingID: settingID }, function (Response) {
+    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, deviceID: deviceID, oidName: oidName, description: description, walkOid: walkOid }, function (Response) {
         if (Response != '') {
             slideLogMapSetting();
 
@@ -479,6 +485,7 @@ $('body').on('click touched', '.logmapsetting', function () {
             handleFour.slider('values', 1, Response.TwoEndCrash);
             handleFive.slider('values', 0, Response.TwoStartError);
             handleFive.slider('values', 1, Response.TwoEndError);
+          
         }
         else {
             slideLogMapSetting();

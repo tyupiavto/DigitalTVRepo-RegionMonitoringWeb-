@@ -913,7 +913,12 @@ input[type="password"]:focus {
     height: 22px;
     line-height: 9px;
     font-size: 11px;
-    margin-left: 160px;
-    margin-top: -30px;
+    margin-left: 5px;
+    margin-top: 10px;
 }
-
+.deviceInput {
+    outline: none;
+    color: white;
+    width: 45px;
+    margin-top: 5px;
+}

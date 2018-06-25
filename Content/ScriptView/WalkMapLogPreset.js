@@ -1,5 +1,5 @@
 ﻿
-var deviceID, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName, defineWalk, dataType, setID;
+var deviceID, dividedMultiply, DeviceName, intervalNumber, intervalID, SetOID, SetValue, SearchName, IP, Port, Version, chechkID, unChechkID, presetName, IpAddress, second, communityRead, GpsID, towerID, towerName, defineWalk, dataType, setID;
 var checkMap = false, checkLog = false;
 var resolutionWidht = screen.width;
 var resolutionHeight = screen.height;
@@ -601,14 +601,14 @@ function slideLogMapSetting() {
         twoEndError = $('#slider-range-five span:nth-child(3) .ui-slider-tip').text();
         twoStartCrash = $('#slider-range-three span:nth-child(3) .ui-slider-tip').text();
         twoEndCrash = $('#slider-range-four span:nth-child(3) .ui-slider-tip').text();
-
+        dividedMultiply = $('#divided_multiply').val();
         $.post("/DeviceGroup/LogMapSetting", {
             towerName: towerName, settingID: settingID, oneStartError: oneStartError, oneEndError: oneEndError,
             oneStartCrash: oneStartCrash, oneEndCrash: oneEndCrash,
             startCorrect: startCorrect, endCorrect: endCorrect,
             twoStartError: twoStartError, twoEndError: twoEndError,
-            twoStartCrash: twoStartCrash, twoEndCrash: twoEndCrash
-        }, function () { }, 'post');
+            twoStartCrash: twoStartCrash, twoEndCrash: twoEndCrash,
+            dividedMultiply: dividedMultiply}, function () { }, 'post');
     });
 }
 

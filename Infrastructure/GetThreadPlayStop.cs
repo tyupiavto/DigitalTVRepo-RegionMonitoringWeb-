@@ -47,12 +47,13 @@ namespace AdminPanelDevice.Infrastructure
                         gtl.TwoStartCrash = l.TwoStartCrash;
                         gtl.TwoEndCrash = l.TwoEndCrash;
                         gtl.WalkID = l.ID;
+                        gtl.DivideMultiply = l.DivideMultiply;
                         if (l.MapID == 1)
                         {
                             gtl.MapID = 1;
                         }
                         gtl.LogID = 1;
-                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.ID,towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version,l.StartCorrect,l.EndCorrect,l.OneStartError,l.OneEndError,l.OneStartCrash,l.OneEndCrash,l.TwoStartError,l.TwoEndError,l.TwoStartCrash,l.TwoEndCrash));
+                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.DivideMultiply,l.ID,towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version,l.StartCorrect,l.EndCorrect,l.OneStartError,l.OneEndError,l.OneStartCrash,l.OneEndCrash,l.TwoStartError,l.TwoEndError,l.TwoStartCrash,l.TwoEndCrash));
 
                         gtl.thread.Start();
                         getThread.Add(gtl);
@@ -86,8 +87,9 @@ namespace AdminPanelDevice.Infrastructure
                             gtl.TwoStartCrash = l.TwoStartCrash;
                             gtl.TwoEndCrash = l.TwoEndCrash;
                             gtl.WalkID = l.ID;
+                            gtl.DivideMultiply = l.DivideMultiply;
                             gtl.MapID = 1;
-                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.ID,towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version, l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
+                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.DivideMultiply,l.ID,towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version, l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
                             gtl.thread.Start();
                             getThread.Add(gtl);
 
@@ -187,12 +189,13 @@ namespace AdminPanelDevice.Infrastructure
                         gtl.TwoStartCrash = l.TwoStartCrash;
                         gtl.TwoEndCrash = l.TwoEndCrash;
                         gtl.WalkID = l.ID;
+                        gtl.DivideMultiply = l.DivideMultiply;
                         if (l.MapID == 1)
                         {
                             gtl.MapID = 1;
                         }
                         gtl.LogID = 1;
-                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.ID, towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version, l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
+                        gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.DivideMultiply,l.ID, towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version, l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
                         gtl.thread.Start();
                         getThread.Add(gtl);
                         db.GetSleepThread.Add(gtl);
@@ -224,8 +227,9 @@ namespace AdminPanelDevice.Infrastructure
                             gtl.TwoStartCrash = l.TwoStartCrash;
                             gtl.TwoEndCrash = l.TwoEndCrash;
                             gtl.WalkID = l.ID;
+                            gtl.DivideMultiply = l.DivideMultiply;
                             gtl.MapID = 1;
-                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.ID, towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version , l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
+                            gtl.thread = new Thread(() => getThreadPreset.ThreadPreset(l.DivideMultiply,l.ID, towerID,l.IP, l.ScanInterval, l.DeviceID, l.WalkOID, l.Version , l.StartCorrect, l.EndCorrect, l.OneStartError, l.OneEndError, l.OneStartCrash, l.OneEndCrash, l.TwoStartError, l.TwoEndError, l.TwoStartCrash, l.TwoEndCrash));
                             gtl.thread.Start();
                             getThread.Add(gtl);
 

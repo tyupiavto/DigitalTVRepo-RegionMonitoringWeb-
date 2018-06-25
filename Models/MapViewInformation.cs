@@ -18,6 +18,8 @@ namespace AdminPanelDevice.Models
         public double StartLongitube { get; set; }
         public string GetTrap { get; set; }
         public int ID { get; set; }
+        public int DeviceID { get; set; }
+        public string DivideMultiply { get; set; }
 
         public List<mapTower> TowerLine = new List<mapTower>();
     }

@@ -14,20 +14,22 @@ namespace AdminPanelDevice.Infrastructure
 {
     public class GetCorrectError
     {
-        MapViewInformation mapinf = new MapViewInformation();
+        //MapViewInformation mapinf = new MapViewInformation();
         MapTowerLineInformation mapline = new MapTowerLineInformation();
 
         public GetCorrectError() { }
 
-        public string  CompareCorrectError (int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
+        public string  CompareCorrectError (string DivideMultiply, int DeviceID,int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
+            MapViewInformation mapinf = new MapViewInformation();
             mapinf.Value = value;
             mapinf.TowerID = TowerID;
             mapinf.TowerLine= mapline.LinesCordinate(TowerID);
             mapinf.GetTrap = "get";
             mapinf.ID = ID;
-
+            mapinf.DeviceID = DeviceID;
+            mapinf.DivideMultiply = DivideMultiply;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var cord = connection.Query<TowerGps>($"select * from TowerGps where TowerID='{TowerID}'").FirstOrDefault();
@@ -53,7 +55,7 @@ namespace AdminPanelDevice.Infrastructure
             if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(StartCorrect , CultureInfo.InvariantCulture) && Convert.ToDouble(value , CultureInfo.InvariantCulture) <= Convert.ToDouble(EndCorrect, CultureInfo.InvariantCulture))
             {
                 mapinf.MapColor = "rgb(51, 51, 51);";
-                mapinf.LineColor = "green";
+                mapinf.LineColor = "#006699";
                 mapinf.TextColor = "white";
                 context.Clients.All.onHitRecorded(mapinf);
                 return "Green";

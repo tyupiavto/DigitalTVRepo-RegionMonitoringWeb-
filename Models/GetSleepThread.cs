@@ -24,6 +24,7 @@ namespace AdminPanelDevice.Models
         public int LogID { get; set; }
         public int MapID { get; set; }
         public int WalkID { get; set; }
+        public string DivideMultiply { get; set; }
 
         public string OneStartError { get; set; }
         public string OneEndError { get; set; }

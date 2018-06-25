@@ -23,7 +23,7 @@ namespace AdminPanelDevice.Infrastructure
         public DeviceContext db = new DeviceContext();
         public GetCorrectError correctError = new GetCorrectError();
         MapViewInformation mapinformation = new MapViewInformation();
-        public void ThreadPreset(int ID,int TowerID,string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
+        public void ThreadPreset(string DivideMultiply, int ID,int TowerID,string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             // string Version = "V2";
@@ -74,7 +74,7 @@ namespace AdminPanelDevice.Infrastructure
                         get.WalkOID = v.Oid.ToString();
                         get.IP = IP;
                        
-                        get.ResultCorrectError = correctError.CompareCorrectError(ID,TowerID, v.Value.ToString(), StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
+                        get.ResultCorrectError = correctError.CompareCorrectError(DivideMultiply,Deviceid,ID,TowerID, v.Value.ToString(), StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
 
                         //mapinformation.MapColor = get.ResultCorrectError;
                         //mapinformation.IP = IP;

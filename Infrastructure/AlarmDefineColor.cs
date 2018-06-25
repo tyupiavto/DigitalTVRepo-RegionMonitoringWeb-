@@ -19,7 +19,7 @@ namespace AdminPanelDevice.Infrastructure
         {
 
         }
-        MapViewInformation mapinformation = new MapViewInformation();
+        //MapViewInformation mapinformation = new MapViewInformation();
         MapTowerLineInformation mapline = new MapTowerLineInformation();
 
         public AlarmStatusDescription AlarmColorDefines(string value,string CurrentOID,string ReturnedOID, List<AlarmLogStatus> alarmLog, TowerDevices tDevice)
@@ -30,6 +30,8 @@ namespace AdminPanelDevice.Infrastructure
             {
                 alarmLog.ForEach(item =>
                 {
+                    MapViewInformation mapinformation = new MapViewInformation();
+
                     status = Regex.IsMatch(value, item.AlarmText);
                     if (status == true && item.CurrentOidText==CurrentOID && item.ReturnOidText==ReturnedOID)
                     {

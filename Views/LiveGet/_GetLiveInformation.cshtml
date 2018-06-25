@@ -7,7 +7,7 @@
     <table id="liveTable" style="margin-top:2px;">
         <tr>
             <td rowspan="70" class="cl">
-                <p>
+                <p id="live@(item[0].TowerSensor[0].TowerName)">
                     @item[0].TowerSensor[0].TowerName
                 </p>
             </td>
@@ -32,8 +32,8 @@
             <tr>
                 @foreach (var it in itm)
                 {
-                    <td id="@(it.TowerName)getName@(it.ID)" style="text-align:center">@it.OIDName</td>
-                    <td id="@(it.TowerName)getValue@(it.ID)" style="text-align:center">@it.Type</td>
+                    <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.OIDName</td>
+                    <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.Type</td>
                 }
             </tr>
         }
@@ -52,15 +52,18 @@
     hub.on('onHitRecorded', function (i) {
 
         if (i.GetTrap == "trap") {
-            $("#liveTowerName").css('background-color', i.MapColor);
-            $("#liveTowerName").css('color', i.TextColor);
-            //$("#liveTowerName").text(i.Name);
+            $("#livetower_" + i.TowerID).css('background-color', i.MapColor);
+            $("#livetower_" + i.TowerID).css('color', i.TextColor);
         }
         if (i.GetTrap == "get") {
+            var value = parseInt($("#tower_" + i.TowerID + "getValue" + i.ID).attr("value"));
 
-            $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
-            $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
-            $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
+            if (value == i.DeviceID) {
+             //   alert(i.ID + "id" + i.Value);
+                $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
+                $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
+                $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
+            }
         }
     });
     con.start();
@@ -81,7 +84,7 @@
     p {
         position: relative;
         width: 100px;
-        height: 100px;
+        height: 104px;
         transform: rotate(-90deg);
         margin: 0;
         padding: 0;
@@ -96,9 +99,10 @@
     }
 
         #liveTable td {
-            height: 25px;
+            height: 30px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            width:3%;
         }
 </style>

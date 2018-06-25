@@ -26,7 +26,7 @@ namespace AdminPanelDevice.Infrastructure
             }
 
             getThread.ForEach(gt => {
-                gt.thread = new Thread(() => getThreadPreset.ThreadPreset(gt.WalkID,gt.TowerID,gt.IP, gt.ScanInterval, gt.DeviceID, gt.WalkOid, gt.Version, gt.StartCorrect, gt.EndCorrect, gt.OneStartError, gt.OneEndError, gt.OneStartCrash, gt.OneEndCrash, gt.TwoStartError, gt.TwoEndError, gt.TwoStartCrash, gt.TwoEndCrash));
+                gt.thread = new Thread(() => getThreadPreset.ThreadPreset(gt.DivideMultiply,gt.WalkID,gt.TowerID,gt.IP, gt.ScanInterval, gt.DeviceID, gt.WalkOid, gt.Version, gt.StartCorrect, gt.EndCorrect, gt.OneStartError, gt.OneEndError, gt.OneStartCrash, gt.OneEndCrash, gt.TwoStartError, gt.TwoEndError, gt.TwoStartCrash, gt.TwoEndCrash));
                 gt.thread.Start();
             });
             return getThread;

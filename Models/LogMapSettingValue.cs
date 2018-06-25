@@ -19,5 +19,6 @@ namespace AdminPanelDevice.Models
         public string twoEndError { get; set; }
         public string twoStartCrash { get; set; }
         public string twoEndCrash { get; set; }
+        public string dividedMultiply { get; set; }
     }
 }

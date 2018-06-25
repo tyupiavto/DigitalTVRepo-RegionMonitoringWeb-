@@ -52,7 +52,7 @@ namespace AdminPanelDevice.Infrastructure
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set StartCorrect='{value.startCorrect}',EndCorrect='{value.endCorrect}', OneStartError='{value.oneStartError}', OneEndError='{value.oneEndError}', OneStartCrash='{value.oneStartCrash}', OneEndCrash='{value.oneEndCrash}', TwoStartError='{value.twoStartError}', TwoEndError='{value.twoEndError}', TwoStartCrash='{value.twoStartCrash}', TwoEndCrash='{value.twoEndCrash}' where WalkID='{value.settingID}'and TowerName='{value.towerName}' and DeviceID='{deviceID}'");
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set DivideMultiply='{value.dividedMultiply}', StartCorrect='{value.startCorrect}',EndCorrect='{value.endCorrect}', OneStartError='{value.oneStartError}', OneEndError='{value.oneEndError}', OneStartCrash='{value.oneStartCrash}', OneEndCrash='{value.oneEndCrash}', TwoStartError='{value.twoStartError}', TwoEndError='{value.twoEndError}', TwoStartCrash='{value.twoStartCrash}', TwoEndCrash='{value.twoEndCrash}' where WalkID='{value.settingID}'and TowerName='{value.towerName}' and DeviceID='{deviceID}'");
             }
         }
 

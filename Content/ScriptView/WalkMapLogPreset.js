@@ -20,6 +20,10 @@ $(document).on('click touchend', '.device_settings', function () { // add device
     towerID = $('.tower_name' + deviceID).parent().parent().parent().parent().attr("id");
     $('#preset_name').val("");
     defineWalk = 1;
+    $('#map_checked_add_all').removeClass("checked").addClass("");
+    $("#map_checked_all").prop('checked', false);
+    $('#log_checked_add_all').removeClass("checked").addClass("");
+    $("#log_checked_all").prop('checked', false);
     $.post("/DeviceGroup/LoadMib", { DeviceName: DeviceName, towerName: towerName, deviceID: deviceID, defineWalk: defineWalk }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
@@ -400,45 +404,6 @@ $('body').on('click touchend', '#getButtons', function () { // open modal set an
     }
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////// check log minb and search interval
-//$('body').on('click touched', '.mib_map_check div', function () { // map click checked 
-//    var mapID = $(this).attr("id");
-//    towerName = $('#device_settings_name').text();
-//    var OidMib = $('#description' + mapID).attr("value");
-//    IP = $('#tower_ip').val();
-//    if ($('#mib_map_checked' + mapID).is(':checked') == false) {
-//        $('#mib_map_checked_add' + mapID).removeClass("").addClass("checked");
-//        $("#mib_map_checked" + mapID).prop('checked', true);
-
-//        chechkID = mapID;
-//        $.post("/DeviceGroup/CheckMapMib", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // map check 
-//    } else {
-//        unChechkID = mapID;
-//        $.post("/DeviceGroup/UncheckMapMib", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // map uncheck 
-
-//        $('#mib_map_checked_add' + mapID).removeClass("checked").addClass("");
-//        $("#mib_map_checked" + mapID).prop('checked', false);
-//    }
-//});
-
-//$('body').on('click touched', '.mib_log_check div', function () { // log checked preset 
-//    var logID = $(this).attr("id");
-//    towerName = $('#device_settings_name').text();
-//    var OidMib = $('#description' + logID).attr("value");
-//    if ($('#mib_log_checked' + logID).is(':checked') == false) {
-//        chechkID = logID;
-//        $.post("/DeviceGroup/CheckLogMib", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // log check 
-
-//        $('#mib_log_checked_add' + logID).removeClass("").addClass("checked");
-//        $("#mib_log_checked" + logID).prop('checked', true);
-//    } else {
-//        unChechkID = logID;
-//        $.post("/DeviceGroup/UncheckLogMib", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, OidMib: OidMib }, function () { }, 'json'); // log uncheck 
-//        $('#mib_log_checked_add' + logID).removeClass("checked").addClass("");
-//        $("#mib_log_checked" + logID).prop('checked', false);
-//    }
-//});
-
 $('body').on('click touched', '.mib_search_time_interval li', function () { // time interval add
     var Interval = $(this).attr("value");
     $('#interval' + intervalID).text(Interval);
@@ -471,8 +436,10 @@ $('body').on('click touched', '.logmapsetting', function () {
         description = '';
      }
 
-    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, deviceID: deviceID, oidName: oidName, description: description, walkOid: walkOid }, function (Response) {
+    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, deviceID: deviceID, oidName: oidName, description: description, walkOid: walkOid, settingID:settingID }, function (Response) {
         if (Response != '') {
+            maxlenght = parseFloat(Response.TwoEndError);
+            minlenght = parseFloat(Response.OneStartError);
             slideLogMapSetting();
 
             handleOne.slider('values', 0, Response.OneStartError);
@@ -485,7 +452,7 @@ $('body').on('click touched', '.logmapsetting', function () {
             handleFour.slider('values', 1, Response.TwoEndCrash);
             handleFive.slider('values', 0, Response.TwoStartError);
             handleFive.slider('values', 1, Response.TwoEndError);
-          
+            $('#divided_multiply').val(Response.DivideMultiply);
         }
         else {
             slideLogMapSetting();
@@ -615,4 +582,5 @@ function slideLogMapSetting() {
 $('#opneIPLink').click(function () {
     $('#opneIPLink a').attr("href", 'http://' + $('#tower_ip').val());
 });
+
 

@@ -6,3 +6,12 @@
 <button class="btn btn-warning" id="clicklive">LiveGet</button>
 
 <div id="liveGetSend"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.post('/LiveGet/GetLiveSensor', {}, function (Response) {
+            $('#liveGetSend').html("");
+            $('#liveGetSend').html(Response);
+        });
+    });
+</script>

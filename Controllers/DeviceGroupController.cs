@@ -1578,11 +1578,11 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult LogMapExistingValue (string towerName,int deviceID,string oidName,string description , string walkOid)
+        public JsonResult LogMapExistingValue (string towerName,int deviceID,string oidName,string description , string walkOid,int settingID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                var value = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{towerName}'and DeviceID='{deviceID}' and WalkDescription='{description}' and WalkOID='{walkOid}'").FirstOrDefault();
+                var value = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{towerName}'and DeviceID='{deviceID}' and WalkOID='{walkOid}' and WalkID='{settingID}'").FirstOrDefault();
                 if (value != null &&  value.StartCorrect != null && value.EndCorrect != null)
                 {
                     return Json(value);

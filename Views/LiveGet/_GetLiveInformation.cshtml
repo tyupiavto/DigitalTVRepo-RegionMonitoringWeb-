@@ -4,42 +4,42 @@
 <div id="liveDiagram">
     @foreach (var item in ViewBag.Sensor)
     {
-    <table id="liveTable" style="margin-top:2px;">
-        <tr>
-            <td rowspan="70" class="cl">
-                <p id="live@(item[0].TowerSensor[0].TowerName)">
-                    @item[0].TowerSensor[0].TowerName
-                </p>
-            </td>
-
-            @foreach (var items in item[0].TowerSensor)
-            {
-                <th colspan="2" id="liveDeviceName">@items.DeviceName</th>
-            }
-            </tr>
-        
-        <tr>
-
-            @foreach (var items in item[0].TowerSensor)
-            {
-                <td>name</td>
-                <td>value</td>
-            }
-        </tr>
-        @foreach (var itm in item[0].SensorDevice)
-        {
-           
+        <table id="liveTable" style="margin-top:2px;">
             <tr>
-                @foreach (var it in itm)
+                <td rowspan="70" class="cl">
+                    <p id="live@(item[0].TowerSensor[0].TowerName)">
+                        @item[0].TowerSensor[0].TowerName
+                    </p>
+                </td>
+
+                @foreach (var items in item[0].TowerSensor)
                 {
-                    <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.OIDName</td>
-                    <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.Type</td>
+                    <th colspan="2" id="liveDeviceName">@items.DeviceName</th>
                 }
             </tr>
-        }
-    </table>
+
+            <tr>
+
+                @foreach (var items in item[0].TowerSensor)
+                {
+                    <td>name</td>
+                    <td>value</td>
+                }
+            </tr>
+            @foreach (var itm in item[0].SensorDevice)
+            {
+
+                <tr>
+                    @foreach (var it in itm)
+                    {
+                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.OIDName</td>
+                        <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.Type</td>
+                    }
+                </tr>
+            }
+        </table>
     }
-    </div>
+</div>
 
 
 <link href="~/Content/Style/LiveGetStyle.css" rel="stylesheet" />
@@ -57,12 +57,25 @@
         }
         if (i.GetTrap == "get") {
             var value = parseInt($("#tower_" + i.TowerID + "getValue" + i.ID).attr("value"));
-
+           
             if (value == i.DeviceID) {
-             //   alert(i.ID + "id" + i.Value);
+               
+                if (i.DivideMultiply == null) {
+                    $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
+                }
+                else {
+                    var st = i.DivideMultiply.charAt(0);
+
+                    if (i.DivideMultiply != null && st == "/") {
+                        $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value / 10);
+                    }
+                    if (i.DivideMultiply != null && st == "*") {
+                        $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value * 10);
+                    }
+                }
+                
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
-                $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
             }
         }
     });
@@ -95,14 +108,14 @@
     }
 
     #liveTable {
-        width: 50%;
+        width: 100%;
     }
 
         #liveTable td {
-            height: 30px;
+            height: 20px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            width:3%;
+            width: 3%;
         }
 </style>

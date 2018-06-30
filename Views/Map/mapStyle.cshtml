@@ -2,7 +2,13 @@
 @{
     var gps = ViewBag.MapGPS;
     <script type="text/javascript">
-        $(document).ready(function () {
+        //$(document).ready(function () {
+        //    $('.gm-style-iw').prev('div').remove();
+        //    //$('.gm-style-iw').next('div').remove();
+        //    $('.gm-style-iw').parent().parent().css('top', '40px');
+        //    $('.gm-style-iw').parent().parent().css('left', '10px');
+        //});
+        $(window).on("load", function () {
             $('.gm-style-iw').prev('div').remove();
             $('.gm-style-iw').next('div').remove();
             $('.gm-style-iw').parent().parent().css('top', '40px');
@@ -18,9 +24,7 @@
     <meta charset="utf-8">
     <style>
 
-        /*.gm-style-iw > div {
-                    display: none !important;
-                }*/
+       
         #map {
             height: 100%;
         }
@@ -42,6 +46,10 @@
             margin-left: 40%;
             z-index: 1;
         }
+        /*.gm-style-iw + div {
+            display: none !important;
+        }*/
+
     </style>
 </head>
 <body>
@@ -532,20 +540,21 @@
 
                 var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
                 var hub = con.createHubProxy('hubMessage');
+                var trapindicator;
                 hub.on('onHitRecorded', function (i) {
                     if (i.GetTrap == "trap") {
                         $("#towerColorTrap" + i.TowerID).css('background-color', i.MapColor);
-                        // $("#mmsid" + i.TowerID).text(i.Value / 10);
                         $("#towerColorTrap" + i.TowerID).css('color', i.TextColor);
+                        trapindicator = 0;
                     }
                     else {
                         $("#towerColorGet" + i.TowerID).css('background-color', i.MapColor);
-                        // $("#mmsid" + i.TowerID).text(i.Value / 10);
                         $("#towerColorGet" + i.TowerID).css('color', i.TextColor);
+                        trapindicator = 1;
                     }
                         var startposition = new google.maps.LatLng(i.StartLattitube, i.StartLongitube);
 
-                    if (i.TowerLine.length > 0) {
+                    if (i.TowerLine.length > 0 && trapindicator==0) {
                         existingColor = i.LineColor;
                         var state = LineConnection.filter(f => f.startposition.toString() == startposition.toString());
                         $.each(LineConnection, function (e,value) {

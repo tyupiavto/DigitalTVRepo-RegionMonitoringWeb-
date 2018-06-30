@@ -4,27 +4,16 @@
     //<script type="text/javascript">
        
 $(document).ready(function () {
-    //$('.gm-style-iw').prev('div').remove();
-    //$('.gm-style-iw').next().remove();
-    //$('.gm-style-iw').parent().parent().css('top', '40px');
-    //$('.gm-style-iw').parent().parent().css('left', '10px');
 
-    //window.open('/Trap/LogSetting');
     $('body').on('click touched', '.towerMap', function (event) {
+        var winGoogle = window.open('/Trap/LogSetting');
         mapTowerName = $(this).attr("name");
         mapTowerID = $(this).attr("value");
-        var winGoogle = window.open('/Trap/LogSetting');
-        winGoogle.onload = function () {
-            //mapTowerName = $(this).attr("name");
-            //mapTowerID = $(this).attr("value");
-            //$.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
-            //    $('#loginformation').html("");
-            //    $('#loginformation').html(Response);
-            //    alert("shemovida");
-            // TrapPageCheck();
-            //});
-          //  setTimeout(LogInformation, 8000);
-        }
+           $.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
+                $('#loginformation').html("");
+                $('#loginformation').html(Response);
+                TrapPageCheck();
+            });
     });
 });
 
@@ -33,7 +22,6 @@ $(document).ready(function () {
         $.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
             $('#loginformation').html("");
             $('#loginformation').html(Response);
-            alert("shemovida");
         });
     }
     function TrapPageCheck() {

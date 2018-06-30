@@ -65,12 +65,12 @@
                 }
                 else {
                     var st = i.DivideMultiply.charAt(0);
-
+                    var count = i.DivideMultiply.substring(1, i.DivideMultiply.lenght);
                     if (i.DivideMultiply != null && st == "/") {
-                        $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value / 10);
+                        $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value / parseInt(count));
                     }
                     if (i.DivideMultiply != null && st == "*") {
-                        $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value * 10);
+                        $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value * parseInt(count));
                     }
                 }
                 

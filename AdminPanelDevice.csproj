@@ -227,6 +227,7 @@
     <Content Include="Content\Style\jslider.css" />
     <Content Include="Content\Style\light.css" />
     <Content Include="Content\Style\LiveGetStyle.css" />
+    <Content Include="Content\Style\Load.css" />
     <Content Include="Content\Style\main.css" />
     <Content Include="Content\Style\style.css" />
     <Content Include="Content\Style\table-resize.css" />
@@ -319,6 +320,7 @@
     <Compile Include="Infrastructure\HubMessage.cs" />
     <Compile Include="Infrastructure\JobSheduler.cs" />
     <Compile Include="Infrastructure\MapTowerLineInformation.cs" />
+    <Compile Include="Infrastructure\MaxCount.cs" />
     <Compile Include="Infrastructure\MibTreeCreate.cs" />
     <Compile Include="Infrastructure\PresetFill.cs" />
     <Compile Include="Infrastructure\RemoveLog.cs" />

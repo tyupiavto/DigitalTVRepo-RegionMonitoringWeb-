@@ -74,10 +74,12 @@ $('#search_log').on('click', function () {
     SearchClear = 1;
     startTime = $('#startDateTime').val();
     endTime = $('#endDateTime').val();
+    $('#load_walk').css("display", "block");
     $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear, startTime: startTime, endTime: endTime }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
         TrapPageCheck();
+        $('#load_walk').css("display", "none");
     },'text');
 });
 

@@ -7,11 +7,17 @@
 
 <div id="liveGetSend"></div>
 
+<div id="load_walk" name="Load">
+    <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
+</div>
+<link href="~/Content/Style/Load.css" rel="stylesheet" />
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#load_walk').css("display", "block");
         $.post('/LiveGet/GetLiveSensor', {}, function (Response) {
             $('#liveGetSend').html("");
             $('#liveGetSend').html(Response);
+            $('#load_walk').css("display", "none");
         });
     });
 </script>

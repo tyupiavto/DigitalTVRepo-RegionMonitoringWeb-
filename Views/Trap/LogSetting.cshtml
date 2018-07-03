@@ -219,7 +219,7 @@
             <input type="button" id="buttrap" class="btn" value="Log" />
         </div>*@
 
-            <div class="dropdown">
+            @*<div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="logListStatusColor">
                     <i class="glyphicon glyphicon-align-center"></i>
                 </button>
@@ -230,7 +230,7 @@
                     <li style="background-color:yellow; cursor:pointer;"><label><input type="checkbox" data-field="price" checked="checked" id="logCrashColor" value="13">Crash</label></li>
                     <li style="background-color:white; cursor:pointer;"><label><input type="checkbox" data-field="price" checked="checked" id="logWhiteColor" value="13">Clean</label></li>
                 </ul>
-            </div>
+            </div>*@
 
             <button type="button" class="btn btn-secondary" id="allColor"style="height:34px; margin-left:3px;">ALL <span class="badge" id="allCount"></span></button>
             <button type="button" class="btn btn-danger" id="errorColor" style="height:34px; margin-left:5px;">Error <span class="badge" id="errorCount"></span></button>
@@ -266,10 +266,12 @@
                 </div>
             </div>
         </div>
-       
+        <div id="load_walk" name="Load">
+            <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
+        </div>
 </body>
 </html>
-
+<link href="~/Content/Style/Load.css" rel="stylesheet" />
 <script type="text/javascript">
     var SearchName, SearchClear, startTime, endTime;
     $(document).ready(function () {
@@ -277,10 +279,12 @@
         SearchClear = 1;
         startTime = $('#startDateTime').val();
         endTime = $('#endDateTime').val();
+        $('#load_walk').css("display", "block");
         $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear, startTime: startTime, endTime: endTime }, function (Response) {
             $('#loginformation').html("");
             $('#loginformation').html(Response);
             TrapPageCheck();
+            $('#load_walk').css("display", "none");
         },'text');
     });
     //$(function () {

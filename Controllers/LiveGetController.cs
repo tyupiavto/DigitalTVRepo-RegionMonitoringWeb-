@@ -8,22 +8,23 @@ using System.Linq;
 using System.Web;
 using AdminPanelDevice.Models;
 using System.Web.Mvc;
+using AdminPanelDevice.Infrastructure;
 
 namespace AdminPanelDevice.Controllers
 {
     public class LiveGetController : Controller
     {
-        //public List<DeviceSensorList> Sensors = new List<DeviceSensorList>();
-     
+
         public List<TowerListLive> tow = new List<TowerListLive>();
-        //public List<TowerDevices> tw = new List<TowerDevices>();
         public List<WalkTowerDevice> Sensor = new List<WalkTowerDevice>();
-        //public List<List<WalkTowerDevice>> SensorLive = new List<List<WalkTowerDevice>>();
         public List<TowerDevices> deviceSensor = new List<TowerDevices>();
-        //public AllDeviceLive allDeviceLive = new AllDeviceLive();
-       // public List<AllDeviceLive> allDeviceLive =new List<AllDeviceLive>();
         public List<List<AllDeviceLive>> deviceSensorLive = new List<List<AllDeviceLive>>();
         public List<string> towerDevice = new List<string>();
+        public static int deviceCount = 0;
+        public MaxCount maxDevice = new MaxCount();
+        public int count;
+        public List<int> getdevice = new List<int>();
+        public List<int> getdevicelive = new List<int>();
         // GET: LiveTrapGet
         public ActionResult Index()
         {
@@ -41,17 +42,20 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var allDevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
-                string tower="";
+                var deviceType = connection.Query<DeviceType>("select * from DeviceType").ToList();
+               // deviceType = deviceType.OrderByDescending(t => t.Name).ToList();
+                string tower = "";
                 allDevice.ForEach(it =>
                 {
-                    if (tower!=it.TowerName)
+                    if (tower != it.TowerName)
                     {
                         tower = it.TowerName;
                         towerDevice.Add(it.TowerName);
                     }
                 });
 
-                towerDevice.ForEach(device => {
+                towerDevice.ForEach(device =>
+                {
                     List<DeviceSensorList> Sensors = new List<DeviceSensorList>();
                     List<TowerDevices> tw = new List<TowerDevices>();
                     List<List<WalkTowerDevice>> SensorLive = new List<List<WalkTowerDevice>>();
@@ -73,8 +77,9 @@ namespace AdminPanelDevice.Controllers
                     });
                     if (Sensors.Count != 0)
                     {
-                        //    ViewBag.DeviceLive = tw;
-                        sen.TowerSensor=tw;
+                        sen.TowerSensor = tw;
+                        deviceCount = maxDevice.maxCountReturn(deviceCount, tw.Count);
+
                         int maxCount = Sensors.Max(s => s.Sensors.Count);
 
                         Sensors.ForEach(s =>
@@ -104,13 +109,67 @@ namespace AdminPanelDevice.Controllers
                         sen.SensorDevice = SensorLive; ;
                         allDeviceLive.Add(sen);
                     }
-                    if (allDeviceLive.Count!=0)
+                    if (allDeviceLive.Count != 0)
                     {
                         deviceSensorLive.Add(allDeviceLive);
                     }
-                   // deviceSensorLive.Add(allDeviceLive);
-            //    
+
                 });
+
+                //deviceType.ForEach(type =>
+                //{
+                //    getdevice.Clear();
+                //    deviceSensorLive.ForEach(dev =>
+                //    {
+                //        dev.ForEach(d =>
+                //        {
+                //            int countdevice=0;
+                //            d.TowerSensor.ForEach(t =>
+                //            {
+                //                if (type.Name==t.DeviceName)
+                //                {
+                //                    countdevice++;
+                //                }
+                //            });
+                //            getdevice.Add(countdevice);
+                //        });
+                //    });
+                //    getdevicelive.Add(getdevice.Max());
+                //});
+
+                //getdevicelive.ForEach(gt =>
+                //{
+                //    for (int j = 0; j < gt; j++)
+                //    {
+                //        deviceSensorLive.ForEach(df =>
+                //        {
+                //            df.ForEach(d =>
+                //            {
+                //                d.TowerSensor.ForEach(t =>
+                //                {
+                //                 deviceType[j]
+                //                });
+           
+                //            });
+                //    });
+                //    }
+                //});
+
+                deviceSensorLive.ForEach(df =>
+            {
+                count = deviceCount - df[0].TowerSensor.Count();
+                if (count > 0)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        df[0].TowerSensor.Add(new TowerDevices());
+                        df[0].SensorDevice.ForEach(dv =>
+                        {
+                            dv.Add(new WalkTowerDevice());
+                        });
+                    }
+                }
+            });
                 ViewBag.Sensor = deviceSensorLive;
                 return PartialView("_GetLiveInformation");
             }

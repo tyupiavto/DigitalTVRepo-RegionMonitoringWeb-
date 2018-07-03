@@ -22,12 +22,14 @@ namespace AdminPanelDevice.Controllers
 {
     public class TrapController : Controller
     {
+        public static string mapTowerDeviceName = "";
         public static bool trapInd = true;
         public static List<Trap> TrapLogList = new List<Trap>();
         public static List<Trap> TrapLogListSearch = new List<Trap>();
-        public static int pageListNumber=20;
+        public static int pageListNumber = 20;
         public static int SearchIndicator = 0;
-        public static int maplog=0;
+        public static int maplog = 0;
+
         DeviceContext db = new DeviceContext();
         // GET: Trap
         public ActionResult Index()
@@ -39,7 +41,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult SendTrap()
         {
-          
+
             if (trapInd == true)
             {
                 trapInd = false;
@@ -81,7 +83,7 @@ namespace AdminPanelDevice.Controllers
             //pageListNumber = listNumber;
             ViewBag.pageNumber = pageListNumber;
             ViewBag.ColorDefine = 1;
-            if (SearchIndicator == 0)
+            if (SearchIndicator == 0 || SearchIndicator==2)
             {
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             }
@@ -94,7 +96,7 @@ namespace AdminPanelDevice.Controllers
         {
             pageListNumber = listNumber;
             ViewBag.pageNumber = pageListNumber;
-            if (SearchIndicator == 0)
+            if (SearchIndicator == 0 || SearchIndicator == 2)
             {
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             }
@@ -109,8 +111,17 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
+                DateTime start = DateTime.Now;
+                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
                 ViewBag.pageNumber = pageListNumber;
-              
+               //if (SearchIndicator==2)
+               // {
+               //     TrapLogList = connection.Query<Trap>($"select * from Trap where  dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{mapTowerDeviceName}' and AlarmStatus<>'white'").ToList();
+               //     TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+               //     maplog = 1;
+
+               //     return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
+               // }
                 if (SearchName == "" && startTime != "" && startTime != null && endTime != "" && endTime != null)
                 {
                     ViewBag.ColorDefine = 1;
@@ -133,16 +144,17 @@ namespace AdminPanelDevice.Controllers
                 {
                     if (SearchName == "" && startTime == "" && endTime == "")
                     {
-                        SearchIndicator = 0;
-                        maplog = 0;
-                        DateTime start = DateTime.Now;
-                        DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                        TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
-
-                        //var errorCount= connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and AlarmStatus='red'").ToList().Count;
-                        //var correctCount = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and AlarmStatus='green'").ToList().Count;
-                        //var crashCount = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and AlarmStatus='yellow'").ToList().Count;
-
+                        if (SearchIndicator == 2)
+                        {
+                            TrapLogList = connection.Query<Trap>($"select * from Trap where  dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{mapTowerDeviceName}' and AlarmStatus<>'white'").ToList();
+                            maplog = 1;
+                        }
+                        else
+                        {
+                            SearchIndicator = 0;
+                            maplog = 0;
+                            TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
+                        }
                         ViewBag.errorCount = TrapLogList.Where(t=>t.AlarmStatus=="red").ToList().Count;
                         ViewBag.correctCount = TrapLogList.Where(t => t.AlarmStatus == "green").ToList().Count;
                         ViewBag.crashCount = TrapLogList.Where(t => t.AlarmStatus == "yellow").ToList().Count;
@@ -274,6 +286,7 @@ namespace AdminPanelDevice.Controllers
             }
             else
             {
+                SearchIndicator = 0;
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             }
         }
@@ -284,21 +297,23 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                TrapLogList.Clear();
-                string towername = mapTowerName + "_Tower" + mapTowerID;
-                var deviceList = connection.Query<TowerDevices>($"select * from TowerDevices where TowerName='{towername}'").ToList();
-                DateTime start = DateTime.Now;
-                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-
-                deviceList.ForEach(dev =>
-                {
-                    TrapLogList.AddRange(connection.Query<Trap>($"select * from Trap where  dateTimeTrap BETWEEN '{end}' and '{start}' and IpAddres='{dev.IP}' and AlarmStatus<>'white'").ToList());
-                    TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
-                });
-
-                ViewBag.pageNumber = pageListNumber;
-                maplog = 1;
-                var listview = connection.Query<TrapListNameCheck>("select * from TrapListNameCheck").ToList();
+                //SearchIndicator = 0;
+                //TrapLogList.Clear();
+                //string towername = mapTowerName + "_Tower" + mapTowerID;
+                mapTowerDeviceName = mapTowerName + "_Tower" + mapTowerID;
+                //    var deviceList = connection.Query<TowerDevices>($"select * from TowerDevices where TowerName='{towername}'").ToList();
+                //DateTime start = DateTime.Now;
+                //DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+                SearchIndicator = 2;
+                //deviceList.ForEach(dev =>
+                //{
+                //    TrapLogList=connection.Query<Trap>($"select * from Trap where  dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{towername}' and AlarmStatus<>'white'").ToList();
+                //    SearchIndicator = 2;
+                ////});
+                //TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+                //ViewBag.pageNumber = pageListNumber;
+                //maplog = 1;
+            //    var listview = connection.Query<TrapListNameCheck>("select * from TrapListNameCheck").ToList();
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             }
         }

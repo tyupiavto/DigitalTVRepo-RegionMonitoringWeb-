@@ -25,6 +25,8 @@ namespace AdminPanelDevice.Controllers
         public int count;
         public List<int> getdevice = new List<int>();
         public List<int> getdevicelive = new List<int>();
+        public List<DeviceType> deviceLiveAll = new List<DeviceType>();
+        public string devicename = "";
         // GET: LiveTrapGet
         public ActionResult Index()
         {
@@ -54,6 +56,35 @@ namespace AdminPanelDevice.Controllers
                     }
                 });
 
+                deviceType.ForEach(type =>
+                {
+                    getdevice.Clear();
+                    towerDevice.ForEach(device =>
+                    {
+                       
+                        var Devices = connection.Query<TowerDevices>($"select * from TowerDevices where TowerName='{device}'").ToList();
+                        count = 0;
+                        Devices.ForEach(t =>
+                        {
+                            if (type.Name == t.DeviceName)
+                            {
+                                count++;
+                                devicename = t.DeviceName;
+                            }
+                        });
+                        getdevice.Add(count);
+                    });
+                    getdevicelive.Add(getdevice.Max());
+                });
+
+                for (int i = 0; i < getdevicelive.Count; i++)
+                {
+                    for (int j = 0; j < getdevicelive[i]; j++)
+                    {
+                        deviceLiveAll.Add(deviceType[i]);
+                    }
+                }
+
                 towerDevice.ForEach(device =>
                 {
                     List<DeviceSensorList> Sensors = new List<DeviceSensorList>();
@@ -62,18 +93,64 @@ namespace AdminPanelDevice.Controllers
                     AllDeviceLive sen = new AllDeviceLive();
                     List<AllDeviceLive> allDeviceLive = new List<AllDeviceLive>();
                     var Devices = connection.Query<TowerDevices>($"select * from TowerDevices where TowerName='{device}'").ToList();
-                    Devices.ForEach(t =>
+
+                    deviceLiveAll.ForEach(dl =>
                     {
-                        var sensor = connection.Query<WalkTowerDevice>($"select * from  WalkTowerDevice where IP='{t.IP}' and DeviceName=N'{t.DeviceName}' and MapID<>0 and LogID<>0").ToList();
-                        if (sensor.Count != 0)
+                        var dv = Devices.Where(d => d.DeviceName == dl.Name).FirstOrDefault();
+                        if (dv != null)
                         {
-                            DeviceSensorList deviceSensors = new DeviceSensorList();
-                            deviceSensors.Sensors = sensor;
-                            deviceSensors.DeviceSensor = t;
-                            Sensors.Add(deviceSensors);
-                            deviceSensor.Add(t);
-                            tw.Add(t);
+                            Devices.Remove(dv);
+                            var sensor = connection.Query<WalkTowerDevice>($"select * from  WalkTowerDevice where IP='{dv.IP}' and DeviceName=N'{dv.DeviceName}' and MapID<>0 and LogID<>0").ToList();
+                            if (sensor.Count != 0)
+                            {
+                                DeviceSensorList deviceSensors = new DeviceSensorList();
+                                deviceSensors.Sensors = sensor;
+                                deviceSensors.DeviceSensor = dv;
+                                Sensors.Add(deviceSensors);
+                                tw.Add(dv);
+                            }
+                            else
+                            {
+                                DeviceSensorList deviceSensors = new DeviceSensorList();
+                                deviceSensors.Sensors = new List<WalkTowerDevice>();
+                                deviceSensors.DeviceSensor = new TowerDevices();
+                                Sensors.Add(deviceSensors);
+                                TowerDevices tow = new TowerDevices();
+                                tow.DeviceName = dl.Name;
+                                tow.TowerName = device;
+                                tw.Add(tow);
+                            }
+
                         }
+                        else
+                        {
+                            DeviceSensorList dvcsensor = new DeviceSensorList();
+                            TowerDevices tow = new TowerDevices();
+                            tow.DeviceName = dl.Name;
+                            tow.TowerName = device;
+                            dvcsensor.DeviceSensor = tow;
+                            dvcsensor.Sensors = new List<WalkTowerDevice>();
+                            Sensors.Add(dvcsensor);
+                            tw.Add(tow);
+                        }
+                        //Devices.ForEach(t =>
+                        //    {
+                            //var sensor = connection.Query<WalkTowerDevice>($"select * from  WalkTowerDevice where IP='{t.IP}' and DeviceName=N'{t.DeviceName}' and MapID<>0 and LogID<>0").ToList();
+                            //if (sensor.Count != 0)
+                            //{
+                            //    DeviceSensorList deviceSensors = new DeviceSensorList();
+                            //    deviceSensors.Sensors = sensor;
+                            //    deviceSensors.DeviceSensor = t;
+                            //    Sensors.Add(deviceSensors);
+                            ////deviceSensor.Add(t);
+                            //tw.Add(t);
+                            //}
+                            //else
+                            //{
+                            //    tw.Add(t);
+                            //}
+                        //});
+
                     });
                     if (Sensors.Count != 0)
                     {
@@ -106,70 +183,32 @@ namespace AdminPanelDevice.Controllers
 
                         }
 
-                        sen.SensorDevice = SensorLive; ;
+                        sen.SensorDevice = SensorLive;
                         allDeviceLive.Add(sen);
                     }
-                    if (allDeviceLive.Count != 0)
+                    if (allDeviceLive[0].SensorDevice.Count != 0)
                     {
                         deviceSensorLive.Add(allDeviceLive);
                     }
 
                 });
 
-                //deviceType.ForEach(type =>
-                //{
-                //    getdevice.Clear();
-                //    deviceSensorLive.ForEach(dev =>
-                //    {
-                //        dev.ForEach(d =>
-                //        {
-                //            int countdevice=0;
-                //            d.TowerSensor.ForEach(t =>
-                //            {
-                //                if (type.Name==t.DeviceName)
-                //                {
-                //                    countdevice++;
-                //                }
-                //            });
-                //            getdevice.Add(countdevice);
-                //        });
-                //    });
-                //    getdevicelive.Add(getdevice.Max());
-                //});
 
-                //getdevicelive.ForEach(gt =>
-                //{
-                //    for (int j = 0; j < gt; j++)
-                //    {
-                //        deviceSensorLive.ForEach(df =>
-                //        {
-                //            df.ForEach(d =>
-                //            {
-                //                d.TowerSensor.ForEach(t =>
-                //                {
-                //                 deviceType[j]
-                //                });
-           
-                //            });
-                //    });
-                //    }
-                //});
-
-                deviceSensorLive.ForEach(df =>
-            {
-                count = deviceCount - df[0].TowerSensor.Count();
-                if (count > 0)
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        df[0].TowerSensor.Add(new TowerDevices());
-                        df[0].SensorDevice.ForEach(dv =>
-                        {
-                            dv.Add(new WalkTowerDevice());
-                        });
-                    }
-                }
-            });
+            //    deviceSensorLive.ForEach(df =>
+            //{
+            //    count = deviceCount - df[0].TowerSensor.Count();
+            //    if (count > 0)
+            //    {
+            //        for (int i = 0; i < count; i++)
+            //        {
+            //            df[0].TowerSensor.Add(new TowerDevices());
+            //            df[0].SensorDevice.ForEach(dv =>
+            //            {
+            //                dv.Add(new WalkTowerDevice());
+            //            });
+            //        }
+            //    }
+            //});
                 ViewBag.Sensor = deviceSensorLive;
                 return PartialView("_GetLiveInformation");
             }

@@ -14,7 +14,7 @@
 
                 @foreach (var items in item[0].TowerSensor)
                 {
-                    <th colspan="2" id="liveDeviceName" style="background-color:#777;height:2%;">@items.DeviceName</th>
+                    <th colspan="2" id="liveDeviceName" style="">@items.DeviceName</th>
                 }
             </tr>
 
@@ -23,7 +23,7 @@
                 @foreach (var items in item[0].TowerSensor)
                 {
                     <td>name</td>
-                    <td>value</td>
+                    <td style="border-right-color: #f8f9fa;">value</td>
                 }
             </tr>
             @foreach (var itm in item[0].SensorDevice)
@@ -32,8 +32,8 @@
                 <tr>
                     @foreach (var it in itm)
                     {
-                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.OIDName</td>
-                        <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center">@it.Type</td>
+                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.OIDName</td>
+                        <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center;border-right-color: #f8f9fa;">@it.Type</td>
                     }
                 </tr>
             }
@@ -91,7 +91,7 @@
     table {
         /*width: 500px;*/
         table-layout: fixed;
-        width: 100%
+        width: 99.8%
     }
 
     p {
@@ -101,6 +101,9 @@
         transform: rotate(-90deg);
         margin: 0;
         padding: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .cl {
@@ -118,4 +121,14 @@
             text-overflow: ellipsis;
             width: 1.2%;
         }
+
+    #liveDeviceName {
+        background-color: #777;
+        height: 2%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-right-color: #f8f9fa;
+    }
+
 </style>

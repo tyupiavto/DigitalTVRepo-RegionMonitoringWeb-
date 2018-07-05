@@ -9,7 +9,7 @@ var handleThree = $("#slider-range-three");
 var handleFour = $("#slider-range-four");
 var handleFive = $("#slider-range-five");
 
-var leftvalue, oidName, description, walkOid;
+var leftvalue, oidName, description, walkOid,myDescriptionID,myDescription;
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     deviceID = $(this).closest($(".foo")).attr("id");
@@ -583,4 +583,12 @@ $('#opneIPLink').click(function () {
     $('#opneIPLink a').attr("href", 'http://' + $('#tower_ip').val());
 });
 
+$('body').on('focus', '.mydescriptioninput', function () {
+    walkID=$(this).attr("name");
+});
+
+$('body').on('focusout', '.mydescriptioninput', function () {
+    myDescription = $('#my_description_walk' + walkID).val();
+    $.post("/DeviceGroup/MyDescriptionAdd", { myDescription, walkID, towerName, deviceID }, function () {},'json');
+});
 

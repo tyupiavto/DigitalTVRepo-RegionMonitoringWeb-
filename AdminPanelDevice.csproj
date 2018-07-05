@@ -477,6 +477,7 @@
     <Folder Include="image\mapImage\" />
     <Folder Include="MapStyle\" />
     <Folder Include="MibFiles\" />
+    <Folder Include="Sound\" />
     <Folder Include="Trap\" />
     <Folder Include="Views\GetNext\" />
     <Folder Include="Views\LiveTrap\" />

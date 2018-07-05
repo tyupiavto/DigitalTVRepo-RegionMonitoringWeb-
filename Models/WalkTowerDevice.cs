@@ -27,7 +27,9 @@ namespace AdminPanelDevice.Models
         public int GpsID { get; set; }
         public string IP { get; set; }
         public string Version { get; set; }
+        public string MyDescription { get; set; }
         public string DivideMultiply { get; set; }
+
         public string OneStartError { get; set; }
         public string OneEndError { get; set; }
         public string OneStartCrash { get; set; }

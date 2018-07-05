@@ -5,12 +5,13 @@
 
 @*<button class="btn btn-warning" id="clicklive">LiveGet</button>*@
 
-<div id="liveGetSend"></div>
+<div id="liveGetSend" style=" background-color: #fff;"></div>
 
 <div id="load_walk" name="Load">
     <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
 </div>
 <link href="~/Content/Style/Load.css" rel="stylesheet" />
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#load_walk').css("display", "block");
@@ -21,3 +22,9 @@
         });
     });
 </script>
+
+<style>
+    body {
+        background-color: #333;
+    }
+</style>

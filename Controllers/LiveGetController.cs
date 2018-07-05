@@ -45,7 +45,7 @@ namespace AdminPanelDevice.Controllers
             {
                 var allDevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
                 var deviceType = connection.Query<DeviceType>("select * from DeviceType").ToList();
-               // deviceType = deviceType.OrderByDescending(t => t.Name).ToList();
+              //  deviceType = deviceType.OrderByDescending(t => t.Model).ToList();
                 string tower = "";
                 allDevice.ForEach(it =>
                 {
@@ -61,7 +61,6 @@ namespace AdminPanelDevice.Controllers
                     getdevice.Clear();
                     towerDevice.ForEach(device =>
                     {
-                       
                         var Devices = connection.Query<TowerDevices>($"select * from TowerDevices where TowerName='{device}'").ToList();
                         count = 0;
                         Devices.ForEach(t =>
@@ -100,7 +99,7 @@ namespace AdminPanelDevice.Controllers
                         if (dv != null)
                         {
                             Devices.Remove(dv);
-                            var sensor = connection.Query<WalkTowerDevice>($"select * from  WalkTowerDevice where IP='{dv.IP}' and DeviceName=N'{dv.DeviceName}' and MapID<>0 and LogID<>0").ToList();
+                            var sensor = connection.Query<WalkTowerDevice>($"select * from  WalkTowerDevice where IP='{dv.IP}' and DeviceName=N'{dv.DeviceName}' and LogID<>0").ToList();
                             if (sensor.Count != 0)
                             {
                                 DeviceSensorList deviceSensors = new DeviceSensorList();
@@ -120,7 +119,6 @@ namespace AdminPanelDevice.Controllers
                                 tow.TowerName = device;
                                 tw.Add(tow);
                             }
-
                         }
                         else
                         {
@@ -133,24 +131,6 @@ namespace AdminPanelDevice.Controllers
                             Sensors.Add(dvcsensor);
                             tw.Add(tow);
                         }
-                        //Devices.ForEach(t =>
-                        //    {
-                            //var sensor = connection.Query<WalkTowerDevice>($"select * from  WalkTowerDevice where IP='{t.IP}' and DeviceName=N'{t.DeviceName}' and MapID<>0 and LogID<>0").ToList();
-                            //if (sensor.Count != 0)
-                            //{
-                            //    DeviceSensorList deviceSensors = new DeviceSensorList();
-                            //    deviceSensors.Sensors = sensor;
-                            //    deviceSensors.DeviceSensor = t;
-                            //    Sensors.Add(deviceSensors);
-                            ////deviceSensor.Add(t);
-                            //tw.Add(t);
-                            //}
-                            //else
-                            //{
-                            //    tw.Add(t);
-                            //}
-                        //});
-
                     });
                     if (Sensors.Count != 0)
                     {
@@ -190,25 +170,7 @@ namespace AdminPanelDevice.Controllers
                     {
                         deviceSensorLive.Add(allDeviceLive);
                     }
-
                 });
-
-
-            //    deviceSensorLive.ForEach(df =>
-            //{
-            //    count = deviceCount - df[0].TowerSensor.Count();
-            //    if (count > 0)
-            //    {
-            //        for (int i = 0; i < count; i++)
-            //        {
-            //            df[0].TowerSensor.Add(new TowerDevices());
-            //            df[0].SensorDevice.ForEach(dv =>
-            //            {
-            //                dv.Add(new WalkTowerDevice());
-            //            });
-            //        }
-            //    }
-            //});
                 ViewBag.Sensor = deviceSensorLive;
                 return PartialView("_GetLiveInformation");
             }

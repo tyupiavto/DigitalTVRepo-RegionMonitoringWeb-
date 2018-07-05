@@ -1,6 +1,5 @@
 ﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>*@
 
-
 <div id="liveDiagram">
     @foreach (var item in ViewBag.Sensor)
     {
@@ -22,8 +21,8 @@
 
                 @foreach (var items in item[0].TowerSensor)
                 {
-                    <td>name</td>
-                    <td style="border-right-color: #f8f9fa;">value</td>
+                    <td style="background-color:#525252">name</td>
+                    <td style="border-right-color: #f8f9fa;background-color:#525252;">value</td>
                 }
             </tr>
             @foreach (var itm in item[0].SensorDevice)
@@ -32,7 +31,7 @@
                 <tr>
                     @foreach (var it in itm)
                     {
-                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.OIDName</td>
+                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.MyDescription</td>
                         <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center;border-right-color: #f8f9fa;">@it.Type</td>
                     }
                 </tr>
@@ -40,17 +39,21 @@
         </table>
     }
 </div>
-
+<audio id="alarmAudio">
+    <source src="/Sound/danger_warning.mp3" type="audio/ogg">
+</audio>
 
 <link href="~/Content/Style/LiveGetStyle.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
 <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
 <script src="~/signalr/Hubs"></script>
 <script type="text/javascript">
+
+    var alarm = document.getElementById("alarmAudio"); 
+
     var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
     var hub = con.createHubProxy('hubMessage');
     hub.on('onHitRecorded', function (i) {
-
         if (i.GetTrap == "trap") {
             $("#livetower_" + i.TowerID).css('background-color', i.MapColor);
             $("#livetower_" + i.TowerID).css('color', i.TextColor);
@@ -59,8 +62,8 @@
             var value = parseInt($("#tower_" + i.TowerID + "getValue" + i.ID).attr("value"));
            
             if (value == i.DeviceID) {
-               
-                if (i.DivideMultiply == null) {
+
+                if (i.DivideMultiply == null || i.DivideMultiply=="") {
                     $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
                 }
                 else {
@@ -73,23 +76,30 @@
                         $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value * parseInt(count));
                     }
                 }
-                
+                if (i.MapColor == "red") {
+                    alarm.play();
+                }
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
             }
         }
     });
     con.start();
+    $(document).keydown(function (e) {
+        if (e.keyCode == 32 && e.ctrlKey) {
+            alarm.pause();
+        }
+    });
 </script>
 
 <style>
+
     table, td, th {
         border: 1px solid black;
         text-align: center;
     }
 
     table {
-        /*width: 500px;*/
         table-layout: fixed;
         width: 99.8%
     }

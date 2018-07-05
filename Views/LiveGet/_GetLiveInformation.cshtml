@@ -49,6 +49,10 @@
 <script src="~/signalr/Hubs"></script>
 <script type="text/javascript">
 
+    var CrashCount = [{ "ID": 0, "TowerID": 0 }]
+    var ErrorCount = [{ "ID": 0, "TowerID": 0 }]
+    var Errorindicator = 0;
+    var Crashindicator = 0;
     var alarm = document.getElementById("alarmAudio"); 
 
     var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
@@ -78,7 +82,60 @@
                 }
                 if (i.MapColor == "red") {
                     alarm.play();
+                        Errorindicator = 0;
+                        ErrorCount.forEach(error=> {
+                            if (error.ID == i.ID && error.TowerID == i.TowerID) {
+                                Errorindicator = 1;
+                            }
+                        });
+                        if (Errorindicator != 1) {
+                            ErrorCount.push({ "ID": i.ID, "TowerID": i.TowerID });
+                        }
+             
+                    CrashCount.filter(function (crash) {
+                        if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
+
+                            CrashCount.splice(CrashCount.indexOf(crash), 1);
+                        }
+                    });
+                  
                 }
+                if (i.MapColor == "yellow") {
+                        Crashindicator = 0;
+                        CrashCount.forEach(crash=> {
+                            if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
+                                Crashindicator = 1;
+                            }
+                        });
+                        if (Crashindicator != 1) {
+                            CrashCount.push({ "ID": i.ID, "TowerID": i.TowerID });
+                        }
+                   
+                    ErrorCount.forEach(error => {
+                        if (error.ID == i.ID && error.TowerID == i.TowerID) {
+                            ErrorCount.splice(ErrorCount.indexOf(error), 1);
+                        }
+                    });
+                }
+
+                if (i.MapColor != "yellow" && i.MapColor != "red") {
+                    CrashCount.forEach(crash => { 
+                        if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
+                            CrashCount.splice(CrashCount.indexOf(crash), 1);
+                        }
+                    });
+                    ErrorCount.forEach(error => {
+                        if (error.ID == i.ID && error.TowerID == i.TowerID) {
+                            ErrorCount.splice(ErrorCount.indexOf(error), 1);
+                        }
+                    });
+                }
+                if (ErrorCount.length - 1 == 0) {
+                    alarm.pause();
+                }
+
+                $('#liveErrorCount').text(ErrorCount.length-1);
+                $('#liveCrashCount').text(CrashCount.length-1);
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
             }

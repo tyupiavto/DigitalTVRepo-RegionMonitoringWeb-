@@ -39,6 +39,7 @@ namespace AdminPanelDevice.Controllers
             return View();
         }
 
+        [HttpPost]
         public PartialViewResult GetLiveSensor()
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))

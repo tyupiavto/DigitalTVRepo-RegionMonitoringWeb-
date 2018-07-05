@@ -13,12 +13,11 @@
 
                 @foreach (var items in item[0].TowerSensor)
                 {
-                    <th colspan="2" id="liveDeviceName" style="">@items.DeviceName</th>
+                    <th colspan="2" id="liveDeviceName" style=""><a target="_blank" href="http://@(items.IP)" style="color:white">@items.DeviceName</a></th>
                 }
             </tr>
 
             <tr>
-
                 @foreach (var items in item[0].TowerSensor)
                 {
                     <td style="background-color:#525252">name</td>
@@ -82,8 +81,8 @@
                 }
                 if (i.MapColor == "red") {
                     alarm.play();
-                        Errorindicator = 0;
-                        ErrorCount.forEach(error=> {
+                    Errorindicator = 0;
+                    ErrorCount.filter(function (error) {
                             if (error.ID == i.ID && error.TowerID == i.TowerID) {
                                 Errorindicator = 1;
                             }
@@ -94,15 +93,14 @@
              
                     CrashCount.filter(function (crash) {
                         if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
-
                             CrashCount.splice(CrashCount.indexOf(crash), 1);
                         }
                     });
                   
                 }
                 if (i.MapColor == "yellow") {
-                        Crashindicator = 0;
-                        CrashCount.forEach(crash=> {
+                    Crashindicator = 0;
+                    CrashCount.filter(function (crash) {
                             if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
                                 Crashindicator = 1;
                             }
@@ -110,8 +108,8 @@
                         if (Crashindicator != 1) {
                             CrashCount.push({ "ID": i.ID, "TowerID": i.TowerID });
                         }
-                   
-                    ErrorCount.forEach(error => {
+
+                    ErrorCount.filter(function (error) {
                         if (error.ID == i.ID && error.TowerID == i.TowerID) {
                             ErrorCount.splice(ErrorCount.indexOf(error), 1);
                         }
@@ -119,12 +117,12 @@
                 }
 
                 if (i.MapColor != "yellow" && i.MapColor != "red") {
-                    CrashCount.forEach(crash => { 
+                    CrashCount.filter(function (crash) { 
                         if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
                             CrashCount.splice(CrashCount.indexOf(crash), 1);
                         }
                     });
-                    ErrorCount.forEach(error => {
+                    ErrorCount.filter(function (error) {
                         if (error.ID == i.ID && error.TowerID == i.TowerID) {
                             ErrorCount.splice(ErrorCount.indexOf(error), 1);
                         }

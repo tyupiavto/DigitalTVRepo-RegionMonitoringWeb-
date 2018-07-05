@@ -116,6 +116,12 @@ namespace AdminPanelDevice.Controllers
                                 deviceSensors.DeviceSensor = new TowerDevices();
                                 Sensors.Add(deviceSensors);
                                 TowerDevices tow = new TowerDevices();
+
+                                var tv = Devices.Where(d => d.TowerName == device && d.DeviceName == dl.Name).FirstOrDefault();
+                                if (tv!=null)
+                                {
+                                    tow.IP = tv.IP;
+                                }
                                 tow.DeviceName = dl.Name;
                                 tow.TowerName = device;
                                 tw.Add(tow);
@@ -123,14 +129,13 @@ namespace AdminPanelDevice.Controllers
                         }
                         else
                         {
-                            DeviceSensorList dvcsensor = new DeviceSensorList();
-                            TowerDevices tow = new TowerDevices();
+                            DeviceSensorList dvcsensor = new DeviceSensorList(); TowerDevices tow = new TowerDevices();
                             tow.DeviceName = dl.Name;
                             tow.TowerName = device;
+                            tw.Add(tow);
                             dvcsensor.DeviceSensor = tow;
                             dvcsensor.Sensors = new List<WalkTowerDevice>();
                             Sensors.Add(dvcsensor);
-                            tw.Add(tow);
                         }
                     });
                     if (Sensors.Count != 0)

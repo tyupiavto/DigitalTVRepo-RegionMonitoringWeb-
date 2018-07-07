@@ -18,18 +18,22 @@ namespace AdminPanelDevice.Infrastructure
         {
 
         }
-        public void UpdateChechkLog(int chechkLog, int walkCheckID, string towerName, int deviceID)
+        public int UpdateChechkLog(int chechkLog, int walkCheckID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set LogID='{chechkLog}' where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+                var LogCheckCount = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}' and LogID<>0").ToList().Count;
+                return LogCheckCount;
             }
         }
-        public void UpdateChechkMap(int checkMap, int walkCheckID, string towerName, int deviceID)
+        public int UpdateChechkMap(int checkMap, int walkCheckID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set MapID='{checkMap}' where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+                var MapCheckCount = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}' and MapID<>0").ToList().Count;
+                return MapCheckCount;
             }
         }
         public void UpdateInterval(int intervalID, int Interval, string towerName, int deviceID)
@@ -93,6 +97,7 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.OIDName = walkList[l - 1].OIDName;
                     wlk.WalkOID = walkList[l - 1].WalkOID;
                     wlk.Description = walkList[l - 1].WalkDescription;
+                    wlk.MyDescription = walkList[l - 1].MyDescription;
 
                     wlk.StartCorrect = walkList[l - 1].StartCorrect;
                     wlk.EndCorrect = walkList[l - 1].EndCorrect;
@@ -126,6 +131,7 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.OIDName = walkList[m - 1].OIDName;
                     wlk.WalkOID = walkList[m - 1].WalkOID;
                     wlk.Description = walkList[m - 1].WalkDescription;
+                    wlk.MyDescription = walkList[m - 1].MyDescription;
 
                     wlk.StartCorrect = walkList[m - 1].StartCorrect;
                     wlk.EndCorrect = walkList[m - 1].EndCorrect;
@@ -152,6 +158,7 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.OIDName = walkList[g - 1].OIDName;
                     wlk.WalkOID = walkList[g - 1].WalkOID;
                     wlk.Description = walkList[g - 1].WalkDescription;
+                    wlk.MyDescription = walkList[g - 1].MyDescription;
 
                     walkPresetList.Add(wlk);
                 });

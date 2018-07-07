@@ -152,7 +152,7 @@ namespace AdminPanelDevice.Infrastructure
                         t.thread.Abort();
                         getThread.Remove(t);
                     });
-                    var toweroff = connection.Query<GetSleepThread>("select * from  GetSleepThread where TowerID='" + towerID + "'").FirstOrDefault();
+                    var toweroff = connection.Query<GetSleepThread>($"select * from  GetSleepThread where TowerID='{towerID}'").FirstOrDefault();
                     if (toweroff != null)
                     {
                         return true;
@@ -164,7 +164,7 @@ namespace AdminPanelDevice.Infrastructure
                 }
                 else
                 {
-                    var Log = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where LogID<>0 and TowerName='" + towerName + "' and DeviceID='" + deviceID + "'").ToList();
+                    var Log = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where LogID<>0 and TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
                     var Map = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where MapID<>0 and TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
 
                     Log.ForEach(l =>

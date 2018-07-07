@@ -9,8 +9,8 @@ namespace AdminPanelDevice.Infrastructure
 {
     interface UpdateCheckLogMap
     {
-        void UpdateChechkLog(int checkLog, int walkCheckID,string towerName, int deviceID);
-        void UpdateChechkMap(int checkMap, int walkCheckID,string towerName, int deviceID);
+        int UpdateChechkLog(int checkLog, int walkCheckID,string towerName, int deviceID);
+        int UpdateChechkMap(int checkMap, int walkCheckID,string towerName, int deviceID);
         void UpdateChechkGps(int checkGps, int walkCheckID, string towerName, int deviceID);
         void UpdateInterval(int intervalID, int Interval,string towerName, int deviceID);
         void UpdateLogMapSetting(LogMapSettingValue value, string towerName, int deviceID);

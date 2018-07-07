@@ -72,11 +72,11 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult CheckLog(int chechkID, string towerName, int deviceID,int towerID) // checked log
+        public JsonResult CheckLog(int chechkID, string towerName, int deviceID,int towerID,bool logStartStopPlay) // checked log
         {
-            updateCheck.UpdateChechkLog(1, chechkID, towerName, deviceID);
+          var LogCount=updateCheck.UpdateChechkLog(1, chechkID, towerName, deviceID);
          
-            getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID,"Log"));
+            getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID,"Log",LogCount, logStartStopPlay));
             return Json("");
         }
 
@@ -90,10 +90,10 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult CheckMap(int chechkID, string towerName, int deviceID,int towerID) // checked map
+        public JsonResult CheckMap(int chechkID, string towerName, int deviceID,int towerID, bool mapStartStopPlay) // checked map
         {
-            updateCheck.UpdateChechkMap(1, chechkID, towerName, deviceID);
-            getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID, "Map"));
+           var MapCount=updateCheck.UpdateChechkMap(1, chechkID, towerName, deviceID);
+            getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID, "Map",MapCount, mapStartStopPlay));
             return Json("");
         }
 

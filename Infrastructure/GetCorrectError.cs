@@ -36,45 +36,52 @@ namespace AdminPanelDevice.Infrastructure
                 mapinf.StartLattitube = Double.Parse(cord.Lattitube.Remove(cord.Lattitube.Length - 2), CultureInfo.InvariantCulture);
                 mapinf.StartLongitube = Double.Parse(cord.Longitube.Remove(cord.Longitube.Length - 2), CultureInfo.InvariantCulture);
             }
+            double number;
+            var convertationDouble = Double.TryParse(value,out number);
+
+            if (convertationDouble != false)
+            {
+
                 if (Convert.ToDouble(value, CultureInfo.InvariantCulture) > Convert.ToDouble(OneStartError, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(OneEndError, CultureInfo.InvariantCulture))
-            {
-                mapinf.MapColor = "red";
-                mapinf.LineColor = "red";
-                mapinf.TextColor = "white";
-                context.Clients.All.onHitRecorded(mapinf);
-                return "Red";
-            }
-            if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(OneStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <Convert.ToDouble(OneEndCrash, CultureInfo.InvariantCulture))
-            {
-                mapinf.MapColor = "yellow";
-                mapinf.LineColor = "yellow";
-                mapinf.TextColor = "black";
-                context.Clients.All.onHitRecorded(mapinf);
-                return "Yellow";
-            }
-            if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(StartCorrect , CultureInfo.InvariantCulture) && Convert.ToDouble(value , CultureInfo.InvariantCulture) <= Convert.ToDouble(EndCorrect, CultureInfo.InvariantCulture))
-            {
-                mapinf.MapColor = "rgb(51, 51, 51);";
-                mapinf.LineColor = "#006699";
-                mapinf.TextColor = "white";
-                context.Clients.All.onHitRecorded(mapinf);
-                return "Green";
-            }
-            if (Convert.ToDouble(value, CultureInfo.InvariantCulture)>Convert.ToDouble(EndCorrect, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(TwoStartError, CultureInfo.InvariantCulture))
-            {
-                mapinf.MapColor = "yellow";
-                mapinf.LineColor = "yellow";
-                mapinf.TextColor = "black";
-                context.Clients.All.onHitRecorded(mapinf);
-                return "Yellow";
-            }
-            if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture))
-            {
-                mapinf.MapColor = "red";
-                mapinf.LineColor = "red";
-                mapinf.TextColor = "white";
-                context.Clients.All.onHitRecorded(mapinf);
-                return "Red";
+                {
+                    mapinf.MapColor = "red";
+                    mapinf.LineColor = "red";
+                    mapinf.TextColor = "white";
+                    context.Clients.All.onHitRecorded(mapinf);
+                    return "Red";
+                }
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(OneStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(OneEndCrash, CultureInfo.InvariantCulture))
+                {
+                    mapinf.MapColor = "yellow";
+                    mapinf.LineColor = "yellow";
+                    mapinf.TextColor = "black";
+                    context.Clients.All.onHitRecorded(mapinf);
+                    return "Yellow";
+                }
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(StartCorrect, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(EndCorrect, CultureInfo.InvariantCulture))
+                {
+                    mapinf.MapColor = "rgb(51, 51, 51);";
+                    mapinf.LineColor = "#006699";
+                    mapinf.TextColor = "white";
+                    context.Clients.All.onHitRecorded(mapinf);
+                    return "Green";
+                }
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) > Convert.ToDouble(EndCorrect, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(TwoStartError, CultureInfo.InvariantCulture))
+                {
+                    mapinf.MapColor = "yellow";
+                    mapinf.LineColor = "yellow";
+                    mapinf.TextColor = "black";
+                    context.Clients.All.onHitRecorded(mapinf);
+                    return "Yellow";
+                }
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture))
+                {
+                    mapinf.MapColor = "red";
+                    mapinf.LineColor = "red";
+                    mapinf.TextColor = "white";
+                    context.Clients.All.onHitRecorded(mapinf);
+                    return "Red";
+                }
             }
          
             return "";

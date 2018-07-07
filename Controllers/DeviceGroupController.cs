@@ -1024,7 +1024,14 @@ namespace AdminPanelDevice.Controllers
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set GpsID=1,ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
                     }
+                    if (lmi.MyDescription!=null || lmi.MyDescription!="")
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MyDescription=N'{lmi.MyDescription}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                    }
+
                 });
+
+                walkList = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
 
                 ViewBag.LMI = LMI;
                 ViewBag.PresetInd = 0;

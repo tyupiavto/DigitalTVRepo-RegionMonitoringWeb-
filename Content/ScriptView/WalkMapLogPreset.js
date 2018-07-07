@@ -8,7 +8,7 @@ var handleTwo = $("#slider-range-two");
 var handleThree = $("#slider-range-three");
 var handleFour = $("#slider-range-four");
 var handleFive = $("#slider-range-five");
-
+var logStartStopPlay, mapStartStopPlay
 var leftvalue, oidName, description, walkOid,myDescriptionID,myDescription;
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
@@ -39,12 +39,12 @@ $('#walk_send').click(function () { // device walk ip port version
     var towerName = $('#device_settings_name').text();
     $('#load_walk').css("display", "block");
     communityRead = $('#read_community').val();
-    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName: DeviceName, deviceID: deviceID, Version: Version }, function (Response) {
+
+    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName: DeviceName, deviceID: deviceID, Version: Version}, function (Response) {
         $('#load_walk').css("display", "none");
 
         $('#walk_checked_add').removeClass("").addClass("checked");
         $("#walk_checked").prop('checked', true);
-
         $('#device_settings').html("");
         $('#device_settings').html(Response);
     });
@@ -281,9 +281,14 @@ $('body').on('click touched', '.map_check div', function () { // map click check
     if ($('#map_checked' + mapID).is(':checked') == false) {
         $('#map_checked_add' + mapID).removeClass("").addClass("checked");
         $("#map_checked" + mapID).prop('checked', true);
-
+        if ($('#paly_stop_device' + deviceID).attr('src') != '/Icons/play.png') {
+            mapStartStopPlay = true;
+        }
+        else {
+            mapStartStopPlay = false;
+        }
         chechkID = mapID;
-        $.post("/GetNext/CheckMap", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { }, 'json'); // map check 
+        $.post("/GetNext/CheckMap", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID, mapStartStopPlay: mapStartStopPlay}, function () { }, 'json'); // map check 
     } else {
         unChechkID = mapID;
         $.post("/GetNext/UncheckMap", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { }, 'json'); // map uncheck 
@@ -298,7 +303,14 @@ $('body').on('click touched', '.log_check div', function () { // log checked pre
     towerName = $('#device_settings_name').text();
     if ($('#log_checked' + logID).is(':checked') == false) {
         chechkID = logID;
-        $.post("/GetNext/CheckLog", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { }, 'json'); // log check 
+        if ($('#paly_stop_device' + deviceID).attr('src') != '/Icons/play.png') {
+            logStartStopPlay = true;
+        }
+        else {
+            logStartStopPlay = false;
+        }
+       
+        $.post("/GetNext/CheckLog", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID, logStartStopPlay: logStartStopPlay }, function () { }, 'json'); // log check 
 
         $('#log_checked_add' + logID).removeClass("").addClass("checked");
         $("#log_checked" + logID).prop('checked', true);
@@ -592,3 +604,30 @@ $('body').on('focusout', '.mydescriptioninput', function () {
     $.post("/DeviceGroup/MyDescriptionAdd", { myDescription, walkID, towerName, deviceID }, function () {},'json');
 });
 
+$('body').on('click touched', '#paly_stop_device_refresh', function () {
+  //  deviceID = $(this).closest($(".foo")).attr("id");
+    towerName = $('.tower_name' + deviceID).attr("title");
+    towerID = $('#' + towerName).parent().parent().attr("id");
+    TowerTextName = $('.header' + towerID).text();
+    if ($('#paly_stop_device' + deviceID).attr('src') == '/Icons/play.png') {
+
+        $('#paly_stop_device' + deviceID).attr("src", "/Icons/stop.png");
+        $('#paly_stop_tower' + towerID).attr("src", "/Icons/stop.png");
+
+        $('#load_walk').css("display", "block");
+        $.post("/GetNext/Get", { towerName: towerName, towerID: towerID, deviceID: deviceID, TowerTextName: TowerTextName }, function (Response) {
+            saveDiagram();
+            $('#load_walk').css("display", "none");
+        });
+    }
+    //else {
+    //    $('#paly_stop_device' + deviceID).attr("src", "/Icons/stop.png");
+    //    $('#paly_stop_tower' + towerID).attr("src", "/Icons/stop.png");
+    //    var i = 2;
+    //    $('#load_walk').css("display", "block");
+   
+    //        $.post("/GetNext/Get", { towerName: towerName, towerID: towerID, deviceID: deviceID, TowerTextName: TowerTextName }, function (Response) {
+    //            saveDiagram();
+    //        });
+    //}
+});

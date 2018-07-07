@@ -13,8 +13,8 @@ namespace AdminPanelDevice.Infrastructure
 {
     public class CheckUncheckGetThread
     {
-       
-        public GetSleepThread checkdGet(int chechkID, string towerName, int deviceID,DeviceContext db, int towerID,string LogMap)
+
+        public GetSleepThread checkdGet(int chechkID, string towerName, int deviceID, DeviceContext db, int towerID, string LogMap, int CountCheck,bool MapLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -22,7 +22,7 @@ namespace AdminPanelDevice.Infrastructure
                 GetSleepThread checkMapLog = new GetSleepThread();
                 GetThread getThreadPreset = new GetThread();
                 WalkTowerDevice addthread = new WalkTowerDevice();
-                if (getcheck != null)
+                if (getcheck != null || (CountCheck!=0 && MapLog==true))
                 {
                     if (LogMap == "Log")
                     {

@@ -23,6 +23,7 @@ namespace AdminPanelDevice.Models
         public string OIDName { get; set; }
         public string Description { get; set; }
         public string WalkOID { get; set; }
+        public string MyDescription { get; set; }
         public string OneStartError { get; set; }
         public string OneEndError { get; set; }
         public string OneStartCrash { get; set; }

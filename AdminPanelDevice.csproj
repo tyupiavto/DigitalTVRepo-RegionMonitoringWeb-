@@ -306,6 +306,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HangfireBootstrapper.cs" />
+    <Compile Include="Helpers\PickerHelper.cs" />
     <Compile Include="Infrastructure\AlarmDefineColor.cs" />
     <Compile Include="Infrastructure\BuildMIBTree.cs" />
     <Compile Include="Infrastructure\CheckUncheckGetThread.cs" />

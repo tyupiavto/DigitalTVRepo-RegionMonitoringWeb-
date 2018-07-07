@@ -5,8 +5,6 @@
 
 @{
     ViewBag.Title = "Index";
-    //AdminPanelDevice.Models.DeviceContext db = new AdminPanelDevice.Models.DeviceContext();
-    //var IntervalNumber = ViewBag.IntervalTime;
     var pageList = ViewBag.pageListNumber;
 
     <script type="text/javascript">
@@ -22,8 +20,7 @@
         var defineWalk =@Html.Raw(Json.Encode(ViewBag.DefineWalk));
         var walkCheck =@Html.Raw(Json.Encode (ViewBag.WalkCheck));
     var int = 1;
-    @*var all=@Html.Raw(Json.Encode(ViewBag.All));
-        var select =@Html.Raw(Json.Encode(ViewBag.Select));*@
+
         if (presetInd == 1) {
             $.each(click_checked_log, function (i, val) {
                 $('#log_checked_add' + val.WalkID).removeClass("").addClass("checked");
@@ -100,10 +97,10 @@
                         <div class="valueDiv" title="@item.Type" id="Value@(item.WalkID)" value="@item.Value" style="color: #b8c0c8;">@item.Type</div>
                     </td>
                     <td style="width:13.3%">
-                            <input class="deviceInput inputField gradient mydescriptioninput" name="@(item.WalkID)" id="my_description_walk@(item.WalkID)" value="@(item.MyDescription)" placeholder="description" type="text" hidefocus="true" style="outline: none; color: white;width:160px; max-height:20px; margin-top:-2px;">
+                        <input class="deviceInput inputField gradient mydescriptioninput" name="@(item.WalkID)" id="my_description_walk@(item.WalkID)" value="@(item.MyDescription)" placeholder="" type="text" hidefocus="true" style="outline: none; color: white;width:160px; max-height:20px; margin-top:-2px;">
                     </td>
                     <td style="width:3%">
-                     <span class="log_map_settings" id="log_map_settings@(item.WalkID)" value="@(item.WalkID)"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" class="logmapsetting" value="@(item.WalkID)" id="log_map_setting@(item.WalkID)" data-toggle="modal" data-target="#LogMapSetting" style="margin-top: 7px; margin-left: -19px; position: absolute;"></span>
+                        <span class="log_map_settings" id="log_map_settings@(item.WalkID)" value="@(item.WalkID)"><img src="/Icons/pignon.png" width="17px" height="17px" alt="Settings" title="Settings" class="logmapsetting" value="@(item.WalkID)" id="log_map_setting@(item.WalkID)" data-toggle="modal" data-target="#LogMapSetting" style="margin-top: 7px; margin-left: -19px; position: absolute;"></span>
                     </td>
                     <td style="width:5%;">
                         <div class="input_styled checklist pull-left" style="margin-top:-6px;margin-left:25%;z-index:0; height:20px;">

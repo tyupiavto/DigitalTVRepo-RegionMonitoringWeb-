@@ -1,5 +1,5 @@
 ﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,alarmDescription,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
-var response;
+var response,error=0,crash=0,correct=0,white=0;
 $('body').on('click touchend', '#start_log', function () {
 
 //    //window.open('/Trap/LogSetting', '/Trap/LogSetting');
@@ -236,10 +236,17 @@ $('body').on('click touched', '#dropdown li', function () {
 });
 $('body').on('click touched', '#whiteColor', function () { // mxolod tetri feris archeva
     all = 0;
-    whiteColor = "white";
-    correctColor = " ";
-    errorColor = " ";
-    crashColor = " ";
+    if (white == 0) {
+        white++;
+        whiteColor = "white";
+    }
+    else {
+        white--
+        whiteColor = " ";
+    }
+    //correctColor = " ";
+    //errorColor = " ";
+    //crashColor = " ";
     $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
@@ -250,10 +257,17 @@ $('body').on('click touched', '#whiteColor', function () { // mxolod tetri feris
 
 $('body').on('click touched', '#correctColor', function () {//mxolod mwvane feris archeva
     all = 0;
-    correctColor = "green";
-    whiteColor = " ";
-    errorColor = " ";
-    crashColor = " ";
+    if (correct == 0) {
+        correct++;
+        correctColor = "green";
+    }
+    else {
+        correct--;
+        correctColor = " ";
+    }
+    //whiteColor = " ";
+    //errorColor = " ";
+    //crashColor = " ";
     $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
@@ -263,10 +277,18 @@ $('body').on('click touched', '#correctColor', function () {//mxolod mwvane feri
 
 $('body').on('click touched', '#errorColor', function () {// mxolod witeli feris archeva
     all = 0;
-    whiteColor = " ";
-    correctColor = " ";
-    crashColor = " ";
-    errorColor = "red";
+    //whiteColor = " ";
+    //correctColor = " ";
+    //crashColor = " ";
+    if (error == 0) {
+        error++;
+        errorColor = "red";
+    }
+    else {
+        error--;
+        errorColor = " ";
+    }
+
      $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
@@ -276,10 +298,17 @@ $('body').on('click touched', '#errorColor', function () {// mxolod witeli feris
 
 $('body').on('click touched', '#crashColor', function () { //mxolod yviteli feris archeva
     all = 0;
-    whiteColor = " ";
-    correctColor = " ";
-    errorColor = " ";
-    crashColor = "yellow";
+    //whiteColor = " ";
+    //correctColor = " ";
+    //errorColor = " ";
+    if (crash == 0) {
+        crash++;
+        crashColor = "yellow";
+    }
+    else {
+        crash--;
+        crashColor = " ";
+    }
     $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
@@ -293,7 +322,10 @@ $('body').on('click touched', '#allColor', function () { // yvela feri ertad
     errorColor = " ";
     crashColor = " ";
     whiteColor = " ";
-
+    correct = 0;
+    error = 0;
+    white = 0;
+    crash = 0;
     $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);

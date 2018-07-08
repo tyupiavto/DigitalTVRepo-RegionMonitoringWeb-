@@ -631,3 +631,7 @@ $('body').on('click touched', '#paly_stop_device_refresh', function () {
     //        });
     //}
 });
+
+$('body').on('click touched', '.log_map_settings', function () {
+    $('#divided_multiply').val("");
+});

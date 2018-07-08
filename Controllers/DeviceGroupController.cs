@@ -756,7 +756,7 @@ namespace AdminPanelDevice.Controllers
                         {
                             walkSearch.Clear();
                             searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkOID like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkDescription like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and Type like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName like '%{SearchName}%' and DeviceID='{deviceIDLocal}' or MyDescription like N'%{SearchName}%'").ToList();
+                            walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkOID like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkDescription like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and Type like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName like '%{SearchName}%' and DeviceID='{deviceIDLocal}' and MyDescription like N'%{SearchName}%'").ToList();
                           //  walkSearch = walkList.Where(x => x.WalkOID.Contains(SearchName) || x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName) ||  x.OIDName.Contains(SearchName) /*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
                         }
                         catch (Exception e) { }
@@ -1027,6 +1027,10 @@ namespace AdminPanelDevice.Controllers
                     if (lmi.MyDescription!=null || lmi.MyDescription!="")
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MyDescription=N'{lmi.MyDescription}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.DivideMultiply!=null)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set DivideMultiply=N'{lmi.DivideMultiply}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
                     }
 
                 });

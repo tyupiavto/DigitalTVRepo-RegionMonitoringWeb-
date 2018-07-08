@@ -42,7 +42,7 @@ namespace AdminPanelDevice.Infrastructure
             if (convertationDouble != false)
             {
 
-                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) > Convert.ToDouble(OneStartError, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(OneEndError, CultureInfo.InvariantCulture))
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(OneStartError, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(OneEndError, CultureInfo.InvariantCulture))
                 {
                     mapinf.MapColor = "red";
                     mapinf.LineColor = "red";

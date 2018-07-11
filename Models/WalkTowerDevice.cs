@@ -29,6 +29,7 @@ namespace AdminPanelDevice.Models
         public string Version { get; set; }
         public string MyDescription { get; set; }
         public string DivideMultiply { get; set; }
+        public int StringParserInd { get; set; }
 
         public string OneStartError { get; set; }
         public string OneEndError { get; set; }

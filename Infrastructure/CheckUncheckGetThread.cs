@@ -46,7 +46,7 @@ namespace AdminPanelDevice.Infrastructure
                         checkMapLog.Version = addthread.Version;
                         checkMapLog.CheckID = addthread.WalkID;
                         checkMapLog.TowerID = towerID;
-                        checkMapLog.thread = new Thread(() => getThreadPreset.ThreadPreset(addthread.DivideMultiply,addthread.ID,towerID, addthread.IP, addthread.ScanInterval, addthread.DeviceID, addthread.WalkOID, addthread.Version, addthread.StartCorrect, addthread.EndCorrect, addthread.OneStartError, addthread.OneEndError, addthread.OneStartCrash, addthread.OneEndCrash, addthread.TwoStartError, addthread.TwoEndError, addthread.TwoStartCrash, addthread.TwoEndCrash));
+                        checkMapLog.thread = new Thread(() => getThreadPreset.ThreadPreset(addthread.StringParserInd,addthread.DivideMultiply,addthread.ID,towerID, addthread.IP, addthread.ScanInterval, addthread.DeviceID, addthread.WalkOID, addthread.Version, addthread.StartCorrect, addthread.EndCorrect, addthread.OneStartError, addthread.OneEndError, addthread.OneStartCrash, addthread.OneEndCrash, addthread.TwoStartError, addthread.TwoEndError, addthread.TwoStartCrash, addthread.TwoEndCrash));
                         checkMapLog.thread.Start();
 
                         db.GetSleepThread.Add(checkMapLog);
@@ -82,6 +82,11 @@ namespace AdminPanelDevice.Infrastructure
                 {
                     if (getcheck != null && getcheck.MapID!=1)
                     {
+                        SleepInformation sleepget = new SleepInformation();
+                        if (getThread.Count == 0)
+                        {
+                            getThread = sleepget.SleepGetInformation(true);
+                        }
                         connection.Query<GetSleepThread>($"delete from  GetSleepThread where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unChechkID}' and TowerID='{towerID}'");
                         connection.Query<GetSleepThread>($"Update GetSleepThread Set LogID=0 where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unChechkID}' and TowerID='{towerID}'");
                         var removeLog= getThread.Where(g => g.TowerName == towerName && g.DeviceID == deviceID && g.CheckID == unChechkID && g.TowerID == towerID).FirstOrDefault();
@@ -125,7 +130,7 @@ namespace AdminPanelDevice.Infrastructure
                     intervalChange.thread.Abort();
                     intervalChange.ScanInterval = Interval;
                     getThread.Remove(intervalChange);
-                    intervalChange.thread= new Thread(() => getThreadPreset.ThreadPreset(intervalChange.DivideMultiply,intervalChange.ID, towerID,intervalChange.IP, intervalChange.ScanInterval, intervalChange.DeviceID, intervalChange.WalkOid, intervalChange.Version, intervalChange.StartCorrect, intervalChange.EndCorrect, intervalChange.OneStartError, intervalChange.OneEndError, intervalChange.OneStartCrash, intervalChange.OneEndCrash, intervalChange.TwoStartError, intervalChange.TwoEndError, intervalChange.TwoStartCrash, intervalChange.TwoEndCrash));
+                    intervalChange.thread= new Thread(() => getThreadPreset.ThreadPreset(intervalChange.StringParserInd,intervalChange.DivideMultiply,intervalChange.ID, towerID,intervalChange.IP, intervalChange.ScanInterval, intervalChange.DeviceID, intervalChange.WalkOid, intervalChange.Version, intervalChange.StartCorrect, intervalChange.EndCorrect, intervalChange.OneStartError, intervalChange.OneEndError, intervalChange.OneStartCrash, intervalChange.OneEndCrash, intervalChange.TwoStartError, intervalChange.TwoEndError, intervalChange.TwoStartCrash, intervalChange.TwoEndCrash));
                     intervalChange.thread.Start();
                     getThread.Add(intervalChange);
                 }

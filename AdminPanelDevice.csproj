@@ -190,6 +190,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\ScriptView\Chart.js" />
     <Content Include="Content\ScriptView\CheckedCity.js" />
     <Content Include="Content\ScriptView\CountrieSearch.js" />
     <Content Include="Content\ScriptView\DeviceGroup.js" />
@@ -459,10 +460,10 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\LiveTrapGet\LiveGetTrap.cshtml" />
-    <Content Include="Views\LiveTrapGet\_GetLiveInformation.cshtml" />
     <Content Include="Views\LiveGet\LiveGet.cshtml" />
     <Content Include="Views\LiveGet\_GetLiveInformation.cshtml" />
+    <Content Include="Views\LiveGet\GetChart.cshtml" />
+    <Content Include="Views\LiveGet\_ChartLiveSensor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -112,7 +112,7 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 DateTime start = DateTime.Now;
-                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+                DateTime end = start.Add(new TimeSpan(-1, 0, 0));
                 ViewBag.pageNumber = pageListNumber;
                 int trapID;
                //if (SearchIndicator==2)

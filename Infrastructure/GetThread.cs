@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using Dapper;
 using Microsoft.AspNet.SignalR;
+using System.Text.RegularExpressions;
 
 namespace AdminPanelDevice.Infrastructure
 {
@@ -23,10 +24,11 @@ namespace AdminPanelDevice.Infrastructure
         public DeviceContext db = new DeviceContext();
         public GetCorrectError correctError = new GetCorrectError();
         MapViewInformation mapinformation = new MapViewInformation();
-        public void ThreadPreset(string DivideMultiply, int ID,int TowerID,string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
+        public void ThreadPreset(int StringParserInd,string DivideMultiply, int ID,int TowerID,string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             // string Version = "V2";
+            var values = "";
             string communityRead = "public";
             int Port = 161;
             while (true)
@@ -73,8 +75,14 @@ namespace AdminPanelDevice.Infrastructure
                         get.dateTime = DateTime.Now;
                         get.WalkOID = v.Oid.ToString();
                         get.IP = IP;
-                       
-                        get.ResultCorrectError = correctError.CompareCorrectError(DivideMultiply,Deviceid,ID,TowerID, v.Value.ToString(), StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
+
+                        if (StringParserInd == 1)
+                        {
+                            char[] arr = get.Value.ToCharArray();
+                            get.Value = new string(Array.FindAll<char>(arr, (c => (char.IsDigit(c) || c == '.'))));
+                            values = new string(Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)|| c == '.'))));
+                        }
+                        get.ResultCorrectError = correctError.CompareCorrectError(values,DivideMultiply,Deviceid,ID,TowerID, get.Value, StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
 
                         //mapinformation.MapColor = get.ResultCorrectError;
                         //mapinformation.IP = IP;

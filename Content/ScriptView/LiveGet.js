@@ -12,22 +12,18 @@ $('body').on('click touched', '#start_live_get', function () {
         //Browser has allowed it to be opened
         win.focus();
 
-        $.post('/LiveGet/GetLiveSensor', {}, function (Response) {
-            $('#liveGetSend').html("");
-            $('#liveGetSend').html(Response);
-        });
+        //$.post('/LiveGet/GetLiveSensor', {}, function (Response) {
+        //    $('#liveGetSend').html("");
+        //    $('#liveGetSend').html(Response);
+        //});
     }
    
     event.preventDefault();
     //setTimeout(livegetopen, 2000);
 });
 
-function livegetopen() {
-    $.post('/LiveGet/GetLiveSensor', {}, function (Response) {
-        $('#liveGetSend').html("");
-        $('#liveGetSend').html(Response);
-        response = Response;
-        alert(Response);
+$('body').on('contextmenu touched', '#chartmodalopen', function () {
+    $.post('/LiveGet/ChartSensorLive' ,{}, function (Response) {
+
     });
-    //alert(response);
-}
+});

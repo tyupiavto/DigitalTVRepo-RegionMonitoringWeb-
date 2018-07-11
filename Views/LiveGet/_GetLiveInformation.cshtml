@@ -1,6 +1,6 @@
 ﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>*@
 
-<div id="liveDiagram">
+<div id="liveDiagram" style="display: block; overflow: auto; height: 940px;">
     @foreach (var item in ViewBag.Sensor)
     {
         <table id="liveTable" style="margin-top:2px;">
@@ -27,13 +27,13 @@
             @foreach (var itm in item[0].SensorDevice)
             {
 
-                <tr>
-                    @foreach (var it in itm)
-                    {
-                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.MyDescription</td>
-                        <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center;border-right-color: #f8f9fa;">@it.Type</td>
-                    }
-                </tr>
+            <tr>
+                @foreach (var it in itm)
+                {
+                    <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.MyDescription</td>
+                    <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center;border-right-color: #f8f9fa;">@it.Type</td>
+                }
+            </tr>
             }
         </table>
     }
@@ -63,7 +63,6 @@
         }
         if (i.GetTrap == "get") {
             var value = parseInt($("#tower_" + i.TowerID + "getValue" + i.ID).attr("value"));
-           
             if (value == i.DeviceID) {
 
                 if (i.DivideMultiply == null || i.DivideMultiply=="") {

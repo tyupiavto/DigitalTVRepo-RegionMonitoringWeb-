@@ -1,0 +1,56 @@
+﻿
+
+<table>
+    <tr>
+        <td>
+            <div style="width:800px; height:200px; margin-left:20%;margin-top:20%;">
+                <canvas id="chart1" width="800" height="200" style="background: #4c4c4c;background: -moz-linear-gradient(top, #4c4c4c 0%, #666666 25%, #1c1c1c 62%, #131313 100%);background: -webkit-linear-gradient(top, #4c4c4c 0%,#666666 25%,#1c1c1c 62%,#131313 100%);background: linear-gradient(to bottom, #4c4c4c 0%,#666666 25%,#1c1c1c 62%,#131313 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 );"></canvas>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<script src="~/Content/ScriptView/Chart.js"></script>
+<script type="text/javascript">
+    var k = 0;
+    $('#chartmodalopen').click(function () {
+        if (k == 0) {
+            var ctx = document.getElementById("chart1").getContext("2d");
+            k++;
+        }
+        else {
+            var ctx = document.getElementById("chart2").getContext("2d");
+        }
+        /*** Gradient ***/
+        var gradient = ctx.createLinearGradient(0, 0, 0, 270);
+        gradient.addColorStop(0, 'rgba(250,174,50,1)');
+        gradient.addColorStop(1, 'rgba(250,174,50,0)');
+        /***************/
+
+        var data = {
+            labels: ["02:00", "04:00", "06:00", "08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00", "00:00"],
+            datasets: [{
+                fillColor: gradient, // Put the gradient here as a fill color
+                strokeColor: "#ff6c23",
+                pointColor: "#fff",
+                pointStrokeColor: "#ff6c23",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "#ff6c23",
+                data: [25.0, 32.4, 16.2, 39.4, 34.2, 22.0, 23.2, 24.1, 20.0, 18.4, 19.1, 17.4],
+            }]
+        };
+
+        var options = {
+            responsive: true,
+            datasetStrokeWidth: 3,
+            pointDotStrokeWidth: 4,
+            tooltipFillColor: "rgba(120,0,0,0.8)",
+            tooltipFontStyle: "bold",
+            tooltipTemplate: "<%if (label){%><%=label + ' hod' %>: <%}%><%= value + '°C' %>",
+            scaleLabel: "<%= Number(value).toFixed(0).replace('.', ',') + '°C'%>"
+        };
+
+        new Chart(ctx).Line(data, options);
+    });
+</script>

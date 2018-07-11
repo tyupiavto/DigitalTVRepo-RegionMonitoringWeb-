@@ -1,30 +1,7 @@
 ﻿var SearchName, searchTxt, searchID, SearchClear,startTime,endTime,alarmColor,alarmText,deviceName,listNumber,check,returnOidText,currentOidText,alarmDescription,correctColor=" ",errorColor=" ",crashColor=" ", whiteColor=" ",all;
 var response,error=0,crash=0,correct=0,white=0;
 $('body').on('click touchend', '#start_log', function () {
-
-//    //window.open('/Trap/LogSetting', '/Trap/LogSetting');
-////    $(document).ready(function () {
-    
-//    $.post("/Trap/LogShow", {}, function (Response) {
-//        $('#loginformation').html("");
-//        $('#loginformation').html(Response);
-//        setTimeout(() => window.open('http://google.com'), 3000);
-//        //setTimeout(LogInformations,6000);
-//    });
-//});
     var winGoogle = window.open('/Trap/LogSetting');
-    //winGoogle.onload = function () {
-    //    setTimeout(LogInformations, 8000);
-    //    $('#loginformation').html("");
-    //    $('#loginformation').html(response);
-    //}
-//});
-//function LogInformations() {
-
-//    $.post('/Trap/TowerLog', { mapTowerName: mapTowerName, mapTowerID: mapTowerID }, function (Response) {
-//        $('#loginformation').html("");
-//        $('#loginformation').html(Response);
-    //        alert("shemovida");
 });
 function LogInformations() {
 

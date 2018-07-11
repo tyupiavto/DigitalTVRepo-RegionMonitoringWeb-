@@ -19,11 +19,18 @@ namespace AdminPanelDevice.Infrastructure
 
         public GetCorrectError() { }
 
-        public string  CompareCorrectError (string DivideMultiply, int DeviceID,int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
+        public string  CompareCorrectError (string values,string DivideMultiply, int DeviceID,int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             MapViewInformation mapinf = new MapViewInformation();
-            mapinf.Value = value;
+            if (values != "")
+            {
+                mapinf.Value = values;
+            }
+            else
+            {
+                mapinf.Value = value;
+            }
             mapinf.TowerID = TowerID;
             mapinf.TowerLine= mapline.LinesCordinate(TowerID);
             mapinf.GetTrap = "get";
@@ -83,7 +90,7 @@ namespace AdminPanelDevice.Infrastructure
                     return "Red";
                 }
             }
-         
+            context.Clients.All.onHitRecorded(mapinf);
             return "";
             
         }

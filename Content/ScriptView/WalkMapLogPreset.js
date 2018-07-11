@@ -8,8 +8,9 @@ var handleTwo = $("#slider-range-two");
 var handleThree = $("#slider-range-three");
 var handleFour = $("#slider-range-four");
 var handleFive = $("#slider-range-five");
-var logStartStopPlay, mapStartStopPlay
-var leftvalue, oidName, description, walkOid,myDescriptionID,myDescription;
+var step=0.1;
+var logStartStopPlay, mapStartStopPlay;
+var leftvalue, oidName, description, walkOid,myDescriptionID,myDescription,WalkID;
 
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     deviceID = $(this).closest($(".foo")).attr("id");
@@ -475,6 +476,12 @@ $('body').on('click touched', '.logmapsetting', function () {
 $('body').on('click touched', '#value_logmap_button', function () {
     maxlenght = parseFloat($('#value_logmap_max').val());
     minlenght = parseFloat($('#value_logmap_min').val());
+    if (maxlenght <= 1) {
+        step = 0.001;
+    }
+    else {
+        step = 0.1;
+    }
     slideLogMapSetting();
 });
 function slideLogMapSetting() {
@@ -482,7 +489,7 @@ function slideLogMapSetting() {
         range: true,
         min: minlenght,
         max: maxlenght,
-        step: 0.1,
+        step: step,
         values: [minlenght, maxlenght / 5],
         slide: function (event, ui) {
             handleTwo.slider('values', 0, ui.values[1]);
@@ -499,7 +506,7 @@ function slideLogMapSetting() {
         range: true,
         min: minlenght,
         max: maxlenght,
-        step: 0.1,
+        step: step,
         values: [maxlenght / 5, maxlenght / 2.5],
         slide: function (event, ui) {
             handleThree.slider('values', 0, ui.values[1]);
@@ -518,7 +525,7 @@ function slideLogMapSetting() {
         range: true,
         min: minlenght,
         max: maxlenght,
-        step: 0.1,
+        step: step,
         values: [maxlenght / 2.5, maxlenght / 1.6],
         slide: function (event, ui) {
             handleFour.slider('values', 0, ui.values[1]);
@@ -536,7 +543,7 @@ function slideLogMapSetting() {
         range: true,
         min: minlenght,
         max: maxlenght,
-        step: 0.1,
+        step: step,
         values: [maxlenght / 1.6, maxlenght / 1.25],
         slide: function (event, ui) {
             handleFive.slider('values', 0, ui.values[1]);
@@ -554,7 +561,7 @@ function slideLogMapSetting() {
         range: true,
         min: minlenght,
         max: maxlenght,
-        step: 0.1,
+        step: step,
         values: [maxlenght / 1.25, maxlenght],
         slide: function (event, ui) {
             handleFour.slider('values', 1, ui.values[0]);
@@ -633,5 +640,32 @@ $('body').on('click touched', '#paly_stop_device_refresh', function () {
 });
 
 $('body').on('click touched', '.log_map_settings', function () {
+    WalkID = $(this).attr("value");
+    $.post('/GetNext/ParserCheck', { walkID: WalkID, towerName: towerName, deviceID: deviceID }, function (Response) {
+        if (Response == true) {
+            $('#string_parser_checked_add').removeClass("").addClass("checked");
+            $("#string_parser_checked").prop('checked', true);
+        }
+        else {
+            $('#string_parser_checked_add').removeClass("checked").addClass("");
+            $("#string_parser_checked").prop('checked', false);
+        }
+    });
     $('#divided_multiply').val("");
+});
+
+$('body').on('click touched', '#string_parser_checked_add', function () {
+    var checkParser;
+  
+    if ($('#string_parser_checked').is(':checked') == false) {
+        $('#string_parser_checked_add').removeClass("").addClass("checked");
+        $("#string_parser_checked").prop('checked', true);
+        checkParser = 1;
+    }
+    else {
+        $('#string_parser_checked_add').removeClass("checked").addClass("");
+        $("#string_parser_checked").prop('checked', false);
+        checkParser = 0;
+    }
+    $.post('/GetNext/StringParser', { checkParser: checkParser, walkID: WalkID, towerName: towerName, deviceID: deviceID, towerID: towerID}, function () { });
 });

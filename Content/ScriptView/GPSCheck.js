@@ -12,7 +12,7 @@ $(document).on('click touchend', '#GpsSetting', function () { // add device sett
     towerName = $('.header' + TowerGpsID).text();
 
     towerGpsName = $(this).parent().parent().attr("id");
-     var dv = $('.device_list_name' + TowerGpsID);
+    var dv = $('.device_list_name' + TowerGpsID);
     gpscheckInd = 0;
     dv.find('table').each(function () {
         devicetype.push($(this).attr("name"));

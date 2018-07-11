@@ -129,7 +129,8 @@ namespace AdminPanelDevice.Controllers
                         }
                         else
                         {
-                            DeviceSensorList dvcsensor = new DeviceSensorList(); TowerDevices tow = new TowerDevices();
+                            DeviceSensorList dvcsensor = new DeviceSensorList();
+                            TowerDevices tow = new TowerDevices();
                             tow.DeviceName = dl.Name;
                             tow.TowerName = device;
                             tw.Add(tow);
@@ -163,12 +164,19 @@ namespace AdminPanelDevice.Controllers
                             List<WalkTowerDevice> Sen = new List<WalkTowerDevice>();
                             for (int j = 0; j < Sensors.Count; j++)
                             {
+                                if (Sensors[j].Sensors[i].DivideMultiply != null && Sensors[j].Sensors[i].DivideMultiply != "")
+                                {
+                                    string values = Sensors[j].Sensors[i].DivideMultiply.Substring(1, Sensors[j].Sensors[i].DivideMultiply.Length - 1);
+                                    var divide = (Sensors[j].Sensors[i].DivideMultiply.Substring(0, 1));
+                                    if (divide == "/")
+                                    {
+                                        Sensors[j].Sensors[i].Type = (double.Parse((Sensors[j].Sensors[i].Type), System.Globalization.CultureInfo.InvariantCulture) / Convert.ToInt32(values)).ToString();
+                                    }
+                                }
                                 Sen.Add(Sensors[j].Sensors[i]);
                             }
                             SensorLive.Add(Sen);
-
                         }
-
                         sen.SensorDevice = SensorLive;
                         allDeviceLive.Add(sen);
                     }
@@ -180,6 +188,18 @@ namespace AdminPanelDevice.Controllers
                 ViewBag.Sensor = deviceSensorLive;
                 return PartialView("_GetLiveInformation");
             }
+        }
+
+        
+        public ActionResult GetChart () {
+
+          return View();
+        }
+
+        [HttpPost]
+        public PartialViewResult ChartSensorLive ()
+        {
+            return PartialView("");
         }
     }
 }

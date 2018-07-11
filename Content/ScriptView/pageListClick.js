@@ -1,6 +1,6 @@
 ﻿
 
-$(document).ready(function () {
+//$(document).ready(function () {
     $('#page_list').on('click', 'a', function (e) {
         e.preventDefault();
         if (this.href != "") {
@@ -54,4 +54,4 @@ $(document).ready(function () {
             }
         });
     }
-});
+//});

@@ -1,4 +1,5 @@
 ﻿using AdminPanelDevice.Infrastructure;
+using AdminPanelDevice.Models;
 using Hangfire;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace AdminPanelDevice
     public class HangfireBootstrapper : IRegisteredObject
     {
         public static readonly HangfireBootstrapper Instance = new HangfireBootstrapper();
-
         private readonly object _lockObject = new object();
         private bool _started;
-
+        public static List<GetSleepThread> getThread = new List<GetSleepThread>();
         private BackgroundJobServer _backgroundJobServer;
+        public static string hung;
 
         private HangfireBootstrapper()
         {
@@ -37,7 +38,7 @@ namespace AdminPanelDevice
                 thread.Start();
 
                 SleepInformation sleepget = new SleepInformation();
-                sleepget.SleepGetInformation(true);
+                getThread=sleepget.SleepGetInformation(true);
 
                  _backgroundJobServer = new BackgroundJobServer();
             }
@@ -54,6 +55,10 @@ namespace AdminPanelDevice
 
                 HostingEnvironment.UnregisterObject(this);
             }
+        }
+        public List<GetSleepThread> GetThreadStart ()
+        {
+            return getThread;
         }
 
         void IRegisteredObject.Stop(bool immediate)

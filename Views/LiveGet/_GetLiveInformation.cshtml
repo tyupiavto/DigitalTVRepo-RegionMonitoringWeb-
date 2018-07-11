@@ -1,6 +1,6 @@
 ﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>*@
 
-<div id="liveDiagram" style="display: block; overflow: auto; height: 940px;">
+<div id="liveDiagram" style="display: block; overflow: auto;">
     @foreach (var item in ViewBag.Sensor)
     {
         <table id="liveTable" style="margin-top:2px;">
@@ -13,7 +13,7 @@
 
                 @foreach (var items in item[0].TowerSensor)
                 {
-                    <th colspan="2" id="liveDeviceName" style=""><a target="_blank" href="http://@(items.IP)" style="color:white">@items.DeviceName</a></th>
+                    <th colspan="2" id="liveDeviceName"  value="@(items.DeviceID)" name="@(items.IP)" style=""><a target="_blank" href="http://@(items.IP)" style="color:white" id="chartmenu@(items.ID)">@items.DeviceName</a></th>
                 }
             </tr>
 

@@ -130,7 +130,7 @@ $('body').on('click touched', '#alarmSave', function () {
     $.post("/Trap/AlarmLog", { alarmColor: alarmColor, deviceName: deviceName, alarmText: alarmText, returnOidText: returnOidText, currentOidText: currentOidText, alarmDescription:alarmDescription}, function (Response) {});
 });
 
-$('body').on('contextmenu touched', '#trap_log_information tr td', function () { // checked gps right click
+$('body').on('contextmenu touched', '#trap_log_information tr td', function () {
     searchID = $(this).attr("id");
 
     $(document).bind("contextmenu", function (event, ui) {
@@ -143,6 +143,7 @@ $('body').on('contextmenu touched', '#trap_log_information tr td', function () {
         event.stopPropagation();
     });
 });
+
 $(".log-menu li").click(function (event) {
 
     switch ($(this).attr("data-action")) {
@@ -158,7 +159,6 @@ $(".log-menu li").click(function (event) {
             }
             break;
         case "Clear":
-            
             SearchClear = 0;
             $.post("/Trap/LogSearch", { SearchName: SearchName, SearchClear: SearchClear }, function (Response) {
                 $('#loginformation').html("");

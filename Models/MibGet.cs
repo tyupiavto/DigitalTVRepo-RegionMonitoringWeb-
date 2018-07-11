@@ -19,5 +19,6 @@ namespace AdminPanelDevice.Models
         public string IP { get; set; }
         public DateTime dateTime { get; set; }
         public string ResultCorrectError { get; set; }
+        public int WalkID { get; set; }
     }
 }

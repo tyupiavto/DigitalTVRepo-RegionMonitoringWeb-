@@ -24,7 +24,7 @@ namespace AdminPanelDevice.Infrastructure
         public DeviceContext db = new DeviceContext();
         public GetCorrectError correctError = new GetCorrectError();
         MapViewInformation mapinformation = new MapViewInformation();
-        public void ThreadPreset(int StringParserInd,string DivideMultiply, int ID,int TowerID,string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
+        public void ThreadPreset(int WalkID,int StringParserInd,string DivideMultiply, int ID,int TowerID,string IP, int time, int Deviceid, string getOid, string Version,string StartCorrect, string EndCorrect,string OneStartError,string OneEndError,string OneStartCrash,string OneEndCrash, string TwoStartError,string TwoEndError,string TwoStartCrash,string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             // string Version = "V2";
@@ -75,7 +75,7 @@ namespace AdminPanelDevice.Infrastructure
                         get.dateTime = DateTime.Now;
                         get.WalkOID = v.Oid.ToString();
                         get.IP = IP;
-
+                        get.WalkID = WalkID;
                         if (StringParserInd == 1)
                         {
                             char[] arr = get.Value.ToCharArray();
@@ -83,10 +83,6 @@ namespace AdminPanelDevice.Infrastructure
                             values = new string(Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)|| c == '.'))));
                         }
                         get.ResultCorrectError = correctError.CompareCorrectError(values,DivideMultiply,Deviceid,ID,TowerID, get.Value, StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
-
-                        //mapinformation.MapColor = get.ResultCorrectError;
-                        //mapinformation.IP = IP;
-                        //context.Clients.All.onHitRecorded(mapinformation);
 
                         db.MibGets.Add(get);
                         db.SaveChanges();

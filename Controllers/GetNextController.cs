@@ -119,7 +119,7 @@ namespace AdminPanelDevice.Controllers
                     var th = getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault();
                     th.thread.Abort();
                     //getThread.Remove(th);
-                    getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError,th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
+                    getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(th.WalkID,checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError,th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
                     //getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Suspend();
                     getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Start();
 

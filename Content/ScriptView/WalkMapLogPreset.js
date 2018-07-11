@@ -476,7 +476,7 @@ $('body').on('click touched', '.logmapsetting', function () {
 $('body').on('click touched', '#value_logmap_button', function () {
     maxlenght = parseFloat($('#value_logmap_max').val());
     minlenght = parseFloat($('#value_logmap_min').val());
-    if (maxlenght <= 1) {
+    if (maxlenght <= 1 && maxlenght!=0) {
         step = 0.001;
     }
     else {

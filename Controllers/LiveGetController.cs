@@ -9,6 +9,7 @@ using System.Web;
 using AdminPanelDevice.Models;
 using System.Web.Mvc;
 using AdminPanelDevice.Infrastructure;
+using AdminPanelDevice.ChartLive;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -27,6 +28,10 @@ namespace AdminPanelDevice.Controllers
         public List<int> getdevicelive = new List<int>();
         public List<DeviceType> deviceLiveAll = new List<DeviceType>();
         public string devicename = "";
+        public ChartSensorList chartList = new ChartSensorList();
+        public ChartPrezentation chartPrezentation = new ChartPrezentation();
+        public static int DeviceIDInf;
+        public static string IPInf;
         // GET: LiveTrapGet
         public ActionResult Index()
         {
@@ -199,7 +204,17 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult ChartSensorLive ()
         {
-            return PartialView("");
+            var ch = chartPrezentation.ChartSensorResult(DeviceIDInf, IPInf);
+            ViewBag.SensorDeviceCount = ch.SensorDeviceCount;
+            ViewBag.SensorGetResult = ch.SensorGetResult;
+            return PartialView("_ChartLiveSensor", ch);
+        }
+
+        [HttpPost]
+        public JsonResult DeviceInformation(int DeviceID, string IP) {
+            DeviceIDInf = DeviceID;
+            IPInf = IP;
+            return Json("");
         }
     }
 }

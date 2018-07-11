@@ -291,6 +291,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ChartLive\ChartData.cs" />
+    <Compile Include="ChartLive\ChartLogic.cs" />
+    <Compile Include="ChartLive\ChartPrezentation.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\DeviceGroupController.cs" />
     <Compile Include="Controllers\DeviceSettingController.cs" />
@@ -353,6 +356,7 @@
     <Compile Include="Models\AlarmLogStatus.cs" />
     <Compile Include="Models\AlarmStatusDescription.cs" />
     <Compile Include="Models\AllDeviceLive.cs" />
+    <Compile Include="Models\ChartSensorList.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Countrie.cs" />
     <Compile Include="Models\CountrieStateCityModel.cs" />

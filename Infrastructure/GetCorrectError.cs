@@ -19,7 +19,7 @@ namespace AdminPanelDevice.Infrastructure
 
         public GetCorrectError() { }
 
-        public string  CompareCorrectError (string values,string DivideMultiply, int DeviceID,int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
+        public string  CompareCorrectError (int WalkID,string values,string DivideMultiply, int DeviceID,int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             MapViewInformation mapinf = new MapViewInformation();
@@ -37,6 +37,7 @@ namespace AdminPanelDevice.Infrastructure
             mapinf.ID = ID;
             mapinf.DeviceID = DeviceID;
             mapinf.DivideMultiply = DivideMultiply;
+            mapinf.WalkID = WalkID;
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var cord = connection.Query<TowerGps>($"select * from TowerGps where TowerID='{TowerID}'").FirstOrDefault();

@@ -20,7 +20,7 @@ namespace AdminPanelDevice.Models
         public int ID { get; set; }
         public int DeviceID { get; set; }
         public string DivideMultiply { get; set; }
-
+        public int WalkID { get; set; }
         public List<mapTower> TowerLine = new List<mapTower>();
     }
 }

@@ -82,7 +82,7 @@ namespace AdminPanelDevice.Infrastructure
                             get.Value = new string(Array.FindAll<char>(arr, (c => (char.IsDigit(c) || c == '.'))));
                             values = new string(Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)|| c == '.'))));
                         }
-                        get.ResultCorrectError = correctError.CompareCorrectError(values,DivideMultiply,Deviceid,ID,TowerID, get.Value, StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
+                        get.ResultCorrectError = correctError.CompareCorrectError(WalkID, values,DivideMultiply,Deviceid,ID,TowerID, get.Value, StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
 
                         db.MibGets.Add(get);
                         db.SaveChanges();

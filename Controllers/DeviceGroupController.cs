@@ -577,6 +577,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult LoadMib (int? page, string DeviceName,string towerName, int deviceID,int defineWalk)
         {
+            walkSearch.Clear();
             TowerIDLocal = towerName;
             DeviceNameLocal = DeviceName;
             MibWalkIndicator = true;

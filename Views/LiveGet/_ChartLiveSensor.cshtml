@@ -28,10 +28,11 @@
         var sensorResult, sensorYellow, sensorGreen;
         var SensorChart;
         var chart;
-        var k = 1;
+        
         var Charts = [];
         SensorDeviceCount.map(function (item) {
             var PointChartSensor = [];
+            var k = 0;
              sensorResult = SensorGetResult.filter(function (sensor) {
                 return sensor.WalkID === item.WalkID;
             });
@@ -73,74 +74,34 @@
             });
             chart.render();
 
-            Charts.push({ charts: chart, dataPoint: PointChartSensor, WalkID: item.WalkID, chartLenght: PointChartSensor.length });
+            Charts.push({ charts: chart, dataPoint: PointChartSensor, WalkID: item.WalkID, chartLenght: PointChartSensor.length, startLenght: PointChartSensor.length});
 
         var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
             var hub = con.createHubProxy('hubMessage');
             var ChartLine =1;
         hub.on('onHitRecorded', function (i) {
             if (i.GetTrap == "get") {
-               updateData(data,i);
+               updateDataChart(data,i);
             }
         });
         con.start();
 
-            function updateData(data, value) {
-            //PointChartSensor = [];
-            //SensorGetResult.push(value);
-            //sensorResult = SensorGetResult.filter(function (sensor) {
-            //    return sensor.WalkID === value.WalkID;
-            //});
-
-            //sensorResult.map(function (val) {
-            //    k++;
-            //     PointChartSensor.push({ x: k, y: parseFloat(val.Value) });
-            //    });
-
-                //if (PointChartSensor.length > 20) {
-                 
-                //    PointChartSensor.shift();
-                //}
-
-               
-                //k++;
-                //PointChartSensor.push({ x: k, y: parseFloat(value.Value) });
-
-                //chart = new CanvasJS.Chart("chart" + value.WalkID);
-                //chart.options.data.dataPoints[0]= PointChartSensor;
-               // chart.options.data[0].dataPoints= PointChartSensor;
-
-                //chart = new CanvasJS.Chart("chart" + value.WalkID, {
-                //    theme: "light2",
-                //    animationEnabled: false,
-                //    zoomEnabled: true,
-                //    axisY: {
-                //        includeZero: false
-                //    },
-                //    axisX: {
-                //        valueFormatString: ""
-                //    },
-                //    data: [{
-                //        //xValueType: "dateTime",
-                //        //xValueFormatString: "hh:mm:ss TT",
-                //        showInLegend: true,
-                //        type: "spline",
-                //        color: "rgba(54,158,173,.7)",
-                //        dataPoints: PointChartSensor
-                //    }]
-                //});
-
+            function updateDataChart(data, value) {
+          
                 updateChart = Charts.filter(function (ch) {
                     return ch.WalkID === value.WalkID
                 });
 
                 k++;
-                //var pointSensor = updateChart[0].PointChartSensor;
-                //alert(pointSensor)
-              //  pointSensor.push({ x: k, y: parseFloat(value.Value) });
-                updateChart[0].dataPoint.push({ x: k, y: parseFloat(value.Value) });
+              //  alert(k + "   " + updateChart[0].dataPoint.length)
+                var lenght = updateChart[0].dataPoint.length+1;
+                //  alert(lenght);
+                updateChart[0].chartLenght++;
+                updateChart[0].dataPoint.push({ x: updateChart[0].chartLenght, y: parseFloat(value.Value) });
+                if (updateChart[0].startLenght < updateChart[0].dataPoint.length) {
+                    updateChart[0].dataPoint.shift();
+                }
                 updateChart[0].charts.render();
-             //   chart.render();
         };
         });
 

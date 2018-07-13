@@ -1,5 +1,5 @@
 ﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>*@
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div id="liveDiagram" style="display: block; overflow: auto;">
     @foreach (var item in ViewBag.Sensor)
     {
@@ -13,7 +13,8 @@
 
                 @foreach (var items in item[0].TowerSensor)
                 {
-                    <th colspan="2" id="liveDeviceName"  value="@(items.DeviceID)" name="@(items.IP)" style=""><a target="_blank" href="http://@(items.IP)" style="color:white" id="chartmenu@(items.ID)">@items.DeviceName</a></th>
+                    <th colspan="2" id="liveDeviceName" style=""><a target="_blank" href="http://@(items.IP)" style="color:white" id="chartmenu@(items.ID)">@items.DeviceName</a></th>
+                   
                 }
             </tr>
 
@@ -21,7 +22,7 @@
                 @foreach (var items in item[0].TowerSensor)
                 {
                     <td style="background-color:#525252">name</td>
-                    <td style="border-right-color: #f8f9fa;background-color:#525252;">value</td>
+                    <td style="border-right-color: #f8f9fa;background-color:#525252;">value<button class="fa fa-bar-chart" id="openChart" value="@(items.DeviceID)" name="@(items.IP)" style="margin-left:28px;position:absolute;width:31px;height:18px;color:black"></button></td>
                 }
             </tr>
             @foreach (var itm in item[0].SensorDevice)

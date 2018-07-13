@@ -190,6 +190,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\ScriptView\canvasjs.min.js" />
     <Content Include="Content\ScriptView\Chart.js" />
     <Content Include="Content\ScriptView\CheckedCity.js" />
     <Content Include="Content\ScriptView\CountrieSearch.js" />
@@ -201,6 +202,7 @@
     <Content Include="Content\ScriptView\LogSearch.js" />
     <Content Include="Content\ScriptView\Map.js" />
     <Content Include="Content\ScriptView\MenuDevice.js" />
+    <Content Include="Content\ScriptView\moment.min.js" />
     <Content Include="Content\ScriptView\WalkMapLogPreset.js" />
     <Content Include="Content\ScriptView\DevicePanel.js" />
     <Content Include="Content\ScriptView\DeviceUpdate.js" />

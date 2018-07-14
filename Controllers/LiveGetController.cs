@@ -51,9 +51,16 @@ namespace AdminPanelDevice.Controllers
             {
                 var allDevice = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
                 var deviceType = connection.Query<DeviceType>("select * from DeviceType").ToList();
-              //  deviceType = deviceType.OrderByDescending(t => t.Model).ToList();
+                //  deviceType = deviceType.OrderByDescending(t => t.Model).ToList();
                 string tower = "";
-                allDevice.ForEach(it =>
+
+                //var stim = allDevice.Where(all => all.TowerName != tower).Select((it) => new
+                //{
+                //    tower = it.TowerName
+
+                //}).ToList();
+
+                allDevice.ForEach(it =>  
                 {
                     if (tower != it.TowerName)
                     {
@@ -123,7 +130,7 @@ namespace AdminPanelDevice.Controllers
                                 TowerDevices tow = new TowerDevices();
 
                                 var tv = Devices.Where(d => d.TowerName == device && d.DeviceName == dl.Name).FirstOrDefault();
-                                if (tv!=null)
+                                if (tv != null)
                                 {
                                     tow.IP = tv.IP;
                                 }
@@ -195,14 +202,15 @@ namespace AdminPanelDevice.Controllers
             }
         }
 
-        
-        public ActionResult GetChart () {
 
-          return View();
+        public ActionResult GetChart()
+        {
+
+            return View();
         }
 
         [HttpPost]
-        public PartialViewResult ChartSensorLive ()
+        public PartialViewResult ChartSensorLive()
         {
             var ch = chartPrezentation.ChartSensorResult(DeviceIDInf, IPInf);
             ViewBag.SensorDeviceCount = ch.SensorDeviceCount;
@@ -211,7 +219,8 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeviceInformation(int DeviceID, string IP) {
+        public JsonResult DeviceInformation(int DeviceID, string IP)
+        {
             DeviceIDInf = DeviceID;
             IPInf = IP;
             return Json("");

@@ -28,7 +28,7 @@
         var sensorResult, sensorYellow, sensorGreen;
         var SensorChart;
         var chart;
-        
+
         var Charts = [];
         SensorDeviceCount.map(function (item) {
             var PointChartSensor = [];
@@ -48,6 +48,7 @@
                 return PointChartSensor.push({ x:k, y: parseFloat(val.Value) });
             });
 
+
             //var gradient = ctx.createLinearGradient(0, 0, 0, 200);
             //gradient.addColorStop(0, 'rgba(250,174,50,1)');
             //gradient.addColorStop(1, 'rgba(250,174,50,0)');
@@ -59,7 +60,8 @@
             chart = new CanvasJS.Chart("chart" + item.WalkID, {
                 theme: "light2",
                  animationEnabled: false,
-                 zoomEnabled: true,
+                zoomEnabled: true,
+
                  axisY: {
                      includeZero: false
                 },
@@ -68,7 +70,8 @@
                 },
                 data: [{
                     type: "spline",
-                    color: "rgba(54,158,173,.7)",
+                    color: "rgba(54,158,173,0.7)",
+                    fill: true,
                     dataPoints: PointChartSensor
                 }]
             });
@@ -76,7 +79,7 @@
 
             Charts.push({ charts: chart, dataPoint: PointChartSensor, WalkID: item.WalkID, chartLenght: PointChartSensor.length, startLenght: PointChartSensor.length});
 
-        var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
+        var con = $.hubConnection(); // chart live
             var hub = con.createHubProxy('hubMessage');
             var ChartLine =1;
         hub.on('onHitRecorded', function (i) {
@@ -87,23 +90,26 @@
         con.start();
 
             function updateDataChart(data, value) {
-          
+
                 updateChart = Charts.filter(function (ch) {
                     return ch.WalkID === value.WalkID
                 });
 
-                k++;
-              //  alert(k + "   " + updateChart[0].dataPoint.length)
-                var lenght = updateChart[0].dataPoint.length+1;
-                //  alert(lenght);
-                updateChart[0].chartLenght++;
-                updateChart[0].dataPoint.push({ x: updateChart[0].chartLenght, y: parseFloat(value.Value) });
-                if (updateChart[0].startLenght < updateChart[0].dataPoint.length) {
-                    updateChart[0].dataPoint.shift();
+                //    var ss = updateChart[0].chartLenght;
+                updateChart.map(function (chartInformation) {
+                    chartInformation.chartLenght++;
+                    chartInformation.dataPoint.push({ x: chartInformation.chartLenght, y: parseFloat(value.Value) });
+                    if (chartInformation.startLenght < chartInformation.dataPoint.length) {
+                        chartInformation.dataPoint.shift();
                 }
-                updateChart[0].charts.render();
+                    chartInformation.charts.render();
+                });
+                               //updateChart[0].dataPoint.push({ x: k, y: parseFloat(value.Value) });
+                //if (updateChart[0].startLenght < updateChart[0].dataPoint.length) {
+                //    updateChart[0].dataPoint.shift();
+                //}
+                //updateChart[0].charts.render();
         };
         });
-
     });
 </script>

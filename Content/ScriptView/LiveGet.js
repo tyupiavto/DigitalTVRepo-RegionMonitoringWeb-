@@ -20,32 +20,7 @@ $('body').on('click touched', '#openChart', function () {
     IP = $(this).attr("name");
     $.post('/LiveGet/DeviceInformation', { DeviceID: DeviceID, IP: IP }, function () {});
 });
-//$('body').on('contextmenu touched', '#liveDeviceName a', function () { // checked gps right click
-  
-//    $(document).bind("contextmenu", function (event, ui) {
-//        event.preventDefault();
-//        $(this).unbind(event);
-//        $(".chart-menu").finish().toggle(100).css({
-//            top: 10 + "px",
-//            left:10+ "px"
-//        });
-//        event.stopPropagation();
-//    });
-//   // var wins = window.open("/LiveGet/GetChart");
-//});
 
-//$(".chart-menu li").click(function (event) {
-
-//    switch ($(this).attr("data-action")) {
-//        case "ChartSensor":
-//            var win = window.open("/LiveGet/GetChart");
-//            if (win) {
-//                win.focus();
-//            }
-//            break;
-//    }
-//    $(".chart-menu").hide(100);
-//});
 
 $('body').on('click touched', '#chartmodalopen', function () {
     //alert(device)

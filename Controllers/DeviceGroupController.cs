@@ -757,10 +757,10 @@ namespace AdminPanelDevice.Controllers
                         {
                             walkSearch.Clear();
                             searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                             walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkOID like '%{SearchName}%' or WalkDescription like '%{SearchName}%' or Type like '%{SearchName}%' or OIDName like '%{SearchName}%'  or MyDescription like N'%{SearchName}%' and DeviceID='{deviceIDLocal}' and DeviceName=N'{DeviceNameLocal}'and TowerName='{TowerIDLocal}'").ToList();
+                            // walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkOID like '%{SearchName}%' or WalkDescription like '%{SearchName}%' or Type like '%{SearchName}%' or OIDName like '%{SearchName}%'  or MyDescription like N'%{SearchName}%' and DeviceID='{deviceIDLocal}' and DeviceName=N'{DeviceNameLocal}'and TowerName='{TowerIDLocal}'").ToList();
 
                              // walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkOID like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkDescription like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and Type like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName like '%{SearchName}%' and DeviceID='{deviceIDLocal}' and MyDescription like N'%{SearchName}%'").ToList();
-                          //  walkSearch = walkList.Where(x => x.WalkOID.Contains(SearchName) || x.WalkDescription.Contains(SearchName) || x.Type.Contains(SearchName) || x.OIDName.Contains(SearchName) || x.MyDescription!=null && x.MyDescription.Contains(SearchName)/*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
+                           walkSearch = walkList.Where(x => x.WalkOID.ToLower().Contains(SearchName.ToLower()) || x.WalkDescription.ToLower().Contains(SearchName.ToLower()) || x.Type.ToLower().Contains(SearchName.ToLower()) || x.OIDName.ToLower().Contains(SearchName.ToLower()) || x.MyDescription!=null && x.MyDescription.ToLower().Contains(SearchName.ToLower())/*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
                         }
                         catch (Exception e) { }
                         return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
@@ -909,14 +909,14 @@ namespace AdminPanelDevice.Controllers
                 if (checkLog == true && checkMap != true)
                 {
                     CheckLogMap = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                    ViewBag.CheckedLog = CheckLogMap;
+
                     return PartialView("_DeviceSettings", CheckLogMap.ToPagedList(page ?? 1, pageListNumber));
                 }
                 if (checkLog != true && checkMap == true)
                 {
                     CheckLogMap = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                     return PartialView("_DeviceSettings", CheckLogMap.ToPagedList(page ?? 1, pageListNumber));
-                    //ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
-                    //return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
                 }
                 if (checkLog == true && checkMap == true)
                 {

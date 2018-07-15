@@ -1,38 +1,35 @@
-﻿
+﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.ChartSensorList>
+
+    @foreach (var item in ViewBag.SensorDeviceCount)
+    {*@
 @foreach (var item in ViewBag.SensorDeviceCount)
 {
     <table id="sensor_table">
         <tr>
             <td>
                 <div style="width:1900px; height:200px; margin-left:2px;margin-top:7px;">
-                    <div id="chart@(item.WalkID)" style="height:200px; width:99%;"></div>
+                    <canvas id="chart@(item.WalkID)" width="1900" height="200" style="background: #4c4c4c;background: -moz-linear-gradient(top, #4c4c4c 0%, #666666 25%, #1c1c1c 62%, #131313 100%);background: -webkit-linear-gradient(top, #4c4c4c 0%,#666666 25%,#1c1c1c 62%,#131313 100%);background: linear-gradient(to bottom, #4c4c4c 0%,#666666 25%,#1c1c1c 62%,#131313 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 );"></canvas>
                 </div>
             </td>
         </tr>
     </table>
 }
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+@*}*@
 
-@*<script src="~/Content/ScriptView/Chart.js"></script>*@
+<script src="~/Content/ScriptView/Chart.js"></script>
 <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
 <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
 <script src="~/signalr/Hubs"></script>
 
-<script src="~/Content/ScriptView/canvasjs.min.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
-        var SensorDeviceCount = @Html.Raw(Json.Encode(ViewBag.SensorDeviceCount));
-        var SensorGetResult = @Html.Raw(Json.Encode(ViewBag.SensorGetResult));
+        var SensorDeviceCount = @Html.Raw(Json.Encode(@ViewBag.SensorDeviceCount));
+        var SensorGetResult = @Html.Raw(Json.Encode(@ViewBag.SensorGetResult));
         var ctx, options, data;
         var sensorResult, sensorYellow, sensorGreen;
         var SensorChart;
-        var chart;
-
-        var Charts = [];
         SensorDeviceCount.map(function (item) {
-            var PointChartSensor = [];
-            var k = 0;
+
              sensorResult = SensorGetResult.filter(function (sensor) {
                 return sensor.WalkID === item.WalkID;
             });
@@ -43,73 +40,83 @@
                 return sensor.WalkID === item.WalkID && sensor.ResultCorrectError === "Green";
             });
 
-            sensorResult.map(function (val) {
-                k++;
-                return PointChartSensor.push({ x:k, y: parseFloat(val.Value) });
-            });
+             ctx = document.getElementById("chart" + item.WalkID).getContext("2d");
+
+            var gradient = ctx.createLinearGradient(0, 0, 0, 200);
+            gradient.addColorStop(0, 'rgba(250,174,50,1)');
+            gradient.addColorStop(1, 'rgba(250,174,50,0)');
+
+            var gradients = ctx.createLinearGradient(0, 0, 0, 200);
+            gradients.addColorStop(0, 'rgba(0,128,0,0.4)');
+            gradients.addColorStop(1, 'rgba(0,128,0,0)');
 
 
-            //var gradient = ctx.createLinearGradient(0, 0, 0, 200);
-            //gradient.addColorStop(0, 'rgba(250,174,50,1)');
-            //gradient.addColorStop(1, 'rgba(250,174,50,0)');
-
-            //var gradients = ctx.createLinearGradient(0, 0, 0, 200);
-            //gradients.addColorStop(0, 'rgba(0,128,0,0.4)');
-            //gradients.addColorStop(1, 'rgba(0,128,0,0)');
-
-            chart = new CanvasJS.Chart("chart" + item.WalkID, {
-                theme: "light2",
-                 animationEnabled: false,
-                zoomEnabled: true,
-
-                 axisY: {
-                     includeZero: false
+             data = {
+                 labels: sensorResult.map(function (Val) { return Val.Value }),
+                datasets: [{
+                    fillColor: gradient, // Put the gradient here as a fill color
+                    strokeColor: "#ff6c23",
+                    pointColor: "#fff",
+                    pointStrokeColor: "#ff6c23",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "#ff6c23",
+                    lineTension:0,
+                    data: sensorYellow.map(function (Val) { return Val.Value }),
                 },
-                axisX: {
-                    valueFormatString: ""
-                },
-                data: [{
-                    type: "spline",
-                    color: "rgba(54,158,173,0.7)",
-                    fill: true,
-                    dataPoints: PointChartSensor
-                }]
-            });
-            chart.render();
+                    //{
+                    //    fillColor: gradients, // Put the gradient here as a fill color
+                    //    strokeColor: "#ffff00",
+                    //    pointColor: "#fff",
+                    //    pointStrokeColor: "#ffff00",
+                    //    pointHighlightFill: "#ffff00",
+                    //    pointHighlightStroke: "#ff6c23",
+                    //    data: sensorGreen.map(function (Val) { return Val.Value })
+                    //}
+                ]
+            };
 
-            Charts.push({ charts: chart, dataPoint: PointChartSensor, WalkID: item.WalkID, chartLenght: PointChartSensor.length, startLenght: PointChartSensor.length});
+             options = {
+                responsive: true,
+                pointDotRadius: 0,
+                scaleShowVerticalLines: false,
+                datasetStrokeWidth: 1,
+                pointDotStrokeWidth: 2,
+                animation: false,
+                tooltipFillColor: "rgba(120,0,0,0.8)",
+                tooltipFontStyle: "bold",
+                tooltipTemplate: "<%if (label){%><%=label%> <%}%>",
+                scaleLabel: "<%= Number(value).toFixed(0).replace('.', ',') + ''%>",
 
-        var con = $.hubConnection(); // chart live
-            var hub = con.createHubProxy('hubMessage');
-            var ChartLine =1;
+            };
+            SensorChart = new Chart(ctx);
+            SensorChart.Line(data, options);
+           // Charts.push({ charts: SensorChart, dataPoint: sensorResult, WalkID: item.WalkID, chartLenght: sensorResult.length, startLenght: sensorResult.length });
+         
+        });
+
+
+        var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
+        var hub = con.createHubProxy('hubMessage');
         hub.on('onHitRecorded', function (i) {
             if (i.GetTrap == "get") {
-               updateDataChart(data,i);
+               updateData(data,i);
             }
         });
         con.start();
 
-            function updateDataChart(data, value) {
+        function updateData(data, value) {
 
-                updateChart = Charts.filter(function (ch) {
-                    return ch.WalkID === value.WalkID
-                });
+            SensorGetResult.push(value);
+            sensorResult = SensorGetResult.filter(function (sensor) {
+                return sensor.WalkID === value.WalkID;
+            });
 
-                //    var ss = updateChart[0].chartLenght;
-                updateChart.map(function (chartInformation) {
-                    chartInformation.chartLenght++;
-                    chartInformation.dataPoint.push({ x: chartInformation.chartLenght, y: parseFloat(value.Value) });
-                    if (chartInformation.startLenght < chartInformation.dataPoint.length) {
-                        chartInformation.dataPoint.shift();
-                }
-                    chartInformation.charts.render();
-                });
-                               //updateChart[0].dataPoint.push({ x: k, y: parseFloat(value.Value) });
-                //if (updateChart[0].startLenght < updateChart[0].dataPoint.length) {
-                //    updateChart[0].dataPoint.shift();
-                //}
-                //updateChart[0].charts.render();
+            ctx = document.getElementById("chart" + value.WalkID).getContext("2d");
+            data["labels"] = sensorResult.map(function (value) { return value.Value });
+            data["datasets"][0]["data"] = sensorResult.map(function (value) { return value.Value });
+            SensorChart = new Chart(ctx);
+            SensorChart.Line(data, options);
         };
-        });
     });
+
 </script>

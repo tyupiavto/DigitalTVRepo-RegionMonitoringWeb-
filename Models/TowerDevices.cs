@@ -22,5 +22,6 @@ namespace AdminPanelDevice.Models
         public string StateName { get; set; }
         public string CityName { get; set; }
         public int MibID { get; set; }
+        public List<string> towerDevice = new List<string>();
     }
 }

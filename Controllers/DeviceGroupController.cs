@@ -1017,11 +1017,11 @@ namespace AdminPanelDevice.Controllers
                 {
                     if (lmi.MapID != 0)
                     {
-                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}' where TowerName='{TowerIDLocal}'  and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}' where TowerName='{TowerIDLocal}'  and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
                     if (lmi.LogID != 0)
                     {
-                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set LogID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set LogID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
                     if (lmi.GpsID != 0)
                     {
@@ -1029,11 +1029,11 @@ namespace AdminPanelDevice.Controllers
                     }
                     if (lmi.MyDescription!=null || lmi.MyDescription!="")
                     {
-                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MyDescription=N'{lmi.MyDescription}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MyDescription=N'{lmi.MyDescription}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
                     if (lmi.DivideMultiply!=null)
                     {
-                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set DivideMultiply=N'{lmi.DivideMultiply}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set DivideMultiply=N'{lmi.DivideMultiply}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
 
                 });

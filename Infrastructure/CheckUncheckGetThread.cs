@@ -72,20 +72,20 @@ namespace AdminPanelDevice.Infrastructure
             }
         }
 
-        public List<GetSleepThread> UnCheckdGet (int unChechkID, string towerName, int deviceID, int towerID, string LogMap, List<GetSleepThread> getThread)
+        public List<GetSleepThread> UnCheckdGet(int unChechkID, string towerName, int deviceID, int towerID, string LogMap, List<GetSleepThread> getThread)
         {
             GetSleepThread uncheckMapLog = new GetSleepThread();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var getcheck = connection.Query<GetSleepThread>($"select * from  GetSleepThread where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unChechkID}'  and TowerID='{towerID}'").FirstOrDefault();
-                if (LogMap=="Log")
+                if (LogMap == "Log" || LogMap == "Map")
                 {
-                    if (getcheck != null && getcheck.MapID!=1)
+                    if (getcheck != null )
                     {
                         SleepInformation sleepget = new SleepInformation();
                         if (getThread.Count == 0)
                         {
-                            getThread = sleepget.SleepGetInformation(true);
+                            getThread = sleepget.SleepGetInformation(false);
                         }
                         connection.Query<GetSleepThread>($"delete from  GetSleepThread where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unChechkID}' and TowerID='{towerID}'");
                         connection.Query<GetSleepThread>($"Update GetSleepThread Set LogID=0 where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unChechkID}' and TowerID='{towerID}'");

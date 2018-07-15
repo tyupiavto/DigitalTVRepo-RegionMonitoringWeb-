@@ -159,9 +159,11 @@ $('body').on('click touchend', '.preset_list_remove li', function () { // select
 });
 
 $('body').on('click touched', '#preset_send', function () {
+    $('#load_walk').css("display", "block");
     $.post("/DeviceGroup/PresetSearch", { presetSearchName: presetSearchName }, function (Response) {
         $('#device_settings').html("");
         $('#device_settings').html(Response);
+        $('#load_walk').css("display", "none");
     }, 'text');
 });
 

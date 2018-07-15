@@ -15,5 +15,10 @@ namespace AdminPanelDevice.ChartLive
         {
             return chartResult.SensorListReturned(DeviceID, IP);
         }
+
+        public List<List<AllDeviceLive>> AllSelectedSensor()
+        {
+            return chartResult.SelectedSensorInformation();
+        }
     }
 }

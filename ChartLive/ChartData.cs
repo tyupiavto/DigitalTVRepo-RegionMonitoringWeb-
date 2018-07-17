@@ -18,7 +18,8 @@ namespace AdminPanelDevice.ChartLive
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                return  connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceID='{DeviceID}' and IP='{IP}' and LogID<>0 and MapID<>0").ToList();
+             //   var ss= connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceID='{DeviceID}' and IP='{IP}' and LogID<>0 or MapID<>0").ToList();
+                return connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceID='{DeviceID}' and IP='{IP}' and LogID<>0 or MapID<>0").ToList();
             }
         }
         public List<MibGet> SensorGetList(int DeviceID,string IP,string WalkOID)

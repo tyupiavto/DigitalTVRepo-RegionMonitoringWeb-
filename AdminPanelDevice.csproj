@@ -409,6 +409,9 @@
     <Compile Include="Models\WalkTowerDevice.cs" />
     <Compile Include="MonitoringAppStartup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SnmpGet\GetData.cs" />
+    <Compile Include="SnmpGet\GetLogic.cs" />
+    <Compile Include="SnmpGet\GetPresentation.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

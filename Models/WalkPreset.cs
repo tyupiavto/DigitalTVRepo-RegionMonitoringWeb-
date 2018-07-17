@@ -25,6 +25,8 @@ namespace AdminPanelDevice.Models
         public string WalkOID { get; set; }
         public string MyDescription { get; set; }
         public string DivideMultiply { get; set; }
+        public int StringParserInd { get; set; }
+
         public string OneStartError { get; set; }
         public string OneEndError { get; set; }
         public string OneStartCrash { get; set; }

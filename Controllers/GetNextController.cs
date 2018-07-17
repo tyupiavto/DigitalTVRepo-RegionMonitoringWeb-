@@ -12,7 +12,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using Dapper;
 using AdminPanelDevice.Infrastructure;
-
+using AdminPanelDevice.SnmpGet;
 namespace AdminPanelDevice.Controllers
 {
     public class GetNextController : Controller
@@ -25,6 +25,7 @@ namespace AdminPanelDevice.Controllers
         SleepInformation returnedThreadList = new SleepInformation();
         public UpdateCheck updateCheck = new UpdateCheck();
         CheckUncheckGetThread checkgetthread = new CheckUncheckGetThread();
+        GetPresentation getPresentation = new GetPresentation();
     
         public ActionResult Index()
         {
@@ -35,30 +36,33 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult Get(string towerName ,int towerID, int deviceID)
         {
-            GetThreadPlayStop get = new GetThreadPlayStop();
+           // GetThreadPlayStop get = new GetThreadPlayStop();
 
-           var getbool= get.Get(getThread, returnedThreadList, towerName, deviceID, towerID,db, getThreadPreset);
-            if (getbool==false )
-            {
-                return Json("1", JsonRequestBehavior.AllowGet);
-            }
-            return Json("", JsonRequestBehavior.AllowGet);
+            //var getOnOof= get.Get(getThread, returnedThreadList, towerName, deviceID, towerID,db, getThreadPreset);
+            //var getOnOof = getPresentation.DeviceTheadOnOff(getThread, returnedThreadList, towerName, deviceID, towerID, db, getThreadPreset);
+            //if (getOnOof == false )
+            //{
+            //    return Json("1", JsonRequestBehavior.AllowGet);
+            //}
+            return Json(getPresentation.DeviceTheadOnOff(getThread, returnedThreadList, towerName, deviceID, towerID, db, getThreadPreset), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GetStop (string towerName, List<int> stopGet)
         {
-            GetThreadPlayStop stop = new GetThreadPlayStop();
-            stop.StopThread(getThread, returnedThreadList, towerName, stopGet);
+            //GetThreadPlayStop stop = new GetThreadPlayStop();
+            //stop.StopThread(getThread, returnedThreadList, towerName, stopGet);
+             getPresentation.StopThread(getThread, returnedThreadList, towerName, stopGet);
             return Json("");
         }
 
         [HttpPost]
         public JsonResult GetPlay(string towerName,int towerID, List<int> playGet)
         {
-            GetThreadPlayStop play = new GetThreadPlayStop();
-            var playstoplist=play.PlayThread(treadListInd,getThread,returnedThreadList,playGet,towerName,towerID,db,getThreadPreset);
-            return Json(playstoplist);
+            //GetThreadPlayStop play = new GetThreadPlayStop();
+            //var playstoplist = play.PlayThread(treadListInd, getThread, returnedThreadList, playGet, towerName, towerID, db, getThreadPreset);
+            //return Json(playstoplist);
+            return Json(getPresentation.PlayTheadDevice(treadListInd, getThread, returnedThreadList, playGet, towerName, towerID, db, getThreadPreset));
         }
 
 
@@ -117,12 +121,19 @@ namespace AdminPanelDevice.Controllers
                 if (getThread.Count != 0)
                 {
                     var th = getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault();
-                    th.thread.Abort();
-                    //getThread.Remove(th);
-                    getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(th.WalkID,checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError,th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
-                    //getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Suspend();
-                    getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Start();
+                    if (th != null)
+                    {
+                        th.thread.Abort();
 
+                        //getThread.Remove(th);
+                        getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
+                        //getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Suspend();
+                        getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Start();
+                    }
+                    else
+                    {
+                      //  getThread.Add(new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash)));
+                    }
                 }
             }
             return Json("");

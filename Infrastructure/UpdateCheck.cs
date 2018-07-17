@@ -99,6 +99,7 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.Description = walkList[l - 1].WalkDescription;
                     wlk.MyDescription = walkList[l - 1].MyDescription;
                     wlk.DivideMultiply = walkList[l - 1].DivideMultiply;
+                    wlk.StringParserInd = walkList[l - 1].StringParserInd;
 
                     wlk.StartCorrect = walkList[l - 1].StartCorrect;
                     wlk.EndCorrect = walkList[l - 1].EndCorrect;
@@ -134,6 +135,7 @@ namespace AdminPanelDevice.Infrastructure
                     wlk.Description = walkList[m - 1].WalkDescription;
                     wlk.MyDescription = walkList[m - 1].MyDescription;
                     wlk.DivideMultiply = walkList[m - 1].DivideMultiply;
+                    wlk.StringParserInd = walkList[m - 1].StringParserInd;
 
                     wlk.StartCorrect = walkList[m - 1].StartCorrect;
                     wlk.EndCorrect = walkList[m - 1].EndCorrect;

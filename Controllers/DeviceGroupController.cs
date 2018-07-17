@@ -1035,6 +1035,10 @@ namespace AdminPanelDevice.Controllers
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set DivideMultiply=N'{lmi.DivideMultiply}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
+                    if (lmi.StringParserInd!=0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set StringParserInd='1',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
+                    }
 
                 });
 
@@ -1515,7 +1519,7 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var value = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{towerName}'and DeviceID='{deviceID}' and WalkOID='{walkOid}' and WalkID='{settingID}'").FirstOrDefault();
-                if (value != null &&  value.StartCorrect != null && value.EndCorrect != null)
+                if (value != null &&  value.StartCorrect != null && value.StartCorrect !="" &&  value.EndCorrect != null && value.EndCorrect !="")
                 {
                     return Json(value);
                 }

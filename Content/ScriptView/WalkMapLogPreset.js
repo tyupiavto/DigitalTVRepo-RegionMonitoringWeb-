@@ -451,7 +451,7 @@ $('body').on('click touched', '.logmapsetting', function () {
         description = '';
      }
 
-    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, deviceID: deviceID, oidName: oidName, description: description, walkOid: walkOid, settingID:settingID }, function (Response) {
+    $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, deviceID: deviceID, oidName: oidName, description: description, walkOid: walkOid, settingID: settingID }, function (Response) {
         if (Response != '') {
             maxlenght = parseFloat(Response.TwoEndError);
             minlenght = parseFloat(Response.OneStartError);

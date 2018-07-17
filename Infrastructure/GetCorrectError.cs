@@ -47,7 +47,7 @@ namespace AdminPanelDevice.Infrastructure
             double number;
             var convertationDouble = Double.TryParse(value,out number);
 
-            if (convertationDouble != false)
+            if (convertationDouble != false && StartCorrect!="" && EndCorrect!="")
             {
 
                 if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(OneStartError, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(OneEndError, CultureInfo.InvariantCulture))
@@ -82,7 +82,7 @@ namespace AdminPanelDevice.Infrastructure
                     context.Clients.All.onHitRecorded(mapinf);
                     return "Yellow";
                 }
-                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture))
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture)|| Convert.ToDouble(value, CultureInfo.InvariantCulture)>= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture))
                 {
                     mapinf.MapColor = "red";
                     mapinf.LineColor = "red";

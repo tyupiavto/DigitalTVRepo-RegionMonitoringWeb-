@@ -18,7 +18,7 @@ $('body').on('click touched', '.paly_stop_device', function () {
         $('#paly_stop_device' + deviceID).attr("src", "/Icons/play.png");
     }
     $.post("/GetNext/Get", { towerName: towerName, towerID: towerID, deviceID: deviceID,TowerTextName:TowerTextName }, function (Response) {
-        if (Response == "1") {
+        if (Response == "false") {
             $('#paly_stop_tower' + towerID).attr("src", "/Icons/play.png");
             $('#paly_stop_device' + deviceID).attr("src", "/Icons/play.png");
         }

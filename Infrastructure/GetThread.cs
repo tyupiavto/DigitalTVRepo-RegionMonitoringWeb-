@@ -88,7 +88,9 @@ namespace AdminPanelDevice.Infrastructure
                         db.SaveChanges();
                     }
                 }
-                catch (Exception e) { }
+                catch (Exception e) {
+                    var ks = 1;
+                }
 
                 target.Close();
                 Thread.Sleep((time * 1000));

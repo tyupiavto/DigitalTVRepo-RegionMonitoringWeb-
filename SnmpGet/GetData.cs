@@ -103,11 +103,19 @@ namespace AdminPanelDevice.SnmpGet
             }
         }
 
-        public int LogSelectedCount (int chechkLog, int walkCheckID, string towerName, int deviceID)
+        public int LogSelectedCount (int walkCheckID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 return connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}' and LogID<>0").ToList().Count;
+            }
+        }
+
+        public int MapSelectedCount(int walkCheckID, string towerName, int deviceID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkCheckID}'and TowerName='{towerName}' and DeviceID='{deviceID}' and MapID<>0").ToList().Count;
             }
         }
 
@@ -116,6 +124,68 @@ namespace AdminPanelDevice.SnmpGet
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set LogID='{LogMapStatus}' where WalkID='{checkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+            }
+        }
+        public void UpdateMap(int LogMapStatus, string towerName, int deviceID, int checkID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set MapID='{LogMapStatus}' where WalkID='{checkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+            }
+        }
+        public void UpdateSleepTheadLog(string towerName, int deviceID, int towerID, int unCheckID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<GetSleepThread>($"Update GetSleepThread Set LogID=0 where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unCheckID}' and TowerID='{towerID}'");
+            }
+        }
+
+        public void UpdateSleepTheadMap(string towerName, int deviceID, int towerID, int unCheckID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<GetSleepThread>($"Update GetSleepThread Set MapID=0 where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unCheckID}' and TowerID='{towerID}'");
+            }
+        }
+
+        public void DeleteSleepThead (string towerName, int deviceID, int towerID, int unCheckID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<GetSleepThread>($"delete from  GetSleepThread where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{unCheckID}' and TowerID='{towerID}'");
+            }
+        }
+
+        public void UpdateSleepTheadInterval (int intervalID, int Interval, string towerName, int deviceID, int towerID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<GetSleepThread>($"Update GetSleepThread Set ScanInterval='{Interval}' where TowerName='{towerName}' and DeviceID='{deviceID}' and CheckID='{intervalID}' and TowerID='{towerID}'");
+            }
+        }
+        public void UpdateInterval(int intervalID, int Interval, string towerName, int deviceID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>($"Update WalkTowerDevice Set ScanInterval='{Interval}' where WalkID='{intervalID}' and TowerName='{towerName}' and DeviceID='{deviceID}'");
+            }
+        }
+
+        public void StringParseUpdate (int checkParser, int walkID, string towerName, int deviceID, int towerID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>($"update WalkTowerDevice Set StringParserInd='{checkParser}'  where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+                connection.Query<GetSleepThread>($"update GetSleepThread Set StringParserInd='{checkParser}'  where CheckID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+            }
+        }
+
+        public WalkTowerDevice ParseSelectResult (int walkID, string towerName, int deviceID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'").FirstOrDefault();
             }
         }
     }

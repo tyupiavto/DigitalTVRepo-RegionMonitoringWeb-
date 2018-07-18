@@ -176,9 +176,8 @@ namespace AdminPanelDevice.SnmpGet
             });
         }
 
-        public GetSleepThread checkedLog(int checkID, string towerName, int deviceID, DeviceContext db, int towerID, string LogMap, int CountCheck, bool MapLog)
+        public GetSleepThread checkedLogMap(int checkID, string towerName, int deviceID, DeviceContext db, int towerID, string LogMap, int CountCheck, bool MapLog)
         {
-
             var getcheck = getData.GetCheckFirsDefine(towerName, deviceID, towerID);
                 GetSleepThread checkMapLog = new GetSleepThread();
                 GetThread getThreadPreset = new GetThread();
@@ -232,10 +231,104 @@ namespace AdminPanelDevice.SnmpGet
             }
         }
 
+        public List<GetSleepThread> UnCheckLog(int unChechkID, string towerName, int deviceID, int towerID, string LogMap, List<GetSleepThread> getThread)
+        {
+            GetSleepThread uncheckMapLog = new GetSleepThread();
+
+            var LogMapCheck = getData.MapLogExistence(towerName, deviceID, towerID, unChechkID);
+            if (LogMap == "Log" || LogMap == "Map")
+            {
+                if (LogMapCheck != null)
+                {
+                    SleepInformation sleepget = new SleepInformation();
+                    if (getThread.Count == 0)
+                    {
+                        getThread = sleepget.SleepGetInformation(false);
+                    }
+                    getData.DeleteSleepThead(towerName, deviceID, towerID, unChechkID);
+                    getData.UpdateSleepTheadLog(towerName, deviceID, towerID, unChechkID);
+
+                    var removeLog = getThread.Where(g => g.TowerName == towerName && g.DeviceID == deviceID && g.CheckID == unChechkID && g.TowerID == towerID).FirstOrDefault();
+                    removeLog.thread.Abort();
+                    getThread.Remove(removeLog);
+
+                }
+                else
+                {
+                    getData.UpdateSleepTheadLog(towerName, deviceID, towerID, unChechkID);
+                }
+            }
+            else
+            {
+                if (LogMapCheck != null && LogMapCheck.LogID != 1)
+                {
+                    getData.DeleteSleepThead(towerName, deviceID, towerID, unChechkID);
+                    getData.UpdateSleepTheadMap(towerName, deviceID, towerID, unChechkID);
+
+                    var removeLog = getThread.Where(g => g.TowerName == towerName && g.DeviceID == deviceID && g.CheckID == unChechkID && g.TowerID == towerID).FirstOrDefault();
+                    removeLog.thread.Abort();
+                    getThread.Remove(removeLog);
+                }
+                else
+                {
+                    getData.UpdateSleepTheadMap(towerName, deviceID, towerID, unChechkID);
+                }
+            }
+            return getThread;
+        }
+
         public int LogCheckCount (int chechkLog, int walkCheckID, string towerName, int deviceID,int towerID)
         {
-            getData.UpdateLog(1, towerName, deviceID, walkCheckID);
-            return getData.LogSelectedCount(chechkLog, walkCheckID, towerName, deviceID);
+            getData.UpdateLog(chechkLog, towerName, deviceID, walkCheckID);
+            return getData.LogSelectedCount(walkCheckID, towerName, deviceID);
+        }
+
+        public int MapCheckCount(int chechkMap, int walkCheckID, string towerName, int deviceID, int towerID)
+        {
+            getData.UpdateMap(chechkMap, towerName, deviceID, walkCheckID);
+            return getData.LogSelectedCount(walkCheckID, towerName, deviceID);
+        }
+
+        public List<GetSleepThread> ChangeInterval(int intervalID, int Interval, string towerName, int deviceID, int towerID, List<GetSleepThread> getThread)
+        {
+            getData.UpdateInterval(intervalID, Interval, towerName, deviceID);
+            GetThread getThreadPreset = new GetThread();
+            getData.UpdateSleepTheadInterval(intervalID, Interval, towerName, deviceID, towerID);
+
+                var intervalChange = getThread.Where(g => g.TowerName == towerName && g.DeviceID == deviceID && g.CheckID == intervalID && g.TowerID == towerID).FirstOrDefault();
+                if (intervalChange != null)
+                {
+                    intervalChange.thread.Abort();
+                    intervalChange.ScanInterval = Interval;
+                    getThread.Remove(intervalChange);
+                    intervalChange.thread = new Thread(() => getThreadPreset.ThreadPreset(intervalChange.WalkID, intervalChange.StringParserInd, intervalChange.DivideMultiply, intervalChange.ID, towerID, intervalChange.IP, intervalChange.ScanInterval, intervalChange.DeviceID, intervalChange.WalkOid, intervalChange.Version, intervalChange.StartCorrect, intervalChange.EndCorrect, intervalChange.OneStartError, intervalChange.OneEndError, intervalChange.OneStartCrash, intervalChange.OneEndCrash, intervalChange.TwoStartError, intervalChange.TwoEndError, intervalChange.TwoStartCrash, intervalChange.TwoEndCrash));
+                    intervalChange.thread.Start();
+                    getThread.Add(intervalChange);
+                }
+            
+            return getThread;
+        }
+
+        public List<GetSleepThread> WalkValueStringParse(int checkParser, int walkID, string towerName, int deviceID, int towerID, List<GetSleepThread> getThread, GetThread getThreadPreset)
+        {
+                getData.StringParseUpdate(checkParser, walkID, towerName, deviceID, towerID);
+                getThread = HangfireBootstrapper.Instance.GetThreadStart();
+            if (getThread.Count != 0)
+            {
+                var th = getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault();
+                if (th != null)
+                {
+                    th.thread.Abort();
+                    getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
+                    getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Start();
+                }
+            }
+            return getThread;
+        }
+
+        public int ValueStringSelect (int walkID, string towerName, int deviceID)
+        {
+            return getData.ParseSelectResult(walkID, towerName, deviceID).StringParserInd;
         }
     }
 }

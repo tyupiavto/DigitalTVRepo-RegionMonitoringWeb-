@@ -64,96 +64,96 @@ namespace AdminPanelDevice.Controllers
             //return Json(playstoplist);
             return Json(getPresentation.PlayTheadDevice(treadListInd, getThread, returnedThreadList, playGet, towerName, towerID, db, getThreadPreset));
         }
-
+        
+        [HttpPost]
+        public JsonResult CheckLog(int chechkID, string towerName, int deviceID, int towerID, bool logStartStopPlay) // checked log
+        {
+            //var LogCount=updateCheck.UpdateChechkLog(1, chechkID, towerName, deviceID);
+            // getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID,"Log",LogCount, logStartStopPlay));
+            getThread.Add(getPresentation.SelectedLog(chechkID, towerName, deviceID, towerID, "Log", logStartStopPlay, db));
+            return Json("");
+        }
 
         [HttpPost]
         public JsonResult UncheckLog(int unChechkID, string towerName, int deviceID,int towerID) // uncheckd log
         {
-            updateCheck.UpdateChechkLog(0, unChechkID, towerName, deviceID);
-            CheckUncheckGetThread uncheckLog = new CheckUncheckGetThread();
-            getThread=uncheckLog.UnCheckdGet(unChechkID, towerName, deviceID, towerID, "Log", getThread);
-            return Json("");
-        }
-
-        [HttpPost]
-        public JsonResult CheckLog(int chechkID, string towerName, int deviceID,int towerID,bool logStartStopPlay) // checked log
-        {
-          var LogCount=updateCheck.UpdateChechkLog(1, chechkID, towerName, deviceID);
-           // getThread.Add(getPresentation.SelectedLog(chechkID, towerName, deviceID, towerID, logStartStopPlay, db));
-           getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID,"Log",LogCount, logStartStopPlay));
-            return Json("");
-        }
-
-        [HttpPost]
-        public JsonResult UncheckMap(int unChechkID, string towerName, int deviceID, int towerID) // unchecked map
-        {
-            updateCheck.UpdateChechkMap(0, unChechkID, towerName, deviceID);
-            CheckUncheckGetThread uncheckMap = new CheckUncheckGetThread();
-            getThread = uncheckMap.UnCheckdGet(unChechkID, towerName, deviceID, towerID, "Map", getThread);
+            //updateCheck.UpdateChechkLog(0, unChechkID, towerName, deviceID);
+            //CheckUncheckGetThread uncheckLog = new CheckUncheckGetThread();
+            //getThread=uncheckLog.UnCheckdGet(unChechkID, towerName, deviceID, towerID, "Log", getThread);
+            getThread=getPresentation.UnCheckLog(unChechkID, towerName, deviceID, towerID, "Log", getThread);
             return Json("");
         }
 
         [HttpPost]
         public JsonResult CheckMap(int chechkID, string towerName, int deviceID,int towerID, bool mapStartStopPlay) // checked map
         {
-           var MapCount=updateCheck.UpdateChechkMap(1, chechkID, towerName, deviceID);
-            getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID, "Map",MapCount, mapStartStopPlay));
+           // var MapCount=updateCheck.UpdateChechkMap(1, chechkID, towerName, deviceID);
+           //  getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID, "Map",MapCount, mapStartStopPlay));
+            getThread.Add(getPresentation.SelectedMap(chechkID, towerName, deviceID, towerID, "Map", mapStartStopPlay, db));
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult UncheckMap(int unChechkID, string towerName, int deviceID, int towerID) // unchecked map
+        {
+            //updateCheck.UpdateChechkMap(0, unChechkID, towerName, deviceID);
+            //CheckUncheckGetThread uncheckMap = new CheckUncheckGetThread();
+            //getThread = uncheckMap.UnCheckdGet(unChechkID, towerName, deviceID, towerID, "Map", getThread);
+            getThread = getPresentation.UnCheckMap(unChechkID, towerName, deviceID, towerID, "Map", getThread);
             return Json("");
         }
 
         [HttpPost]
         public JsonResult IntervalSearch(int intervalID, int Interval, string towerName, int deviceID,int towerID)
         {
-            updateCheck.UpdateInterval(intervalID, Interval, towerName, deviceID);
-            CheckUncheckGetThread intervalChange = new CheckUncheckGetThread();
-            getThread = intervalChange.ChangeInterval(intervalID, Interval, towerName, deviceID, towerID, getThread);
+            //updateCheck.UpdateInterval(intervalID, Interval, towerName, deviceID);
+            //CheckUncheckGetThread intervalChange = new CheckUncheckGetThread();
+            //getThread = intervalChange.ChangeInterval(intervalID, Interval, towerName, deviceID, towerID, getThread);
+
+            getThread = getPresentation.UpdateChangeInterval(intervalID, Interval, towerName, deviceID, towerID, getThread);
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult StringParser(int checkParser, int walkID, string towerName, int deviceID,int towerID)
-        {       
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                connection.Query<WalkTowerDevice>($"update WalkTowerDevice Set StringParserInd='{checkParser}'  where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
-                connection.Query<GetSleepThread>($"update GetSleepThread Set StringParserInd='{checkParser}'  where CheckID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
-                getThread = HangfireBootstrapper.Instance.GetThreadStart();
-                if (getThread.Count != 0)
-                {
-                    var th = getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault();
-                    if (th != null)
-                    {
-                        th.thread.Abort();
-
-                        //getThread.Remove(th);
-                        getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
-                        //getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Suspend();
-                        getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Start();
-                    }
-                    else
-                    {
-                      //  getThread.Add(new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash)));
-                    }
-                }
-            }
-            return Json("");
-        }
-        [HttpPost]
-        public JsonResult ParserCheck(int walkID, string towerName, int deviceID)
+        public JsonResult StringParser(int checkParser, int walkID, string towerName, int deviceID, int towerID)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                var pasrserID = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'").FirstOrDefault();
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    connection.Query<WalkTowerDevice>($"update WalkTowerDevice Set StringParserInd='{checkParser}'  where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+            //    connection.Query<GetSleepThread>($"update GetSleepThread Set StringParserInd='{checkParser}'  where CheckID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
+            //    getThread = HangfireBootstrapper.Instance.GetThreadStart();
+            //    if (getThread.Count != 0)
+            //    {
+            //        var th = getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault();
+            //        if (th != null)
+            //        {
+            //            th.thread.Abort();
 
-                if (pasrserID.StringParserInd == 0)
-                {
-                    return Json("0");
-                }
-                else
-                {
-                    return Json("1");
-                }
-            }
+            //            //getThread.Remove(th);
+            //            getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread = new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash));
+            //            //getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Suspend();
+            //            getThread.Where(gt => gt.CheckID == walkID && gt.DeviceID == deviceID && gt.TowerName == towerName).FirstOrDefault().thread.Start();
+            //        }
+            //        else
+            //        {
+            //            //  getThread.Add(new Thread(() => getThreadPreset.ThreadPreset(th.WalkID, checkParser, th.DivideMultiply, th.ID, towerID, th.IP, th.ScanInterval, th.DeviceID, th.WalkOid, th.Version, th.StartCorrect, th.EndCorrect, th.OneStartError, th.OneEndError, th.OneStartCrash, th.OneEndCrash, th.TwoStartError, th.TwoEndError, th.TwoStartCrash, th.TwoEndCrash)));
+            //        }
+            //    }
+            //}
+
+             getThread=getPresentation.ValueStringParseResult(checkParser, walkID, towerName, deviceID, towerID, getThread, getThreadPreset);
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult ParserSelect(int walkID, string towerName, int deviceID)
+        {
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    var pasrserID = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'").FirstOrDefault();
+            //    return Json(pasrserID.StringParserInd);
+            //}
+            return Json(getPresentation.StringParserID(walkID,towerName,deviceID));
         }
     }
 }

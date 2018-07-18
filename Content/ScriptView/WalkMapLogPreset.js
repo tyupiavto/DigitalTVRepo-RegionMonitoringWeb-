@@ -665,7 +665,7 @@ $('body').on('click touched', '#paly_stop_device_refresh', function () {
 
 $('body').on('click touched', '.log_map_settings', function () {
     WalkID = $(this).attr("value");
-    $.post('/GetNext/ParserCheck', { walkID: WalkID, towerName: towerName, deviceID: deviceID }, function (Response) {
+    $.post('/GetNext/ParserSelect', { walkID: WalkID, towerName: towerName, deviceID: deviceID }, function (Response) {
         if (Response == true) {
             $('#string_parser_checked_add').removeClass("").addClass("checked");
             $("#string_parser_checked").prop('checked', true);

@@ -72,7 +72,7 @@
                 </ul>
             </div>
 
-</div>
+    </div>
     <div id="settingsDiv">
     </div>
 </div>
@@ -118,7 +118,7 @@
                             <input class="deviceInput inputField gradient port_ip" id="tower_ip" placeholder="IP" value="" type="text" hidefocus="true" style="color: #b8c0c8; font-size:12px; width:150px; margin-top:-5px;">
                         </td>
                         <td style="width:1%;" id="opneIPLink">
-                           <a target="_blank" href="http://" style="margin-left:2px;">Link</a>
+                            <a target="_blank" href="http://" style="margin-left:2px;">Link</a>
                         </td>
                         <td style="width:1%;">
                             <input class="deviceInput inputField gradient port_ip" id="tower_port" placeholder="Port" value="161" type="text" hidefocus="true" style="margin-left:5px; color: #b8c0c8; font-size:12px; width:60px;margin-top:-5px;">
@@ -157,6 +157,16 @@
                                 </div>
                             </div>
                         </td>
+                        <td style="width:2%">
+                            <form action="" method="post" style="width:100%;height:19px;" class="container" enctype="multipart/form-data" id="needs-validation" novalidate>
+                                <input name="mib_file" type="file" ref="upload" id="FileUploadPreset" accept="file/*" style="display: none">
+                                <label class="btn btn-send" for="FileUploadPreset" style="height:20px; width:50%;line-height:6px;margin-top:-1px;margin-left:-16px;">
+                                    <span class="arrow_download" id="open_walk_preset">
+                                        <img src="/image/export.png" width="100%" height="100%" alt="arrow" title="arrow">
+                                    </span>
+                                </label>
+                            </form>
+                        </td>
                         <td class="adapterInput" id="preset_add_remove" style="width:6%">
                             <ul class="Type typeSelect" style="height: 22px;width: 101px;min-width:46px;">
                                 <li>
@@ -177,10 +187,17 @@
                         <td style="width:4%;">
                             <input type="button" id="preset_send" value="Load" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;">
                         </td>
-                        <td style="width:10.4%;">
+                        <td style="width:4.4%;">
                             @*<ul id="timButtons">*@
-                                @*<li>*@<input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;">@*</li>*@
+                            @*<li>*@<input type="button" id="preset_save" value="Save" class="btn" style="height:20px; width:52px;line-height:6px;margin-top:-3px;">@*</li>*@
                             @*</ul>*@
+                        </td>
+                        <td style="width:7%">
+                            <button class="btn" style="width:20px; height:20px;margin-top:-3px;">
+                                <span class="arrow_download" id="download_walk_preset">
+                                    <img src="/image/download.gif" width="100%" height="100%" alt="arrow" title="arrow">
+                                </span>
+                            </button>
                         </td>
                         <td style="width:5%">
                             <div class="input_styled checklist pull-left" style="margin-top:-6px; height:20px;">
@@ -230,11 +247,7 @@
                     </tr>
                 </table>
             </div>
-            <ul class='custom-menu' style="display:none;">
-                <span style="font-size: 11px;margin-left:2px;">GPS Select</span>
-                <li data-action="Yes">Yes</li>
-                <li data-action="No">No</li>
-            </ul>
+
             <div class="titileGroup" style="height:21px;margin-left:1px;">
                 <table style="table-layout: fixed;width: 100%">
                     <tr class="streamsInfo" id="header_device">
@@ -246,6 +259,9 @@
                         </td>
                         <td style="width:25%;">
                             <div class="descriptionDiv">Value</div>
+                        </td>
+                        <td style="width:10%;">
+                            <div class="descriptionDiv">MyDescription</div>
                         </td>
                         <td style="width:5%;">
                             <div class="descriptionDiv">Map</div>
@@ -265,6 +281,18 @@
                     </tr>
                 </table>
             </div>
+
+            <ul class='custom-menu' style="display:none;">
+                <span style="font-size: 11px;margin-left:2px;">GPS Select</span>
+                <li data-action="Yes">Yes</li>
+                <li data-action="No">No</li>
+            </ul>
+
+            <ul class='custom-menu-setting' style="display:none;">
+                @*<span style="font-size: 11px;margin-left:2px;">GPS Select</span>*@
+                <li data-action="Copy">Copy</li>
+                <li data-action="Paste">Paste</li>
+            </ul>
             <div class="modal-body" id="device_settings">
             </div>
         </div>
@@ -433,8 +461,8 @@
                             </div>
                         </div>
                     </div>
-               
-                    
+
+
                 </div>
             </div>
 
@@ -541,9 +569,10 @@
 </div>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 @*<script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
-<script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
-<script src="~/signalr/Hubs"></script>*@
+    <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
+    <script src="~/signalr/Hubs"></script>*@
 <script>
     //var counter;
     var idTarget, title;

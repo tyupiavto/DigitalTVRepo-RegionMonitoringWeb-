@@ -170,5 +170,115 @@ namespace AdminPanelDevice.Infrastructure
                 db.SaveChanges();
             }
         }
+
+        public List<WalkPreset> WalkPresetDownload(List<WalkTowerDevice> walkList, string DeviceName, string TowerID, int deviceID)
+        {
+            List<WalkPreset> walkPresetList = new List<WalkPreset>();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                List<int> Log = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and LogID<>0 and DeviceID='" + deviceID + "'").ToList().Select(s => s.WalkID).ToList();
+                List<int> Map = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and MapID<>0 and DeviceID='" + deviceID + "'").ToList().Select(s => s.WalkID).ToList();
+                List<int> Gps = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceName + "' and TowerName='" + TowerID + "' and GpsID<>0 and DeviceID='" + deviceID + "'").ToList().Select(s => s.WalkID).ToList();
+                Log.ForEach(l =>
+                {
+                    WalkPreset wlk = new WalkPreset();
+                    if (Map.Contains(l))
+                    {
+                        Map.Remove(l);
+                        wlk.LogID = l;
+                        wlk.MapID = l;
+                    }
+                    else
+                    {
+                        wlk.LogID = l;
+                    }
+                    if (Gps.Contains(l))
+                    {
+                        Gps.Remove(l);
+                        wlk.GpsID = l;
+                    }
+                    wlk.PresetID =0;
+                    wlk.DeviceName = DeviceName;
+                    wlk.IntervalID = l;
+                    wlk.DeviceID = deviceID;
+                    wlk.Interval = walkList[l - 1].ScanInterval;
+                    wlk.OIDName = walkList[l - 1].OIDName;
+                    wlk.WalkOID = walkList[l - 1].WalkOID;
+                    wlk.Description = walkList[l - 1].WalkDescription;
+                    wlk.MyDescription = walkList[l - 1].MyDescription;
+                    wlk.DivideMultiply = walkList[l - 1].DivideMultiply;
+                    wlk.StringParserInd = walkList[l - 1].StringParserInd;
+
+                    wlk.StartCorrect = walkList[l - 1].StartCorrect;
+                    wlk.EndCorrect = walkList[l - 1].EndCorrect;
+                    wlk.OneStartError = walkList[l - 1].OneStartError;
+                    wlk.OneEndError = walkList[l - 1].OneEndError;
+                    wlk.OneStartCrash = walkList[l - 1].OneStartCrash;
+                    wlk.OneEndCrash = walkList[l - 1].OneEndCrash;
+                    wlk.TwoStartError = walkList[l - 1].TwoStartError;
+                    wlk.TwoEndError = walkList[l - 1].TwoEndError;
+                    wlk.TwoStartCrash = walkList[l - 1].TwoStartCrash;
+                    wlk.TwoEndCrash = walkList[l - 1].TwoEndCrash;
+
+                    walkPresetList.Add(wlk);
+                });
+
+                Map.ForEach(m =>
+                {
+                    WalkPreset wlk = new WalkPreset();
+                    if (Gps.Contains(m))
+                    {
+                        Gps.Remove(m);
+                        wlk.GpsID = m;
+                    }
+
+                    wlk.MapID = m;
+                    wlk.PresetID = 0;
+                    wlk.DeviceName = DeviceName;
+                    wlk.IntervalID = m;
+                    wlk.DeviceID = deviceID;
+                    wlk.Interval = walkList[m - 1].ScanInterval;
+                    wlk.OIDName = walkList[m - 1].OIDName;
+                    wlk.WalkOID = walkList[m - 1].WalkOID;
+                    wlk.Description = walkList[m - 1].WalkDescription;
+                    wlk.MyDescription = walkList[m - 1].MyDescription;
+                    wlk.DivideMultiply = walkList[m - 1].DivideMultiply;
+                    wlk.StringParserInd = walkList[m - 1].StringParserInd;
+
+                    wlk.StartCorrect = walkList[m - 1].StartCorrect;
+                    wlk.EndCorrect = walkList[m - 1].EndCorrect;
+                    wlk.OneStartError = walkList[m - 1].OneStartError;
+                    wlk.OneEndError = walkList[m - 1].OneEndError;
+                    wlk.OneStartCrash = walkList[m - 1].OneStartCrash;
+                    wlk.OneEndCrash = walkList[m - 1].OneEndCrash;
+                    wlk.TwoStartError = walkList[m - 1].TwoStartError;
+                    wlk.TwoEndError = walkList[m - 1].TwoEndError;
+                    wlk.TwoStartCrash = walkList[m - 1].TwoStartCrash;
+                    wlk.TwoEndCrash = walkList[m - 1].TwoEndCrash;
+
+                    walkPresetList.Add(wlk);
+                });
+                Gps.ForEach(g =>
+                {
+                    WalkPreset wlk = new WalkPreset();
+                    wlk.GpsID = g;
+                    wlk.PresetID = 0;
+                    wlk.DeviceName = DeviceName;
+                    wlk.IntervalID = g;
+                    wlk.DeviceID = deviceID;
+                    wlk.Interval = walkList[g - 1].ScanInterval;
+                    wlk.OIDName = walkList[g - 1].OIDName;
+                    wlk.WalkOID = walkList[g - 1].WalkOID;
+                    wlk.Description = walkList[g - 1].WalkDescription;
+                    wlk.MyDescription = walkList[g - 1].MyDescription;
+
+                    walkPresetList.Add(wlk);
+                });
+               
+            }
+            return walkPresetList;
+        }
+
+
     }
 }

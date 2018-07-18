@@ -175,5 +175,67 @@ namespace AdminPanelDevice.SnmpGet
                 }
             });
         }
+
+        public GetSleepThread checkedLog(int checkID, string towerName, int deviceID, DeviceContext db, int towerID, string LogMap, int CountCheck, bool MapLog)
+        {
+
+            var getcheck = getData.GetCheckFirsDefine(towerName, deviceID, towerID);
+                GetSleepThread checkMapLog = new GetSleepThread();
+                GetThread getThreadPreset = new GetThread();
+                WalkTowerDevice addthread = new WalkTowerDevice();
+            if (getcheck != null || (CountCheck != 0 && MapLog == true))
+            {
+                if (LogMap == "Log")
+                {
+                    addthread = getData.CheckLog(checkID, towerName, deviceID);
+                    checkMapLog.LogID = 1;
+                }
+                else
+                {
+                    addthread = getData.CheckMap(checkID, towerName, deviceID);
+                    checkMapLog.MapID = 1;
+                }
+                var maplogExistence = getData.MapLogExistence(towerName, deviceID, towerID, checkID);
+
+                if (maplogExistence == null)
+                {
+                    checkMapLog.DeviceID = addthread.DeviceID;
+                    checkMapLog.TowerName = addthread.TowerName;
+                    checkMapLog.IP = addthread.IP;
+                    checkMapLog.ScanInterval = addthread.ScanInterval;
+                    checkMapLog.WalkOid = addthread.WalkOID;
+                    checkMapLog.Version = addthread.Version;
+                    checkMapLog.CheckID = addthread.WalkID;
+                    checkMapLog.TowerID = towerID;
+                    checkMapLog.thread = new Thread(() => getThreadPreset.ThreadPreset(addthread.WalkID, addthread.StringParserInd, addthread.DivideMultiply, addthread.ID, towerID, addthread.IP, addthread.ScanInterval, addthread.DeviceID, addthread.WalkOID, addthread.Version, addthread.StartCorrect, addthread.EndCorrect, addthread.OneStartError, addthread.OneEndError, addthread.OneStartCrash, addthread.OneEndCrash, addthread.TwoStartError, addthread.TwoEndError, addthread.TwoStartCrash, addthread.TwoEndCrash));
+                    checkMapLog.thread.Start();
+
+                    getData.GetSleepThreadSave(db, checkMapLog);
+
+                }
+                else
+                {
+                    if (LogMap == "Log")
+                    {
+                        getData.SelectedLog(1,towerName, deviceID, towerID, checkID);
+                    }
+                    else
+                    {
+                        getData.SelectedMap(1,towerName, deviceID, towerID, checkID);
+                    }
+                }
+                return checkMapLog;
+            }
+            else
+            {
+                return checkMapLog;
+            }
+        }
+
+        public int LogCheckCount (int chechkLog, int walkCheckID, string towerName, int deviceID,int towerID)
+        {
+            getData.UpdateLog(1, towerName, deviceID, walkCheckID);
+            return getData.LogSelectedCount(chechkLog, walkCheckID, towerName, deviceID);
+        }
     }
 }

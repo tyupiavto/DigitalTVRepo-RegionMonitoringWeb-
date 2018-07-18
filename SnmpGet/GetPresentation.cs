@@ -26,5 +26,11 @@ namespace AdminPanelDevice.SnmpGet
         {
             getLogic.StopThreadList(getThread, returnedThreadList, towerName, stopGet);
         }
+
+        public GetSleepThread SelectedLog (int chechkID, string towerName, int deviceID, int towerID, bool logStartStopPlay,DeviceContext db)
+        {
+           var LogCount = getLogic.LogCheckCount(1, chechkID, towerName, deviceID, towerID);
+           return getLogic.checkedLog(chechkID, towerName, deviceID, db, towerID, "Log", LogCount, logStartStopPlay);
+        }
     }
 }

@@ -54,9 +54,7 @@ $(".custom-menu li").click(function (event) {
                 gpsInd++;
                 $('#map_checked_add' + GpsID).removeClass("").addClass("checkedGps");
                 towerName = $('#device_settings_name').text();
-                $.post("/DeviceGroup/GpsSelect", { GpsID: GpsID, towerName: towerName, deviceID: deviceID }, function () {
-
-                });
+                $.post("/DeviceGroup/GpsSelect", { GpsID: GpsID, towerName: towerName, deviceID: deviceID }, function () { });
             }
             break;
         case "No":
@@ -64,8 +62,7 @@ $(".custom-menu li").click(function (event) {
                 $('#map_checked_add' + GpsID).removeClass("checkedGps").addClass("");
                 gpsInd--;
                 towerName = $('#device_settings_name').text();
-                $.post("/DeviceGroup/GpsUnSelect", { GpsID: GpsID, towerName: towerName, deviceID: deviceID }, function () {
-                });
+                $.post("/DeviceGroup/GpsUnSelect", { GpsID: GpsID, towerName: towerName, deviceID: deviceID }, function () {});
             }
             break;
     }

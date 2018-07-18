@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>2</LogID>
+    <MapID>2</MapID>
+    <IntervalID>2</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>Is Not Name</OIDName>
+    <Description>Is Not Description</Description>
+    <WalkOID>1.3.6.1.2.1.11.30.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>9</LogID>
+    <MapID>0</MapID>
+    <IntervalID>9</IntervalID>
+    <Interval>1</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>sysFileDateHourDBTM</OIDName>
+    <Description>Configuration File date/hour
+
+DD/MM/YYYY hh:mm:ss (for example: 08/03/2010 14:04:37)</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.1.7.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>12</LogID>
+    <MapID>0</MapID>
+    <IntervalID>12</IntervalID>
+    <Interval>1</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>hour</OIDName>
+    <Description>System time HHMMSS (for example 180300 18:03:00)</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.2.2.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+</WalkPreset>

@@ -22,6 +22,8 @@ using System.Text;
 using Devices.Services;
 using Service.Models;
 using Data.Services;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -65,7 +67,7 @@ namespace AdminPanelDevice.Controllers
         public int ID = 0;
         public static string IPadrress;
         public static int EditInd = 0;
-        public static int PresetIND = 0;
+        public static int PresetIND = 0, CopyID;
         public static string PresetEditName;
         public static string Select;
         public static string All;
@@ -79,6 +81,7 @@ namespace AdminPanelDevice.Controllers
         public static string TowerIDLocal;
         public static string DeviceNameLocal;
         public static int deviceIDLocal;
+        public static List<WalkTowerDevice> ValueSettingList = new List<WalkTowerDevice>(); 
 
         public struct intervalValue
         {
@@ -791,6 +794,7 @@ namespace AdminPanelDevice.Controllers
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.TowerIP = TowerIP;
                 ViewBag.DefineWalk = false;
+                ViewBag.CopyID = CopyID;
                 ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>'60' and DeviceID='" + deviceIDLocal + "'").ToList();
@@ -828,6 +832,7 @@ namespace AdminPanelDevice.Controllers
                 ViewBag.TowerIP = TowerIP;
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.DefineWalk = false;
+                ViewBag.CopyID = CopyID;
                 if (MibWalkIndicator == true)
                 {
                     if (mibSearch.Count > 1)
@@ -1542,32 +1547,108 @@ namespace AdminPanelDevice.Controllers
          return Json("");      
         }
 
-        //[HttpPost]
-        //public JsonResult StringParser (int checkParser,int walkID, string towerName, int deviceID)
-        //{
-        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-        //    {
-        //        connection.Query<WalkTowerDevice>($"update WalkTowerDevice Set StringParserInd='{checkParser}'  where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
-        //        //walkList[walkID - 1].MyDescription = myDescription;
-        //    }
-        //    return Json("");
-        //}
-        //[HttpPost]
-        //public JsonResult ParserCheck (int walkID, string towerName, int deviceID)
-        //{
-        //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-        //    {
-        //        var pasrserID = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'").FirstOrDefault();
+        [HttpPost]
+        public JsonResult DownloadWalkPreset(string presetName)
+        {
+            WalkPresetImportExport walkPresetImportExport = new WalkPresetImportExport();
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                var walkL = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
+                List<WalkPreset> ExportPreset=updateCheck.WalkPresetDownload(walkL, DeviceNameLocal, TowerIDLocal, deviceIDLocal);
+                walkPresetImportExport.ExportPreset(ExportPreset, presetName);
+            }
+            return Json("");
+        }
 
-        //        if (pasrserID.StringParserInd == 0)
-        //        {
-        //            return Json("0");
-        //        }
-        //        else
-        //        {
-        //            return Json("1");
-        //        }
-        //    }
-        //}
+        [HttpPost]
+        public PartialViewResult LoadWalkPreset(int ? page,LoadWalkPresetFile type)
+        {
+            string pathname = "";
+            WalkPresetImportExport walkPresetImportExport = new WalkPresetImportExport();
+            try
+            {
+                if (type.PresetFile.ContentLength > 0)
+                {
+                    _FileName = Path.GetFileName(type.PresetFile.FileName);
+                    _path = Path.Combine(Server.MapPath("~"), _FileName);
+                    pathname = _FileName;
+                    type.PresetFile.SaveAs(_path);
+                }
+               
+              // var PresetList= walkPresetImportExport.ImportPreset(_path);
+            }
+            catch (Exception e)
+            {
+
+            }
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=0,LogID=0,GpsID=0,ScanInterval=60 where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'");
+
+                var LMI = walkPresetImportExport.ImportPreset(_path);
+                LMI.ForEach(lmi =>
+                {
+                    if (lmi.MapID != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MapID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}' where TowerName='{TowerIDLocal}'  and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.LogID != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set LogID=1,ScanInterval='{lmi.Interval}',StartCorrect='{lmi.StartCorrect}',EndCorrect='{lmi.EndCorrect}' ,OneStartError='{lmi.OneStartError}',OneEndError='{lmi.OneEndError}',OneStartCrash='{lmi.OneStartCrash}',OneEndCrash='{lmi.OneEndCrash}',TwoStartError='{lmi.TwoStartError}',TwoEndError='{lmi.TwoEndError}',TwoStartCrash='{lmi.TwoStartCrash}',TwoEndCrash='{lmi.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.GpsID != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set GpsID=1,ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.MyDescription != null || lmi.MyDescription != "")
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MyDescription=N'{lmi.MyDescription}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.DivideMultiply != null)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set DivideMultiply=N'{lmi.DivideMultiply}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
+                    }
+                    if (lmi.StringParserInd != 0)
+                    {
+                        connection.Query<WalkTowerDevice>($"update WalkTowerDevice set StringParserInd='1',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
+                    }
+
+                });
+
+                walkList = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
+
+                ViewBag.LMI = LMI;
+                ViewBag.PresetInd = 0;
+                ViewBag.IntervalTime = intervalTime;
+                ViewBag.pageListNumber = pageListNumber;
+                ViewBag.TowerIP = TowerIP;
+                ViewBag.defaultInterval = DefaultInterval;
+                return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ValueSettingCopy(int settingID,int copyID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                ValueSettingList = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where  WalkID='{settingID}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and StartCorrect is not null and EndCorrect is not null").ToList();
+                CopyID = copyID;
+            }
+            return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult ValueSettingPaste(int settingID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                ValueSettingList.ForEach(val =>
+                {
+                    connection.Query<WalkTowerDevice>($"update WalkTowerDevice set OneStartError='{val.OneStartError}',OneEndError='{val.OneEndError}', OneStartCrash='{val.OneStartCrash}',OneEndCrash='{val.OneEndCrash}',StartCorrect='{val.StartCorrect}',EndCorrect='{val.EndCorrect}',TwoStartError='{val.TwoStartError}',TwoEndError='{val.TwoEndError}',TwoStartCrash='{val.TwoStartCrash}',TwoEndCrash='{val.TwoEndCrash}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and WalkID='{settingID}'");
+                });
+            }
+            return Json("");
+        }
     }
 }

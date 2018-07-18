@@ -340,6 +340,7 @@
     <Compile Include="Infrastructure\TrapUpdateNewDevice.cs" />
     <Compile Include="Infrastructure\UpdateCheck.cs" />
     <Compile Include="Infrastructure\UpdateCheckLogMap.cs" />
+    <Compile Include="Infrastructure\WalkPresetImportExport.cs" />
     <Compile Include="Infrastructure\WalkSendReturned.cs" />
     <Compile Include="Infrastructure\WalkSave.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.cs" />
@@ -374,6 +375,7 @@
     <Compile Include="Models\HtmlSave.cs" />
     <Compile Include="Models\LineConnection.cs" />
     <Compile Include="Models\LiveValue.cs" />
+    <Compile Include="Models\LoadWalkPresetFile.cs" />
     <Compile Include="Models\LogMapSettingValue.cs" />
     <Compile Include="Models\mapLine.cs" />
     <Compile Include="Models\mapTower.cs" />

@@ -34,7 +34,7 @@ namespace AdminPanelDevice.Controllers
 
         
         [HttpPost]
-        public JsonResult Get(string towerName ,int towerID, int deviceID)
+        public JsonResult Get(string towerName,int towerID, int deviceID)
         {
            // GetThreadPlayStop get = new GetThreadPlayStop();
 
@@ -79,8 +79,8 @@ namespace AdminPanelDevice.Controllers
         public JsonResult CheckLog(int chechkID, string towerName, int deviceID,int towerID,bool logStartStopPlay) // checked log
         {
           var LogCount=updateCheck.UpdateChechkLog(1, chechkID, towerName, deviceID);
-         
-            getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID,"Log",LogCount, logStartStopPlay));
+           // getThread.Add(getPresentation.SelectedLog(chechkID, towerName, deviceID, towerID, logStartStopPlay, db));
+           getThread.Add(checkgetthread.checkdGet(chechkID, towerName, deviceID, db, towerID,"Log",LogCount, logStartStopPlay));
             return Json("");
         }
 

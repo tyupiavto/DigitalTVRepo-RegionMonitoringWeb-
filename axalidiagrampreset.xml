@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>1</LogID>
+    <MapID>1</MapID>
+    <IntervalID>1</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>Is Not Name</OIDName>
+    <Description>Is Not Description</Description>
+    <WalkOID>1.3.6.1.2.1.1.3.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>2</LogID>
+    <MapID>2</MapID>
+    <IntervalID>2</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>Is Not Name</OIDName>
+    <Description>Is Not Description</Description>
+    <WalkOID>1.3.6.1.2.1.11.30.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>3</LogID>
+    <MapID>3</MapID>
+    <IntervalID>3</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>sysDescrDBTM</OIDName>
+    <Description>A textual description of the entity.</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.1.1.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>4</LogID>
+    <MapID>4</MapID>
+    <IntervalID>4</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>sysNameDBTM</OIDName>
+    <Description>Name of the station.</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.1.2.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>5</LogID>
+    <MapID>5</MapID>
+    <IntervalID>5</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>sysManagementVersionDBTM</OIDName>
+    <Description>Management software version</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.1.3.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>6</LogID>
+    <MapID>6</MapID>
+    <IntervalID>6</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>sysKernelVersionDBTM</OIDName>
+    <Description>Kernel version.</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.1.4.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>51</LogID>
+    <MapID>51</MapID>
+    <IntervalID>51</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>snmpTrapsCommunity</OIDName>
+    <Description>This define the default comunity string to be used when sending traps.
+
+1..32 characters</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.2.5.3.6.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>52</LogID>
+    <MapID>52</MapID>
+    <IntervalID>52</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>snmpTrapsPeriodic</OIDName>
+    <Description>The agent will send one trap if passed 
+this amount of seconds has not been sent no alarm
+
+0: the periodicTrap never will be sent</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.2.5.3.7.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>53</LogID>
+    <MapID>53</MapID>
+    <IntervalID>53</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>snmpFastTrapsSync</OIDName>
+    <Description>Fast Trap Syncronization sends to SNMP Managers 
+the traps which are actually activated alarms.
+
+false: is the default value. 
+true: starts fast trap syncronization process.</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.2.5.3.8.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+  <WalkPreset PresetID="0">
+    <PresetID>0</PresetID>
+    <LogID>54</LogID>
+    <MapID>54</MapID>
+    <IntervalID>54</IntervalID>
+    <Interval>60</Interval>
+    <GpsID>0</GpsID>
+    <DeviceName>Tredess - Compact Series - LTX</DeviceName>
+    <DeviceID>44</DeviceID>
+    <OneStartError />
+    <OneEndError />
+    <OneStartCrash />
+    <OneEndCrash />
+    <StartCorrect />
+    <EndCorrect />
+    <TwoStartError />
+    <TwoEndError />
+    <TwoStartCrash />
+    <TwoEndCrash />
+    <OIDName>snmpInformAck</OIDName>
+    <Description>Traps behavior.
+
+Indicates if the Manager has to send an ACK for each received trap or not.
+
+1: v2inform (ACK are necessary)
+2: v2trap (ACK are not necessary)
+
+</Description>
+    <WalkOID>1.3.6.1.4.1.23180.2.1.1.1.2.5.3.9.0</WalkOID>
+    <MyDescription />
+    <DivideMultiply />
+    <StringParserInd>0</StringParserInd>
+  </WalkPreset>
+</WalkPreset>

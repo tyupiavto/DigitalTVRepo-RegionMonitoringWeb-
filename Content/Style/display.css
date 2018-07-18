@@ -832,6 +832,35 @@ input[type="password"]:focus {
             background-color: #f26d15;
         }
 
+
+.custom-menu-setting {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #b8c0c8;
+    border-radius: 5px;
+    padding: 0;
+    background: url(/image/comment-bg2.png) repeat;
+    border: 1px solid rgba(0,0,0,0.3);
+}
+    /* Each of the items in the list */
+    .custom-menu-setting li {
+        padding: 6px 22px;
+        cursor: pointer;
+        list-style-type: none;
+        transition: all .3s ease;
+        user-select: none;
+        border-top: 1px solid rgba(0,0,0,0.3);
+    }
+
+        .custom-menu-setting li:hover {
+            background-color: #f26d15;
+        }
 .remove-menu {
     display: none;
     z-index: 1000;
@@ -921,4 +950,8 @@ input[type="password"]:focus {
     color: white;
     width: 45px;
     margin-top: 5px;
+}
+
+.ValueSetting {
+    background: url(/Icons/Settings-icon.png) no-repeat;
 }

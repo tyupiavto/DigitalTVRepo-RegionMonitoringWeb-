@@ -8,10 +8,10 @@ var handleTwo = $("#slider-range-two");
 var handleThree = $("#slider-range-three");
 var handleFour = $("#slider-range-four");
 var handleFive = $("#slider-range-five");
-var step=0.1;
+var step = 0.1;
 var logStartStopPlay, mapStartStopPlay;
-var leftvalue, oidName, description, walkOid,myDescriptionID,myDescription,WalkID;
-
+var leftvalue, oidName, description, walkOid, myDescriptionID, myDescription, WalkID, settingID, copyInd = 0, copyID;
+var loadPresetInd = 0;
 $(document).on('click touchend', '.device_settings', function () { // add device setting open
     deviceID = $(this).closest($(".foo")).attr("id");
     DeviceName = $('.device_header' + deviceID).attr("value");
@@ -41,7 +41,7 @@ $('#walk_send').click(function () { // device walk ip port version
     $('#load_walk').css("display", "block");
     communityRead = $('#read_community').val();
 
-    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName: DeviceName, deviceID: deviceID, Version: Version}, function (Response) {
+    $.post("/DeviceGroup/WalkSend", { IP: IP, Port: Port, Version: Version, communityRead: communityRead, towerName: towerName, DeviceName: DeviceName, deviceID: deviceID, Version: Version }, function (Response) {
         $('#load_walk').css("display", "none");
 
         $('#walk_checked_add').removeClass("").addClass("checked");
@@ -159,12 +159,33 @@ $('body').on('click touchend', '.preset_list_remove li', function () { // select
 });
 
 $('body').on('click touched', '#preset_send', function () {
-    $('#load_walk').css("display", "block");
-    $.post("/DeviceGroup/PresetSearch", { presetSearchName: presetSearchName }, function (Response) {
-        $('#device_settings').html("");
-        $('#device_settings').html(Response);
-        $('#load_walk').css("display", "none");
-    }, 'text');
+    if (loadPresetInd != 1) {
+        $('#load_walk').css("display", "block");
+        $.post("/DeviceGroup/PresetSearch", { presetSearchName: presetSearchName }, function (Response) {
+            $('#device_settings').html("");
+            $('#device_settings').html(Response);
+            $('#load_walk').css("display", "none");
+        }, 'text');
+    }
+    else {
+        loadPresetInd = 0;
+        file = new FormData();
+        file.append("PresetFile", $('#FileUploadPreset')[0].files[0]);
+        $('#load_walk').css("display", "block");
+        $.ajax({
+            type: 'post',
+            contentType: false,
+            processData: false,
+            data: file,
+            dataType: 'text',
+            url: '/DeviceGroup/LoadWalkPreset',
+            success: function (Response) {
+                $('#device_settings').html("");
+                $('#device_settings').html(Response);
+                $('#load_walk').css("display", "none");
+            }
+        });
+    }
 });
 
 $('body').on('click touchend', '.removePreset', function () {
@@ -291,7 +312,7 @@ $('body').on('click touched', '.map_check div', function () { // map click check
             mapStartStopPlay = false;
         }
         chechkID = mapID;
-        $.post("/GetNext/CheckMap", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID, mapStartStopPlay: mapStartStopPlay}, function () { }, 'json'); // map check 
+        $.post("/GetNext/CheckMap", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID, mapStartStopPlay: mapStartStopPlay }, function () { }, 'json'); // map check 
     } else {
         unChechkID = mapID;
         $.post("/GetNext/UncheckMap", { unChechkID: unChechkID, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { }, 'json'); // map uncheck 
@@ -312,7 +333,7 @@ $('body').on('click touched', '.log_check div', function () { // log checked pre
         else {
             logStartStopPlay = false;
         }
-       
+
         $.post("/GetNext/CheckLog", { chechkID: chechkID, towerName: towerName, deviceID: deviceID, towerID: towerID, logStartStopPlay: logStartStopPlay }, function () { }, 'json'); // log check 
 
         $('#log_checked_add' + logID).removeClass("").addClass("checked");
@@ -382,7 +403,7 @@ $('#preset_save').click(function () {
     presetName = $('#preset_name').val();
     IpAddress = $('#tower_ip').val();
     TowerNameID = $('#device_settings_name').text();
-    IP = $('#tower_ip').val();
+    // IP = $('#tower_ip').val();
     $.post("/DeviceGroup/PresetSave", { presetName: presetName, IpAddress: IpAddress, TowerNameID: TowerNameID, deviceID: deviceID }, function () {
         $('#preset_name').val("");
     }, 'json');
@@ -443,13 +464,13 @@ $('body').on('click touched', '.logmapsetting', function () {
     $('#value_logmap_min').val("");
     $('#value_logmap_max').val("");
 
-     settingID= $(this).attr("value");
-     oidName = $('#oidname' + settingID).text();
-     walkOid = $('#description' + settingID).attr("value");
-     description = $('#description' + settingID).text();
-     if (description == "Is Not Description") {
+    settingID = $(this).attr("value");
+    oidName = $('#oidname' + settingID).text();
+    walkOid = $('#description' + settingID).attr("value");
+    description = $('#description' + settingID).text();
+    if (description == "Is Not Description") {
         description = '';
-     }
+    }
 
     $.post("/DeviceGroup/LogMapExistingValue", { towerName: towerName, deviceID: deviceID, oidName: oidName, description: description, walkOid: walkOid, settingID: settingID }, function (Response) {
         if (Response != '') {
@@ -478,7 +499,7 @@ $('body').on('click touched', '.logmapsetting', function () {
 $('body').on('click touched', '#value_logmap_button', function () {
     maxlenght = parseFloat($('#value_logmap_max').val());
     minlenght = parseFloat($('#value_logmap_min').val());
-    if (maxlenght <= 1 && maxlenght!=0) {
+    if (maxlenght <= 1 && maxlenght != 0) {
         step = 0.001;
     }
     else {
@@ -596,7 +617,8 @@ function slideLogMapSetting() {
             startCorrect: startCorrect, endCorrect: endCorrect,
             twoStartError: twoStartError, twoEndError: twoEndError,
             twoStartCrash: twoStartCrash, twoEndCrash: twoEndCrash,
-            dividedMultiply: dividedMultiply}, function () { }, 'post');
+            dividedMultiply: dividedMultiply
+        }, function () { }, 'post');
     });
 }
 
@@ -605,16 +627,16 @@ $('#opneIPLink').click(function () {
 });
 
 $('body').on('focus', '.mydescriptioninput', function () {
-    walkID=$(this).attr("name");
+    walkID = $(this).attr("name");
 });
 
 $('body').on('focusout', '.mydescriptioninput', function () {
     myDescription = $('#my_description_walk' + walkID).val();
-    $.post("/DeviceGroup/MyDescriptionAdd", { myDescription, walkID, towerName, deviceID }, function () {},'json');
+    $.post("/DeviceGroup/MyDescriptionAdd", { myDescription, walkID, towerName, deviceID }, function () { }, 'json');
 });
 
 $('body').on('click touched', '#paly_stop_device_refresh', function () {
-  //  deviceID = $(this).closest($(".foo")).attr("id");
+    //  deviceID = $(this).closest($(".foo")).attr("id");
     towerName = $('.tower_name' + deviceID).attr("title");
     towerID = $('#' + towerName).parent().parent().attr("id");
     TowerTextName = $('.header' + towerID).text();
@@ -634,7 +656,7 @@ $('body').on('click touched', '#paly_stop_device_refresh', function () {
     //    $('#paly_stop_tower' + towerID).attr("src", "/Icons/stop.png");
     //    var i = 2;
     //    $('#load_walk').css("display", "block");
-   
+
     //        $.post("/GetNext/Get", { towerName: towerName, towerID: towerID, deviceID: deviceID, TowerTextName: TowerTextName }, function (Response) {
     //            saveDiagram();
     //        });
@@ -658,7 +680,7 @@ $('body').on('click touched', '.log_map_settings', function () {
 
 $('body').on('click touched', '#string_parser_checked_add', function () {
     var checkParser;
-  
+
     if ($('#string_parser_checked').is(':checked') == false) {
         $('#string_parser_checked_add').removeClass("").addClass("checked");
         $("#string_parser_checked").prop('checked', true);
@@ -669,5 +691,47 @@ $('body').on('click touched', '#string_parser_checked_add', function () {
         $("#string_parser_checked").prop('checked', false);
         checkParser = 0;
     }
-    $.post('/GetNext/StringParser', { checkParser: checkParser, walkID: WalkID, towerName: towerName, deviceID: deviceID, towerID: towerID}, function () { });
+    $.post('/GetNext/StringParser', { checkParser: checkParser, walkID: WalkID, towerName: towerName, deviceID: deviceID, towerID: towerID }, function () { });
+});
+
+$('body').on('click touched', '#download_walk_preset', function () {
+    var presetName = $('#preset_name').val();
+    $.post('/DeviceGroup/DownloadWalkPreset', { presetName: presetName }, function () { $('#preset_name').val(""); });
+});
+
+$('body').on('click touched', '#open_walk_preset', function () {
+    loadPresetInd = 1;
+});
+
+$('body').on('contextmenu touched', '.log_map_settings', function () { // checked gps right click
+    settingID = $(this).attr("value")
+    $(document).bind("contextmenu", function (event, ui) {
+        event.preventDefault();
+        $(this).unbind(event);
+        $(".custom-menu-setting").finish().toggle(100).css({
+            top: (event.pageY - 20) + "px",
+            left: (event.pageX - 110) + "px"
+        });
+        event.stopPropagation();
+    });
+});
+
+
+$(".custom-menu-setting li").click(function (event) {
+    switch ($(this).attr("data-action")) {
+        case "Copy":
+            $('#log_map_setting' + settingID).attr("src", "/Icons/Settings-icon.png");
+            if (copyID != settingID) {
+                $('#log_map_setting' + copyID).attr("src", "/Icons/pignon.png");
+            }
+                 copyID = settingID;
+            $.post('/DeviceGroup/ValueSettingCopy', { settingID: settingID, copyID: copyID }, function () {
+
+            });
+            break;
+        case "Paste":
+            $.post('/DeviceGroup/ValueSettingPaste', { settingID: settingID }, function () { });
+            break;
+    }
+    $(".custom-menu-setting").hide(100);
 });

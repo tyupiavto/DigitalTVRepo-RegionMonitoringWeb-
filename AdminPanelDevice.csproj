@@ -199,6 +199,7 @@
     <Content Include="Content\ScriptView\jquery.slider.bundle.js" />
     <Content Include="Content\ScriptView\jquery.slider.js" />
     <Content Include="Content\ScriptView\LiveGet.js" />
+    <Content Include="Content\ScriptView\LiveTrap.js" />
     <Content Include="Content\ScriptView\LogSearch.js" />
     <Content Include="Content\ScriptView\Map.js" />
     <Content Include="Content\ScriptView\MenuDevice.js" />
@@ -343,6 +344,9 @@
     <Compile Include="Infrastructure\WalkPresetImportExport.cs" />
     <Compile Include="Infrastructure\WalkSendReturned.cs" />
     <Compile Include="Infrastructure\WalkSave.cs" />
+    <Compile Include="LiveTrap\LiveTrapBusinessLogic.cs" />
+    <Compile Include="LiveTrap\LiveTrapData.cs" />
+    <Compile Include="LiveTrap\LiveTrapPresentation.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.cs" />
     <Compile Include="Migrations\201712081256218_device db schema.Designer.cs">
       <DependentUpon>201712081256218_device db schema.cs</DependentUpon>
@@ -478,6 +482,8 @@
     <Content Include="Views\LiveGet\_GetLiveInformation.cshtml" />
     <Content Include="Views\LiveGet\GetChart.cshtml" />
     <Content Include="Views\LiveGet\_ChartLiveSensor.cshtml" />
+    <Content Include="Views\LiveTrap\LiveTrap.cshtml" />
+    <Content Include="Views\LiveTrap\_LiveTrapError.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -494,7 +500,6 @@
     <Folder Include="MibFiles\" />
     <Folder Include="Sound\" />
     <Folder Include="Views\GetNext\" />
-    <Folder Include="Views\LiveTrap\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712081256218_device db schema.resx">

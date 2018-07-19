@@ -7,10 +7,10 @@ namespace AdminPanelDevice.Models
 {
     public class TrapColorCount
     {
-    public string ErrorCount { get; set; }
-    public string CorrectCount { get; set; }
-    public string CrashCount { get; set; }
-    public string WhiteCount { get; set; }
-    public string AllCount { get; set; }
+    public int ErrorCount { get; set; }
+    public int CorrectCount { get; set; }
+    public int CrashCount { get; set; }
+    public int  WhiteCount { get; set; }
+    public int AllCount { get; set; }
     }
 }

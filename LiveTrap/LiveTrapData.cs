@@ -8,13 +8,21 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace AdminPanelDevice.Traps
+namespace AdminPanelDevice.LiveTrap
 {
-    public class TrapData
+    public class LiveTrapData
     {
-        public TrapData() { }
+        public LiveTrapData () {}
 
-        public List<Trap> OneDeyList(DateTime end, DateTime start)
+        public List<TrapListNameCheck> TrapHeaderNameSelectList ()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<TrapListNameCheck>("select * from TrapListNameCheck").ToList();
+            }
+        }
+
+        public List<Trap> TrapCurrentAlarmList (DateTime start, DateTime end)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {

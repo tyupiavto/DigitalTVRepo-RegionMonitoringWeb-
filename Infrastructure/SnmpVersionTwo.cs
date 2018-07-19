@@ -1,6 +1,7 @@
 ﻿using AdminPanelDevice.Models;
 using Dapper;
 using IToolS.IOServers.Snmp;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,6 +22,7 @@ namespace AdminPanelDevice.Infrastructure
 
         public SnmpVersionTwo(SnmpV2Packet pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
+            var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 
@@ -92,6 +94,7 @@ namespace AdminPanelDevice.Infrastructure
                             trap.Description = "Unknown";
                         }
                     }
+                    context.Clients.All.onHitRecorded(trap);
                     db.Traps.Add(trap);
                     db.SaveChanges();
                 }

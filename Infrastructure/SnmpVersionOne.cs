@@ -25,10 +25,9 @@ namespace AdminPanelDevice.Infrastructure
         AlarmStatusDescription alarmStatusDescription = new AlarmStatusDescription();
         public SnmpVersionOne(SnmpV1TrapPacket pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
+            var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                //var mibTreeInformation = connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
-               // var towerDevices = connection.Query<TowerDevices>("select * from TowerDevices").ToList();
                 foreach (Vb v in pkt.Pdu.VbList)
                 {
                     Trap trap = new Trap();
@@ -107,6 +106,8 @@ namespace AdminPanelDevice.Infrastructure
                             trap.Description = "Unknown";
                         }
                     }
+                    context.Clients.All.onHitRecorded(trap);
+
                     db.Traps.Add(trap);
                     db.SaveChanges();
                 }

@@ -1,0 +1,206 @@
+﻿@model IEnumerable<AdminPanelDevice.Models.TrapListNameCheck>
+@{
+    ViewBag.Title = "LiveTrap";
+}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+<link href="~/Content/Style/Load.css" rel="stylesheet" />
+<ul class="dropdown-menu" role="menu" id="dropdown" style="position:absolute; top:35px;">
+    @foreach (var item in Model)
+    {
+        if (item.ListName == "ID" && item.Checked == "true")
+        {
+            <li role="menuitem" id="idColumn"><label><input type="checkbox" data-field="ID" value="1" checked="checked">ID</label></li>
+        }
+        if (item.ListName == "ID" && item.Checked == "false")
+        {
+            <li role="menuitem" id="idColumn"><label><input type="checkbox" data-field="ID" value="1">ID</label></li>
+        }
+        if (item.ListName == "Countrie" && item.Checked == "true")
+        {
+            <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="2" checked="checked">Countrie</label></li>
+        }
+        if (item.ListName == "Countrie" && item.Checked == "false")
+        {
+            <li role="menuitem" id="countrieColumn"><label><input type="checkbox" data-field="Countrie" value="2">Countrie</label></li>
+        }
+        if (item.ListName == "State" && item.Checked == "true")
+        {
+            <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="3" checked="checked">State</label></li>
+        }
+        if (item.ListName == "State" && item.Checked == "false")
+        {
+            <li role="menuitem" id="stateColumn"><label><input type="checkbox" data-field="name" value="3">State</label></li>
+        }
+        if (item.ListName == "City" && item.Checked == "true")
+        {
+            <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="4" checked="checked">City</label></li>
+        }
+        if (item.ListName == "City" && item.Checked == "false")
+        {
+            <li role="menuitem" id="cityColumn"><label><input type="checkbox" data-field="price" value="4">City</label></li>
+        }
+        if (item.ListName == "Tower" && item.Checked == "true")
+        {
+            <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="5" checked="checked">Tower</label></li>
+        }
+        if (item.ListName == "Tower" && item.Checked == "false")
+        {
+            <li role="menuitem" id="towerColumn"><label><input type="checkbox" data-field="name" value="5">Tower</label></li>
+        }
+        if (item.ListName == "Device Name" && item.Checked == "true")
+        {
+            <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="6" checked="checked">Device Name</label></li>
+        }
+        if (item.ListName == "Device Name" && item.Checked == "false")
+        {
+            <li role="menuitem" id="deviceColumn"><label><input type="checkbox" data-field="price" value="6">Device Name</label></li>
+        }
+        if (item.ListName == "IP" && item.Checked == "true")
+        {
+            <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="7" checked="checked">IP</label></li>
+        }
+        if (item.ListName == "IP" && item.Checked == "false")
+        {
+            <li role="menuitem" id="ipColumn"><label><input type="checkbox" data-field="name" value="7">IP</label></li>
+        }
+        if (item.ListName == "Date/Time" && item.Checked == "true")
+        {
+            <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="8" checked="checked">Date/Time</label></li>
+        }
+        if (item.ListName == "Date/Time" && item.Checked == "false")
+        {
+            <li role="menuitem" id="datetimeColumn"><label><input type="checkbox" data-field="price" value="8">Date/Time</label></li>
+        }
+        if (item.ListName == "OIDName" && item.Checked == "true")
+        {
+            <li role="menuitem" id="oidNameColumn"><label><input type="checkbox" data-field="name" value="9" checked="checked">OIDName</label></li>
+        }
+        if (item.ListName == "OIDName" && item.Checked == "false")
+        {
+            <li role="menuitem" id="oidNameColumn"><label><input type="checkbox" data-field="name" value="9">OIDName</label></li>
+        }
+        if (item.ListName == "Description" && item.Checked == "true")
+        {
+            <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="10" checked="checked">Description</label></li>
+        }
+        if (item.ListName == "Description" && item.Checked == "false")
+        {
+            <li role="menuitem" id="descriptionColumn"><label><input type="checkbox" data-field="price" value="10">Description</label></li>
+        }
+        if (item.ListName == "Value" && item.Checked == "true")
+        {
+            <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="11" checked="checked">Value</label></li>
+        }
+        if (item.ListName == "Value" && item.Checked == "false")
+        {
+            <li role="menuitem" id="valueColumn"><label><input type="checkbox" data-field="price" value="11">Value</label></li>
+        }
+        if (item.ListName == "AlarmDescription" && item.Checked == "true")
+        {
+            <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="12" checked="checked">AlarmDescription</label></li>
+        }
+        if (item.ListName == "AlarmDescription" && item.Checked == "false")
+        {
+            <li role="menuitem" id="alarmDescriptionColumn"><label><input type="checkbox" data-field="price" value="12">AlarmDescription</label></li>
+        }
+        if (item.ListName == "CurrentOID" && item.Checked == "true")
+        {
+            <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="13" checked="checked">CurrentOID</label></li>
+        }
+        if (item.ListName == "CurrentOID" && item.Checked == "false")
+        {
+            <li role="menuitem" id="oidColumn"><label><input type="checkbox" data-field="price" value="13">CurrentOID</label></li>
+        }
+        if (item.ListName == "ReturnedOID" && item.Checked == "true")
+        {
+            <li role="menuitem" id="oidreturnedColumn"><label><input type="checkbox" data-field="price" value="14" checked="checked">ReturnedOID</label></li>
+        }
+        if (item.ListName == "ReturnedOID" && item.Checked == "false")
+        {
+            <li role="menuitem" id="oidreturnedColumn"><label><input type="checkbox" data-field="price" value="14">ReturnedOID</label></li>
+        }
+        if (item.ListName == "CorrectError" && item.Checked == "true")
+        {
+            <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" checked="checked" value="15">CorrectError</label></li>
+        }
+        if (item.ListName == "CorrectError" && item.Checked == "false")
+        {
+            <li role="menuitem" id="errorMap"><label><input type="checkbox" data-field="price" value="15">CorrectError</label></li>
+        }
+    }
+
+</ul>
+
+<button type="button" aria-label="columns" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <i class="glyphicon glyphicon-th icon-th"></i>
+</button>
+
+<div class="modal fade" id="statusLogCorrectError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:700px;" id="modalColor">
+            <div class="modal-body" style="padding:5px;">
+
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="textCorrectError" />
+                        </div>
+                        <div class="col-sm-12" style="top:5px;">
+                            <input type="text" class="form-control" placeholder="Description" id="correctErrorDescription" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer" style="padding:1px;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="alarmSave">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="load_walk" name="Load">
+    <img src="/image/loading.gif" id="load" alt="" title="Wplease Wait...">
+</div>
+
+<button type="button" class="btn btn-danger" id="errorColor" style="height:34px; margin-left:5px;">Error <span class="badge" id="liveErrorCount"></span></button>
+<button type="button" class="btn btn-warning" id="crashColor" style="height:34px; margin-left:3px;">Crash <span class="badge" id="liveCrashCount"></span></button>
+
+</div>
+<div id="live_trap"></div>
+
+<script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
+<script src="~/signalr/Hubs"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#load_walk').css("display", "block");
+        $.post('/LiveTrap/TrapCurrentAlarms', {}, function (Response) {
+            $('#live_trap').html("");
+            $('#live_trap').html(Response);
+            $('#load_walk').css("display", "none");
+        });
+
+        var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
+        var hub = con.createHubProxy('hubMessage');
+        hub.on('onHitRecorded', function (TrapResponse) {
+            TrapResponse.Value = encodeURIComponent(TrapResponse.Value);
+            $.post('/LiveTrap/LiveTrapError/', { TrapResponse: TrapResponse }, function (Response) {
+                $('#live_trap').html("");
+                $('#live_trap').html(Response);
+            }, 'text');
+        });
+        con.start();
+    });
+</script>

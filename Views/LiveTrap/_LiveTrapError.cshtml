@@ -1,0 +1,67 @@
+﻿
+@model  IEnumerable<AdminPanelDevice.Models.Trap>
+
+@*@using PagedList
+    @using PagedList.Mvc*@
+
+
+@{
+    //var pagenumber = ViewBag.pageNumber;
+    var textcolor = "";
+    <script type="text/javascript">
+      $('#liveErrorCount').text(@Html.Raw(Json.Encode(ViewBag.ErrorCount)));
+      $('#liveCrashCount').text(@Html.Raw(Json.Encode(ViewBag.CrashCount)));
+    </script>
+}
+<table class="table table-striped table-bordered draggable sortable" id="logTableInf" style="width: 100%;" data-toggle="table">
+    <thead>
+        <tr>
+            <th id="idColumn">ID</th>
+            <th id="countrieColumn">Countrie</th>
+            <th id="stateColumn">State</th>
+            <th id="cityColumn">City</th>
+            <th id="towerColumn">Tower</th>
+            <th id="deviceColumn">Device Name</th>
+            <th id="ipColumn">IP</th>
+            <th id="datetimeColumn">Date/Time</th>
+            <th id="oidNameColumn">OIDName</th>
+            <th id="descriptionColumn">Description</th>
+            <th id="valueColumn">Value</th>
+            <th id="alarmDescriptionColumn">AlarmDescription</th>
+            <th id="oidColumn">CurrentOID</th>
+            <th id="oidreturnedColumn">ReturnedOID</th>
+            <th id="errorMapColumn" style="display:block">Status</th>
+        </tr>
+    </thead>
+    <tbody id="trap_log_information">
+        @foreach (var item in Model.ToList())
+        {
+            if (item.AlarmStatus == "white")
+            {
+                textcolor = "black";
+            }
+
+            if (item.AlarmStatus == "yellow")
+            {
+                textcolor = "black";
+            }
+            <tr style="background-color:@(item.AlarmStatus); color:@(textcolor)">
+                <td id="idColumn@(item.ID)" value="@item.ID">@item.ID</td>
+                <td id="countrieColumn@(item.ID)" value="@item.ID">@item.Countrie</td>
+                <td id="stateColumn@(item.ID)" value="@item.ID">@item.States</td>
+                <td id="cityColumn@(item.ID)" value="@item.ID">@item.City</td>
+                <td id="towerColumn@(item.ID)" value="@item.ID">@item.TowerName</td>
+                <td id="deviceColumn@(item.ID)" value="@item.ID">@item.DeviceName</td>
+                <td id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)">@item.IpAddres</a></td>
+                <td id="datetimeColumn@(item.ID)" value="@item.ID">@item.dateTimeTrap</td>
+                <td id="oidNameColumn@(item.ID)" value="@item.ID">@item.OIDName</td>
+                <td id="descriptionColumn@(item.ID)" value="@item.ID">@item.Description</td>
+                <td id="valueColumn@(item.ID)" class="valueInformation" value="@item.ID">@item.Value</td>
+                <td id="alarmDescriptionColumn@(item.ID)" value="@item.ID">@item.AlarmDescription</td>
+                <td id="oidColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID">@item.CurrentOID</td>
+                <td id="oidreturnedColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID">@item.ReturnedOID</td>
+                <td id="errorMapColumn@(item.ID)" value="@item.ID"></td>
+            </tr>
+        }
+    </tbody>
+</table>

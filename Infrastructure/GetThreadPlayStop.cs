@@ -139,7 +139,7 @@ namespace AdminPanelDevice.Infrastructure
 
         public bool Get(List<GetSleepThread> getThread, SleepInformation returnedThreadList, string towerName, int deviceID, int towerID, DeviceContext db, GetThread getThreadPreset)
         {
-            var gt =/* returnedThreadList.SleepGetInformation(false);*/ getThread = HangfireBootstrapper.Instance.GetThreadStart();
+            var gt =/* returnedThreadList.SleepGetInformation(false);*/  HangfireBootstrapper.Instance.GetThreadStart();
             if (gt.Count != 0)
             {
                 getThread.AddRange(gt);

@@ -24,8 +24,9 @@ namespace AdminPanelDevice.SnmpGet
             var oofDevice = getData.SleepTheadList(towerName, deviceID);
             if (oofDevice.Count != 0)
             {
-                var thb = getThread.Where(t => t.TowerName == towerName && t.DeviceID == deviceID).ToList();
-                thb.ForEach(t =>
+                getData.SleepTheadDelete(towerName, deviceID);
+                var th = getThread.Where(t => t.TowerName == towerName && t.DeviceID == deviceID).ToList();
+                th.ForEach(t =>
                 {
                     t.thread.Abort();
                     getThread.Remove(t);

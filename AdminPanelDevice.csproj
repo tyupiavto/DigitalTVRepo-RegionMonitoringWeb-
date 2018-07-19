@@ -415,6 +415,9 @@
     <Compile Include="SnmpGet\GetLogic.cs" />
     <Compile Include="SnmpGet\GetPresentation.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Traps\TrapBusinessLogic.cs" />
+    <Compile Include="Traps\TrapData.cs" />
+    <Compile Include="Traps\TrapPresentation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -490,7 +493,6 @@
     <Folder Include="MapStyle\" />
     <Folder Include="MibFiles\" />
     <Folder Include="Sound\" />
-    <Folder Include="Trap\" />
     <Folder Include="Views\GetNext\" />
     <Folder Include="Views\LiveTrap\" />
   </ItemGroup>

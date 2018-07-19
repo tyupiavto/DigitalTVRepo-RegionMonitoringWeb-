@@ -22,6 +22,7 @@ namespace AdminPanelDevice.Infrastructure
         public string  CompareCorrectError (int WalkID,string values,string DivideMultiply, int DeviceID,int ID,int TowerID,string value, string StartCorrect, string EndCorrect, string OneStartError, string OneEndError, string OneStartCrash, string OneEndCrash, string TwoStartError, string TwoEndError, string TwoStartCrash, string TwoEndCrash)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
+
             MapViewInformation mapinf = new MapViewInformation();
             if (values != "")
             {
@@ -38,6 +39,7 @@ namespace AdminPanelDevice.Infrastructure
             mapinf.DeviceID = DeviceID;
             mapinf.DivideMultiply = DivideMultiply;
             mapinf.WalkID = WalkID;
+
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var cord = connection.Query<TowerGps>($"select * from TowerGps where TowerID='{TowerID}'").FirstOrDefault();
@@ -45,9 +47,9 @@ namespace AdminPanelDevice.Infrastructure
                 mapinf.StartLongitube = Double.Parse(cord.Longitube.Remove(cord.Longitube.Length - 2), CultureInfo.InvariantCulture);
             }
             double number;
-            var convertationDouble = Double.TryParse(value,out number);
+            var convertationDouble = Double.TryParse(value, out number);
 
-            if (convertationDouble != false && StartCorrect!="" && EndCorrect!="")
+            if (convertationDouble != false && StartCorrect != "" && EndCorrect != "")
             {
 
                 if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(OneStartError, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) < Convert.ToDouble(OneEndError, CultureInfo.InvariantCulture))
@@ -82,7 +84,7 @@ namespace AdminPanelDevice.Infrastructure
                     context.Clients.All.onHitRecorded(mapinf);
                     return "Yellow";
                 }
-                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture)|| Convert.ToDouble(value, CultureInfo.InvariantCulture)>= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture))
+                if (Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoStartCrash, CultureInfo.InvariantCulture) && Convert.ToDouble(value, CultureInfo.InvariantCulture) <= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture) || Convert.ToDouble(value, CultureInfo.InvariantCulture) >= Convert.ToDouble(TwoEndError, CultureInfo.InvariantCulture))
                 {
                     mapinf.MapColor = "red";
                     mapinf.LineColor = "red";
@@ -93,7 +95,6 @@ namespace AdminPanelDevice.Infrastructure
             }
             context.Clients.All.onHitRecorded(mapinf);
             return "";
-            
         }
 
     }

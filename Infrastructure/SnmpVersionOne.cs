@@ -106,7 +106,6 @@ namespace AdminPanelDevice.Infrastructure
                         {
                             trap.Description = "Unknown";
                         }
-                       
                     }
                     db.Traps.Add(trap);
                     db.SaveChanges();

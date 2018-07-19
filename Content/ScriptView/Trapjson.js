@@ -12,31 +12,6 @@ function LogInformations() {
         alert("shemovida");
     });
 }
-//$("#start_log").click(function (e) {
-//    var redirectWindow = window.open("/Trap/LogSetting");
-//    $.ajax({
-//        type: 'POST',
-//        dataType: "text",
-//        url: "/Trap/LogShow",
-//        async: false,
-//        success: function (Response) {
-//            $('#loginformation').html("");
-//            $('#loginformation').html(Response);
-//            redirectWindow.location;
-//        }
-//    });
-//});
-
-
-//function LogInformations() {
-//    window.open('/Trap/LogSetting');
-//}
-//$(document).ready(function () {
-//    $.post("/Trap/LogShow", {}, function (Response) {
-//        $('#loginformation').html("");
-//        $('#loginformation').html(Response);
-//    });
-//});
 
 $("#buttrap").click(function () {
     $.post("/Trap/LogShow", {}, function (Response) {

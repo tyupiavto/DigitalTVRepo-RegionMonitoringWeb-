@@ -17,7 +17,7 @@ using System.Threading;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Microsoft.AspNet.SignalR;
-
+using AdminPanelDevice.Traps;
 namespace AdminPanelDevice.Controllers
 {
     public class TrapController : Controller
@@ -28,13 +28,14 @@ namespace AdminPanelDevice.Controllers
         public static List<Trap> TrapLogListSearch = new List<Trap>();
         public static int pageListNumber = 20;
         public static int SearchIndicator = 0;
-        public static int maplog = 0;
-
+        public static int LogInd = 0;
+        public TrapPresentation trapPresentation = new TrapPresentation();
+        
         DeviceContext db = new DeviceContext();
         // GET: Trap
         public ActionResult Index()
         {
-            maplog = 0;
+            LogInd = 0;
             return View();
         }
 
@@ -67,16 +68,16 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 ViewBag.pageNumber = pageListNumber;
-                if (maplog == 0)
+                if (LogInd == 0)
                 {
                     DateTime start = DateTime.Now;
                     DateTime end = start.Add(new TimeSpan(-24, 0, 0));
                     TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
                     TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
-                    ViewBag.pageNumber = pageListNumber;
                 }
                 return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             }
+            //  return PartialView("_TrapLogInformation", trapPresentation.TrapLogShow(TrapLogList,LogInd).ToPagedList(page ?? 1, pageListNumber));
         }
         public PartialViewResult PageLog(int? page)
         {
@@ -148,12 +149,12 @@ namespace AdminPanelDevice.Controllers
                         if (SearchIndicator == 2)
                         {
                             TrapLogList = connection.Query<Trap>($"select * from Trap where  dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{mapTowerDeviceName}' and AlarmStatus<>'white'").ToList();
-                            maplog = 1;
+                            LogInd = 1;
                         }
                         else
                         {
                             SearchIndicator = 0;
-                            maplog = 0;
+                            LogInd = 0;
                             TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
                         }
                         ViewBag.errorCount = TrapLogList.Where(t=>t.AlarmStatus=="red").ToList().Count;

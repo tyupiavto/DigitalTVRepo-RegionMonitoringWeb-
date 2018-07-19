@@ -53,6 +53,14 @@ namespace AdminPanelDevice.SnmpGet
             }
         }
 
+        public void SleepThreadDelete (string towerName, int deviceID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<GetSleepThread>($"delete from GetSleepThread where TowerName='{towerName}' and DeviceID='{ deviceID }'");
+            }
+        }
+
         public  void GetSleepThreadSave (DeviceContext db, GetSleepThread gtl)
         {
             db.GetSleepThread.Add(gtl);

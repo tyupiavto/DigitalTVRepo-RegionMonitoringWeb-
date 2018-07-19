@@ -80,19 +80,20 @@ namespace AdminPanelDevice.Infrastructure
                         {
                             char[] arr = get.Value.ToCharArray();
                             get.Value = new string(Array.FindAll<char>(arr, (c => (char.IsDigit(c) || c == '.'))));
-                            values = new string(Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)|| c == '.'))));
+                            values = new string(Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '.'))));
                         }
                         get.ResultCorrectError = correctError.CompareCorrectError(WalkID, values,DivideMultiply,Deviceid,ID,TowerID, get.Value, StartCorrect, EndCorrect, OneStartError, OneEndError, OneStartCrash, OneEndCrash, TwoStartError, TwoEndError, TwoStartCrash, TwoEndCrash);
 
                         db.MibGets.Add(get);
                         db.SaveChanges();
                     }
-                }
-                catch (Exception e) {
-                    var ks = 1;
-                }
+            }
+                catch (Exception e)
+            {
+                var ks = 1;
+            }
 
-                target.Close();
+            target.Close();
                 Thread.Sleep((time * 1000));
             }
         }

@@ -46,6 +46,7 @@ namespace AdminPanelDevice.Infrastructure
                         mapinformation.TowerLine = mapline.LinesCordinate(towerID);
 
                         var cord = connection.Query<TowerGps>($"select * from TowerGps where TowerID='{towerID}'").FirstOrDefault();
+
                         mapinformation.StartLattitube = Double.Parse(cord.Lattitube.Remove(cord.Lattitube.Length - 2), CultureInfo.InvariantCulture);
                         mapinformation.StartLongitube = Double.Parse(cord.Longitube.Remove(cord.Longitube.Length - 2), CultureInfo.InvariantCulture);
                         mapinformation.Name = cord.TowerName;

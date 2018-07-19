@@ -36,15 +36,27 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult Get(string towerName,int towerID, int deviceID)
         {
-           // GetThreadPlayStop get = new GetThreadPlayStop();
+            //GetThreadPlayStop get = new GetThreadPlayStop();
 
-            //var getOnOof= get.Get(getThread, returnedThreadList, towerName, deviceID, towerID,db, getThreadPreset);
-            //var getOnOof = getPresentation.DeviceTheadOnOff(getThread, returnedThreadList, towerName, deviceID, towerID, db, getThreadPreset);
-            //if (getOnOof == false )
+            //var getOnOof = get.Get(getThread, returnedThreadList, towerName, deviceID, towerID, db, getThreadPreset);
+            //if (getOnOof == false)
             //{
-            //    return Json("1", JsonRequestBehavior.AllowGet);
+            //    return Json("false", JsonRequestBehavior.AllowGet);
             //}
-            return Json(getPresentation.DeviceTheadOnOff(getThread, returnedThreadList, towerName, deviceID, towerID, db, getThreadPreset), JsonRequestBehavior.AllowGet);
+            //else
+            //{
+            //    return Json("true", JsonRequestBehavior.AllowGet);
+            //}
+
+            var getOnOof = getPresentation.DeviceTheadOnOff(getThread, returnedThreadList, towerName, deviceID, towerID, db, getThreadPreset);
+            if (getOnOof == false)
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]

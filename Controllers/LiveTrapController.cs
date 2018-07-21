@@ -31,12 +31,6 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult TrapCurrentAlarms ()
         {
             LiveTrapErrorCrashList.Clear();
-            //LiveTrapErrorCrashList = liveTrapPresentation.TrapCurrentAlarmResult();
-
-            //var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
-            //ViewBag.ErrorCount = correctError.ErrorCount.ToString();
-            //ViewBag.CrashCount = correctError.CrashCount.ToString();
-
             return PartialView("_LiveTrapError", LiveTrapErrorCrashList);
         }
 
@@ -54,20 +48,10 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult TrapClearArchive(int archiveInd)
         {
-            if (archiveInd == 1)
-            {
-                LiveTrapErrorCrashList = liveTrapPresentation.TrapCurrentAlarmResult();
-
-                var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
-                ViewBag.ErrorCount = correctError.ErrorCount.ToString();
-                ViewBag.CrashCount = correctError.CrashCount.ToString();
-            }
-            else
-            {
-                ViewBag.ErrorCount = 0;
-                ViewBag.CrashCount = 0;
-                LiveTrapErrorCrashList.Clear();
-            }
+            LiveTrapErrorCrashList = liveTrapPresentation.TrapCurrentAlarmResult(archiveInd);
+            var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
+            ViewBag.ErrorCount = correctError.ErrorCount.ToString();
+            ViewBag.CrashCount = correctError.CrashCount.ToString();
             return PartialView("_LiveTrapError", LiveTrapErrorCrashList);
         }
 

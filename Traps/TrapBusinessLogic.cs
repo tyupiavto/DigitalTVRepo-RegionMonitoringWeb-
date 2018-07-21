@@ -1,8 +1,12 @@
-﻿using AdminPanelDevice.Models;
+﻿using AdminPanelDevice.Infrastructure;
+using AdminPanelDevice.Models;
+using IToolS.IOServers.Snmp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -10,28 +14,28 @@ namespace AdminPanelDevice.Traps
 {
     public class TrapBusinessLogic
     {
-        public TrapBusinessLogic () { }
+        public TrapBusinessLogic() { }
         private TrapData trapData = new TrapData();
         private TrapLogInformationList trapLogInformarion = new TrapLogInformationList();
 
-        public List<Trap> TrapLogLoad (List<Trap> TrapLogList,int LogInd)
+        public List<Trap> TrapLogLoad(List<Trap> TrapLogList, int LogInd)
         {
             if (LogInd == 0)
             {
                 DateTime start = DateTime.Now;
                 DateTime end = start.Add(new TimeSpan(-24, 0, 0));
                 TrapLogList = trapData.DateTimeSearchLog(end, start);
-                TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();   
+                TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
             }
             return TrapLogList;
         }
 
-        public TrapLogInformationList LogLoad(string SearchName, int SearchClear, string startTime, string endTime,List<Trap> TrapLogList,List<Trap> TrapLogListSearch, int SearchIndicator,string mapTowerDeviceName,int LogInd)
+        public TrapLogInformationList LogLoad(string SearchName, int SearchClear, string startTime, string endTime, List<Trap> TrapLogList, List<Trap> TrapLogListSearch, int SearchIndicator, string mapTowerDeviceName, int LogInd)
         {
-                DateTime start = DateTime.Now;
-                DateTime end = start.Add(new TimeSpan(-1, 0, 0));
-               // ViewBag.pageNumber = pageListNumber;
-                int trapID;
+            DateTime start = DateTime.Now;
+            DateTime end = start.Add(new TimeSpan(-1, 0, 0));
+            // ViewBag.pageNumber = pageListNumber;
+            int trapID;
             if (SearchName == "" && startTime != "" && startTime != null && endTime != "" && endTime != null)
             {
                 //   ViewBag.ColorDefine = 1;
@@ -121,7 +125,7 @@ namespace AdminPanelDevice.Traps
                 }
             }
         }
-        public List<Trap> AlarmColorSearch(string correctColor, string errorColor, string crashColor, string whiteColor, int all,List<Trap> TrapLogListSearch,List<Trap> TrapLogList,int SearchIndicator)
+        public List<Trap> AlarmColorSearch(string correctColor, string errorColor, string crashColor, string whiteColor, int all, List<Trap> TrapLogListSearch, List<Trap> TrapLogList, int SearchIndicator)
         {
             if (correctColor == " " && errorColor == " " && crashColor == " " && whiteColor == " ")
             {
@@ -131,7 +135,7 @@ namespace AdminPanelDevice.Traps
             {
                 SearchIndicator = 1;
 
-               return TrapLogList.Where(s => s.AlarmStatus != null && s.AlarmStatus.Contains(correctColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(errorColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(crashColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(whiteColor)).ToList();
+                return TrapLogList.Where(s => s.AlarmStatus != null && s.AlarmStatus.Contains(correctColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(errorColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(crashColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(whiteColor)).ToList();
             }
             else
             {
@@ -140,7 +144,7 @@ namespace AdminPanelDevice.Traps
             }
         }
 
-        public List<Trap> AlarmLogStatus (string alarmColor, string deviceName, string alarmText, string returnOidText, string currentOidText, string alarmDescription,List<Trap> TrapLogList, DeviceContext db)
+        public List<Trap> AlarmLogStatus(string alarmColor, string deviceName, string alarmText, string returnOidText, string currentOidText, string alarmDescription, List<Trap> TrapLogList, DeviceContext db)
         {
             var alarmtextdecode = System.Uri.UnescapeDataString(alarmText);
 
@@ -165,7 +169,7 @@ namespace AdminPanelDevice.Traps
                 alarmlog.CurrentOidText = currentOidText;
                 alarmlog.AlarmDescription = alarmDescription;
 
-                trapData.AlarmLogStatusSave(db,alarmlog);
+                trapData.AlarmLogStatusSave(db, alarmlog);
             }
             TrapLogList.ForEach(item =>
             {
@@ -178,6 +182,106 @@ namespace AdminPanelDevice.Traps
             });
             return TrapLogList;
         }
-    }
 
+        public void TrapNameSelected(string trapListName, string check)
+        {
+            trapData.TrapNameSelectUpdate(trapListName, check);
+        }
+
+        public List<TrapListNameCheck> TrapTitleSelectedList()
+        {
+            return trapData.TrapTitleSelectedListReturn();
+        }
+
+        public List<Trap> PageLogNumberGoto(List<Trap> TrapLogList, List<Trap> TrapLogListSearch, int SearchIndicator)
+        {
+            if (SearchIndicator == 0 || SearchIndicator == 2)
+            {
+                return TrapLogList;
+            }
+            else
+            {
+                return TrapLogListSearch;
+            }
+        }
+
+        public void SendTrapListen(bool trapInd)
+        {
+            if (trapInd == true)
+            {
+                trapInd = false;
+
+                TrapListen();
+            }
+        }
+
+        public void TrapListen()
+        {
+            List<MibTreeInformation> mibTreeInformation = new List<MibTreeInformation>();
+            List<TowerDevices> towerDevices = new List<TowerDevices>();
+            List<AlarmLogStatus> alarmLog = new List<AlarmLogStatus>();
+
+            mibTreeInformation = trapData.MibTreeInformationList();
+            towerDevices = trapData.TowerDevicesList();
+            alarmLog = trapData.AlarmLogStatusList();
+
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 162);
+            EndPoint ep = (EndPoint)ipep;
+            socket.Bind(ep);
+            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 0);
+
+            bool run = true;
+            int inlen = -1;
+            while (run)
+            {
+
+                //  alarmLog = connection.Query<AlarmLogStatus>("select * from AlarmLogStatus").ToList();
+
+                byte[] indata = new byte[16 * 1024];
+
+                IPEndPoint peer = new IPEndPoint(IPAddress.Any, 0);
+                EndPoint inep = (EndPoint)peer;
+                try
+                {
+                    inlen = socket.ReceiveFrom(indata, ref inep);
+                }
+                catch (Exception ex)
+                {
+                    inlen = -1;
+                }
+                if (inlen > 0)
+                {
+                    int ver = SnmpPacket.GetProtocolVersion(indata, inlen);
+                    if (ver == 0)
+                    {
+                        try
+                        {
+                            SnmpV1TrapPacket pkt = new SnmpV1TrapPacket();
+                            pkt.decode(indata, inlen);
+                            new SnmpVersionOne(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+
+                    if (ver == 2 || ver == 1)
+                    {
+                        try
+                        {
+                            SnmpV2Packet pkt = new SnmpV2Packet();
+                            pkt.decode(indata, inlen);
+                            new SnmpVersionTwo(pkt, inep, mibTreeInformation, towerDevices, alarmLog);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

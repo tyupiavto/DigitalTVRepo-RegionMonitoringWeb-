@@ -8,7 +8,7 @@
 <script src="~/signalr/Hubs"></script>
 @{
     var pagenumber = ViewBag.pageNumber;
-    var textcolor = "";
+    var textcolor = "white";
 
     <script type="text/javascript">
         var colorDefine = @Html.Raw(Json.Encode(@ViewBag.ColorDefine));
@@ -23,7 +23,8 @@
         }
     </script>
 }
-<table class="table table-striped table-bordered draggable sortable" id="logTableInf" style="width: 99.3%; display: block; overflow: auto;  height: 950px;" data-toggle="table">
+<div style="height: 100vh;width: 100vw; max-height: 850px; overflow-y: auto !important; margin-top: -15px; border-bottom: 1px solid #000;">
+<table class="table table-striped table-bordered draggable sortable" id="logTableInf" style="width: 99vw; table-layout: fixed; height: 850px;" data-toggle="table">
     <thead class="theadName">
         <tr>
             <th id="idColumn">ID</th>
@@ -49,7 +50,7 @@
             if (item.AlarmStatus == "white")
             {
                 textcolor = "white";
-                item.AlarmStatus= "#333";
+                item.AlarmStatus = "#333";
             }
 
             if (item.AlarmStatus == "yellow")
@@ -60,23 +61,27 @@
             {
                 textcolor = "white";
             }
-            <tr style="background-color:@(item.AlarmStatus); color:@(textcolor)" class="td_stule">
-                <td  id="idColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.ID">@item.ID</div></td>
-                <td  id="countrieColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.Countrie">@item.Countrie</div></td>
-                <td  id="stateColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.States">@item.States</div></td>
-                <td  id="cityColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.City">@item.City</div></td>
-                <td  id="towerColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.TowerName">@item.TowerName</div></td>
-                <td  id="deviceColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.DeviceName">@item.DeviceName</div></td>
-                <td  id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)"><div class="td_stule" title="@item.IpAddres">@item.IpAddres</div></a></td>
-                <td  id="datetimeColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.dateTimeTrap">@item.dateTimeTrap</div></td>
-                <td  id="oidNameColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.OIDName">@item.OIDName</div></td>
-                <td  id="descriptionColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.Description">@item.Description</div></td>
-                <td  id="valueColumn@(item.ID)" class="valueInformation" value="@item.ID"><div class="td_stule" title="@item.Value">@item.Value</div></td>
-                <td  id="alarmDescriptionColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.AlarmDescription">@item.AlarmDescription</div></td>
-                <td  id="oidColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID"><div class="td_stule" title="@item.CurrentOID">@item.CurrentOID</div></td>
-                <td  id="oidreturnedColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID"><div class="td_stule" title="@item.ReturnedOID">@item.ReturnedOID</div></td>
-                <td  id="errorMapColumn@(item.ID)" value="@item.ID">
-                    <div class="dropdown td_stule" id="logList" value="@(item.ID)" style="margin-top:-7px; max-height:27px !important;overflow:inherit!important;">
+            if (item.AlarmStatus == "green")
+            {
+                textcolor = "white";
+            }
+            <tr style="background-color:@(item.AlarmStatus); color:@(textcolor); width:98vw;" @*class="td_stule"*@>
+                <td style="width:4%" id="idColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.ID">@item.ID</div></td>
+                <td style="width:4%" id="countrieColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.Countrie">@item.Countrie</div></td>
+                <td style="width:4%" id="stateColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.States">@item.States</div></td>
+                <td style="width:5%" id="cityColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.City">@item.City</div></td>
+                <td style="width:5%" id="towerColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.TowerName">@item.TowerName</div></td>
+                <td style="width:5%" id="deviceColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.DeviceName">@item.DeviceName</div></td>
+                <td style="width:5%" id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)"><div class="div_style" title="@item.IpAddres">@item.IpAddres</div></a></td>
+                <td style="width:5%" id="datetimeColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.dateTimeTrap">@item.dateTimeTrap</div></td>
+                <td style="width:5%" id="oidNameColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.OIDName">@item.OIDName</div></td>
+                <td style="width:5%" id="descriptionColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.Description">@item.Description</div></td>
+                <td style="width:8%" id="valueColumn@(item.ID)" class="valueInformation" value="@item.ID"><div class="div_style" title="@item.Value">@item.Value</div></td>
+                <td style="width:5%" id="alarmDescriptionColumn@(item.ID)" value="@item.ID"><div class="div_style" title="@item.AlarmDescription">@item.AlarmDescription</div></td>
+                <td style="width:5%" id="oidColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID"><div class="div_style" title="@item.CurrentOID">@item.CurrentOID</div></td>
+                <td style="width:5%" id="oidreturnedColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID"><div class="div_style" title="@item.ReturnedOID">@item.ReturnedOID</div></td>
+                <td style="width:3%" id="errorMapColumn@(item.ID)" value="@item.ID">
+                    <div class="dropdown td_style" id="logList" value="@(item.ID)" style="margin-top:-7px; max-height:27px !important;margin-left:30%;overflow:inherit!important;">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" value="@(item.ID)" id="logListStatus@(item.ID)">
                             <i class="glyphicon glyphicon-th-list" style="height:20px;"></i>
                         </button>
@@ -92,7 +97,7 @@
         }
     </tbody>
 </table>
-
+    </div>
 <div id="page_Log" style="margin-left:25%; margin-top:-50px; display:block">
 
     <!-- log pagelist lenght-->
@@ -115,13 +120,18 @@
 <script src="~/Content/ScriptView/jquery.dataTables.min.js"></script>
 
 <style>
-    .td_stule {
-        max-height: 25px;
+    .div_style {
+        /*max-height: 25px;*/
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width:163px;
+        width: 120px;
     }
+
+    .td_style {
+        width: 7%;
+    }
+
     .theadName th {
         color: white;
         background-color: #333;

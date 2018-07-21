@@ -22,9 +22,9 @@ namespace AdminPanelDevice.LiveTrap
             return liveTrapBusinessLogic.TrapNameSelected();
         }
 
-        public List<Trap> TrapCurrentAlarmResult ()
+        public List<Trap> TrapCurrentAlarmResult (int AlarmInd)
         {
-            return liveTrapBusinessLogic.TrapCurrentAlarm();
+            return liveTrapBusinessLogic.TrapCurrentAlarm(AlarmInd);
         }
 
         public TrapColorCount TrapCurrentAlarmCount (List<Trap> TrapAlarmList)

@@ -30,7 +30,7 @@ namespace AdminPanelDevice.Controllers
         public static int SearchIndicator = 0;
         public static int LogInd = 0;
         public TrapPresentation trapPresentation = new TrapPresentation();
-        
+       
         DeviceContext db = new DeviceContext();
         // GET: Trap
         public ActionResult Index()
@@ -42,7 +42,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult SendTrap()
         {
-
+           // trapPresentation.SendTrapListenPresentaion(trapInd);
             if (trapInd == true)
             {
                 trapInd = false;
@@ -54,12 +54,12 @@ namespace AdminPanelDevice.Controllers
 
         public ActionResult LogSetting(int? page)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                var checkList = connection.Query<TrapListNameCheck>("select * from TrapListNameCheck ").ToList();
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+                var checkList = trapPresentation.TrapTitleSelectList();
                 ViewBag.TrapCheck = checkList;
                 return View(checkList);
-            }
+            //}
         }
 
         [HttpPost]
@@ -81,34 +81,35 @@ namespace AdminPanelDevice.Controllers
         }
         public PartialViewResult PageLog(int? page)
         {
-            //pageListNumber = listNumber;
             ViewBag.pageNumber = pageListNumber;
             ViewBag.ColorDefine = 1;
-            if (SearchIndicator == 0 || SearchIndicator==2)
-            {
-                return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
-            }
-            else
-            {
-                return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
-            }
+            //if (SearchIndicator == 0 || SearchIndicator==2)
+            //{
+            //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
+            //}
+            //else
+            //{
+            //    return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
+            //}
+            return PartialView("_TrapLogInformation", trapPresentation.PageLogNumberList(TrapLogList,TrapLogListSearch,SearchIndicator).ToPagedList(page ?? 1, pageListNumber));
         }
-        public PartialViewResult PageLogList(int? page, int listNumber)
+        public PartialViewResult LogListCountSize(int? page, int listNumber)
         {
             pageListNumber = listNumber;
             ViewBag.pageNumber = pageListNumber;
-            if (SearchIndicator == 0 || SearchIndicator == 2)
-            {
-                return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
-            }
-            else
-            {
-                return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
-            }
+            //if (SearchIndicator == 0 || SearchIndicator == 2)
+            //{
+            //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
+            //}
+            //else
+            //{
+            //    return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
+            //}
+            return PartialView("_TrapLogInformation", trapPresentation.PageLogNumberList(TrapLogList, TrapLogListSearch, SearchIndicator).ToPagedList(page ?? 1, pageListNumber));
         }
 
         [HttpPost]
-        public PartialViewResult LogSearch(int? page, string SearchName,int SearchClear, string startTime, string endTime)
+        public PartialViewResult LogSearch(int? page, string SearchName, int SearchClear, string startTime, string endTime)
         {
             //TrapLogInformationList trapLogInformationList = new TrapLogInformationList();
             //ViewBag.pageNumber = pageListNumber;
@@ -120,6 +121,7 @@ namespace AdminPanelDevice.Controllers
             //ViewBag.allCount = trapLogInformationList.AllCount;
 
             //return PartialView("_TrapLogInformation", trapLogInformationList.TrapLogList.ToPagedList(page ?? 1, pageListNumber));
+
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 DateTime start = DateTime.Now;
@@ -245,55 +247,57 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult AlarmLog (string alarmColor, string deviceName, string alarmText,string returnOidText,string currentOidText,string alarmDescription)
         {
-        //  TrapLogList=trapPresentation.AlarmLogStatusResult(alarmColor, deviceName, alarmText, returnOidText, currentOidText, alarmDescription, TrapLogList, db);
-           var alarmtextdecode= System.Uri.UnescapeDataString(alarmText);
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
 
-                if (alarmColor != "white")
-                {
-                    connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription=N'{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
-                }
-                else
-                {
-                    alarmDescription = "";
-                    connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription='{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
-                }
-                connection.Query<AlarmLogStatus>($"delete from AlarmLogStatus where AlarmText like '%{alarmtextdecode}%' and ReturnOidText='{returnOidText}' and CurrentOidText='{currentOidText}'");
-            }
+           TrapLogList =trapPresentation.AlarmLogStatusResult(alarmColor, deviceName, alarmText, returnOidText, currentOidText, alarmDescription, TrapLogList, db);
+           //var alarmtextdecode= System.Uri.UnescapeDataString(alarmText);
+           // using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+           // {
+
+           //     if (alarmColor != "white")
+           //     {
+           //         connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription=N'{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
+           //     }
+           //     else
+           //     {
+           //         alarmDescription = "";
+           //         connection.Query<Trap>($"update Trap set AlarmStatus='{alarmColor}',AlarmDescription='{alarmDescription}' where Value like '%{alarmtextdecode}%' and ReturnedOID='{returnOidText}' and CurrentOID='{currentOidText}'");
+           //     }
+           //     connection.Query<AlarmLogStatus>($"delete from AlarmLogStatus where AlarmText like '%{alarmtextdecode}%' and ReturnOidText='{returnOidText}' and CurrentOidText='{currentOidText}'");
+           // }
            
-            TrapLogList.ForEach(item =>
-            {
-             bool status = Regex.IsMatch(item.Value,alarmtextdecode);
-             if (status == true && item.CurrentOID == currentOidText && item.ReturnedOID == returnOidText) {
-                    item.AlarmStatus = alarmColor;
-                    item.AlarmDescription = alarmDescription;
-                }
-            });
+           // TrapLogList.ForEach(item =>
+           // {
+           //  bool status = Regex.IsMatch(item.Value,alarmtextdecode);
+           //  if (status == true && item.CurrentOID == currentOidText && item.ReturnedOID == returnOidText) {
+           //         item.AlarmStatus = alarmColor;
+           //         item.AlarmDescription = alarmDescription;
+           //     }
+           // });
 
-            if (alarmColor != "white")
-            {
-                AlarmLogStatus alarmlog = new AlarmLogStatus();
-                alarmlog.AlarmStatus = alarmColor;
-                alarmlog.AlarmText = alarmtextdecode;
-                alarmlog.DeviceName = deviceName;
-                alarmlog.ReturnOidText = returnOidText;
-                alarmlog.CurrentOidText = currentOidText;
-                alarmlog.AlarmDescription = alarmDescription;
-                db.AlarmLogStatus.Add(alarmlog);
-                db.SaveChanges();
-            }
+           // if (alarmColor != "white")
+           // {
+           //     AlarmLogStatus alarmlog = new AlarmLogStatus();
+           //     alarmlog.AlarmStatus = alarmColor;
+           //     alarmlog.AlarmText = alarmtextdecode;
+           //     alarmlog.DeviceName = deviceName;
+           //     alarmlog.ReturnOidText = returnOidText;
+           //     alarmlog.CurrentOidText = currentOidText;
+           //     alarmlog.AlarmDescription = alarmDescription;
+           //     db.AlarmLogStatus.Add(alarmlog);
+           //     db.SaveChanges();
+           // }
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult TrapNameCheck (string trapListName,string check)
+        public JsonResult TrapNameCheck(string trapListName, string check)
         {
-            using (IDbConnection connection=new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                connection.Query<TrapListNameCheck>($"update TrapListNameCheck set Checked='{check}' where ListName='{trapListName}'");
-            }
-                return Json("");
+            //using (IDbConnection connection=new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    connection.Query<TrapListNameCheck>($"update TrapListNameCheck set Checked='{check}' where ListName='{trapListName}'");
+            //}
+            trapPresentation.TrapSelectName(trapListName, check);
+            return Json("");
         }
 
         [HttpPost]
@@ -301,23 +305,23 @@ namespace AdminPanelDevice.Controllers
         {
             ViewBag.pageNumber = pageListNumber;
             ViewBag.ColorDefine = 1;
-           // return PartialView("_TrapLogInformation", trapPresentation.AlarmColorSearchList(correctColor, errorColor, crashColor, whiteColor, all, TrapLogListSearch, TrapLogList, SearchIndicator); .ToPagedList(page ?? 1, pageListNumber)); 
-            if (correctColor == " " && errorColor == " " && crashColor == " " && whiteColor== " ")
-            {
-                all = 1;
-            }
-            if (all == 0)
-            {
-                SearchIndicator = 1;
+            return PartialView("_TrapLogInformation", trapPresentation.AlarmColorSearchList(correctColor, errorColor, crashColor, whiteColor, all, TrapLogListSearch, TrapLogList, SearchIndicator).ToPagedList(page ?? 1, pageListNumber)); 
+            //if (correctColor == " " && errorColor == " " && crashColor == " " && whiteColor== " ")
+            //{
+            //    all = 1;
+            //}
+            //if (all == 0)
+            //{
+            //    SearchIndicator = 1;
             
-                TrapLogListSearch = TrapLogList.Where(s => s.AlarmStatus!=null && s.AlarmStatus.Contains(correctColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(errorColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(crashColor) || s.AlarmStatus != null &&  s.AlarmStatus.Contains(whiteColor)).ToList();
-                return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
-            }
-            else
-            {
-                SearchIndicator = 0;
-                return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
-            }
+            //    TrapLogListSearch = TrapLogList.Where(s => s.AlarmStatus!=null && s.AlarmStatus.Contains(correctColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(errorColor) || s.AlarmStatus != null && s.AlarmStatus.Contains(crashColor) || s.AlarmStatus != null &&  s.AlarmStatus.Contains(whiteColor)).ToList();
+            //    return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
+            //}
+            //else
+            //{
+            //    SearchIndicator = 0;
+            //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
+            //}
         }
 
 

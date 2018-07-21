@@ -29,5 +29,22 @@ namespace AdminPanelDevice.Traps
         {
           return trapBusinessLogic.AlarmLogStatus(alarmColor, deviceName, alarmText, returnOidText, currentOidText, alarmDescription, TrapLogList, db);
         }
+        public void TrapSelectName(string trapListName, string check)
+        {
+            trapBusinessLogic.TrapNameSelected(trapListName, check);
+        }
+        public List<TrapListNameCheck> TrapTitleSelectList ()
+        {
+            return trapBusinessLogic.TrapTitleSelectedList();
+        }
+        public List<Trap> PageLogNumberList (List<Trap> TrapLogList, List<Trap> TrapLogListSearch, int SearchIndicator)
+        {
+            return trapBusinessLogic.PageLogNumberGoto(TrapLogList, TrapLogListSearch, SearchIndicator);
+        }
+
+        public void SendTrapListenPresentaion(bool trapInd)
+        {
+            trapBusinessLogic.SendTrapListen(trapInd);
+        }
     }
 }

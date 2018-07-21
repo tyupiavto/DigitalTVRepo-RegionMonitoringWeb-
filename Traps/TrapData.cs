@@ -43,6 +43,47 @@ namespace AdminPanelDevice.Traps
                 connection.Query<AlarmLogStatus>($"delete from AlarmLogStatus where AlarmText like '%{alarmtextdecode}%' and ReturnOidText='{returnOidText}' and CurrentOidText='{currentOidText}'");
             }
         }
+
+        public void TrapNameSelectUpdate (string trapListName, string check)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<TrapListNameCheck>($"update TrapListNameCheck set Checked='{check}' where ListName='{trapListName}'");
+            }
+        }
+
+        public List<TrapListNameCheck> TrapTitleSelectedListReturn()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<TrapListNameCheck>("select * from TrapListNameCheck ").ToList();
+            }
+        }
+
+        public List<MibTreeInformation> MibTreeInformationList()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<MibTreeInformation>("select * from TreeInformation").ToList();
+            }
+        }
+
+        public List<TowerDevices> TowerDevicesList()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<TowerDevices>("select * from TowerDevices").ToList();
+            }
+        }
+
+        public List<AlarmLogStatus> AlarmLogStatusList()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<AlarmLogStatus>("select * from TowerDevices").ToList();
+            }
+        }
+
         public void AlarmLogStatusSave (DeviceContext db, AlarmLogStatus alarmlog)
         {
             db.AlarmLogStatus.Add(alarmlog);

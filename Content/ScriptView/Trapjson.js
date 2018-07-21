@@ -172,7 +172,7 @@ function copyToClipboard() {
 $('body').on('click touched', '#pagelistlog li', function () {
     $('#traplogpagelist').text($(this).text());
     listNumber = $(this).text();
-    $.post('/Trap/PageLogList', { listNumber: listNumber }, function (Response) {
+    $.post('/Trap/LogListCountSize', { listNumber: listNumber }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);
         TrapPageCheck();

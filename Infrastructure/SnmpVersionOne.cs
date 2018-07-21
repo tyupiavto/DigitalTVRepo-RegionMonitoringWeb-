@@ -26,91 +26,88 @@ namespace AdminPanelDevice.Infrastructure
         public SnmpVersionOne(SnmpV1TrapPacket pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            foreach (Vb v in pkt.Pdu.VbList)
             {
-                foreach (Vb v in pkt.Pdu.VbList)
+                Trap trap = new Trap();
+                string IP = inep.ToString();
+                trap.IpAddres = pkt.Pdu.AgentAddress.ToString();
+                trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
+                trap.ReturnedOID = v.Oid.ToString();
+                trap.dateTimeTrap = DateTime.Now.ToString();
+
+                if (v.Value.GetType().Name == "OctetString")
                 {
-                    Trap trap = new Trap();
-                    string IP = inep.ToString();
-                    trap.IpAddres = pkt.Pdu.AgentAddress.ToString();
-                    trap.CurrentOID = pkt.Pdu.Enterprise.ToString();
-                    trap.ReturnedOID = v.Oid.ToString();
-                    trap.dateTimeTrap = DateTime.Now.ToString();
+                    trap.Value = hex.Hexstrings(v.Value.ToString());
+                }
+                else
+                {
+                    trap.Value = v.Value.ToString();
+                }
+                var tDevice = towerDevices.Where(t => t.IP == pkt.Pdu.AgentAddress.ToString()).FirstOrDefault();
 
-                    if (v.Value.GetType().Name == "OctetString")
+                alarmStatusDescription = alarmstatus.AlarmColorDefines(trap.Value, trap.CurrentOID, trap.ReturnedOID, alarmLog, tDevice);
+                trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
+                trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
+
+                if (tDevice == null)
+                {
+                    trap.Countrie = "Unknown";
+                    trap.States = "Unknown";
+                    trap.City = "Unknown";
+                    trap.DeviceName = "Unknown";
+                    trap.TowerName = "Unknown";
+                    trap.Description = "Unknown";
+                }
+                else
+                {
+                    trap.Countrie = tDevice.CountrieName;
+                    trap.States = tDevice.StateName;
+                    trap.City = tDevice.CityName;
+                    trap.DeviceName = tDevice.DeviceName;
+                    trap.TowerName = tDevice.TowerName;
+
+                    string oid = pkt.Pdu.Enterprise.ToString();
+                    var OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
+                    if (OidMibdescription == null)
                     {
-                        trap.Value = hex.Hexstrings(v.Value.ToString());
+                        oid = oid.Remove(oid.Length - 1);
+                        oid = oid.Remove(oid.Length - 1);
+                        OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
                     }
-                    else
+                    if (OidMibdescription == null)
                     {
-                        trap.Value = v.Value.ToString();
-                    }
-                    var tDevice = towerDevices.Where(t => t.IP == pkt.Pdu.AgentAddress.ToString()).FirstOrDefault();
+                        oid = oid.Remove(oid.Length - 1);
+                        oid = oid.Remove(oid.Length - 1);
+                        OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
 
-                    alarmStatusDescription = alarmstatus.AlarmColorDefines(trap.Value,trap.CurrentOID,trap.ReturnedOID, alarmLog,tDevice);
-                    trap.AlarmStatus = alarmStatusDescription.AlarmStatusColor;
-                    trap.AlarmDescription = alarmStatusDescription.AlarmDescription;
-
-                    if (tDevice == null)
-                    {
-                        trap.Countrie = "Unknown";
-                        trap.States = "Unknown";
-                        trap.City = "Unknown";
-                        trap.DeviceName = "Unknown";
-                        trap.TowerName = "Unknown";
-                        trap.Description = "Unknown";
-                    }
-                    else
-                    {
-                        trap.Countrie = tDevice.CountrieName;
-                        trap.States = tDevice.StateName;
-                        trap.City = tDevice.CityName;
-                        trap.DeviceName = tDevice.DeviceName;
-                        trap.TowerName = tDevice.TowerName;
-
-                        string oid = pkt.Pdu.Enterprise.ToString();
-                        var OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
-                        if (OidMibdescription == null)
+                        if (OidMibdescription != null)
                         {
-                            oid = oid.Remove(oid.Length - 1);
-                            oid = oid.Remove(oid.Length - 1);
-                            OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
-                        }
-                        if (OidMibdescription == null)
-                        {
-                            oid = oid.Remove(oid.Length - 1);
-                            oid = oid.Remove(oid.Length - 1);
-                            OidMibdescription = mibTreeInformation.Where(o => o.OID == oid).FirstOrDefault();
-
-                            if (OidMibdescription != null)
-                            {
-                                trap.Description = OidMibdescription.Description;
-                                trap.OIDName = OidMibdescription.Name;
-                            }
-                            else
-                            {
-                                trap.Description = "Unknown";
-                                trap.OIDName = "Unknown";
-                            }
+                            trap.Description = OidMibdescription.Description;
+                            trap.OIDName = OidMibdescription.Name;
                         }
                         else
                         {
-                            if (OidMibdescription.Description != null)
-                            {
-                                trap.Description = OidMibdescription.Description;
-                            }
-                            trap.OIDName = OidMibdescription.Name;
-                        }
-                        if (trap.Description == "")
-                        {
                             trap.Description = "Unknown";
+                            trap.OIDName = "Unknown";
                         }
                     }
-                    context.Clients.All.onHitRecorded(trap);
-
-                    db.Traps.Add(trap);
-                    db.SaveChanges();
+                    else
+                    {
+                        if (OidMibdescription.Description != null)
+                        {
+                            trap.Description = OidMibdescription.Description;
+                        }
+                        trap.OIDName = OidMibdescription.Name;
+                    }
+                    if (trap.Description == "")
+                    {
+                        trap.Description = "Unknown";
+                    }
                 }
+                context.Clients.All.onHitRecorded(trap);
+
+                db.Traps.Add(trap);
+                db.SaveChanges();
             }
         }
     }

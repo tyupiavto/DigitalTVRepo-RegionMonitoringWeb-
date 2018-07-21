@@ -35,42 +35,46 @@ namespace AdminPanelDevice.LiveTrap
                 return LiveTrapList;
         }
 
-        public List<Trap> TrapCurrentAlarm()
+        public List<Trap> TrapCurrentAlarm(int ArchiveInd)
         {
-            List<Trap> TrapCurrentErrorList = new List<Trap>();
-            List<Trap> TrapCurrentCorrectList = new List<Trap>();
-            List<Trap> TrapCorrectList = new List<Trap>();
-            DateTime start = DateTime.Now;
-            DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-
-            TrapCorrectList = liveTrapData.TrapCurrentAlarmList(start, end);
-            TrapCurrentErrorList = TrapCorrectList.Where(e => e.AlarmStatus == "red" || e.AlarmStatus == "yellow").ToList();
-
-            TrapCurrentCorrectList = TrapCorrectList.Where(e => e.AlarmStatus == "green").ToList();
-
-            TrapCurrentCorrectList.ForEach(itm =>
-            {
-                var trap = TrapCurrentErrorList.Where(e => e.IpAddres == itm.IpAddres && e.CurrentOID == itm.CurrentOID && e.ReturnedOID == itm.ReturnedOID && e.TowerName == itm.TowerName).ToList();
-                trap.ForEach(t => {
-                    TrapCurrentErrorList.Remove(t);
-                });
-               
-            });
-
             List<Trap> TrapCurrentError = new List<Trap>();
-            List<Trap> TrapLogInformation = TrapCurrentErrorList.ToList();
-            TrapCurrentErrorList.ForEach(TrapResponse =>
+            if (ArchiveInd == 1)
             {
-              var inf= TrapLogInformation.Where(e => e.IpAddres == TrapResponse.IpAddres && e.CurrentOID == TrapResponse.CurrentOID && e.ReturnedOID == TrapResponse.ReturnedOID && e.TowerName == TrapResponse.TowerName && e.AlarmStatus == TrapResponse.AlarmStatus).ToList();
-                if (inf.Count != 0)
-                {
-                    inf.ForEach(it => {
-                        TrapLogInformation.Remove(it);
-                       });
-                    TrapCurrentError.Add(inf.LastOrDefault());
-                }
-            });
+                List<Trap> TrapCurrentErrorList = new List<Trap>();
+                List<Trap> TrapCurrentCorrectList = new List<Trap>();
+                List<Trap> TrapCorrectList = new List<Trap>();
+                DateTime start = DateTime.Now;
+                DateTime end = start.Add(new TimeSpan(-24, 0, 0));
 
+                TrapCorrectList = liveTrapData.TrapCurrentAlarmList(start, end);
+                TrapCurrentErrorList = TrapCorrectList.Where(e => e.AlarmStatus == "red" || e.AlarmStatus == "yellow").ToList();
+
+                TrapCurrentCorrectList = TrapCorrectList.Where(e => e.AlarmStatus == "green").ToList();
+
+                TrapCurrentCorrectList.ForEach(itm =>
+                {
+                    var trap = TrapCurrentErrorList.Where(e => e.IpAddres == itm.IpAddres && e.CurrentOID == itm.CurrentOID && e.ReturnedOID == itm.ReturnedOID && e.TowerName == itm.TowerName).ToList();
+                    trap.ForEach(t =>
+                    {
+                        TrapCurrentErrorList.Remove(t);
+                    });
+
+                });
+
+                List<Trap> TrapLogInformation = TrapCurrentErrorList.ToList();
+                TrapCurrentErrorList.ForEach(TrapResponse =>
+                {
+                    var inf = TrapLogInformation.Where(e => e.IpAddres == TrapResponse.IpAddres && e.CurrentOID == TrapResponse.CurrentOID && e.ReturnedOID == TrapResponse.ReturnedOID && e.TowerName == TrapResponse.TowerName && e.AlarmStatus == TrapResponse.AlarmStatus).ToList();
+                    if (inf.Count != 0)
+                    {
+                        inf.ForEach(it =>
+                        {
+                            TrapLogInformation.Remove(it);
+                        });
+                        TrapCurrentError.Add(inf.LastOrDefault());
+                    }
+                });
+            }
             return TrapCurrentError;
         }
 

@@ -23,7 +23,7 @@
                 @foreach (var items in item[0].TowerSensor)
                 {
                     <td style="background-color:#525252">name</td>
-                    <td style="border-right-color: #f8f9fa;background-color:#525252;">value<button class="fa fa-bar-chart" id="openChart" value="@(items.DeviceID)" name="@(items.IP)" style="margin-left:28px;position:absolute;width:31px;height:18px;color:black"></button></td>
+                    <td style="border-right-color: #f8f9fa;background-color:#525252;">value<button class="fa fa-bar-chart" id="openChart" value="@(items.DeviceID)" name="@(items.IP)" style="margin-left:1%;position:absolute;width:31px;height:18px;color:black"></button></td>
                 }
             </tr>
             @foreach (var itm in item[0].SensorDevice)

@@ -23,9 +23,7 @@ namespace AdminPanelDevice.Infrastructure
         public SnmpVersionTwo(SnmpV2Packet pkt, EndPoint inep, List<MibTreeInformation> mibTreeInformation, List<TowerDevices> towerDevices, List<AlarmLogStatus> alarmLog)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                
+        
                 foreach (Vb v in pkt.Pdu.VbList)
                 {
                     Trap trap = new Trap();
@@ -98,7 +96,6 @@ namespace AdminPanelDevice.Infrastructure
                     db.Traps.Add(trap);
                     db.SaveChanges();
                 }
-            }
         }
     }
 }

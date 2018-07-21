@@ -13,6 +13,11 @@ function LogInformations() {
     });
 }
 
+$('body').on('click touchend', '#LiveTrapLog', function () {
+    var win = window.open("/LiveTrap/LiveTrap");
+    if (win) { win.focus(); }
+});
+
 $("#buttrap").click(function () {
     $.post("/Trap/LogShow", {}, function (Response) {
         $('#loginformation').html("");
@@ -186,6 +191,7 @@ $('body').on('click touched', '#dropdown li', function () {
     
     $.post('/Trap/TrapNameCheck', { trapListName: trapListName, check: check}, function () { });
 });
+
 $('body').on('click touched', '#whiteColor', function () { // mxolod tetri feris archeva
     all = 0;
     if (white == 0) {
@@ -196,9 +202,7 @@ $('body').on('click touched', '#whiteColor', function () { // mxolod tetri feris
         white--
         whiteColor = " ";
     }
-    //correctColor = " ";
-    //errorColor = " ";
-    //crashColor = " ";
+
     $.post('/Trap/ColorSearch', { correctColor: correctColor, errorColor: errorColor, crashColor: crashColor, whiteColor: whiteColor, all: all }, function (Response) {
         $('#loginformation').html("");
         $('#loginformation').html(Response);

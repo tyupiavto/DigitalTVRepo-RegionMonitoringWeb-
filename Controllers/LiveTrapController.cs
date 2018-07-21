@@ -30,10 +30,13 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult TrapCurrentAlarms ()
         {
-            LiveTrapErrorCrashList = liveTrapPresentation.TrapCurrentAlarmResult();
-            var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
-            ViewBag.ErrorCount = correctError.ErrorCount.ToString();
-            ViewBag.CrashCount = correctError.CrashCount.ToString();
+            LiveTrapErrorCrashList.Clear();
+            //LiveTrapErrorCrashList = liveTrapPresentation.TrapCurrentAlarmResult();
+
+            //var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
+            //ViewBag.ErrorCount = correctError.ErrorCount.ToString();
+            //ViewBag.CrashCount = correctError.CrashCount.ToString();
+
             return PartialView("_LiveTrapError", LiveTrapErrorCrashList);
         }
 
@@ -41,8 +44,38 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult LiveTrapError (Trap TrapResponse)
         {
             LiveTrapErrorCrashList =liveTrapPresentation.LiveTrapList(LiveTrapErrorCrashList, TrapResponse);
+
+            var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
+            ViewBag.ErrorCount = correctError.ErrorCount.ToString();
+            ViewBag.CrashCount = correctError.CrashCount.ToString();
             return PartialView("_LiveTrapError", LiveTrapErrorCrashList);
         }
 
+        [HttpPost]
+        public PartialViewResult TrapClearArchive(int archiveInd)
+        {
+            if (archiveInd == 1)
+            {
+                LiveTrapErrorCrashList = liveTrapPresentation.TrapCurrentAlarmResult();
+
+                var correctError = liveTrapPresentation.TrapCurrentAlarmCount(LiveTrapErrorCrashList);
+                ViewBag.ErrorCount = correctError.ErrorCount.ToString();
+                ViewBag.CrashCount = correctError.CrashCount.ToString();
+            }
+            else
+            {
+                ViewBag.ErrorCount = 0;
+                ViewBag.CrashCount = 0;
+                LiveTrapErrorCrashList.Clear();
+            }
+            return PartialView("_LiveTrapError", LiveTrapErrorCrashList);
+        }
+
+        [HttpPost]
+        public JsonResult ClearTrapLog ()
+        {
+            liveTrapPresentation.TrapLogClear();
+            return Json("");
+        }
     }
 }

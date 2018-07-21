@@ -31,5 +31,9 @@ namespace AdminPanelDevice.LiveTrap
         {
             return liveTrapBusinessLogic.LiveTrapErrorCorrectedCount(TrapAlarmList);
         } 
+        public void TrapLogClear ()
+        {
+            liveTrapBusinessLogic.TrapClear();
+        }
     }
 }

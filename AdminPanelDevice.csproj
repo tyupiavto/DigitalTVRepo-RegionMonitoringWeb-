@@ -408,6 +408,7 @@
     <Compile Include="Models\TrapColorCount.cs" />
     <Compile Include="Models\TrapListNameCheck.cs" />
     <Compile Include="Models\TrapLog.cs" />
+    <Compile Include="Models\TrapLogInformationList.cs" />
     <Compile Include="Models\TreeStructure.cs" />
     <Compile Include="Models\WalkDevice.cs" />
     <Compile Include="Models\WalkInformation.cs" />

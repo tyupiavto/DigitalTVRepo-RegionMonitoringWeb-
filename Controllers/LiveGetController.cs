@@ -34,13 +34,12 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult GetLiveSensor()
         {
-                ViewBag.Sensor=chartPrezentation.AllSelectedSensor();
-                return PartialView("_GetLiveInformation");
+            ViewBag.Sensor = chartPrezentation.AllSelectedSensor();
+            return PartialView("_GetLiveInformation");
         }
 
         public ActionResult GetChart()
         {
-
             return View();
         }
 

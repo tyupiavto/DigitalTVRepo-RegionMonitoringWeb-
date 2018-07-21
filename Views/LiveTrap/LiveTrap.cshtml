@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <link href="~/Content/Style/Load.css" rel="stylesheet" />
+
 <ul class="dropdown-menu" role="menu" id="dropdown" style="position:absolute; top:35px;">
     @foreach (var item in Model)
     {
@@ -174,7 +175,10 @@
 
 <button type="button" class="btn btn-danger" id="errorColor" style="height:34px; margin-left:5px;">Error <span class="badge" id="liveErrorCount"></span></button>
 <button type="button" class="btn btn-warning" id="crashColor" style="height:34px; margin-left:3px;">Crash <span class="badge" id="liveCrashCount"></span></button>
+<button type="button" class="btn btn-primary" id="TrapLogView" style="height:34px; margin-left:3px; border: 1px solid;">Trap Log</button>
 
+<button type="button" class="btn btn-dark" id="trapClear" style="height:34px; margin-left:3px; border: 1px solid;">Clear Trap</button>
+<button type="button" class="btn btn-light" id="trapLiveOnOff" style="height:34px; margin-left:3px; border: 1px solid;">Trap ON OFF</button>
 </div>
 <div id="live_trap"></div>
 
@@ -184,12 +188,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $('#load_walk').css("display", "block");
         $.post('/LiveTrap/TrapCurrentAlarms', {}, function (Response) {
             $('#live_trap').html("");
             $('#live_trap').html(Response);
-            $('#load_walk').css("display", "none");
         });
 
         var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
@@ -204,3 +205,14 @@
         con.start();
     });
 </script>
+
+<style>
+    body {
+        background-color: #333;
+    }
+
+    .container {
+        width: 80%;
+        margin: 15px auto;
+    }
+</style>

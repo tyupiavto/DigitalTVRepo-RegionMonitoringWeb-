@@ -189,12 +189,15 @@ $('body').on('click touched', '#preset_send', function () {
 });
 
 $('body').on('click touchend', '.removePreset', function () {
-    presetName = $(this).attr("value");
-    $.post("/DeviceGroup/PresetRemove", { presetName: presetName }, function (Response) {
-        $('.preset_list_remove').html("");
-        $('.preset_list_remove').html(Response);
-        $('#preset_name').val("");
-    }, 'text');
+    var alertWaring = confirm("You want to delete ?");
+    if (alertWaring == true) {
+        presetName = $(this).attr("value");
+        $.post("/DeviceGroup/PresetRemove", { presetName: presetName }, function (Response) {
+            $('.preset_list_remove').html("");
+            $('.preset_list_remove').html(Response);
+            $('#preset_name').val("");
+        }, 'text');
+    }
 });
 
 $('body').on('click touchend', '#inerval_add_remove', function (e) { //interval add removel list

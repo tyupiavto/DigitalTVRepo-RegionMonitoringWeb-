@@ -1330,8 +1330,7 @@ namespace AdminPanelDevice.Controllers
                 var tower = connection.Query<Tower>("select * from Tower").ToList();
                 var PresetID = connection.Query<PresetDiagramName>("select * from PresetDiagramName where Name='" + files.PresetName + "'").FirstOrDefault().ID;
                 List<PointConnectionPreset> pr = new List<PointConnectionPreset>();
-                //foreach (var item in point)
-                //{
+
                 point.ForEach(item =>
                 {
                     PointConnectionPreset presetpoint = new PointConnectionPreset();
@@ -1344,11 +1343,10 @@ namespace AdminPanelDevice.Controllers
                     presetpoint.PresetID = PresetID;
                     pr.Add(presetpoint);
                 });
-                //}
+
 
                 List<TowerDevicesPreset> td = new List<TowerDevicesPreset>();
-                //foreach (var it in towerdevice)
-                //{
+
                 towerdevice.ForEach(it =>
                 {
                     TowerDevicesPreset tdp = new TowerDevicesPreset();
@@ -1366,7 +1364,7 @@ namespace AdminPanelDevice.Controllers
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
                 });
-            //}
+
                 List<TowerPreset> towerpreset = new List<TowerPreset>();
                 tower.ForEach(t =>
                 {
@@ -1432,8 +1430,6 @@ namespace AdminPanelDevice.Controllers
                  var tower = connection.Query<TowerPreset>("select * from TowerPreset where PresetName='" + presetSearchName + "'").ToList();
 
                 List<TowerDevices> td = new List<TowerDevices>();
-                //foreach (var it in towerdevice)
-                //{
                     towerdevice.ForEach(it=>{ 
                     TowerDevices tdp = new TowerDevices();
                     tdp.CityID = it.CityID;
@@ -1448,12 +1444,10 @@ namespace AdminPanelDevice.Controllers
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
                     });
-                //}
-
+           
                 List<PointConnection> poi = new List<PointConnection>();
                 pointConnectionPreset.ForEach(item=> { 
-                //foreach (var item in pointConnectionPreset)
-                //{
+             
                     PointConnection presetpoint = new PointConnection();
                     presetpoint.PointLeft = item.PointLeft;
                     presetpoint.PointRight = item.PointRight;
@@ -1462,8 +1456,7 @@ namespace AdminPanelDevice.Controllers
                     presetpoint.GetUuids = item.GetUuids;
                     poi.Add(presetpoint);
                   });
-                //}
-
+               
                 List<Tower> tow = new List<Tower>();
                 tower.ForEach(t => {
                     Tower tw = new Tower();
@@ -1480,6 +1473,7 @@ namespace AdminPanelDevice.Controllers
                 db.TowerDevices.AddRange(td);
                 db.PointConnections.AddRange(poi);
                 db.SaveChanges();
+
                 return Json(new { htmlData = html, pointData = pointConnectionPreset });
             }
         }

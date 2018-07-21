@@ -13,17 +13,26 @@ namespace AdminPanelDevice.LiveTrap
 
         public List<Trap> LiveTrapErrorCorrectDefine(List<Trap> LiveTrapList, Trap TrapResponse)
         {
-            if (TrapResponse.AlarmStatus == "red" || TrapResponse.AlarmStatus == "yellow")
+            try
             {
-                LiveTrapList.Add(TrapResponse);
+                if (TrapResponse.AlarmStatus == "red" || TrapResponse.AlarmStatus == "yellow")
+                {
+                    var trapLiveError = LiveTrapList.Where(e => e.IpAddres == TrapResponse.IpAddres && e.CurrentOID == TrapResponse.CurrentOID && e.ReturnedOID == TrapResponse.ReturnedOID && e.TowerName == TrapResponse.TowerName && e.AlarmStatus == TrapResponse.AlarmStatus).FirstOrDefault();
+                    if (trapLiveError != null)
+                    {
+                        LiveTrapList.Remove(trapLiveError);
+                    }
+                    LiveTrapList.Add(TrapResponse);
+                }
+                if (TrapResponse.AlarmStatus == "green")
+                {
+                    var trapLive = LiveTrapList.Where(e => e.IpAddres == TrapResponse.IpAddres && e.CurrentOID == TrapResponse.CurrentOID && e.ReturnedOID == TrapResponse.ReturnedOID && e.TowerName == TrapResponse.TowerName).FirstOrDefault();
+                    LiveTrapList.Remove(trapLive);
+                }
+                LiveTrapList = LiveTrapList.OrderByDescending(t => t.dateTimeTrap).ToList();
             }
-            if (TrapResponse.AlarmStatus == "green")
-            {
-                var trapLive = LiveTrapList.Where(e => e.IpAddres == TrapResponse.IpAddres && e.CurrentOID == TrapResponse.CurrentOID && e.ReturnedOID == TrapResponse.ReturnedOID && e.TowerName == TrapResponse.TowerName).FirstOrDefault();
-                LiveTrapList.Remove(trapLive);
-            }
-            LiveTrapList = LiveTrapList.OrderByDescending(t => t.dateTimeTrap).ToList();
-            return LiveTrapList;
+            catch { Exception e; }
+                return LiveTrapList;
         }
 
         public List<Trap> TrapCurrentAlarm()
@@ -47,7 +56,22 @@ namespace AdminPanelDevice.LiveTrap
                 });
                
             });
-            return TrapCurrentErrorList;
+
+            List<Trap> TrapCurrentError = new List<Trap>();
+            List<Trap> TrapLogInformation = TrapCurrentErrorList.ToList();
+            TrapCurrentErrorList.ForEach(TrapResponse =>
+            {
+              var inf= TrapLogInformation.Where(e => e.IpAddres == TrapResponse.IpAddres && e.CurrentOID == TrapResponse.CurrentOID && e.ReturnedOID == TrapResponse.ReturnedOID && e.TowerName == TrapResponse.TowerName && e.AlarmStatus == TrapResponse.AlarmStatus).ToList();
+                if (inf.Count != 0)
+                {
+                    inf.ForEach(it => {
+                        TrapLogInformation.Remove(it);
+                       });
+                    TrapCurrentError.Add(inf.LastOrDefault());
+                }
+            });
+
+            return TrapCurrentError;
         }
 
         public List<TrapListNameCheck> TrapNameSelected()
@@ -55,12 +79,21 @@ namespace AdminPanelDevice.LiveTrap
             return liveTrapData.TrapHeaderNameSelectList();
         }
 
-        public TrapColorCount LiveTrapErrorCorrectedCount (List<Trap> TrapAlarmList)
+        public TrapColorCount LiveTrapErrorCorrectedCount(List<Trap> TrapAlarmList)
         {
             TrapColorCount errorCorrectCount = new TrapColorCount();
-            errorCorrectCount.ErrorCount = TrapAlarmList.Where(w => w.AlarmStatus == "red").ToList().Count;
-            errorCorrectCount.CrashCount = TrapAlarmList.Where(w => w.AlarmStatus == "yellow").ToList().Count;
+            try
+            {
+                errorCorrectCount.ErrorCount = TrapAlarmList.Where(w => w.AlarmStatus == "red").ToList().Count;
+                errorCorrectCount.CrashCount = TrapAlarmList.Where(w => w.AlarmStatus == "yellow").ToList().Count;
+            }
+            catch { Exception e; }
             return errorCorrectCount;
+        }
+
+        public void TrapClear()
+        {
+            liveTrapData.TrapClearAll();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@*@model  System.Collections.Generic.IEnumerable<AdminPanelDevice.Models.WalkTowerDevice>*@
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div id="liveDiagram" style="display: block; overflow: auto;">
     @foreach (var item in ViewBag.Sensor)
@@ -14,7 +15,7 @@
                 @foreach (var items in item[0].TowerSensor)
                 {
                     <th colspan="2" id="liveDeviceName" style=""><a target="_blank" href="http://@(items.IP)" style="color:white" id="chartmenu@(items.ID)">@items.DeviceName</a></th>
-                   
+
                 }
             </tr>
 
@@ -28,13 +29,13 @@
             @foreach (var itm in item[0].SensorDevice)
             {
 
-            <tr>
-                @foreach (var it in itm)
-                {
-                    <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.MyDescription</td>
-                    <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center;border-right-color: #f8f9fa;">@it.Type</td>
-                }
-            </tr>
+                <tr>
+                    @foreach (var it in itm)
+                    {
+                        <td id="@(it.TowerName)getName@(it.ID)" value="@(it.DeviceID)" style="text-align:center;">@it.MyDescription</td>
+                        <td id="@(it.TowerName)getValue@(it.ID)" value="@(it.DeviceID)" style="text-align:center;border-right-color: #f8f9fa;">@it.Type</td>
+                    }
+                </tr>
             }
         </table>
     }
@@ -53,7 +54,7 @@
     var ErrorCount = [{ "ID": 0, "TowerID": 0 }]
     var Errorindicator = 0;
     var Crashindicator = 0;
-    var alarm = document.getElementById("alarmAudio"); 
+    var alarm = document.getElementById("alarmAudio");
 
     var con = $.hubConnection(); // shecdomebit washla daxatva xazebis
     var hub = con.createHubProxy('hubMessage');
@@ -66,7 +67,7 @@
             var value = parseInt($("#tower_" + i.TowerID + "getValue" + i.ID).attr("value"));
             if (value == i.DeviceID) {
 
-                if (i.DivideMultiply == null || i.DivideMultiply=="") {
+                if (i.DivideMultiply == null || i.DivideMultiply == "") {
                     $("#tower_" + i.TowerID + "getValue" + i.ID).text(i.Value);
                 }
                 else {
@@ -83,31 +84,31 @@
                     alarm.play();
                     Errorindicator = 0;
                     ErrorCount.filter(function (error) {
-                            if (error.ID == i.ID && error.TowerID == i.TowerID) {
-                                Errorindicator = 1;
-                            }
-                        });
-                        if (Errorindicator != 1) {
-                            ErrorCount.push({ "ID": i.ID, "TowerID": i.TowerID });
+                        if (error.ID == i.ID && error.TowerID == i.TowerID) {
+                            Errorindicator = 1;
                         }
-             
+                    });
+                    if (Errorindicator != 1) {
+                        ErrorCount.push({ "ID": i.ID, "TowerID": i.TowerID });
+                    }
+
                     CrashCount.filter(function (crash) {
                         if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
                             CrashCount.splice(CrashCount.indexOf(crash), 1);
                         }
                     });
-                  
+
                 }
                 if (i.MapColor == "yellow") {
                     Crashindicator = 0;
                     CrashCount.filter(function (crash) {
-                            if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
-                                Crashindicator = 1;
-                            }
-                        });
-                        if (Crashindicator != 1) {
-                            CrashCount.push({ "ID": i.ID, "TowerID": i.TowerID });
+                        if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
+                            Crashindicator = 1;
                         }
+                    });
+                    if (Crashindicator != 1) {
+                        CrashCount.push({ "ID": i.ID, "TowerID": i.TowerID });
+                    }
 
                     ErrorCount.filter(function (error) {
                         if (error.ID == i.ID && error.TowerID == i.TowerID) {
@@ -117,7 +118,7 @@
                 }
 
                 if (i.MapColor != "yellow" && i.MapColor != "red") {
-                    CrashCount.filter(function (crash) { 
+                    CrashCount.filter(function (crash) {
                         if (crash.ID == i.ID && crash.TowerID == i.TowerID) {
                             CrashCount.splice(CrashCount.indexOf(crash), 1);
                         }
@@ -132,8 +133,8 @@
                     alarm.pause();
                 }
 
-                $('#liveErrorCount').text(ErrorCount.length-1);
-                $('#liveCrashCount').text(CrashCount.length-1);
+                $('#liveErrorCount').text(ErrorCount.length - 1);
+                $('#liveCrashCount').text(CrashCount.length - 1);
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('background-color', i.MapColor);
                 $("#tower_" + i.TowerID + "getValue" + i.ID).css('color', i.TextColor);
             }
@@ -195,5 +196,4 @@
         text-overflow: ellipsis;
         border-right-color: #f8f9fa;
     }
-
 </style>

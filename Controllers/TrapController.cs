@@ -26,7 +26,7 @@ namespace AdminPanelDevice.Controllers
         public static bool trapInd = true;
         public static List<Trap> TrapLogList = new List<Trap>();
         public static List<Trap> TrapLogListSearch = new List<Trap>();
-        public static int pageListNumber = 20;
+        public static int pageListNumber = 50;
         public static int SearchIndicator = 0;
         public static int LogInd = 0;
         public TrapPresentation trapPresentation = new TrapPresentation();
@@ -65,19 +65,19 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult LogShow(int? page)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                ViewBag.pageNumber = pageListNumber;
-                if (LogInd == 0)
-                {
-                    DateTime start = DateTime.Now;
-                    DateTime end = start.Add(new TimeSpan(-24, 0, 0));
-                    TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
-                    TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
-                }
-                return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
-            }
-            //  return PartialView("_TrapLogInformation", trapPresentation.TrapLogShow(TrapLogList,LogInd).ToPagedList(page ?? 1, pageListNumber));
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    ViewBag.pageNumber = pageListNumber;
+            //    if (LogInd == 0)
+            //    {
+            //        DateTime start = DateTime.Now;
+            //        DateTime end = start.Add(new TimeSpan(-24, 0, 0));
+            //        TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
+            //        TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+            //    }
+            //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
+            //}
+              return PartialView("_TrapLogInformation", trapPresentation.TrapLogShow(TrapLogList,LogInd).ToPagedList(page ?? 1, pageListNumber));
         }
         public PartialViewResult PageLog(int? page)
         {
@@ -110,20 +110,22 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult LogSearch(int? page, string SearchName,int SearchClear, string startTime, string endTime)
         {
+            //TrapLogInformationList trapLogInformationList = new TrapLogInformationList();
+            //ViewBag.pageNumber = pageListNumber;
+            //trapLogInformationList = trapPresentation.TrapLogSearchList(SearchName, SearchClear, startTime, endTime, TrapLogList, TrapLogListSearch, SearchIndicator, mapTowerDeviceName, LogInd);
+            //ViewBag.errorCount = trapLogInformationList.ErrorCount;
+            //ViewBag.correctCount = trapLogInformationList.CorrectCount;
+            //ViewBag.crashCount = trapLogInformationList.CrashCount;
+            //ViewBag.whiteCount = trapLogInformationList.WhiteCount;
+            //ViewBag.allCount = trapLogInformationList.AllCount;
+
+            //return PartialView("_TrapLogInformation", trapLogInformationList.TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 DateTime start = DateTime.Now;
                 DateTime end = start.Add(new TimeSpan(-24, 0, 0));
                 ViewBag.pageNumber = pageListNumber;
                 int trapID;
-               //if (SearchIndicator==2)
-               // {
-               //     TrapLogList = connection.Query<Trap>($"select * from Trap where  dateTimeTrap BETWEEN '{end}' and '{start}' and TowerName='{mapTowerDeviceName}' and AlarmStatus<>'white'").ToList();
-               //     TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
-               //     maplog = 1;
-
-                //     return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
-                // }
                 if (SearchName == "" && startTime != "" && startTime != null && endTime != "" && endTime != null)
                 {
                     ViewBag.ColorDefine = 1;
@@ -157,10 +159,10 @@ namespace AdminPanelDevice.Controllers
                             LogInd = 0;
                             TrapLogList = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
                         }
-                        ViewBag.errorCount = TrapLogList.Where(t=>t.AlarmStatus=="red").ToList().Count;
+                        ViewBag.errorCount = TrapLogList.Where(t => t.AlarmStatus == "red").ToList().Count;
                         ViewBag.correctCount = TrapLogList.Where(t => t.AlarmStatus == "green").ToList().Count;
                         ViewBag.crashCount = TrapLogList.Where(t => t.AlarmStatus == "yellow").ToList().Count;
-                        ViewBag.whiteCount= TrapLogList.Where(t => t.AlarmStatus == "white").ToList().Count;
+                        ViewBag.whiteCount = TrapLogList.Where(t => t.AlarmStatus == "white").ToList().Count;
                         ViewBag.allCount = TrapLogList.Count;
 
                         TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
@@ -187,7 +189,7 @@ namespace AdminPanelDevice.Controllers
                             TrapLogListSearch.Clear();
                             int number;
                             var convertationInt = int.TryParse(SearchName, out number);
-                            if (convertationInt!=false)
+                            if (convertationInt != false)
                             {
                                 trapID = Convert.ToInt32(SearchName);
                             }
@@ -195,10 +197,10 @@ namespace AdminPanelDevice.Controllers
                             {
                                 trapID = -1;
                             }
-                        
+
 
                             var searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(searchName) || s.ID==trapID).ToList();
+                            TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(searchName) || s.ID == trapID).ToList();
                             TrapLogListSearch = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
 
                             ViewBag.errorCount = TrapLogListSearch.Where(t => t.AlarmStatus == "red").ToList().Count;
@@ -243,6 +245,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult AlarmLog (string alarmColor, string deviceName, string alarmText,string returnOidText,string currentOidText,string alarmDescription)
         {
+        //  TrapLogList=trapPresentation.AlarmLogStatusResult(alarmColor, deviceName, alarmText, returnOidText, currentOidText, alarmDescription, TrapLogList, db);
            var alarmtextdecode= System.Uri.UnescapeDataString(alarmText);
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -298,6 +301,7 @@ namespace AdminPanelDevice.Controllers
         {
             ViewBag.pageNumber = pageListNumber;
             ViewBag.ColorDefine = 1;
+           // return PartialView("_TrapLogInformation", trapPresentation.AlarmColorSearchList(correctColor, errorColor, crashColor, whiteColor, all, TrapLogListSearch, TrapLogList, SearchIndicator); .ToPagedList(page ?? 1, pageListNumber)); 
             if (correctColor == " " && errorColor == " " && crashColor == " " && whiteColor== " ")
             {
                 all = 1;

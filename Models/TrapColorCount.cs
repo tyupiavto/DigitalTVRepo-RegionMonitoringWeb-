@@ -12,5 +12,6 @@ namespace AdminPanelDevice.Models
     public int CrashCount { get; set; }
     public int  WhiteCount { get; set; }
     public int AllCount { get; set; }
+
     }
 }

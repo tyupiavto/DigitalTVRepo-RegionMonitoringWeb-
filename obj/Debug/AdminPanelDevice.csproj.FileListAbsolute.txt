@@ -226,7 +226,6 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.c
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.pdb
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.IO.FileSystem.dll
-D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Collections.Immutable.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\obj\Debug\AdminPanelDevice.csprojAssemblyReference.cache
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Data.Services.dll
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Devices.Services.dll
@@ -245,3 +244,4 @@ D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.Core.xml
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
 D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\Microsoft.Owin.Security.xml
+D:\Map monitoring\AdminPanelDevice\AdminPanelDevice\bin\roslyn\System.Collections.Immutable.dll

@@ -29,5 +29,12 @@ namespace AdminPanelDevice.LiveTrap
                 return connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}'").ToList();
             }
         }
+        public void TrapClearAll ()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<Trap>("delete Trap");
+            }
+        } 
     }
 }

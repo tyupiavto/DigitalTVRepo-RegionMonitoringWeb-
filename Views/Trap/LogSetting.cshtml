@@ -202,7 +202,9 @@
             <button type="button" class="btn btn-danger" id="errorColor" style="height:34px; margin-left:5px;">Error <span class="badge" id="errorCount"></span></button>
             <button type="button" class="btn btn-warning" id="crashColor"style="height:34px; margin-left:3px;">Crash <span class="badge" id="crashCount"></span></button>
             <button type="button" class="btn btn-success" id="correctColor" style="height:34px; margin-left:3px;">Correct <span class="badge" id="correctCount"></span></button>
-            <button type="button" class="btn btn-light" id="whiteColor" style="height:34px; margin-left:3px; border: 1px solid;">White<span class="badge" id="whiteCount"></span></button>
+            <button type="button" class="btn btn-light" id="whiteColor" style="height:34px; margin-left:3px; border: 1px solid;">White<span class="badge" id="whiteCount"></span></button> 
+            
+            <button type="button" class="btn btn-primary" id="LiveTrapLog" style="height:34px; margin-left:3px; border: 1px solid;">Live Log<span class="badge" id="LiveTrapLog"></span></button>
 
         </div>
 
@@ -274,6 +276,14 @@
     //});
 </script>
 <style>
+    body {
+        background-color: #333;
+    }
+
+    .container {
+        width: 80%;
+        margin: 15px auto;
+    }
     table {
         border-width: 1px;
         border-style: solid;

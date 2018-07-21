@@ -9,6 +9,7 @@
 @{
     var pagenumber = ViewBag.pageNumber;
     var textcolor = "";
+
     <script type="text/javascript">
         var colorDefine = @Html.Raw(Json.Encode(@ViewBag.ColorDefine));
 
@@ -22,8 +23,8 @@
         }
     </script>
 }
-<table class="table table-striped table-bordered draggable sortable" id="logTableInf" style="width: 99.3%; display: block; overflow: auto;  height: 850px;" data-toggle="table">
-    <thead>
+<table class="table table-striped table-bordered draggable sortable" id="logTableInf" style="width: 99.3%; display: block; overflow: auto;  height: 950px;" data-toggle="table">
+    <thead class="theadName">
         <tr>
             <th id="idColumn">ID</th>
             <th id="countrieColumn">Countrie</th>
@@ -47,34 +48,39 @@
         {
             if (item.AlarmStatus == "white")
             {
-                textcolor = "black";
+                textcolor = "white";
+                item.AlarmStatus= "#333";
             }
 
             if (item.AlarmStatus == "yellow")
             {
                 textcolor = "black";
             }
-            <tr style="background-color:@(item.AlarmStatus); color:@(textcolor)">
-                <td id="idColumn@(item.ID)" value="@item.ID">@item.ID</td>
-                <td id="countrieColumn@(item.ID)" value="@item.ID">@item.Countrie</td>
-                <td id="stateColumn@(item.ID)" value="@item.ID">@item.States</td>
-                <td id="cityColumn@(item.ID)" value="@item.ID">@item.City</td>
-                <td id="towerColumn@(item.ID)" value="@item.ID">@item.TowerName</td>
-                <td id="deviceColumn@(item.ID)" value="@item.ID">@item.DeviceName</td>
-                <td id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)">@item.IpAddres</a></td>
-                <td id="datetimeColumn@(item.ID)" value="@item.ID">@item.dateTimeTrap</td>
-                <td id="oidNameColumn@(item.ID)" value="@item.ID">@item.OIDName</td>
-                <td id="descriptionColumn@(item.ID)" value="@item.ID">@item.Description</td>
-                <td id="valueColumn@(item.ID)" class="valueInformation" value="@item.ID">@item.Value</td>
-                <td id="alarmDescriptionColumn@(item.ID)" value="@item.ID">@item.AlarmDescription</td>
-                <td id="oidColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID">@item.CurrentOID</td>
-                <td id="oidreturnedColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID">@item.ReturnedOID</td>
-                <td id="errorMapColumn@(item.ID)" value="@item.ID">
-                    <div class="dropdown" id="logList" value="@(item.ID)">
+            if (item.AlarmStatus == "red")
+            {
+                textcolor = "white";
+            }
+            <tr style="background-color:@(item.AlarmStatus); color:@(textcolor)" class="td_stule">
+                <td  id="idColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.ID">@item.ID</div></td>
+                <td  id="countrieColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.Countrie">@item.Countrie</div></td>
+                <td  id="stateColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.States">@item.States</div></td>
+                <td  id="cityColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.City">@item.City</div></td>
+                <td  id="towerColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.TowerName">@item.TowerName</div></td>
+                <td  id="deviceColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.DeviceName">@item.DeviceName</div></td>
+                <td  id="ipColumn@(item.ID)" value="@item.ID"><a target="_blank" href="http://@(item.IpAddres)"><div class="td_stule" title="@item.IpAddres">@item.IpAddres</div></a></td>
+                <td  id="datetimeColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.dateTimeTrap">@item.dateTimeTrap</div></td>
+                <td  id="oidNameColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.OIDName">@item.OIDName</div></td>
+                <td  id="descriptionColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.Description">@item.Description</div></td>
+                <td  id="valueColumn@(item.ID)" class="valueInformation" value="@item.ID"><div class="td_stule" title="@item.Value">@item.Value</div></td>
+                <td  id="alarmDescriptionColumn@(item.ID)" value="@item.ID"><div class="td_stule" title="@item.AlarmDescription">@item.AlarmDescription</div></td>
+                <td  id="oidColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID"><div class="td_stule" title="@item.CurrentOID">@item.CurrentOID</div></td>
+                <td  id="oidreturnedColumn@(item.ID)" value="@item.ID" name="@item.ReturnedOID"><div class="td_stule" title="@item.ReturnedOID">@item.ReturnedOID</div></td>
+                <td  id="errorMapColumn@(item.ID)" value="@item.ID">
+                    <div class="dropdown td_stule" id="logList" value="@(item.ID)" style="margin-top:-7px; max-height:27px !important;overflow:inherit!important;">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" value="@(item.ID)" id="logListStatus@(item.ID)">
-                            <i class="glyphicon glyphicon-th-list"></i>
+                            <i class="glyphicon glyphicon-th-list" style="height:20px;"></i>
                         </button>
-                        <ul class="dropdown-menu" style="min-width: 57px;">
+                        <ul class="dropdown-menu" style="min-width: 57px;overflow:inherit!important;">
                             <li style="background-color:green; cursor:pointer;" id="logCorrect" data-toggle="modal" data-target="#statusLogCorrectError" value="@(item.ID)">Correct</li>
                             <li style="background-color:red;  cursor:pointer;" id="logError" data-toggle="modal" data-target="#statusLogCorrectError" value="@(item.ID)">Error</li>
                             <li style="background-color:yellow; cursor:pointer;" id="logCrash" data-toggle="modal" data-target="#statusLogCorrectError" value="@(item.ID)">Crash</li>
@@ -93,9 +99,9 @@
     <div class="btn-group dropup">
         <button type="button" class="btn btn-secondary dropdown-toggle" id="traplogpagelist" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: -100px; top: 51px;">@pagenumber</button>
         <ul class="dropdown-menu logpage" role="menu" id="pagelistlog" style=" margin-left: -100px; top: -86px; min-height: 137px;">
-            <li role="menuitem" class="menuitemLog" id="countrieColumn"><label>20</label></li>
-            <li role="menuitem" class="menuitemLog" id="stateColumn"><label>50</label></li>
-            <li role="menuitem" class="menuitemLog" id="cityColumn"><label>100</label></li>
+            <li role="menuitem" class="menuitemLog" id="countrieColumn"><label>50</label></li>
+            <li role="menuitem" class="menuitemLog" id="stateColumn"><label>100</label></li>
+            <li role="menuitem" class="menuitemLog" id="cityColumn"><label>200</label></li>
             <li role="menuitem" class="menuitemLog" id="towerColumn"><label>500</label></li>
             <li role="menuitem" class="menuitemLog" id="deviceColumn"><label>1000</label></li>
         </ul>
@@ -105,6 +111,19 @@
 
 <script src="~/Content/ScriptView/pageListClick.js"></script>
 <script src="~/Content/ScriptView/dragtable.js"></script>
-@*<script src="~/Content/ScriptView/sorttable.js"></script>*@
 <link href="~/Content/Style/dataTables.bootstrap.min.css" rel="stylesheet" />
 <script src="~/Content/ScriptView/jquery.dataTables.min.js"></script>
+
+<style>
+    .td_stule {
+        max-height: 25px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width:163px;
+    }
+    .theadName th {
+        color: white;
+        background-color: #333;
+    }
+</style>

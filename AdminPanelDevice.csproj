@@ -309,6 +309,9 @@
     <Compile Include="Controllers\TowerController.cs" />
     <Compile Include="Controllers\TrapController.cs" />
     <Compile Include="Controllers\WalkController.cs" />
+    <Compile Include="DeviceWalkSetGetDemand\DeviceWalkBusinessLogic.cs" />
+    <Compile Include="DeviceWalkSetGetDemand\DeviceWalkData.cs" />
+    <Compile Include="DeviceWalkSetGetDemand\DeviceWalkPresentation.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

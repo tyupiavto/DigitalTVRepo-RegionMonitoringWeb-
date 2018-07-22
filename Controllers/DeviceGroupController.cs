@@ -24,6 +24,7 @@ using Service.Models;
 using Data.Services;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using AdminPanelDevice.DeviceWalkSetGetDemand;
 
 namespace AdminPanelDevice.Controllers
 {
@@ -81,7 +82,9 @@ namespace AdminPanelDevice.Controllers
         public static string TowerIDLocal;
         public static string DeviceNameLocal;
         public static int deviceIDLocal;
-        public static List<WalkTowerDevice> ValueSettingList = new List<WalkTowerDevice>(); 
+        public static List<WalkTowerDevice> ValueSettingList = new List<WalkTowerDevice>();
+
+        private DeviceWalkPresentation deviceWalkPresentation=new DeviceWalkPresentation();
 
         public struct intervalValue
         {
@@ -115,11 +118,12 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult GroupShow()
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                groupList = connection.Query<Group>("Select * From [Group] ").ToList();
-            }
-            return PartialView("~/Views/DeviceGroup/_Group.cshtml", groupList);
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //groupList = connection.Query<Group>("Select * From [Group] ").ToList();
+            //}
+            //return PartialView("~/Views/DeviceGroup/_Group.cshtml", groupList);
+            return PartialView("~/Views/DeviceGroup/_Group.cshtml", deviceWalkPresentation.GroupShowList());
         }
         [HttpPost]
         public PartialViewResult AddDevice(string deviceName, int deviceGroupID)
@@ -181,68 +185,65 @@ namespace AdminPanelDevice.Controllers
 
         [HttpPost]
         public PartialViewResult Countries(string CountrieName,string StateName, string CityName, int parentId, string countrieSettingName, string stateSettingName)
-        {
-            CountriesListID = parentId;
-
-            TitleTowerName TowerName = new TitleTowerName();
-
-          
+        { 
             ViewBag.countrie = countrie;
             ViewBag.countrieName = CountrieName;
             ViewBag.CountrieListID = CountriesListID;
-           
-            if (countrieName == null && stateSettingName == null)
-            {
-                TowerName.CountrieName = "Countrie";
-                TowerName.StateName = "State";
-                TowerName.CityName = "City";
-            }
-            else
-            {
-                TowerName.CountrieName = countrieSettingName;
-                TowerName.StateName = stateSettingName;
-                TowerName.CityName = "City";
-            }
-            TitleTowor.Add(TowerName);
-            return PartialView("_CountriesSearch",TitleTowor);
+            CountriesListID = parentId;
+            //TitleTowerName TowerName = new TitleTowerName();
+            //CountriesListID = parentId;
+            //if (countrieName == null && stateSettingName == null)
+            //{
+            //    TowerName.CountrieName = "Countrie";
+            //    TowerName.StateName = "State";
+            //    TowerName.CityName = "City";
+            //}
+            //else
+            //{
+            //    TowerName.CountrieName = countrieSettingName;
+            //    TowerName.StateName = stateSettingName;
+            //    TowerName.CityName = "City";
+            //}
+            //TitleTowor.Add(TowerName);
+            //return PartialView("_CountriesSearch",TitleTowor);
+
+            return PartialView("_CountriesSearch", deviceWalkPresentation.SearchCountrieStateNameReturn(CountrieName, StateName, CityName, parentId, countrieSettingName, stateSettingName, CountriesListID, countrieName, TitleTowor));
         }
 
         [HttpPost]
         public PartialViewResult countrieSearch(string countrieSearchName)
         {
-            if (countrieSearchName == null)
-            {
+            //if (countrieSearchName == null)
+            //{
 
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                {
-                    countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
-                }
-            }
-            else
-            {
-                if (countrieSearchName.Length >= 1)
-                {
-                    searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
-                    string queryCuntries = "Select * From Countrie Where CountrieName Like N'" + countrieSearchName + "%'";
+            //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //    {
+            //        countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
+            //    }
+            //}
+            //else
+            //{
+            //    if (countrieSearchName.Length >= 1)
+            //    {
+            //        searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
+            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //        {
+            //            countrie = connection.Query<Countrie>($"Select * From Countrie Where CountrieName Like N'{countrieSearchName}%'").ToList();
+            //        }
 
-                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                    {
-                        countrie = connection.Query<Countrie>(queryCuntries).ToList();
-                    }
-
-                }
-                else
-                {
-                    string queryCuntries = "Select * From Countrie Where CountrieName Like N'" + countrieSearchName + "%'";
-                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                    {
-                        countrie = connection.Query<Countrie>(queryCuntries).ToList();
-                    }
-                }
-            }
-            states.Clear();
-            city.Clear();
-
+            //    }
+            //    else
+            //    {
+            //        string queryCuntries = "Select * From Countrie Where CountrieName Like N'" + countrieSearchName + "%'";
+            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //        {
+            //            countrie = connection.Query<Countrie>(queryCuntries).ToList();
+            //        }
+            //    }
+            //}
+            //states.Clear();
+            //city.Clear();
+            countrie=deviceWalkPresentation.CountrieSearch(countrieSearchName, countrie, states, city, searchName);
             ViewBag.countrie = countrie;
             return PartialView("_Countrie");
         }
@@ -251,145 +252,151 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult stateSearch(string CountrieName, string stateSearchName)
         {
             countrieName = CountrieName;
-            if (stateSearchName == null && CountrieName != null)
-            {
-                using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                {
-                    string queryCountrie = "Select * from Countrie where CountrieName = '" + CountrieName + "'";
-                    countrieID = connection.Query<Countrie>(queryCountrie).FirstOrDefault().ID;
-                    string queryState = "select * from States where CountrieID='" + countrieID + "'";
-                    states = connection.Query<States>(queryState).ToList();
-                }
+            //if (stateSearchName == null && CountrieName != null)
+            //{
+            //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //    {
+            //        string queryCountrie = "Select * from Countrie where CountrieName = '" + CountrieName + "'";
+            //        countrieID = connection.Query<Countrie>(queryCountrie).FirstOrDefault().ID;
+            //        string queryState = "select * from States where CountrieID='" + countrieID + "'";
+            //        states = connection.Query<States>(queryState).ToList();
+            //    }
 
-                ViewBag.countrie = states;
-            }
-            if (stateSearchName != null && CountrieName != null)
-            {
-                if (stateSearchName.Length >= 1)
-                {
-                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                    {
-                        string queryState = "select * from States where CountrieID='" + countrieID + "' Select * From States where  StateName Like N'" + stateSearchName + "%'";
-                        states = connection.Query<States>(queryState).ToList();
-                    }
-                        searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
-                        ViewBag.countrie = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
-                }
-                else {
-                    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-                    {
-                        string querySearch = "select * from States where CountrieID='" + countrieID +"'";
-                        states = connection.Query<States>(querySearch).ToList();
-                    }
-                    ViewBag.countrie = states;
-                }
-               
-            }
-            city.Clear();
+            //    ViewBag.countrie = states;
+            //}
+            //if (stateSearchName != null && CountrieName != null)
+            //{
+            //    if (stateSearchName.Length >= 1)
+            //    {
+            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //        {
+            //            string queryState = "select * from States where CountrieID='" + countrieID + "' Select * From States where  StateName Like N'" + stateSearchName + "%'";
+            //            states = connection.Query<States>(queryState).ToList();
+            //        }
+            //            searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
+            //            ViewBag.countrie = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
+            //    }
+            //    else {
+            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //        {
+            //            string querySearch = "select * from States where CountrieID='" + countrieID +"'";
+            //            states = connection.Query<States>(querySearch).ToList();
+            //        }
+            //        ViewBag.countrie = states;
+            //    }
+
+            //}
+            //city.Clear();
+             states = deviceWalkPresentation.StateSearchListReturn(CountrieName, stateSearchName, states, city, countrieID, CountrieName);
+            ViewBag.countrie = states;
             return PartialView("_State");
         }
 
         [HttpPost]
         public PartialViewResult citySearch(string CountrieName, string StateName, string citySearchName)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                List<City> ct = new List<City>();
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    List<City> ct = new List<City>();
 
-                var countrieID = connection.Query<Countrie>("select * from Countrie where CountrieName='" + CountrieName + "'").FirstOrDefault().ID;
-                var cityChecked = connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "'").ToList().Select(t => t.CityCheckedID).ToList();
-                if (StateName != "State")
-                {
-                    var stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
+            //    var countrieID = connection.Query<Countrie>("select * from Countrie where CountrieName='" + CountrieName + "'").FirstOrDefault().ID;
+            //    var cityChecked = connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "'").ToList().Select(t => t.CityCheckedID).ToList();
+            //    if (StateName != "State")
+            //    {
+            //        var stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
 
-                    if (citySearchName == null & StateName != null && StateName != "")
-                    {
-                        stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
-                        city = connection.Query<City>("Select * from City where  StateID='" + stateID + "'").ToList();
+            //        if (citySearchName == null & StateName != null && StateName != "")
+            //        {
+            //            stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
+            //            city = connection.Query<City>("Select * from City where  StateID='" + stateID + "'").ToList();
 
-                        ViewBag.city = city;
-                    }
+            //            ViewBag.city = city;
+            //        }
 
-                    if (citySearchName != null & StateName != null && StateName != "")
-                    {
-                        if (citySearchName.Length >= 1)
-                        {
-                            var citys = connection.Query<City>("select * from City where StateID='" + stateID + "' Select * from City where CityName like N'" + citySearchName + "%'").ToList();
-                            searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
-                            ViewBag.city = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
-                        }
-                        else
-                        {
-                            city = connection.Query<City>("Select * From City where StateID='" + stateID + "'").ToList();
-                            // ViewBag.city = city;
-                        }
-                    }
-                    ViewBag.DiagramID = CountriesListID;
-                    if (cityChecked.Count != 0)
-                    {
-                        cityChecked.ForEach(check =>
-                        {
-                            city.ForEach(c =>
-                            {
-                                if (c.ID == check)
-                                {
-                                    c.CheckedID = check;
-                                }
-                            });
-                        });
-                    }
-                    ViewBag.city = city;
-                    return PartialView("_City", cityChecked);
-                }
-                else
-                {
-                    var cityID = connection.Query<States>("select ID from States where CountrieID='" + countrieID + "'").ToList();
-                    cityID.ForEach(cit =>
-                    {
-                        var city = connection.Query<City>("Select * from City where StateID='" + cit.ID + "'").ToList();
-                        ct.AddRange(city);
-                    });
+            //        if (citySearchName != null & StateName != null && StateName != "")
+            //        {
+            //            if (citySearchName.Length >= 1)
+            //            {
+            //                var citys = connection.Query<City>("select * from City where StateID='" + stateID + "' Select * from City where CityName like N'" + citySearchName + "%'").ToList();
+            //                searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
+            //                ViewBag.city = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
+            //            }
+            //            else
+            //            {
+            //                city = connection.Query<City>("Select * From City where StateID='" + stateID + "'").ToList();
+            //                // ViewBag.city = city;
+            //            }
+            //        }
+            //        ViewBag.DiagramID = CountriesListID;
+            //        if (cityChecked.Count != 0)
+            //        {
+            //            cityChecked.ForEach(check =>
+            //            {
+            //                city.ForEach(c =>
+            //                {
+            //                    if (c.ID == check)
+            //                    {
+            //                        c.CheckedID = check;
+            //                    }
+            //                });
+            //            });
+            //        }
+            //        ViewBag.city = city;
+            //        return PartialView("_City");
+            //    }
+            //    else
+            //    {
+            //        var cityID = connection.Query<States>("select ID from States where CountrieID='" + countrieID + "'").ToList();
+            //        cityID.ForEach(cit =>
+            //        {
+            //            var city = connection.Query<City>("Select * from City where StateID='" + cit.ID + "'").ToList();
+            //            ct.AddRange(city);
+            //        });
 
-                    if (citySearchName != null && citySearchName.Length >= 1)
-                    {
-                        searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
-                        var cit = ct.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
-                        if (cityChecked.Count != 0)
-                        {
-                            cityChecked.ForEach(check =>
-                            {
-                                cit.ForEach(c =>
-                                {
-                                    if (c.ID == check)
-                                    {
-                                        c.CheckedID = check;
-                                    }
-                                });
-                            });
-                        }
-                        ViewBag.city = cit;
-                    }
-                    else
-                    {
+            //        if (citySearchName != null && citySearchName.Length >= 1)
+            //        {
+            //            searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
+            //            var cit = ct.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
+            //            if (cityChecked.Count != 0)
+            //            {
+            //                cityChecked.ForEach(check =>
+            //                {
+            //                    cit.ForEach(c =>
+            //                    {
+            //                        if (c.ID == check)
+            //                        {
+            //                            c.CheckedID = check;
+            //                        }
+            //                    });
+            //                });
+            //            }
+            //            ViewBag.city = cit;
+            //        }
+            //        else
+            //        {
 
-                        if (cityChecked.Count != 0)
-                        {
-                            cityChecked.ForEach(check =>
-                            {
-                                ct.ForEach(c =>
-                                {
-                                    if (c.ID == check)
-                                    {
-                                        c.CheckedID = check;
-                                    }
-                                });
-                            });
-                        }
-                        ViewBag.city = ct;
-                    }
-                    return PartialView("_City");
-                }
-            }
+            //            if (cityChecked.Count != 0)
+            //            {
+            //                cityChecked.ForEach(check =>
+            //                {
+            //                    ct.ForEach(c =>
+            //                    {
+            //                        if (c.ID == check)
+            //                        {
+            //                            c.CheckedID = check;
+            //                        }
+            //                    });
+            //                });
+            //            }
+            //            ViewBag.city = ct;
+            //        }
+            //        return PartialView("_City");
+            //    }
+            //}
+           // var cityValue = deviceWalkPresentation.SearchCity(CountrieName, StateName, citySearchName, CountriesListID, city, searchName);
+            ViewBag.city = deviceWalkPresentation.SearchCity(CountrieName, StateName, citySearchName, CountriesListID, city, searchName);
+
+            return PartialView("_City");
         }
 
         [HttpPost]
@@ -1240,22 +1247,22 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult ClearDiagram() {
 
-            Html = "";
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                connection.Query<Tower>("delete from Tower");
-                connection.Query<PointConnection>("delete from PointConnection");
-                connection.Query<TowerDevices>("delete from TowerDevices");
-                connection.Query<WalkTowerDevice>("delete from WalkTowerDevice");
-                connection.Query<GetSleepThread>("delete from GetSleepThread");
-            }
-            string text = "";
-            try
-            {
-                var path = Server.MapPath(@"~/HtmlText/html.txt");
-                System.IO.File.WriteAllText(path, text);
-            }
-            catch { }
+            //Html = "";
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    connection.Query<Tower>("delete from Tower");
+            //    connection.Query<PointConnection>("delete from PointConnection");
+            //    connection.Query<TowerDevices>("delete from TowerDevices");
+            //    connection.Query<WalkTowerDevice>("delete from WalkTowerDevice");
+            //    connection.Query<GetSleepThread>("delete from GetSleepThread");
+            //}
+            //string text = "";
+            //try
+            //{
+            //    var path = Server.MapPath(@"~/HtmlText/html.txt");
+            //    System.IO.File.WriteAllText(path, text);
+            //}
+            //catch { }
             return Json("");
         }
 

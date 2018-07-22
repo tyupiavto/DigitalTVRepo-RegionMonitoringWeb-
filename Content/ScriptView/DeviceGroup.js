@@ -26,7 +26,6 @@ $('body').on('click touched','#add_mib_file',function () {
 });
 
 $('body').on('click touched', '#clear_diagram', function () {
-   // alert("You want to delete ?");
     var conf = confirm("You want to delete ?");
     if (conf == true) {
         location.reload();

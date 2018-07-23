@@ -402,32 +402,37 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult CityAdd (string StateName, string addcityName)
         {
-            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
-            var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-            var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
+            //var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            //var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+            //var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
 
-            City citys = new City();
-            citys.CityName = addcityName;
-            citys.StateID = stateID;
-            db.Citys.Add(citys);
-            db.SaveChanges();
+            //City citys = new City();
+            //citys.CityName = addcityName;
+            //citys.StateID = stateID;
+            //db.Citys.Add(citys);
+            //db.SaveChanges();
 
-            city = db.Citys.Where(c => c.StateID == stateID).ToList();
+            //city = db.Citys.Where(c => c.StateID == stateID).ToList();
+            //ViewBag.city = city;
+
+            //return PartialView("_City", cityChecked);
+
+            city = deviceWalkPresentation.CityAddShow(StateName, addcityName, countrieName, CountriesListID);
             ViewBag.city = city;
-
-            return PartialView("_City", cityChecked);
+            return PartialView("_City");
         }
 
         [HttpPost]
         public JsonResult TowerInsert(string countrieName,string stateName, string cityName, int cityid)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-               var  stateID = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().StateID;
-               stateName = connection.Query<States>("Select * from States where ID='" + stateID + "'").FirstOrDefault().StateName;
-                cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
-            new CityAddTower(countrieName, stateName, cityName, cityid, CountriesListID);
-            }
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //   var  stateID = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().StateID;
+            //   stateName = connection.Query<States>("Select * from States where ID='" + stateID + "'").FirstOrDefault().StateName;
+            //    cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
+            //new CityAddTower(countrieName, stateName, cityName, cityid, CountriesListID);
+            //}
+            deviceWalkPresentation.TowerInsertCity(countrieName, cityName, stateName, cityid, CountriesListID);
             return Json("");
         }
 
@@ -435,42 +440,45 @@ namespace AdminPanelDevice.Controllers
         public JsonResult TowerDelete(int towerDeleteID, int cityid,string cityName)
         {
 
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
-                cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
-                new CityDeleteTower(towerDeleteID, cityid);
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+            //    cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
+            //    new CityDeleteTower(towerDeleteID, cityid);
+            deviceWalkPresentation.TowerDeleteCity(towerDeleteID, cityName);
                 return Json("");
-            }
+         //   }
         }
 
         [HttpPost]
         public PartialViewResult SelectAll(string selectallName, string StateName)
         {
-            Tower tw = new Tower();
-            var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
-            var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-            var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
-            if (selectallName == "All")
-            {
-                city.Clear();
-                city = db.Citys.Where(c => c.StateID == stateID).ToList();
-                ViewBag.city = city;
-            }
-            else
-            {
-                city.Clear();
-                foreach (var item in cityChecked)
-                {
-                    City ct = new City();
-                    tw = db.towers.Where(t => t.CityCheckedID == item).FirstOrDefault();
-                    ct.CityName = tw.Name;
-                    ct.StateID = tw.StateID;
-                    ct.CheckedID = tw.CityCheckedID;
-                    city.Add(ct);
-                }
-                ViewBag.city = city;
-            }
-            return PartialView("_City", cityChecked);
+            //Tower tw = new Tower();
+            //var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
+            //var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
+            //var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
+            //if (selectallName == "All")
+            //{
+            //    city.Clear();
+            //    city = db.Citys.Where(c => c.StateID == stateID).ToList();
+            //    ViewBag.city = city;
+            //}
+            //else
+            //{
+            //    city.Clear();
+            //    foreach (var item in cityChecked)
+            //    {
+            //        City ct = new City();
+            //        tw = db.towers.Where(t => t.CityCheckedID == item).FirstOrDefault();
+            //        ct.CityName = tw.Name;
+            //        ct.StateID = tw.StateID;
+            //        ct.CheckedID = tw.CityCheckedID;
+            //        city.Add(ct);
+            //    }
+            //    ViewBag.city = city;
+            //}
+            city = deviceWalkPresentation.SelectAllCityResult(selectallName, StateName, countrieName, CountriesListID, city);
+            ViewBag.city = city;
+            return PartialView("_City");
         }
          
         [HttpPost]

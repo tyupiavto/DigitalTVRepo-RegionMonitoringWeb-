@@ -34,5 +34,23 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
         {
             return deviceWalkBusinessLogic.CitySearchList(CountrieName, StateName, citySearchName, CountriesListID, city, searchName);
         }
+        public List<City> CityAddShow (string StateName, string addcityName, string countrieName, int CountriesListID)
+        {
+            return deviceWalkBusinessLogic.CityAdd(StateName, addcityName, countrieName, CountriesListID);
+        }
+
+        public void TowerInsertCity(string countrieName, string cityName, string stateName, int cityid, int CountriesListID)
+        {
+            deviceWalkBusinessLogic.TowerInsertCity(countrieName,cityName,stateName,cityid,CountriesListID);
+        }
+        public void TowerDeleteCity (int towerDeleteID, string cityName)
+        {
+            deviceWalkBusinessLogic.TowerDeleteCity(towerDeleteID, cityName);
+        }
+
+        public List<City> SelectAllCityResult (string selectallName, string StateName, string countrieName, int CountriesListID, List<City> city)
+        {
+            return deviceWalkBusinessLogic.SelectAllCity(selectallName, StateName, countrieName, CountriesListID, city);
+        } 
     }
 }

@@ -68,16 +68,16 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
                 return connection.Query<States>($"select * from States where CountrieID='{countrieID}'").ToList();
             }
         }
-         
-        public List<int> SelectedCityTower (int CountriesListID, int countrieID)
+
+        public List<int> SelectedCityTower(int CountriesListID, int countrieID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-              return connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "'").ToList().Select(t => t.CityCheckedID).ToList();
+                return connection.Query<Tower>($"select * from Tower where CountriesListID='{CountriesListID}' and CountriesID='{countrieID}'").ToList().Select(t => t.CityCheckedID).ToList();
             }
         }
 
-        public int SearchStateID (string StateName)
+        public int SearchStateID(string StateName)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -93,7 +93,7 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             }
         }
 
-        public List<City> SearchCity(int stateID,string citySearchName)
+        public List<City> SearchCity(int stateID, string citySearchName)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -105,6 +105,88 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 return connection.Query<States>($"select ID from States where CountrieID='{countrieID}'").ToList();
+            }
+        }
+        public List<City> CityList(int StateID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<City>($"select * from City where StateID='{StateID}'").ToList();
+            }
+        }
+        public void CityAddSaveChange(City city)
+        {
+            DeviceContext db = new DeviceContext();
+            db.Citys.Add(city);
+            db.SaveChanges();
+        }
+
+        public int StateID(string cityName)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<City>($"Select * from City where CityName='{cityName}'").FirstOrDefault().StateID;
+            }
+        }
+
+        public string StateName(int stateID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<States>($"Select * from States where ID='{stateID}'").FirstOrDefault().StateName;
+            }
+        }
+
+        public int CityID(string cityName)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<City>($"Select * from City where CityName='{cityName}'").FirstOrDefault().ID;
+            }
+        }
+        public void PointConnectionDelete ()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                connection.Query<PointConnection>("delete From  PointConnection ");
+            }
+        }
+
+        public int TowerSaveNumberID ()
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+              return connection.Query<Tower>("select NumberID from Tower").ToList().LastOrDefault().ID+1;
+            }
+        }
+        public void TowerCitySave (Tower tower)
+        {
+            DeviceContext db = new DeviceContext();
+            db.towers.Add(tower);
+            db.SaveChanges();
+        }
+
+        public void TowerCityDelete(int towerDeleteID, string cityName)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+              var cityID= connection.Query<City>($"Select * from City where CityName='{cityName}'").FirstOrDefault().ID;
+                connection.Query<Tower>($"delete from Tower where CountriesListID='{towerDeleteID}' and CityCheckedID='{cityID}'");
+            }
+        }
+
+        public Tower TowerSelectCityID(int selectID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<Tower>($"select * from Tower where CityCheckedID='{selectID}'").FirstOrDefault(); ;
+            }
+        }
+        public List<int> SelectedCityState(int CountriesListID, int countrieID,int StateID)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            {
+                return connection.Query<Tower>($"select * from Tower where CountriesListID='{CountriesListID}' and CountriesID='{countrieID}' and StateID='{StateID}'").ToList().Select(t => t.CityCheckedID).ToList();
             }
         }
     }

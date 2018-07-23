@@ -107,7 +107,7 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
                         var citys = deviceWalkData.SearchCity(stateID, citySearchName);
                         searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
                         citys = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
-                      
+
                         return citys;
                     }
                     else
@@ -128,7 +128,7 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
                         });
                     });
                 }
-        
+
                 return city;
             }
             else
@@ -177,6 +177,78 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
                     }
                     return ct;
                 }
+            }
+        }
+
+        public List<City> CityAdd(string StateName, string addcityName, string countrieName, int CountriesListID)
+        {
+            var countrieID = deviceWalkData.SearchCountrieID(countrieName);
+            var stateID = deviceWalkData.SearchStateID(StateName);
+            var cityChecked = deviceWalkData.SelectedCityTower(CountriesListID, countrieID);
+
+            City citys = new City();
+            citys.CityName = addcityName;
+            citys.StateID = stateID;
+
+            deviceWalkData.CityAddSaveChange(citys);
+
+            return deviceWalkData.CityList(stateID);
+        }
+
+        public void TowerInsertCity(string countrieName,string cityName, string stateName, int cityid,int CountriesListID)
+        {
+            Tower tower = new Tower();
+            var stateID = deviceWalkData.StateID(cityName);
+            stateName = deviceWalkData.StateName(stateID);
+            cityid = deviceWalkData.CityID(cityName);
+            deviceWalkData.PointConnectionDelete();
+
+            var countrieID = deviceWalkData.SearchCountrieID(countrieName);
+             stateID = deviceWalkData.SearchStateID(stateName);
+
+            tower.Name = cityName;
+            tower.NumberID = deviceWalkData.TowerSaveNumberID();
+            tower.CountriesID = countrieID;
+            tower.StateID = stateID;
+            tower.CityCheckedID = cityid;
+            tower.CountriesListID = CountriesListID;
+
+            deviceWalkData.TowerCitySave(tower);
+        }
+
+        public void TowerDeleteCity (int towerDeleteID, string cityName)
+        {
+                try
+                {
+                deviceWalkData.TowerCityDelete(towerDeleteID,cityName);
+                }
+                catch { }
+        }
+        public List<City> SelectAllCity(string selectallName, string StateName,string countrieName,int CountriesListID,List<City> city)
+        {
+            Tower tw = new Tower();
+            var countrieID = deviceWalkData.SearchCountrieID(countrieName);
+            var stateID = deviceWalkData.SearchStateID(StateName);
+            var cityChecked = deviceWalkData.SelectedCityState(CountriesListID, countrieID,stateID);
+            if (selectallName == "All")
+            {
+                city.Clear();
+                city = deviceWalkData.CityList(stateID);
+                return city;
+            }
+            else
+            {
+                city.Clear();
+                cityChecked.ForEach(item =>
+                {
+                    City ct = new City();
+                    tw = deviceWalkData.TowerSelectCityID(item);
+                    ct.CityName = tw.Name;
+                    ct.StateID = tw.StateID;
+                    ct.CheckedID = tw.CityCheckedID;
+                    city.Add(ct);
+                });
+                return city;
             }
         }
     }

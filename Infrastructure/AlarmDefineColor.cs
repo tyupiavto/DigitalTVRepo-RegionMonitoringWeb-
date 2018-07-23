@@ -39,7 +39,7 @@ namespace AdminPanelDevice.Infrastructure
                         alarmStatusDescription.AlarmDescription = item.AlarmDescription;
 
                         var towerID = Convert.ToInt32(tDevice.TowerID.Substring(6, tDevice.TowerID.Length - 6));
-                        //var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
+                        var context = GlobalHost.ConnectionManager.GetHubContext<HubMessage>();
 
                         mapinformation.Value = "";
                         mapinformation.TowerID = towerID;
@@ -73,7 +73,7 @@ namespace AdminPanelDevice.Infrastructure
 
                         mapinformation.GetTrap = "trap";
 
-                       // context.Clients.All.onHitRecorded(mapinformation);
+                        context.Clients.All.onHitRecorded(mapinformation);
                     }
                 });
             }

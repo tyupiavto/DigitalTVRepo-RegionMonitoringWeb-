@@ -719,7 +719,6 @@ $('body').on('contextmenu touched', '.log_map_settings', function () { // checke
     });
 });
 
-
 $(".custom-menu-setting li").click(function (event) {
     switch ($(this).attr("data-action")) {
         case "Copy":
@@ -737,4 +736,17 @@ $(".custom-menu-setting li").click(function (event) {
             break;
     }
     $(".custom-menu-setting").hide(100);
+});
+
+$('body').on('click touchend', '#GetStartPlay', function () { // open modal set and send set 
+    $('#load_walk').css("display", "block");
+    $.post('/DeviceGroup/GetPlaySelectedList', { deviceID: deviceID, towerName: towerName }, function (Response) {
+        Response.map(function (item) {
+            $('#Value' + item.WalkID).text(item.Type);
+            $('#Value' + item.WalkID).css("color", "#9dff75");
+            $('#description' + item.WalkID).css("color", "#9dff75");
+            $('#oidname' + item.WalkID).css("color", "#9dff75");
+        });
+        $('#load_walk').css("display", "none");
+    });
 });

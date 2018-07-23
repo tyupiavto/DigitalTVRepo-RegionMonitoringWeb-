@@ -52,5 +52,9 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
         {
             return deviceWalkBusinessLogic.SelectAllCity(selectallName, StateName, countrieName, CountriesListID, city);
         } 
+        public List<WalkTowerDevice> GetPlaySelectListResult(int deviceiID,string towerName)
+        {
+            return deviceWalkBusinessLogic.GetPlaySelectList(deviceiID, towerName);
+        }
     }
 }

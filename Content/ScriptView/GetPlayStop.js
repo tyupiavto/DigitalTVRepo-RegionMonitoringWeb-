@@ -4,6 +4,7 @@ var towerID,TowerTextName;
 var playGet = new Array();
 var stopGet = new Array();
 var getarray = new Array();
+var GetPlayLenght = 0, devicePlayLenght = 0;;
 
 $('body').on('click touched', '.paly_stop_device', function () {
     deviceID = $(this).closest($(".foo")).attr("id");
@@ -37,15 +38,22 @@ $('body').on('click touched', '.paly_stop_tower', function () {
         $('#paly_stop_tower' + towerID).attr("src", "/Icons/stop.png")
         $('.add' + towerID + '  table').each(function () {
             var deviceID = $(this).attr("id");
+            devicePlayLenght++;
             $('#paly_stop_device' + deviceID).attr("src", "/Icons/stop.png");
             playGet.push(deviceID);
         });
         $.post("/GetNext/GetPlay", { towerName: towerName, towerID: towerID, playGet: playGet, TowerTextName:TowerTextName}, function (Response) {
-            $.each(Response,function (e,index) {
+            $.each(Response, function (e, index) {
+                GetPlayLenght++;
                 $('#paly_stop_device' + index).attr("src", "/Icons/play.png");
             });
+            if (GetPlayLenght == devicePlayLenght) {
+                $('#paly_stop_tower' + towerID).attr("src", "/Icons/play.png");
+                GetPlayLenght = 0;
+                devicePlayLenght = 0;
+            }
             playGet = []; saveDiagram();
-        }, 'json');
+        },'json');
     }
     else {
         $('#paly_stop_tower' + towerID).attr("src", "/Icons/play.png");

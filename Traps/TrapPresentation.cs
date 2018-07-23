@@ -41,6 +41,10 @@ namespace AdminPanelDevice.Traps
         {
             return trapBusinessLogic.PageLogNumberGoto(TrapLogList, TrapLogListSearch, SearchIndicator);
         }
+        public TrapLogInformationList TrapLogListSize(List<Trap> TrapLogList, List<Trap> TrapLogListSearch, int SearchIndicator)
+        {
+            return trapBusinessLogic.TrapLogListSize(TrapLogList, TrapLogListSearch, SearchIndicator);
+        } 
 
         public void SendTrapListenPresentaion(bool trapInd)
         {

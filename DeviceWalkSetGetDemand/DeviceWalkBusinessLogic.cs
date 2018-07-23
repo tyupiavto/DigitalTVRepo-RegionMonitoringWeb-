@@ -1,7 +1,9 @@
 ﻿using AdminPanelDevice.Models;
+using IToolS.IOServers.Snmp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace AdminPanelDevice.DeviceWalkSetGetDemand
@@ -9,6 +11,7 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
     public class DeviceWalkBusinessLogic
     {
         private DeviceWalkData deviceWalkData = new DeviceWalkData();
+        private SnmpPacket result;
         public DeviceWalkBusinessLogic() { }
 
         public List<Group> GroupShowListReturn()
@@ -250,6 +253,58 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
                 });
                 return city;
             }
+        }
+
+        public List<WalkTowerDevice> GetPlaySelectList(int deviceID,string towerName)
+        {
+            var getList=deviceWalkData.SelectedLogMapList(deviceID, towerName);
+            getList.ForEach(item =>
+            {
+              item.Type=GetSend(item.WalkOID, item.Version, "public", item.IP, 161);
+            });
+            return getList;
+        }
+
+        public string GetSend(string getOid, string Version, string communityRead, string IP, int Port)
+        {
+            OctetString community = new OctetString(communityRead);
+
+            AgentParameters param = new AgentParameters(community);
+            if (Version == "V1")
+            {
+                param.Version = SnmpVersion.Ver1;
+            }
+            if (Version == "V2")
+            {
+                param.Version = SnmpVersion.Ver2;
+            }
+            IpAddress agent = new IpAddress(IP);
+
+            UdpTarget target = new UdpTarget((IPAddress)agent, Port, 2000, 1);
+
+            Pdu pdu = new Pdu(PduType.Get);
+            try
+            {
+                if (pdu.RequestId != 0)
+                {
+                    pdu.RequestId += 1;
+                }
+                pdu.VbList.Clear();
+                pdu.VbList.Add(getOid);
+
+                if (Version == "V1")
+                {
+                    result = (SnmpV1Packet)target.Request(pdu, param);
+                }
+                if (Version == "V2")
+                {
+                    result = (SnmpV2Packet)target.Request(pdu, param);
+                }
+            }
+            catch (Exception e) { }
+            target.Close();
+            deviceWalkData.UpdateWalkTowerDeviceGetSend(result, getOid, IP);
+            return result.Pdu.VbList[0].Value.ToString();
         }
     }
 }

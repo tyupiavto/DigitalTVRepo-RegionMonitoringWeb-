@@ -54,17 +54,15 @@ namespace AdminPanelDevice.Controllers
 
         public ActionResult LogSetting(int? page)
         {
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
                 var checkList = trapPresentation.TrapTitleSelectList();
                 ViewBag.TrapCheck = checkList;
                 return View(checkList);
-            //}
         }
 
         [HttpPost]
         public PartialViewResult LogShow(int? page)
         {
+            ViewBag.pageNumber = pageListNumber;
             //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             //{
             //    ViewBag.pageNumber = pageListNumber;
@@ -77,7 +75,7 @@ namespace AdminPanelDevice.Controllers
             //    }
             //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
             //}
-              return PartialView("_TrapLogInformation", trapPresentation.TrapLogShow(TrapLogList,LogInd).ToPagedList(page ?? 1, pageListNumber));
+            return PartialView("_TrapLogInformation", trapPresentation.TrapLogShow(TrapLogList,LogInd).ToPagedList(page ?? 1, pageListNumber));
         }
         public PartialViewResult PageLog(int? page)
         {
@@ -96,7 +94,15 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult LogListCountSize(int? page, int listNumber)
         {
             pageListNumber = listNumber;
+           
+            TrapLogInformationList trapLogInformationList = new TrapLogInformationList();
             ViewBag.pageNumber = pageListNumber;
+            trapLogInformationList = trapPresentation.TrapLogListSize(TrapLogList,TrapLogListSearch,SearchIndicator);
+            ViewBag.errorCount = trapLogInformationList.ErrorCount;
+            ViewBag.correctCount = trapLogInformationList.CorrectCount;
+            ViewBag.crashCount = trapLogInformationList.CrashCount;
+            ViewBag.whiteCount = trapLogInformationList.WhiteCount;
+            ViewBag.allCount = trapLogInformationList.AllCount;
             //if (SearchIndicator == 0 || SearchIndicator == 2)
             //{
             //    return PartialView("_TrapLogInformation", TrapLogList.ToPagedList(page ?? 1, pageListNumber));
@@ -105,7 +111,7 @@ namespace AdminPanelDevice.Controllers
             //{
             //    return PartialView("_TrapLogInformation", TrapLogListSearch.ToPagedList(page ?? 1, pageListNumber));
             //}
-            return PartialView("_TrapLogInformation", trapPresentation.PageLogNumberList(TrapLogList, TrapLogListSearch, SearchIndicator).ToPagedList(page ?? 1, pageListNumber));
+            return PartialView("_TrapLogInformation", trapLogInformationList.TrapLogList.ToPagedList(page ?? 1, pageListNumber));
         }
 
         [HttpPost]
@@ -200,9 +206,9 @@ namespace AdminPanelDevice.Controllers
                                 trapID = -1;
                             }
 
-
                             var searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
-                            TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(searchName) || s.ID == trapID).ToList();
+                            //  TrapLogListSearch = TrapLogList.Where(s => s.Countrie.Contains(SearchName) || s.States.Contains(SearchName) || s.City.Contains(SearchName) || s.TowerName.Contains(SearchName) || s.DeviceName.Contains(SearchName) || s.Description != null && s.Description.Contains(SearchName) || s.OIDName != null && s.OIDName.Contains(SearchName) || s.IpAddres.Contains(SearchName) || s.CurrentOID.Contains(SearchName) || s.ReturnedOID.Contains(SearchName) || s.Value.Contains(SearchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(SearchName) || s.Countrie.Contains(searchName) || s.States.Contains(searchName) || s.City.Contains(searchName) || s.TowerName.Contains(searchName) || s.DeviceName.Contains(searchName) || s.Description != null && s.Description.Contains(searchName) || s.OIDName != null && s.OIDName.Contains(searchName) || s.IpAddres.Contains(searchName) || s.CurrentOID.Contains(searchName) || s.ReturnedOID.Contains(searchName) || s.Value.Contains(searchName) || s.AlarmDescription != null && s.AlarmDescription.Contains(searchName) || s.ID == trapID).ToList();
+                            TrapLogListSearch = connection.Query<Trap>($"select * from Trap where dateTimeTrap BETWEEN '{end}' and '{start}' and ID like N'{searchName}%' or IpAddres like N'{searchName}%' or CurrentOID like N'{searchName}%' or ReturnedOID like N'{searchName}%' or Value like N'{searchName}%' or dateTimeTrap like N'{searchName}%'or Countrie like N'{searchName}%'or States like N'{searchName}%'or City like N'{searchName}%'or TowerName like N'{searchName}%' or DeviceName like N'{searchName}%' or Description like N'{searchName}%' or OIDName like N'{searchName}%'  or AlarmDescription like N'{searchName}%'").ToList();
                             TrapLogListSearch = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
 
                             ViewBag.errorCount = TrapLogListSearch.Where(t => t.AlarmStatus == "red").ToList().Count;

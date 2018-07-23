@@ -1,5 +1,6 @@
 ﻿using AdminPanelDevice.Models;
 using Dapper;
+using IToolS.IOServers.Snmp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,6 +13,8 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
 {
     public class DeviceWalkData
     {
+        private IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString);
+
         public DeviceWalkData() { }
 
         public List<Group> GroupShowList()
@@ -188,6 +191,18 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             {
                 return connection.Query<Tower>($"select * from Tower where CountriesListID='{CountriesListID}' and CountriesID='{countrieID}' and StateID='{StateID}'").ToList().Select(t => t.CityCheckedID).ToList();
             }
+        }
+
+        public List<WalkTowerDevice> SelectedLogMapList (int deviceID,string towerName)
+        {
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
+                return connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceID='{deviceID}' and TowerName='{towerName}' and LogID<>0").ToList();
+            //}
+        }
+        public void UpdateWalkTowerDeviceGetSend(SnmpPacket result,string getOid,string IP)
+        {
+            connection.Query<WalkTowerDevice>($"update WalkTowerDevice set Type='{result.Pdu.VbList[0].Value.ToString()}' where WalkOID='{getOid}' and IP='{IP}'");
         }
     }
 }

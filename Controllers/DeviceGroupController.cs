@@ -41,7 +41,7 @@ namespace AdminPanelDevice.Controllers
         public static List<City> city = new List<City>();
         public List<DeviceType> GroupListView = new List<DeviceType>();
         public static List<MibTreeInformation> mibInformation = new List<MibTreeInformation>();
-        public static  List<MibTreeInformation> mibSearch = new List<MibTreeInformation>();
+        public static List<MibTreeInformation> mibSearch = new List<MibTreeInformation>();
         public static int countrieIndicator = 0;
         public List<TitleTowerName> TitleTowor = new List<TitleTowerName>();
         public static List<ScanningInterval> intervalTime = new List<ScanningInterval>();
@@ -84,7 +84,7 @@ namespace AdminPanelDevice.Controllers
         public static int deviceIDLocal;
         public static List<WalkTowerDevice> ValueSettingList = new List<WalkTowerDevice>();
 
-        private DeviceWalkPresentation deviceWalkPresentation=new DeviceWalkPresentation();
+        private DeviceWalkPresentation deviceWalkPresentation = new DeviceWalkPresentation();
 
         public struct intervalValue
         {
@@ -118,11 +118,6 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult GroupShow()
         {
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //groupList = connection.Query<Group>("Select * From [Group] ").ToList();
-            //}
-            //return PartialView("~/Views/DeviceGroup/_Group.cshtml", groupList);
             return PartialView("~/Views/DeviceGroup/_Group.cshtml", deviceWalkPresentation.GroupShowList());
         }
         [HttpPost]
@@ -184,66 +179,19 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult Countries(string CountrieName,string StateName, string CityName, int parentId, string countrieSettingName, string stateSettingName)
-        { 
+        public PartialViewResult Countries(string CountrieName, string StateName, string CityName, int parentId, string countrieSettingName, string stateSettingName)
+        {
             ViewBag.countrie = countrie;
             ViewBag.countrieName = CountrieName;
             ViewBag.CountrieListID = CountriesListID;
             CountriesListID = parentId;
-            //TitleTowerName TowerName = new TitleTowerName();
-            //CountriesListID = parentId;
-            //if (countrieName == null && stateSettingName == null)
-            //{
-            //    TowerName.CountrieName = "Countrie";
-            //    TowerName.StateName = "State";
-            //    TowerName.CityName = "City";
-            //}
-            //else
-            //{
-            //    TowerName.CountrieName = countrieSettingName;
-            //    TowerName.StateName = stateSettingName;
-            //    TowerName.CityName = "City";
-            //}
-            //TitleTowor.Add(TowerName);
-            //return PartialView("_CountriesSearch",TitleTowor);
-
             return PartialView("_CountriesSearch", deviceWalkPresentation.SearchCountrieStateNameReturn(CountrieName, StateName, CityName, parentId, countrieSettingName, stateSettingName, CountriesListID, countrieName, TitleTowor));
         }
 
         [HttpPost]
         public PartialViewResult countrieSearch(string countrieSearchName)
         {
-            //if (countrieSearchName == null)
-            //{
-
-            //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //    {
-            //        countrie = connection.Query<Countrie>("Select * From  Countrie ").ToList();
-            //    }
-            //}
-            //else
-            //{
-            //    if (countrieSearchName.Length >= 1)
-            //    {
-            //        searchName = countrieSearchName.First().ToString().ToUpper() + countrieSearchName.Substring(1);
-            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //        {
-            //            countrie = connection.Query<Countrie>($"Select * From Countrie Where CountrieName Like N'{countrieSearchName}%'").ToList();
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        string queryCuntries = "Select * From Countrie Where CountrieName Like N'" + countrieSearchName + "%'";
-            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //        {
-            //            countrie = connection.Query<Countrie>(queryCuntries).ToList();
-            //        }
-            //    }
-            //}
-            //states.Clear();
-            //city.Clear();
-            countrie=deviceWalkPresentation.CountrieSearch(countrieSearchName, countrie, states, city, searchName);
+            countrie = deviceWalkPresentation.CountrieSearch(countrieSearchName, countrie, states, city, searchName);
             ViewBag.countrie = countrie;
             return PartialView("_Countrie");
         }
@@ -252,42 +200,7 @@ namespace AdminPanelDevice.Controllers
         public PartialViewResult stateSearch(string CountrieName, string stateSearchName)
         {
             countrieName = CountrieName;
-            //if (stateSearchName == null && CountrieName != null)
-            //{
-            //    using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //    {
-            //        string queryCountrie = "Select * from Countrie where CountrieName = '" + CountrieName + "'";
-            //        countrieID = connection.Query<Countrie>(queryCountrie).FirstOrDefault().ID;
-            //        string queryState = "select * from States where CountrieID='" + countrieID + "'";
-            //        states = connection.Query<States>(queryState).ToList();
-            //    }
-
-            //    ViewBag.countrie = states;
-            //}
-            //if (stateSearchName != null && CountrieName != null)
-            //{
-            //    if (stateSearchName.Length >= 1)
-            //    {
-            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //        {
-            //            string queryState = "select * from States where CountrieID='" + countrieID + "' Select * From States where  StateName Like N'" + stateSearchName + "%'";
-            //            states = connection.Query<States>(queryState).ToList();
-            //        }
-            //            searchName = stateSearchName.First().ToString().ToUpper() + stateSearchName.Substring(1);
-            //            ViewBag.countrie = states.Where(s => s.StateName.Contains(stateSearchName) || s.StateName.Contains(searchName)).ToList();
-            //    }
-            //    else {
-            //        using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //        {
-            //            string querySearch = "select * from States where CountrieID='" + countrieID +"'";
-            //            states = connection.Query<States>(querySearch).ToList();
-            //        }
-            //        ViewBag.countrie = states;
-            //    }
-
-            //}
-            //city.Clear();
-             states = deviceWalkPresentation.StateSearchListReturn(CountrieName, stateSearchName, states, city, countrieID, CountrieName);
+            states = deviceWalkPresentation.StateSearchListReturn(CountrieName, stateSearchName, states, city, countrieID, CountrieName);
             ViewBag.countrie = states;
             return PartialView("_State");
         }
@@ -295,198 +208,46 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public PartialViewResult citySearch(string CountrieName, string StateName, string citySearchName)
         {
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //    List<City> ct = new List<City>();
-
-            //    var countrieID = connection.Query<Countrie>("select * from Countrie where CountrieName='" + CountrieName + "'").FirstOrDefault().ID;
-            //    var cityChecked = connection.Query<Tower>("select * from Tower where CountriesListID='" + CountriesListID + "' and CountriesID='" + countrieID + "'").ToList().Select(t => t.CityCheckedID).ToList();
-            //    if (StateName != "State")
-            //    {
-            //        var stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
-
-            //        if (citySearchName == null & StateName != null && StateName != "")
-            //        {
-            //            stateID = connection.Query<States>("select * from States where StateName='" + StateName + "'").FirstOrDefault().ID;
-            //            city = connection.Query<City>("Select * from City where  StateID='" + stateID + "'").ToList();
-
-            //            ViewBag.city = city;
-            //        }
-
-            //        if (citySearchName != null & StateName != null && StateName != "")
-            //        {
-            //            if (citySearchName.Length >= 1)
-            //            {
-            //                var citys = connection.Query<City>("select * from City where StateID='" + stateID + "' Select * from City where CityName like N'" + citySearchName + "%'").ToList();
-            //                searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
-            //                ViewBag.city = citys.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
-            //            }
-            //            else
-            //            {
-            //                city = connection.Query<City>("Select * From City where StateID='" + stateID + "'").ToList();
-            //                // ViewBag.city = city;
-            //            }
-            //        }
-            //        ViewBag.DiagramID = CountriesListID;
-            //        if (cityChecked.Count != 0)
-            //        {
-            //            cityChecked.ForEach(check =>
-            //            {
-            //                city.ForEach(c =>
-            //                {
-            //                    if (c.ID == check)
-            //                    {
-            //                        c.CheckedID = check;
-            //                    }
-            //                });
-            //            });
-            //        }
-            //        ViewBag.city = city;
-            //        return PartialView("_City");
-            //    }
-            //    else
-            //    {
-            //        var cityID = connection.Query<States>("select ID from States where CountrieID='" + countrieID + "'").ToList();
-            //        cityID.ForEach(cit =>
-            //        {
-            //            var city = connection.Query<City>("Select * from City where StateID='" + cit.ID + "'").ToList();
-            //            ct.AddRange(city);
-            //        });
-
-            //        if (citySearchName != null && citySearchName.Length >= 1)
-            //        {
-            //            searchName = citySearchName.First().ToString().ToUpper() + citySearchName.Substring(1);
-            //            var cit = ct.Where(c => c.CityName.Contains(citySearchName) || c.CityName.Contains(searchName)).ToList();
-            //            if (cityChecked.Count != 0)
-            //            {
-            //                cityChecked.ForEach(check =>
-            //                {
-            //                    cit.ForEach(c =>
-            //                    {
-            //                        if (c.ID == check)
-            //                        {
-            //                            c.CheckedID = check;
-            //                        }
-            //                    });
-            //                });
-            //            }
-            //            ViewBag.city = cit;
-            //        }
-            //        else
-            //        {
-
-            //            if (cityChecked.Count != 0)
-            //            {
-            //                cityChecked.ForEach(check =>
-            //                {
-            //                    ct.ForEach(c =>
-            //                    {
-            //                        if (c.ID == check)
-            //                        {
-            //                            c.CheckedID = check;
-            //                        }
-            //                    });
-            //                });
-            //            }
-            //            ViewBag.city = ct;
-            //        }
-            //        return PartialView("_City");
-            //    }
-            //}
-           // var cityValue = deviceWalkPresentation.SearchCity(CountrieName, StateName, citySearchName, CountriesListID, city, searchName);
             ViewBag.city = deviceWalkPresentation.SearchCity(CountrieName, StateName, citySearchName, CountriesListID, city, searchName);
-
             return PartialView("_City");
         }
 
         [HttpPost]
-        public PartialViewResult CityAdd (string StateName, string addcityName)
+        public PartialViewResult CityAdd(string StateName, string addcityName)
         {
-            //var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
-            //var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-            //var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
-
-            //City citys = new City();
-            //citys.CityName = addcityName;
-            //citys.StateID = stateID;
-            //db.Citys.Add(citys);
-            //db.SaveChanges();
-
-            //city = db.Citys.Where(c => c.StateID == stateID).ToList();
-            //ViewBag.city = city;
-
-            //return PartialView("_City", cityChecked);
-
             city = deviceWalkPresentation.CityAddShow(StateName, addcityName, countrieName, CountriesListID);
             ViewBag.city = city;
             return PartialView("_City");
         }
 
         [HttpPost]
-        public JsonResult TowerInsert(string countrieName,string stateName, string cityName, int cityid)
+        public JsonResult TowerInsert(string countrieName, string stateName, string cityName, int cityid)
         {
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //   var  stateID = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().StateID;
-            //   stateName = connection.Query<States>("Select * from States where ID='" + stateID + "'").FirstOrDefault().StateName;
-            //    cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
-            //new CityAddTower(countrieName, stateName, cityName, cityid, CountriesListID);
-            //}
             deviceWalkPresentation.TowerInsertCity(countrieName, cityName, stateName, cityid, CountriesListID);
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult TowerDelete(int towerDeleteID, int cityid,string cityName)
+        public JsonResult TowerDelete(int towerDeleteID, int cityid, string cityName)
         {
-
-            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            //{
-            //    cityid = connection.Query<City>("Select * from City where CityName='" + cityName + "'").FirstOrDefault().ID;
-            //    new CityDeleteTower(towerDeleteID, cityid);
             deviceWalkPresentation.TowerDeleteCity(towerDeleteID, cityName);
-                return Json("");
-         //   }
+            return Json("");
         }
 
         [HttpPost]
         public PartialViewResult SelectAll(string selectallName, string StateName)
         {
-            //Tower tw = new Tower();
-            //var countrieID = db.Countries.Where(c => c.CountrieName == countrieName).FirstOrDefault().ID;
-            //var stateID = db.States.Where(s => s.StateName == StateName).FirstOrDefault().ID;
-            //var cityChecked = db.towers.Where(t => t.CountriesListID == CountriesListID && t.CountriesID == countrieID && t.StateID == stateID).ToList().Select(t => t.CityCheckedID).ToList();
-            //if (selectallName == "All")
-            //{
-            //    city.Clear();
-            //    city = db.Citys.Where(c => c.StateID == stateID).ToList();
-            //    ViewBag.city = city;
-            //}
-            //else
-            //{
-            //    city.Clear();
-            //    foreach (var item in cityChecked)
-            //    {
-            //        City ct = new City();
-            //        tw = db.towers.Where(t => t.CityCheckedID == item).FirstOrDefault();
-            //        ct.CityName = tw.Name;
-            //        ct.StateID = tw.StateID;
-            //        ct.CheckedID = tw.CityCheckedID;
-            //        city.Add(ct);
-            //    }
-            //    ViewBag.city = city;
-            //}
             city = deviceWalkPresentation.SelectAllCityResult(selectallName, StateName, countrieName, CountriesListID, city);
             ViewBag.city = city;
             return PartialView("_City");
         }
-         
+
         [HttpPost]
-        public JsonResult SaveDiagram (ReturnedHtml files)
+        public JsonResult SaveDiagram(ReturnedHtml files)
         {
             Html = files.Html;
             string text = files.Html;
-          
+
             if (text == "undefined")
                 text = "";
             try
@@ -494,8 +255,8 @@ namespace AdminPanelDevice.Controllers
                 var path = Server.MapPath(@"~/HtmlText/html.txt");
                 System.IO.StreamWriter htmlText = new StreamWriter(path);
 
-            htmlText.Write(text);
-            htmlText.Close();
+                htmlText.Write(text);
+                htmlText.Close();
 
             }
             catch { }
@@ -512,49 +273,49 @@ namespace AdminPanelDevice.Controllers
 
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
-                   connection.Query<PointConnection>("delete From  PointConnection ");
+                    connection.Query<PointConnection>("delete From  PointConnection ");
                 }
 
                 ArrayList PointConnect = new ArrayList();
 
-                    PointConnect.AddRange(connections);
-                   
-                        PointConnection pointConnection = new PointConnection();
-                        foreach (string[] item in PointConnect)
-                        {
-                            pointConnection.GetUuids = item[0];
-                            pointConnection.SourceId = item[1];
-                            pointConnection.TargetId = item[2];
-                            pointConnection.PointRight = item[3];
-                            pointConnection.PointLeft = item[4];
+                PointConnect.AddRange(connections);
 
-                            db.PointConnections.Add(pointConnection);
-                            db.SaveChanges();
-                        }
-              
+                PointConnection pointConnection = new PointConnection();
+                foreach (string[] item in PointConnect)
+                {
+                    pointConnection.GetUuids = item[0];
+                    pointConnection.SourceId = item[1];
+                    pointConnection.TargetId = item[2];
+                    pointConnection.PointRight = item[3];
+                    pointConnection.PointLeft = item[4];
+
+                    db.PointConnections.Add(pointConnection);
+                    db.SaveChanges();
+                }
+
             }
             catch (Exception e)
             {
                 int ss;
-            } 
+            }
 
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult LoadDiagram ()
+        public JsonResult LoadDiagram()
         {
 
             string html = "";
-           
+
             Html = null;
             //HtmlSave html = new HtmlSave();
             //html.HtmlFile = db.HtmlSaves.Select(s => s.HtmlFile).FirstOrDefault();
             if (Html == null)
             {
-               // var path = Server.MapPath(@"~/HtmlText/html.txt");
+                // var path = Server.MapPath(@"~/HtmlText/html.txt");
                 html = System.IO.File.ReadAllText(Server.MapPath("/HtmlText/html.txt"));
-         
+
                 Html = "";
             }
             else
@@ -566,22 +327,22 @@ namespace AdminPanelDevice.Controllers
                 pointConnection = connection.Query<PointConnection>("Select * From  PointConnection ").ToList();
             }
             //string html = db.HtmlSaves.Select(s => s.HtmlFile).FirstOrDefault();
-            return Json(new { htmlData= html , pointData= pointConnection });
+            return Json(new { htmlData = html, pointData = pointConnection });
         }
 
         [HttpPost]
-        public PartialViewResult DeviceList (int deviceGroupList)
+        public PartialViewResult DeviceList(int deviceGroupList)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                GroupListView = connection.Query<DeviceType>("Select * From DeviceType where DeviceGroupID='"+deviceGroupList+"'").ToList();
-                ////GroupListView = db.devicesTypes.Where(d => d.DeviceGroupID == deviceGroupList).ToList();
+                GroupListView = connection.Query<DeviceType>("Select * From DeviceType where DeviceGroupID='" + deviceGroupList + "'").ToList();
+                //GroupListView = db.devicesTypes.Where(d => d.DeviceGroupID == deviceGroupList).ToList();
                 return PartialView("_DeviceListView", GroupListView);
             }
         }
 
         [HttpPost]
-        public PartialViewResult DeviceManegeSetting (int dvcID , string DeviceName)
+        public PartialViewResult DeviceManegeSetting(int dvcID, string DeviceName)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -593,7 +354,7 @@ namespace AdminPanelDevice.Controllers
 
 
         [HttpPost]
-        public PartialViewResult LoadMib (int? page, string DeviceName,string towerName, int deviceID,int defineWalk)
+        public PartialViewResult LoadMib(int? page, string DeviceName, string towerName, int deviceID, int defineWalk)
         {
             walkSearch.Clear();
             TowerIDLocal = towerName;
@@ -605,7 +366,7 @@ namespace AdminPanelDevice.Controllers
             {
                 QuerydeviceID = connection.Query<DeviceType>("Select * From DeviceType where Name=N'" + DeviceName + "'").FirstOrDefault().ID;
                 intervalTime = connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
-                TowerIP = connection.Query<TowerDevices>("Select * From  TowerDevices where MibID='" + QuerydeviceID + "' and  TowerID='" + towerName + "' and DeviceID='"+ deviceID + "'").FirstOrDefault().IP;
+                TowerIP = connection.Query<TowerDevices>("Select * From  TowerDevices where MibID='" + QuerydeviceID + "' and  TowerID='" + towerName + "' and DeviceID='" + deviceID + "'").FirstOrDefault().IP;
                 ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
                 ViewBag.TowerIP = TowerIP;
@@ -627,8 +388,8 @@ namespace AdminPanelDevice.Controllers
                 }
                 else
                 {
-                   
-                    mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID="+ QuerydeviceID).ToList();
+
+                    mibInformation = connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID=" + QuerydeviceID).ToList();
                     return PartialView("_DeviceMibSetting", mibInformation.ToPagedList(page ?? 1, pageListNumber));
                 }
             }
@@ -677,16 +438,16 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetSend(string IP,int Port,string SetOID, string SetValue,string communityWrite,string dataType, string Version)
+        public JsonResult SetSend(string IP, int Port, string SetOID, string SetValue, string communityWrite, string dataType, string Version)
         {
-            
+
             IpAddress agent = new IpAddress(IP);
 
             UdpTarget target = new UdpTarget((IPAddress)agent, Port, 4000, 1);
             Pdu.SetPdu();
             Pdu pdu = new Pdu(PduType.Set);
 
-            if (dataType=="Integer32")
+            if (dataType == "Integer32")
             {
                 pdu.VbList.Add(new Oid(SetOID), new Integer32(SetValue));
             }
@@ -723,7 +484,7 @@ namespace AdminPanelDevice.Controllers
             ReturnedGetSend get = new ReturnedGetSend();
 
             //var resultGet = get.GetSend(getOid, Version, communityRead, IP, Port);
-         
+
             return Json(get.GetSend(getOid, Version, communityRead, IP, Port));
         }
 
@@ -748,8 +509,8 @@ namespace AdminPanelDevice.Controllers
                     {
                         try
                         {
-                        mibSearch.Clear();
-                        mibSearch =mibInformation.Where(x => x.Description != null && x.Description.Contains(SearchName) || x.Syntax!=null && x.Syntax.Contains(SearchName)).ToList();
+                            mibSearch.Clear();
+                            mibSearch = mibInformation.Where(x => x.Description != null && x.Description.Contains(SearchName) || x.Syntax != null && x.Syntax.Contains(SearchName)).ToList();
                         }
                         catch (Exception e) { }
                         return PartialView("_DeviceMibSetting", mibSearch.ToPagedList(page ?? 1, pageListNumber));
@@ -777,8 +538,8 @@ namespace AdminPanelDevice.Controllers
                             searchName = SearchName.First().ToString().ToUpper() + SearchName.Substring(1);
                             // walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where WalkOID like '%{SearchName}%' or WalkDescription like '%{SearchName}%' or Type like '%{SearchName}%' or OIDName like '%{SearchName}%'  or MyDescription like N'%{SearchName}%' and DeviceID='{deviceIDLocal}' and DeviceName=N'{DeviceNameLocal}'and TowerName='{TowerIDLocal}'").ToList();
 
-                             // walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkOID like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkDescription like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and Type like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName like '%{SearchName}%' and DeviceID='{deviceIDLocal}' and MyDescription like N'%{SearchName}%'").ToList();
-                           walkSearch = walkList.Where(x => x.WalkOID.ToLower().Contains(SearchName.ToLower()) || x.WalkDescription.ToLower().Contains(SearchName.ToLower()) || x.Type.ToLower().Contains(SearchName.ToLower()) || x.OIDName.ToLower().Contains(SearchName.ToLower()) || x.MyDescription!=null && x.MyDescription.ToLower().Contains(SearchName.ToLower())/*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
+                            // walkSearch = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkOID like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and WalkDescription like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and Type like '%{SearchName}%' or DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}' and OIDName like '%{SearchName}%' and DeviceID='{deviceIDLocal}' and MyDescription like N'%{SearchName}%'").ToList();
+                            walkSearch = walkList.Where(x => x.WalkOID.ToLower().Contains(SearchName.ToLower()) || x.WalkDescription.ToLower().Contains(SearchName.ToLower()) || x.Type.ToLower().Contains(SearchName.ToLower()) || x.OIDName.ToLower().Contains(SearchName.ToLower()) || x.MyDescription != null && x.MyDescription.ToLower().Contains(SearchName.ToLower())/*|| x.WalkDescription != null && x.WalkDescription.Contains(searchName) || x.Type != null && x.Type.Contains(searchName) || x.OIDName != null && x.OIDName.Contains(searchName)|| x.WalkOID != null && x.WalkOID.Contains(searchName)*/).ToList();
                         }
                         catch (Exception e) { }
                         return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
@@ -805,7 +566,7 @@ namespace AdminPanelDevice.Controllers
             {
                 ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
-                ViewBag.PresetInd=1;
+                ViewBag.PresetInd = 1;
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.TowerIP = TowerIP;
                 ViewBag.DefineWalk = false;
@@ -866,7 +627,7 @@ namespace AdminPanelDevice.Controllers
                     ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>60 and DeviceID='" + deviceIDLocal + "'").ToList();
                     ViewBag.GPS = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and GpsID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                     ViewBag.DefineWalk = true;
-                    if (walkSearch.Count>=1)
+                    if (walkSearch.Count >= 1)
                     {
                         return PartialView("_DeviceSettings", walkSearch.ToPagedList(page ?? 1, pageListNumber));
                     }
@@ -874,14 +635,14 @@ namespace AdminPanelDevice.Controllers
                     {
                         return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
                     }
-                    
+
                 }
             }
 
         }
 
         [HttpPost]
-        public PartialViewResult SelectAllMap (int ? page , bool check)
+        public PartialViewResult SelectAllMap(int? page, bool check)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -891,7 +652,7 @@ namespace AdminPanelDevice.Controllers
                 ViewBag.TowerIP = TowerIP;
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.DefineWalk = false;
-             
+
                 ViewBag.CheckedMap = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and MapID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.Interval = connection.Query<WalkTowerDevice>("select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and ScanInterval<>60 and DeviceID='" + deviceIDLocal + "'").ToList();
                 ViewBag.GPS = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and GpsID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
@@ -902,15 +663,15 @@ namespace AdminPanelDevice.Controllers
                 }
                 else
                 {
-                     ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
+                    ViewBag.CheckedLog = connection.Query<WalkTowerDevice>("select WalkID from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and LogID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                     return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
                 }
-               
+
             }
         }
 
         [HttpPost]
-        public PartialViewResult SelectAllLogMap(int? page, bool checkMap,bool checkLog)
+        public PartialViewResult SelectAllLogMap(int? page, bool checkMap, bool checkLog)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -950,7 +711,7 @@ namespace AdminPanelDevice.Controllers
         [HttpPost]
         public JsonResult IntervalSearch(int intervalID, int Interval, string towerName, int deviceID)
         {
-           // updateCheck.UpdateInterval(intervalID, Interval, towerName, deviceID);
+            // updateCheck.UpdateInterval(intervalID, Interval, towerName, deviceID);
             walkList[intervalID - 1].ScanInterval = Interval;
             return Json("");
         }
@@ -966,7 +727,7 @@ namespace AdminPanelDevice.Controllers
             return PartialView("_ScaninningInterval", intervalTime);
         }
         ///  // /// / /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      
+
 
         [HttpPost]
         public JsonResult IntervalSearchMib(int intervalID, int Interval, string towerName, int deviceID, string OidMib)
@@ -977,31 +738,31 @@ namespace AdminPanelDevice.Controllers
                 if (logExistence != null)
                 {
                     connection.Query<WalkTowerDevice>("update WalkTowerDevice set ScanInterval='" + Interval + "' where TowerName='" + towerName + "' and DeviceID='" + deviceID + "' and WalkOID='" + OidMib + "'");
-                   // walkList[intervalID - 1].ScanInterval = Interval;
+                    // walkList[intervalID - 1].ScanInterval = Interval;
                 }
             }
             return Json("");
         }
-       // /// //// /// ///
+        // /// //// /// ///
 
 
         [HttpPost]
-        public JsonResult PresetSave(string presetName, string IpAddress, string towerNameID,int deviceID)
+        public JsonResult PresetSave(string presetName, string IpAddress, string towerNameID, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var con = connection.Query<Preset>($"delete from Preset where PresetName='{presetName}'");
 
                 Preset preset = new Preset();
-                preset.DeviceID =db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
+                preset.DeviceID = db.Presets.Select(d => d.DeviceID).ToList().LastOrDefault() + 1;
                 preset.PresetName = presetName;
                 preset.DeviceIP = IpAddress;
                 preset.DeviceTypeID = QuerydeviceID;
                 db.Presets.Add(preset);
                 db.SaveChanges();
 
-                var walkL= connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
-                updateCheck.WalkPresetSave(walkL, preset.ID,DeviceNameLocal, TowerIDLocal,deviceIDLocal);
+                var walkL = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
+                updateCheck.WalkPresetSave(walkL, preset.ID, DeviceNameLocal, TowerIDLocal, deviceIDLocal);
                 var gpscoordinate = connection.Query<WalkTowerDevice>("select * from WalkTowerDevice where DeviceName=N'" + DeviceNameLocal + "' and TowerName='" + TowerIDLocal + "' and GpsID<>0 and DeviceID='" + deviceIDLocal + "'").ToList();
                 if (gpscoordinate.Count == 3)
                 {
@@ -1047,15 +808,15 @@ namespace AdminPanelDevice.Controllers
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set GpsID=1,ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkDescription='{lmi.Description}' and WalkOID='{lmi.WalkOID}'");
                     }
-                    if (lmi.MyDescription!=null || lmi.MyDescription!="")
+                    if (lmi.MyDescription != null || lmi.MyDescription != "")
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set MyDescription=N'{lmi.MyDescription}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
-                    if (lmi.DivideMultiply!=null)
+                    if (lmi.DivideMultiply != null)
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set DivideMultiply=N'{lmi.DivideMultiply}',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
-                    if (lmi.StringParserInd!=0)
+                    if (lmi.StringParserInd != 0)
                     {
                         connection.Query<WalkTowerDevice>($"update WalkTowerDevice set StringParserInd='1',ScanInterval='{lmi.Interval}'  where TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'and OIDName='{lmi.OIDName}' and WalkOID='{lmi.WalkOID}'");
                     }
@@ -1082,7 +843,7 @@ namespace AdminPanelDevice.Controllers
                 var deviceID = connection.Query<DeviceType>($"select * from DeviceType where Name=N'{DeviceName}'").FirstOrDefault();
                 presetList = connection.Query<Preset>($"Select * From  Preset where DeviceTypeID='{deviceID.ID}'").ToList();
             }
-            return PartialView("_Preset",presetList);
+            return PartialView("_Preset", presetList);
         }
 
         [HttpPost]
@@ -1096,7 +857,7 @@ namespace AdminPanelDevice.Controllers
                 //db.Presets.Remove(presetremove);
                 //db.SaveChanges();
                 List<Preset> presetList = new List<Preset>();
-               
+
                 presetList = connection.Query<Preset>("Select * From  Preset ").ToList();
 
                 return PartialView("_Preset", presetList);
@@ -1134,7 +895,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult IntervalAdd (int second)
+        public PartialViewResult IntervalAdd(int second)
         {
             ScanningInterval sc = new ScanningInterval();
             sc.Interval = second;
@@ -1149,7 +910,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult DefaultIntervalSearch (int ? page , int intervalNumber)
+        public PartialViewResult DefaultIntervalSearch(int? page, int intervalNumber)
         {
             ViewBag.IntervalTime = intervalTime;
             ViewBag.pageListNumber = pageListNumber;
@@ -1160,8 +921,8 @@ namespace AdminPanelDevice.Controllers
             DefaultInterval = intervalNumber;
             ViewBag.TowerIP = TowerIP;
             ViewBag.defaultInterval = DefaultInterval;
-            
-           return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
+
+            return PartialView("_DeviceSettings", walkList.ToPagedList(page ?? 1, pageListNumber));
         }
 
         [HttpPost]
@@ -1174,7 +935,7 @@ namespace AdminPanelDevice.Controllers
                 {
                     foreach (var item in devicetype)
                     {
-                        var devicename = connection.Query<DeviceType>($"Select * from DeviceType where Name like N'" +item + "%'").FirstOrDefault();
+                        var devicename = connection.Query<DeviceType>($"Select * from DeviceType where Name like N'" + item + "%'").FirstOrDefault();
                         gpsDevice.DeviceName.Add(devicename.Name);
                     }
                     var gpscordinate = connection.Query<TowerGps>($"select * from TowerGps where TowerName='{towerName}'").FirstOrDefault();
@@ -1186,11 +947,11 @@ namespace AdminPanelDevice.Controllers
                     }
                 }
             }
-                return PartialView("_Gps",gpsDevice);
-          }
+            return PartialView("_Gps", gpsDevice);
+        }
 
         [HttpPost]
-        public JsonResult GpsSelect(int GpsID,string towerName, int deviceID)
+        public JsonResult GpsSelect(int GpsID, string towerName, int deviceID)
         {
             updateCheck.UpdateChechkGps(1, GpsID, towerName, deviceID);
             return Json("");
@@ -1204,11 +965,11 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult CheckGps(string towerGpsName,string deviceName)
+        public JsonResult CheckGps(string towerGpsName, string deviceName)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-               // var deviceID = connection.Query<DeviceType>($"select * from DeviceType where Name=N'{deviceName}'").FirstOrDefault().ID;
+                // var deviceID = connection.Query<DeviceType>($"select * from DeviceType where Name=N'{deviceName}'").FirstOrDefault().ID;
                 var gpsCordinate = connection.Query<WalkTowerDevice>($"Select * from WalkTowerDevice where GpsID<>0 and TowerName='{towerGpsName}' and DeviceName='{deviceName} '").ToList();
                 return Json(gpsCordinate);
             }
@@ -1216,14 +977,14 @@ namespace AdminPanelDevice.Controllers
 
 
         [HttpPost]
-        public JsonResult TowerGpsSubmit (string deviceGpsName, string lattitube , string longitube, string altitube,string towerName, int gpscheckInd,string IP,int TowerGpsID)
+        public JsonResult TowerGpsSubmit(string deviceGpsName, string lattitube, string longitube, string altitube, string towerName, int gpscheckInd, string IP, int TowerGpsID)
         {
             if (gpscheckInd != 0)
             {
                 using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
                 {
-                  //  var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
-                   // TowerGps gpsCordinate = connection.Query<TowerGps>($"Select * from TowerGps where TowerNameID='{towerName}'").FirstOrDefault();
+                    //  var deviceID = connection.Query<DeviceType>("Select * from DeviceType where Name like N'" + deviceGpsName + "%'").FirstOrDefault().ID;
+                    // TowerGps gpsCordinate = connection.Query<TowerGps>($"Select * from TowerGps where TowerNameID='{towerName}'").FirstOrDefault();
                     connection.Query<TowerGps>($"delete from TowerGps where TowerName='{towerName}'");
 
                     TowerGps gpsCordinate = new TowerGps();
@@ -1253,7 +1014,8 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult ClearDiagram() {
+        public JsonResult ClearDiagram()
+        {
 
             //Html = "";
             //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
@@ -1275,17 +1037,17 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult UnConnection (string sourceID, string targetID)
+        public JsonResult UnConnection(string sourceID, string targetID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<PointConnection>("delete from PointConnection where SourceId='"+sourceID+ "' and TargetId='" + targetID + "'");
+                connection.Query<PointConnection>("delete from PointConnection where SourceId='" + sourceID + "' and TargetId='" + targetID + "'");
             }
             return Json("");
         }
 
         [HttpPost]
-        public JsonResult TowerDeviceInformation(string IPaddress, string towerID, string deviceName, string cityID, string towerName,int deviceID)
+        public JsonResult TowerDeviceInformation(string IPaddress, string towerID, string deviceName, string cityID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -1306,28 +1068,28 @@ namespace AdminPanelDevice.Controllers
                 td.TowerID = towerID;
                 td.DeviceName = deviceName;
                 td.TowerName = towerName;
-                td.MibID= connection.Query<DeviceType>("select * from DeviceType where Name=N'" + deviceName + "'").FirstOrDefault().ID;
+                td.MibID = connection.Query<DeviceType>("select * from DeviceType where Name=N'" + deviceName + "'").FirstOrDefault().ID;
                 td.CityID = connection.Query<PointConnection>("select * from PointConnection where TargetId='" + towerID + "'").FirstOrDefault().SourceId;
                 td.DeviceID = deviceID;
 
                 db.TowerDevices.Add(td);
                 db.SaveChanges();
 
-                 return Json("1");
+                return Json("1");
             }
         }
         [HttpPost]
-        public JsonResult RemoveDevice (string DeviceName, string towerID)
+        public JsonResult RemoveDevice(string DeviceName, string towerID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-              connection.Query<TowerDevices>("delete from TowerDevices where DeviceName=N'" + DeviceName + "' and TowerID='" + towerID + "'");
+                connection.Query<TowerDevices>("delete from TowerDevices where DeviceName=N'" + DeviceName + "' and TowerID='" + towerID + "'");
             }
-                return Json("");
+            return Json("");
         }
 
         [HttpPost]
-        public JsonResult PresetDiagramSave (ReturnedHtml files)
+        public JsonResult PresetDiagramSave(ReturnedHtml files)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -1405,18 +1167,18 @@ namespace AdminPanelDevice.Controllers
                 htmlText.Write(text);
                 htmlText.Close();
             }
-                return Json("");
+            return Json("");
         }
 
         [HttpPost]
-        public PartialViewResult DiagramPresetList ()
+        public PartialViewResult DiagramPresetList()
         {
             List<PresetDiagramName> presetlist = new List<PresetDiagramName>();
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                 presetlist = connection.Query<PresetDiagramName>("select * from PresetDiagramName").ToList();
+                presetlist = connection.Query<PresetDiagramName>("select * from PresetDiagramName").ToList();
             }
-                return PartialView("_DiagramPreset", presetlist);
+            return PartialView("_DiagramPreset", presetlist);
         }
         [HttpPost]
         public JsonResult LoadPresetDiagram(string presetSearchName)
@@ -1441,11 +1203,12 @@ namespace AdminPanelDevice.Controllers
                 connection.Query<Tower>("delete from Tower");
                 connection.Query<PointConnection>("delete From  PointConnection");
                 pointConnectionPreset = connection.Query<PointConnectionPreset>("Select * From  PointConnectionPreset where PresetName='" + presetSearchName + "'").ToList();
-                 var towerdevice= connection.Query<TowerDevicesPreset>("Select * From  TowerDevicesPreset where PresetName='" + presetSearchName + "'").ToList();
-                 var tower = connection.Query<TowerPreset>("select * from TowerPreset where PresetName='" + presetSearchName + "'").ToList();
+                var towerdevice = connection.Query<TowerDevicesPreset>("Select * From  TowerDevicesPreset where PresetName='" + presetSearchName + "'").ToList();
+                var tower = connection.Query<TowerPreset>("select * from TowerPreset where PresetName='" + presetSearchName + "'").ToList();
 
                 List<TowerDevices> td = new List<TowerDevices>();
-                    towerdevice.ForEach(it=>{ 
+                towerdevice.ForEach(it =>
+                {
                     TowerDevices tdp = new TowerDevices();
                     tdp.CityID = it.CityID;
                     tdp.CityName = it.CityName;
@@ -1458,11 +1221,12 @@ namespace AdminPanelDevice.Controllers
                     tdp.TowerID = it.TowerID;
                     tdp.MibID = it.MibID;
                     td.Add(tdp);
-                    });
-           
+                });
+
                 List<PointConnection> poi = new List<PointConnection>();
-                pointConnectionPreset.ForEach(item=> { 
-             
+                pointConnectionPreset.ForEach(item =>
+                {
+
                     PointConnection presetpoint = new PointConnection();
                     presetpoint.PointLeft = item.PointLeft;
                     presetpoint.PointRight = item.PointRight;
@@ -1470,10 +1234,11 @@ namespace AdminPanelDevice.Controllers
                     presetpoint.TargetId = item.TargetId;
                     presetpoint.GetUuids = item.GetUuids;
                     poi.Add(presetpoint);
-                  });
-               
+                });
+
                 List<Tower> tow = new List<Tower>();
-                tower.ForEach(t => {
+                tower.ForEach(t =>
+                {
                     Tower tw = new Tower();
                     tw.CityCheckedID = t.CityCheckedID;
                     tw.CountriesID = t.CountriesID;
@@ -1502,7 +1267,7 @@ namespace AdminPanelDevice.Controllers
                 connection.Query<PresetDiagramName>("delete from PresetDiagramName where Name='" + presetName + "'");
                 presetlist = connection.Query<PresetDiagramName>("select * from PresetDiagramName").ToList();
             }
-            var path = Server.MapPath(@"~/HtmlText/"+ presetName + ".txt");
+            var path = Server.MapPath(@"~/HtmlText/" + presetName + ".txt");
             System.IO.File.Delete(path);
             return PartialView("_DiagramPreset", presetlist);
         }
@@ -1512,12 +1277,12 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where TowerName='" + deviceName + "' and DeviceID='"+ deviceRemoveID + "'");
+                connection.Query<WalkTowerDevice>("delete from WalkTowerDevice where TowerName='" + deviceName + "' and DeviceID='" + deviceRemoveID + "'");
                 connection.Query<DeviceThreadOnOff>("delete from DeviceThreadOnOff where TowerName='" + deviceName + "' and DeviceID='" + deviceRemoveID + "'");
                 connection.Query<PointConnection>("delete from PointConnection where TargetId='" + deviceName + "'");
                 connection.Query<TowerDevices>("delete from TowerDevices where TowerID='" + deviceName + "' and DeviceID='" + deviceRemoveID + "'");
             }
-                return Json("");
+            return Json("");
         }
 
         [HttpPost]
@@ -1528,12 +1293,12 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult LogMapExistingValue (string towerName,int deviceID,string oidName,string description , string walkOid,int settingID)
+        public JsonResult LogMapExistingValue(string towerName, int deviceID, string oidName, string description, string walkOid, int settingID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var value = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where TowerName='{towerName}'and DeviceID='{deviceID}' and WalkOID='{walkOid}' and WalkID='{settingID}'").FirstOrDefault();
-                if (value != null &&  value.StartCorrect != null && value.StartCorrect !="" &&  value.EndCorrect != null && value.EndCorrect !="")
+                if (value != null && value.StartCorrect != null && value.StartCorrect != "" && value.EndCorrect != null && value.EndCorrect != "")
                 {
                     return Json(value);
                 }
@@ -1541,19 +1306,19 @@ namespace AdminPanelDevice.Controllers
                 {
                     return Json("");
                 }
-                
+
             }
         }
 
         [HttpPost]
-        public JsonResult MyDescriptionAdd (string myDescription, int walkID, string towerName, int deviceID)
+        public JsonResult MyDescriptionAdd(string myDescription, int walkID, string towerName, int deviceID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 connection.Query<WalkTowerDevice>($"update WalkTowerDevice Set MyDescription=N'{myDescription}'  where WalkID='{walkID}'and TowerName='{towerName}' and DeviceID='{deviceID}'");
-                walkList[walkID-1].MyDescription = myDescription;
+                walkList[walkID - 1].MyDescription = myDescription;
             }
-         return Json("");      
+            return Json("");
         }
 
         [HttpPost]
@@ -1563,14 +1328,14 @@ namespace AdminPanelDevice.Controllers
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
                 var walkL = connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceNameLocal}' and TowerName='{TowerIDLocal}' and DeviceID='{deviceIDLocal}'").ToList();
-                List<WalkPreset> ExportPreset=updateCheck.WalkPresetDownload(walkL, DeviceNameLocal, TowerIDLocal, deviceIDLocal);
+                List<WalkPreset> ExportPreset = updateCheck.WalkPresetDownload(walkL, DeviceNameLocal, TowerIDLocal, deviceIDLocal);
                 walkPresetImportExport.ExportPreset(ExportPreset, presetName);
             }
             return Json("");
         }
 
         [HttpPost]
-        public PartialViewResult LoadWalkPreset(int ? page,LoadWalkPresetFile type)
+        public PartialViewResult LoadWalkPreset(int? page, LoadWalkPresetFile type)
         {
             string pathname = "";
             WalkPresetImportExport walkPresetImportExport = new WalkPresetImportExport();
@@ -1583,8 +1348,8 @@ namespace AdminPanelDevice.Controllers
                     pathname = _FileName;
                     type.PresetFile.SaveAs(_path);
                 }
-               
-              // var PresetList= walkPresetImportExport.ImportPreset(_path);
+
+                // var PresetList= walkPresetImportExport.ImportPreset(_path);
             }
             catch (Exception e)
             {
@@ -1637,7 +1402,7 @@ namespace AdminPanelDevice.Controllers
         }
 
         [HttpPost]
-        public JsonResult ValueSettingCopy(int settingID,int copyID)
+        public JsonResult ValueSettingCopy(int settingID, int copyID)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
@@ -1658,6 +1423,13 @@ namespace AdminPanelDevice.Controllers
                 });
             }
             return Json("");
+        }
+
+        [HttpPost]
+        public JsonResult GetPlaySelectedList(int deviceID, string towerName)
+        {
+            var getlist = deviceWalkPresentation.GetPlaySelectListResult(deviceID, towerName);
+            return Json(getlist);
         }
     }
 }

@@ -205,6 +205,32 @@ namespace AdminPanelDevice.Traps
             }
         }
 
+        public TrapLogInformationList TrapLogListSize(List<Trap> TrapLogList, List<Trap> TrapLogListSearch, int SearchIndicator)
+        {
+            if (SearchIndicator == 0 || SearchIndicator == 2)
+            {
+                trapLogInformarion.ErrorCount = TrapLogList.Where(t => t.AlarmStatus == "red").ToList().Count;
+                trapLogInformarion.CorrectCount = TrapLogList.Where(t => t.AlarmStatus == "green").ToList().Count;
+                trapLogInformarion.CrashCount = TrapLogList.Where(t => t.AlarmStatus == "yellow").ToList().Count;
+                trapLogInformarion.WhiteCount = TrapLogList.Where(t => t.AlarmStatus == "white").ToList().Count;
+                trapLogInformarion.AllCount = TrapLogList.Count;
+                trapLogInformarion.TrapLogList = TrapLogList.OrderByDescending(t => t.dateTimeTrap).ToList();
+
+                return trapLogInformarion;
+            }
+            else
+            {
+                trapLogInformarion.ErrorCount = TrapLogListSearch.Where(t => t.AlarmStatus == "red").ToList().Count;
+                trapLogInformarion.CorrectCount = TrapLogListSearch.Where(t => t.AlarmStatus == "green").ToList().Count;
+                trapLogInformarion.CrashCount = TrapLogListSearch.Where(t => t.AlarmStatus == "yellow").ToList().Count;
+                trapLogInformarion.WhiteCount = TrapLogListSearch.Where(t => t.AlarmStatus == "white").ToList().Count;
+                trapLogInformarion.AllCount = TrapLogListSearch.Count;
+                trapLogInformarion.TrapLogList = TrapLogListSearch.OrderByDescending(t => t.dateTimeTrap).ToList();
+
+                return trapLogInformarion;
+            }
+        }
+
         public void SendTrapListen(bool trapInd)
         {
             if (trapInd == true)

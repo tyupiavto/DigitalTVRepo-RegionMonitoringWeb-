@@ -509,8 +509,7 @@ namespace AdminPanelDevice.Controllers
 
             return Json(get.GetSend(getOid, Version, communityRead, IP, Port));
         }
-        //
-
+        
         [HttpPost]
         public PartialViewResult WalkSearchList(int? page, string SearchName)
         {

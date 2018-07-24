@@ -306,7 +306,6 @@ namespace AdminPanelDevice.SnmpGet
                     intervalChange.thread.Start();
                     getThread.Add(intervalChange);
                 }
-            
             return getThread;
         }
 

@@ -149,10 +149,10 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
         }
         public void PointConnectionDelete ()
         {
-            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
-            {
+            //using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
+            //{
                 connection.Query<PointConnection>("delete From  PointConnection ");
-            }
+            //}
         }
 
         public int TowerSaveNumberID ()
@@ -203,6 +203,55 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
         public void UpdateWalkTowerDeviceGetSend(SnmpPacket result,string getOid,string IP)
         {
             connection.Query<WalkTowerDevice>($"update WalkTowerDevice set Type='{result.Pdu.VbList[0].Value.ToString()}' where WalkOID='{getOid}' and IP='{IP}'");
+        }
+        public List<WalkTowerDevice> WalkTowerDeviceList(string DeviceName,string towerName,int deviceID)
+        {
+            return connection.Query<WalkTowerDevice>($"select * from WalkTowerDevice where DeviceName=N'{DeviceName}' and TowerName='{towerName}' and DeviceID='{deviceID}'").ToList();
+        }
+        public string TowerIP (int deviceTypeID,string towerName,int deviceID)
+        {
+            return connection.Query<TowerDevices>($"Select * From  TowerDevices where MibID='{deviceTypeID}' and  TowerID='{towerName}' and DeviceID='{deviceID}'").FirstOrDefault().IP;
+        }
+        public List<ScanningInterval> ScanIntervalList ()
+        {
+            return connection.Query<ScanningInterval>("Select * From  ScanningInterval").ToList();
+        }
+        public List<WalkTowerDevice> SelectLogList (string deviceName,string towerName,int deviceID)
+        {
+            return connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N'{deviceName}' and TowerName='{ towerName }' and LogID<>0  and DeviceID='{deviceID}'").ToList();
+        }
+
+        public List<WalkTowerDevice> SelectMapList(string deviceName, string towerName, int deviceID)
+        {
+            return connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N'{deviceName}' and TowerName='{towerName }' and MapID<>0  and DeviceID='{deviceID}'").ToList();
+        }
+
+        public List<WalkTowerDevice> SelectIntervalList(string deviceName, string towerName, int deviceID)
+        {
+            return connection.Query<WalkTowerDevice>($"select WalkID,ScanInterval from WalkTowerDevice where DeviceName=N'{deviceName}' and TowerName='{towerName}' and ScanInterval<>'60'  and DeviceID='{deviceID}'").ToList();
+        }
+
+        public List<WalkTowerDevice> SelectGpsList(string deviceName, string towerName, int deviceID)
+        {
+            return connection.Query<WalkTowerDevice>($"select WalkID from WalkTowerDevice where DeviceName=N'{deviceName} ' and TowerName='{towerName} ' and GpsID<>0  and DeviceID='{deviceID} '").ToList();
+        }
+        public List<MibTreeInformation> MibTreeInformationList (int deviceTypeID)
+        {
+            return connection.Query<MibTreeInformation>("Select * From  [TreeInformation] where DeviceID=" + deviceTypeID).ToList();
+        }
+        public void PointConnectionSave(PointConnection pointConnection)
+        {
+            DeviceContext db = new DeviceContext();
+            db.PointConnections.Add(pointConnection);
+            db.SaveChanges();
+        }
+        public List<DeviceType> DeviceGroupList (int deviceGroupID)
+        {
+            return connection.Query<DeviceType>($"Select * From DeviceType where DeviceGroupID='{deviceGroupID}'").ToList();
+        } 
+        public int DeviceTypeID (string DeviceName)
+        {
+           return connection.Query<DeviceType>($"Select * From DeviceType where Name=N'{DeviceName}'").FirstOrDefault().ID;
         }
     }
 }

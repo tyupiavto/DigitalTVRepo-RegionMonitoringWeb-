@@ -409,6 +409,7 @@
     <Compile Include="Models\TreeStructure.cs" />
     <Compile Include="Models\WalkDevice.cs" />
     <Compile Include="Models\WalkInformation.cs" />
+    <Compile Include="Models\WalkMibSetting.cs" />
     <Compile Include="Models\WalkPreset.cs" />
     <Compile Include="Models\WalkTowerDevice.cs" />
     <Compile Include="MonitoringAppStartup.cs" />

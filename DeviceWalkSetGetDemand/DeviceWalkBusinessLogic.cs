@@ -1,7 +1,9 @@
 ﻿using AdminPanelDevice.Models;
 using IToolS.IOServers.Snmp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -164,7 +166,6 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
                 }
                 else
                 {
-
                     if (cityChecked.Count != 0)
                     {
                         cityChecked.ForEach(check =>
@@ -198,7 +199,7 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             return deviceWalkData.CityList(stateID);
         }
 
-        public void TowerInsertCity(string countrieName,string cityName, string stateName, int cityid,int CountriesListID)
+        public void TowerInsertCity(string countrieName, string cityName, string stateName, int cityid, int CountriesListID)
         {
             Tower tower = new Tower();
             var stateID = deviceWalkData.StateID(cityName);
@@ -207,7 +208,7 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             deviceWalkData.PointConnectionDelete();
 
             var countrieID = deviceWalkData.SearchCountrieID(countrieName);
-             stateID = deviceWalkData.SearchStateID(stateName);
+            stateID = deviceWalkData.SearchStateID(stateName);
 
             tower.Name = cityName;
             tower.NumberID = deviceWalkData.TowerSaveNumberID();
@@ -219,20 +220,20 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             deviceWalkData.TowerCitySave(tower);
         }
 
-        public void TowerDeleteCity (int towerDeleteID, string cityName)
+        public void TowerDeleteCity(int towerDeleteID, string cityName)
         {
-                try
-                {
-                deviceWalkData.TowerCityDelete(towerDeleteID,cityName);
-                }
-                catch { }
+            try
+            {
+                deviceWalkData.TowerCityDelete(towerDeleteID, cityName);
+            }
+            catch { }
         }
-        public List<City> SelectAllCity(string selectallName, string StateName,string countrieName,int CountriesListID,List<City> city)
+        public List<City> SelectAllCity(string selectallName, string StateName, string countrieName, int CountriesListID, List<City> city)
         {
             Tower tw = new Tower();
             var countrieID = deviceWalkData.SearchCountrieID(countrieName);
             var stateID = deviceWalkData.SearchStateID(StateName);
-            var cityChecked = deviceWalkData.SelectedCityState(CountriesListID, countrieID,stateID);
+            var cityChecked = deviceWalkData.SelectedCityState(CountriesListID, countrieID, stateID);
             if (selectallName == "All")
             {
                 city.Clear();
@@ -255,12 +256,12 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             }
         }
 
-        public List<WalkTowerDevice> GetPlaySelectList(int deviceID,string towerName)
+        public List<WalkTowerDevice> GetPlaySelectList(int deviceID, string towerName)
         {
-            var getList=deviceWalkData.SelectedLogMapList(deviceID, towerName);
+            var getList = deviceWalkData.SelectedLogMapList(deviceID, towerName);
             getList.ForEach(item =>
             {
-              item.Type=GetSend(item.WalkOID, item.Version, "public", item.IP, 161);
+                item.Type = GetSend(item.WalkOID, item.Version, "public", item.IP, 161);
             });
             return getList;
         }
@@ -305,6 +306,87 @@ namespace AdminPanelDevice.DeviceWalkSetGetDemand
             target.Close();
             deviceWalkData.UpdateWalkTowerDeviceGetSend(result, getOid, IP);
             return result.Pdu.VbList[0].Value.ToString();
+        }
+
+        //public void SaveDiagram (ReturnedHtml files,string Html)
+        // {
+        //     Html = files.Html;
+        //     string text = files.Html;
+
+        //     if (text == "undefined")
+        //         text = "";
+        //     try
+        //     {
+        //         var path = Server.MapPath(@"~/HtmlText/html.txt");
+        //         System.IO.StreamWriter htmlText = new StreamWriter(path);
+
+        //         htmlText.Write(text);
+        //         htmlText.Close();
+
+        //     }
+        //     catch { }
+        // }
+
+        public void CreatePointConnections(Array[] connections)
+        {
+            try
+            {
+                List<PointConnection> point = new List<PointConnection>();
+
+                deviceWalkData.PointConnectionDelete();
+
+                ArrayList PointConnect = new ArrayList();
+
+                PointConnect.AddRange(connections);
+
+                PointConnection pointConnection = new PointConnection();
+                foreach (string[] item in PointConnect)
+                {
+                    pointConnection.GetUuids = item[0];
+                    pointConnection.SourceId = item[1];
+                    pointConnection.TargetId = item[2];
+                    pointConnection.PointRight = item[3];
+                    pointConnection.PointLeft = item[4];
+                    deviceWalkData.PointConnectionSave(pointConnection);
+                }
+            }
+            catch (Exception e)
+            {
+                int ss;
+            }
+        }
+
+        public List<DeviceType> DeviceGroupListReturn(int deviceGroupID)
+        {
+            return deviceWalkData.DeviceGroupList(deviceGroupID);
+        }
+
+        public WalkMibSetting LoadWalkMibSettingInformation(string deviceName, string towerName, int deviceID, int defineWalk, List<WalkTowerDevice> walkList)
+        {
+            WalkMibSetting walkMibSetting = new WalkMibSetting();
+            walkMibSetting.deviceTypeID = deviceWalkData.DeviceTypeID(deviceName);
+            walkMibSetting.intervalTime = deviceWalkData.ScanIntervalList();
+            walkMibSetting.TowerIP = deviceWalkData.TowerIP(walkMibSetting.deviceTypeID, towerName, deviceID);
+
+            walkMibSetting.WalkList = deviceWalkData.WalkTowerDeviceList(deviceName, towerName, deviceID);
+
+            if (walkMibSetting.WalkList.Count >= 1 && defineWalk == 1)
+            {
+                walkMibSetting.MibWalkIndicator = false;
+                walkMibSetting.DefineWalk = true;
+                walkMibSetting.SelectLogList = deviceWalkData.SelectLogList(deviceName, towerName, deviceID);
+                walkMibSetting.SelectMapList = deviceWalkData.SelectMapList(deviceName, towerName, deviceID);
+                walkMibSetting.SelectIntervalList = deviceWalkData.SelectIntervalList(deviceName, towerName, deviceID);
+                walkMibSetting.SelectGpsList = deviceWalkData.SelectGpsList(deviceName, towerName, deviceID);
+                walkMibSetting.PresetInd = 1;
+
+                return walkMibSetting;
+            }
+            else
+            {
+                walkMibSetting.MibInformation = deviceWalkData.MibTreeInformationList(walkMibSetting.deviceTypeID);
+                return walkMibSetting;
+            }
         }
     }
 }

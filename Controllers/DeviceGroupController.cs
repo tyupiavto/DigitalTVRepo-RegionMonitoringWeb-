@@ -423,12 +423,12 @@ namespace AdminPanelDevice.Controllers
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DeviceConnection"].ConnectionString))
             {
-                PresetIND = 0;
-                WalkTimeOunt = 0;
                 walkList.Clear();
                 GPSCoordinate.Clear();
                 CheckedLog.Clear();
                 CheckedMap.Clear();
+                PresetIND = 0;
+                WalkTimeOunt = 0;
                 IPadrress = walkModel.IP;
                 ViewBag.IP = IPadrress;
                 MibWalkIndicator = false;
@@ -444,7 +444,6 @@ namespace AdminPanelDevice.Controllers
 
                 EditInd = 0;
                 ViewBag.Edit = EditInd;
-                //ViewBag.IntervalTime = intervalTime;
                 ViewBag.pageListNumber = pageListNumber;
                 ViewBag.defaultInterval = DefaultInterval;
                 ViewBag.TowerIP = TowerIP;
